@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Sign Up - Silas Car Rental </title>
+  <title>Sign Up - Silas Car Rental</title>
   <style>
     body {
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -110,7 +110,7 @@
 <body>
   <main>
     <h1>Create Account</h1>
-    <form id="auth-form" data-mode="signup" novalidate>
+    <form id="auth-form" novalidate>
       <label for="name">Full Name</label>
       <input type="text" id="name" name="name" required autocomplete="name" placeholder="Your full name" minlength="3" />
 
@@ -133,49 +133,54 @@
   <div id="toast"></div>
 
   <script>
-const BASE_URL = "https://techyjaunt-auth-go43.onrender.com";
+    const BASE_URL = "https://techyjaunt-auth-go43.onrender.com";
 
-  const authForm = document.querySelector("#auth-form");
-
-  authForm.addEventListener("submit", async (e) => {
-    e.preventDefault();
-
-    const name = authForm.name.value.trim();
-    const email = authForm.email.value.trim();
-    const phone = authForm.phone.value.trim();
-    const password = authForm.password.value.trim();
-
-    if (!name || !email || !phone || !password) {
-      showToast("Please fill in all fields");
-      return;
+    function showToast(msg, ms = 3000) {
+      const toast = document.getElementById('toast');
+      toast.textContent = msg;
+      toast.classList.add('show');
+      setTimeout(() => toast.classList.remove('show'), ms);
     }
 
-    const phonePattern = /^\+?\d{7,15}$/;
-    if (!phonePattern.test(phone)) {
-      showToast("Please enter a valid phone number");
-      return;
-    }
+    document.getElementById("auth-form").addEventListener("submit", async (e) => {
+      e.preventDefault();
 
-    try {
-      const res = await fetch(ENDPOINTS.authSignup, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name, email, phoneNumber: phone, password }), // ✅ fixed here
-      });
+      const name = e.target.name.value.trim();
+      const email = e.target.email.value.trim();
+      const phone = e.target.phone.value.trim();
+      const password = e.target.password.value.trim();
 
-      if (!res.ok) {
-        const data = await res.json();
-        showToast(data.message || "Signup failed");
+      if (!name || !email || !phone || !password) {
+        showToast("Please fill in all fields");
         return;
       }
 
-      showToast("Account created! Please check your email to verify.");
-      setTimeout(() => window.location.href = "login.html", 1500);
-    } catch (err) {
-      showToast("Network error, try again later");
-    }
-  });
-</script>
+      const phonePattern = /^\+?\d{7,15}$/;
+      if (!phonePattern.test(phone)) {
+        showToast("Please enter a valid phone number");
+        return;
+      }
 
+      try {
+        const res = await fetch(`${BASE_URL}/api/users/signup`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ name, email, phoneNumber: phone, password }),
+        });
+
+        const data = await res.json();
+
+        if (!res.ok) {
+          showToast(data.message || "Signup failed");
+          return;
+        }
+
+        showToast("Account created! Please check your email to verify.");
+        setTimeout(() => window.location.href = "login.html", 1500);
+      } catch (err) {
+        showToast("Network error, try again later");
+      }
+    });
+  </script>
 </body>
 </html>
