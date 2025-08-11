@@ -86,48 +86,50 @@
 
   <div id="toast"></div>
 
-  <script>
-    const BASE_URL = "https://techyjaunt-auth-go43.onrender.com";
+<script>
+const BASE_URL = "https://techyjaunt-auth-go43.onrender.com";
 
-    function showToast(msg, ms = 3000) {
-      const toast = document.getElementById('toast');
-      toast.textContent = msg;
-      toast.classList.add('show');
-      setTimeout(() => toast.classList.remove('show'), ms);
-    }
+function showToast(msg, ms = 3000) {
+  const toast = document.getElementById('toast');
+  toast.textContent = msg;
+  toast.classList.add('show');
+  setTimeout(() => toast.classList.remove('show'), ms);
+}
 
-    document.getElementById('verifyBtn').addEventListener('click', async () => {
-      const token = document.getElementById('token').value.trim();
-      if (!token) {
-        showToast("Please enter your verification token");
-        return;
-      }
+document.getElementById('verifyBtn').addEventListener('click', async () => {
+  const token = document.getElementById('token').value.trim();
+  if (!token) {
+    showToast("Please enter your verification token");
+    return;
+  }
 
-      try {
-        const res = await fetch(`${BASE_URL}/api/users/verify-email/:token`, {
-          method: "POST"
-        });
-        const data = await res.json();
-
-        if (!res.ok) {
-          showToast(data.message || "Verification failed");
-          return;
-        }
-
-        showToast("Email verified successfully!");
-        setTimeout(() => window.location.href = "login.html", 1500);
-
-      } catch (err) {
-        showToast("Network error, please try again");
-      }
+  try {
+    const res = await fetch(`${BASE_URL}/api/users/verify-email/${token}`, { // ✅ token replaced correctly
+      method: "POST"
     });
+    const data = await res.json();
 
-    // Optional: auto-fill token if provided in query string ?token=abc123
-    const urlParams = new URLSearchParams(window.location.search);
-    const tokenParam = urlParams.get("token");
-    if (tokenParam) {
-      document.getElementById('token').value = tokenParam;
+    if (!res.ok) {
+      showToast(data.message || "Verification failed");
+      return;
     }
-  </script>
+
+    showToast("Email verified successfully!");
+    setTimeout(() => window.location.href = "login.html", 1500);
+
+  } catch (err) {
+    console.error(err);
+    showToast("Network error, please try again");
+  }
+});
+
+// Auto-fill from query string
+const urlParams = new URLSearchParams(window.location.search);
+const tokenParam = urlParams.get("token");
+if (tokenParam) {
+  document.getElementById('token').value = tokenParam;
+}
+</script>
+
 </body>
 </html>
