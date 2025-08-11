@@ -1,0 +1,225 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Checkout — Silas Car Rentals</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    .checkout-card {
+      background: var(--card);
+      padding: 24px;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      max-width: 480px;
+      margin: 40px auto;
+      color: var(--text);
+    }
+    .checkout-card h2 {
+      margin-bottom: 16px;
+      font-weight: 700;
+      font-size: 1.8rem;
+      text-align: center;
+    }
+    .checkout-card p {
+      margin-bottom: 12px;
+      font-size: 1rem;
+    }
+    .form-group {
+      margin-bottom: 18px;
+    }
+    .form-group label {
+      font-weight: 600;
+      display: block;
+      margin-bottom: 6px;
+      color: var(--text);
+    }
+    .form-group input {
+      padding: 10px;
+      width: 100%;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background: var(--bg-soft);
+      color: var(--text);
+      font-size: 1rem;
+      transition: border-color 0.2s ease;
+    }
+    .form-group input:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 6px var(--primary);
+      background: var(--bg);
+    }
+    .btn-primary {
+      background: var(--primary);
+      color: white;
+      border: none;
+      padding: 12px;
+      width: 100%;
+      border-radius: 8px;
+      font-size: 1.1rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background-color 0.2s ease;
+      margin-top: 12px;
+    }
+    .btn-primary:hover {
+      background: var(--primary-700);
+    }
+    #car-details p {
+      font-size: 1.1rem;
+      margin-bottom: 8px;
+    }
+    #total-price, #instant-total {
+      font-weight: 700;
+      font-size: 1.2rem;
+      color: var(--primary);
+    }
+    #instant-pay {
+      text-align: center;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body class="dashboard-body">
+
+  <header class="navbar">
+    <div class="container nav-inner">
+      <a href="dashboard.html" class="brand">
+        <div class="brand-mark">SC</div>
+        <span class="brand-name">Silas Rentals</span>
+      </a>
+    </div>
+  </header>
+
+  <main class="container section">
+    <div class="checkout-card" id="checkout-card">
+      <h2>Confirm Your Rental</h2>
+      <div id="car-details" aria-live="polite" aria-atomic="true"></div>
+
+      <form id="rental-form" style="display:none;" aria-label="Rental date selection form">
+        <div class="form-group">
+          <label for="startDate">Start Date</label>
+          <input type="date" id="startDate" name="startDate" required aria-required="true" aria-describedby="startDateHelp" />
+          <small id="startDateHelp" class="sr-only">Select rental start date</small>
+        </div>
+        <div class="form-group">
+          <label for="endDate">End Date</label>
+          <input type="date" id="endDate" name="endDate" required aria-required="true" aria-describedby="endDateHelp" />
+          <small id="endDateHelp" class="sr-only">Select rental end date</small>
+        </div>
+        <p><strong>Total Price:</strong> ₦<span id="total-price">0</span></p>
+        <button type="submit" class="btn-primary" aria-label="Confirm and pay for rental">Confirm &amp; Pay</button>
+      </form>
+
+      <div id="instant-pay" style="display:none;" aria-live="polite" aria-atomic="true">
+        <p>Total Price: ₦<span id="instant-total">0</span></p>
+        <button class="btn-primary" id="pay-now-btn" aria-label="Pay now for rental">Pay Now</button>
+      </div>
+    </div>
+  </main>
+
+  <div class="toast" id="toast" role="alert" aria-live="assertive" aria-atomic="true"></div>
+
+  <script type="module">
+    import { BASE_URL, ENDPOINTS, showToast } from './app.js';
+
+    const carDetailsEl = document.getElementById('car-details');
+    const rentalForm = document.getElementById('rental-form');
+    const totalPriceEl = document.getElementById('total-price');
+    const startDateEl = document.getElementById('startDate');
+    const endDateEl = document.getElementById('endDate');
+    const instantPayEl = document.getElementById('instant-pay');
+    const instantTotalEl = document.getElementById('instant-total');
+    const payNowBtn = document.getElementById('pay-now-btn');
+
+    const token = localStorage.getItem('token');
+    if (!token) {
+      showToast('Please login first');
+      setTimeout(() => window.location.href = 'login.html', 1500);
+    }
+
+    let rentalCar = JSON.parse(localStorage.getItem('currentRental'));
+    if (!rentalCar) {
+      window.location.href = 'book.html';
+    }
+
+    carDetailsEl.innerHTML = `
+      <p><strong>Car:</strong> ${rentalCar.name}</p>
+      <p><strong>Brand:</strong> ${rentalCar.brand || 'N/A'}</p>
+      <p><strong>Price/Day:</strong> ₦${rentalCar.price.toLocaleString()}</p>
+    `;
+
+    function calculateDays(start, end) {
+      const s = new Date(start);
+      const e = new Date(end);
+      return Math.ceil((e - s) / (1000 * 60 * 60 * 24));
+    }
+
+    function updateTotalPrice() {
+      if (startDateEl.value && endDateEl.value) {
+        const days = calculateDays(startDateEl.value, endDateEl.value);
+        if (days > 0) {
+          totalPriceEl.textContent = (days * rentalCar.price).toLocaleString();
+        } else {
+          totalPriceEl.textContent = '0';
+        }
+      } else {
+        totalPriceEl.textContent = '0';
+      }
+    }
+
+    startDateEl.addEventListener('change', updateTotalPrice);
+    endDateEl.addEventListener('change', updateTotalPrice);
+
+    // Skip form if dates already provided
+    if (rentalCar.startDate && rentalCar.endDate) {
+      const days = calculateDays(rentalCar.startDate, rentalCar.endDate);
+      instantTotalEl.textContent = (days * rentalCar.price).toLocaleString();
+      instantPayEl.style.display = 'block';
+    } else {
+      rentalForm.style.display = 'block';
+    }
+
+    async function startPayment(start, end) {
+      try {
+        const res = await fetch(BASE_URL + ENDPOINTS.rent(rentalCar.id), {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: 'Bearer ' + token
+          },
+          body: JSON.stringify({
+            startDate: start,
+            endDate: end
+          }),
+          credentials: 'include'
+        });
+        if (!res.ok) throw new Error('Failed to create rental');
+        const data = await res.json();
+        // Backend returns payment link
+        if (data.paymentUrl) {
+          window.location.href = data.paymentUrl;
+        } else {
+          showToast('Payment link not available');
+        }
+      } catch (err) {
+        showToast('Payment initiation failed');
+      }
+    }
+
+    rentalForm.addEventListener('submit', e => {
+      e.preventDefault();
+      if (!startDateEl.value || !endDateEl.value) {
+        showToast('Please select valid dates');
+        return;
+      }
+      startPayment(startDateEl.value, endDateEl.value);
+    });
+
+    payNowBtn.addEventListener('click', () => {
+      startPayment(rentalCar.startDate, rentalCar.endDate);
+    });
+  </script>
+</body>
+</html>

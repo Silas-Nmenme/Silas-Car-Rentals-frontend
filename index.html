@@ -1,0 +1,259 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Silas Car Rentals</title>
+  <meta name="description" content="Professional car rentals — browse, add to cart and checkout securely." />
+  <link rel="stylesheet" href="style.css" />
+  <meta name="theme-color" content="#0b0e11">
+</head>
+<body>
+  <header class="navbar" role="banner">
+    <div class="container nav-inner">
+      <a href="index.html" class="brand" aria-label="Silas Car Rentals home">
+        <div class="brand-mark">SC</div>
+        <span class="brand-name">Silas Car Rentals</span>
+      </a>
+
+      <nav class="nav-links" aria-label="Main navigation">
+        <a class="nav-link active" href="#browse">Browse</a>
+        <a class="nav-link" href="book.html">Book</a>
+        <a class="nav-link" href="#how">How it Works</a>
+        <a class="nav-link" href="#testimonials">Testimonials</a>
+        <a class="nav-link" href="#contact">Contact</a>
+      </nav>
+
+      <div class="nav-actions" role="region" aria-label="User actions">
+        <div class="auth-actions" id="guest-actions">
+          <button class="btn btn-sm btn-login" onclick="location.href='login.html'">Login</button>
+          <button class="btn btn-outline btn-sm btn-signup" onclick="location.href='signup.html'">Sign up</button>
+        </div>
+
+        <div class="user-menu hidden" id="user-actions" aria-hidden="true">
+          <span class="user-name" id="user-name">User</span>
+          <button class="btn-sm btn-ghost" id="open-history" title="My rentals">My Rentals</button>
+          <button class="btn-sm btn-ghost" id="open-wishlist">❤️ Wishlist (<span id="wishlist-count">0</span>)</button>
+          <button class="btn btn-sm" id="logout-btn" title="Sign out">Logout</button>
+        </div>
+
+        <button id="open-cart" class="btn btn-ghost" aria-label="Open booking cart" title="Cart">
+          🧾 Cart (<span id="cart-count">0</span>)
+        </button>
+        <button class="btn btn-ghost" title="Saved Cars">💾 Saved (<span id="saved-count">0</span>)</button>
+
+        <button class="mobile-menu-btn" id="mobile-menu-btn" aria-label="Open menu">☰</button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- HERO -->
+    <section class="hero section" id="hero">
+      <div class="container hero-inner">
+        <span class="pill">Trusted • Fast • Secure</span>
+        <h1 class="hero-title">Rent the right car for your trip — fast and secure</h1>
+        <p class="hero-subtitle">Browse available cars, add them to your booking cart, then checkout after login.</p>
+
+        <div class="hero-actions">
+          <div class="max-600">
+            <div class="filters" id="filters" role="search">
+              <div class="field">
+                <label for="q">Search</label>
+                <input id="q" placeholder="Search model, make, plate..." aria-label="Search cars" />
+              </div>
+
+              <div class="field">
+                <label for="type">Type</label>
+                <select id="type" aria-label="Car type">
+                  <option value="">Any</option>
+                  <option>Hatchback</option>
+                  <option>Sedan</option>
+                  <option>SUV</option>
+                  <option>Van</option>
+                </select>
+              </div>
+
+              <div class="field">
+                <label for="minPrice">Min Price (₦)</label>
+                <input id="minPrice" type="number" placeholder="0" aria-label="Minimum price" />
+              </div>
+
+              <div class="field">
+                <label for="maxPrice">Max Price (₦)</label>
+                <input id="maxPrice" type="number" placeholder="100000" aria-label="Maximum price" />
+              </div>
+
+              <div class="field">
+                <label>&nbsp;</label>
+                <div style="display:flex; gap:8px">
+                  <button class="btn" id="apply-filters">Apply</button>
+                  <button class="btn btn-outline" id="clear-filters">Reset</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- BROWSE / CAR GRID -->
+    <section id="browse" class="section container" aria-labelledby="browse-heading">
+      <h2 id="browse-heading" style="margin-bottom:16px">Available Cars</h2>
+      <div id="car-count" style="color:var(--muted); margin-bottom:8px;">Loading...</div>
+
+      <!-- Skeleton holder (shown while loading) -->
+      <div class="grid" id="skeleton-grid" aria-hidden="true"></div>
+
+      <!-- Real cards -->
+      <div class="grid" id="cars-grid" aria-live="polite"></div>
+
+      <div style="margin-top:18px; display:flex; justify-content:center;">
+        <button class="btn btn-outline" id="load-more" style="display:none">Load more</button>
+      </div>
+    </section>
+
+    <!-- HOW IT WORKS -->
+    <section id="how" class="section">
+      <div class="container max-600">
+        <h3>How it works</h3>
+        <ol>
+          <li>Browse cars and add to your booking cart</li>
+          <li>Proceed to checkout — sign in/sign up when prompted</li>
+          <li>Confirm rental dates and pay securely</li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- TESTIMONIALS -->
+    <section id="testimonials" class="section">
+      <div class="container">
+        <h3>What customers say</h3>
+        <div class="grid">
+          <div class="card card-content">"Fast service & clean cars!" — Ada</div>
+          <div class="card card-content">"Great pricing and customer support." — Emeka</div>
+          <div class="card card-content">"Hassle-free booking." — Chinedu</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CONTACT / FOOTER -->
+    <footer id="contact" class="footer section">
+      <div class="container footer-inner">
+        <div>
+          <strong>Silas Car Rentals</strong><br/>
+          <small class="meta">silasonyekachi15@gmail.com • +234 810 758 6167</small>
+        </div>
+        <div>
+          <small class="meta">© <span id="year"></span> Silas Car Rentals</small>
+        </div>
+      </div>
+    </footer>
+  </main>
+
+  <!-- CART DRAWER -->
+  <dialog id="cart-dialog" class="dialog" aria-hidden="true" aria-label="Booking cart">
+    <div class="dialog-inner" style="max-width:720px">
+      <div class="dialog-header">
+        <h3>Your booking cart</h3>
+        <button class="icon-btn" id="close-cart" aria-label="Close cart">✕</button>
+      </div>
+
+      <div id="cart-items" style="display:grid; gap:10px; margin-bottom:12px;">
+        <!-- items injected here -->
+      </div>
+
+      <div style="display:flex;justify-content:space-between;align-items:center; gap:12px;">
+        <div class="meta" id="cart-summary">0 items</div>
+        <div style="display:flex;gap:8px">
+          <button class="btn btn-outline" id="clear-cart">Clear</button>
+          <button class="btn" id="proceed-to-checkout">Proceed to Checkout</button>
+        </div>
+      </div>
+    </div>
+  </dialog>
+
+  <!-- AUTH DIALOG (reused modal) -->
+  <dialog id="auth-dialog" class="dialog glass-auth" aria-modal="true">
+    <div class="dialog-inner">
+      <div class="dialog-header">
+        <h2 id="auth-title">Login</h2>
+        <button id="close-auth" class="btn-close" aria-label="Close auth">&times;</button>
+      </div>
+      <form id="auth-form" autocomplete="off" novalidate>
+        <div id="auth-name-group" class="form-group hidden">
+          <label for="auth-name">Full Name</label>
+          <input type="text" id="auth-name" name="name" placeholder="Your full name">
+        </div>
+        <div class="form-group">
+          <label for="auth-email">Email</label>
+          <input type="email" id="auth-email" name="email" required>
+        </div>
+        <div id="auth-phone-group" class="form-group hidden">
+          <label for="auth-phone">Phone Number</label>
+          <input type="tel" id="auth-phone" name="phone">
+        </div>
+        <div class="form-group password-wrapper">
+          <label for="auth-password">Password</label>
+          <div class="password-input">
+            <input type="password" id="auth-password" name="password" minlength="6" required>
+            <button type="button" class="toggle-pass" data-target="auth-password" aria-label="Toggle password">&#128065;</button>
+          </div>
+          <small id="password-strength" class="meta"></small>
+        </div>
+        <div id="auth-confirm-group" class="form-group hidden">
+          <label for="auth-confirm">Confirm Password</label>
+          <div class="password-input">
+            <input type="password" id="auth-confirm" name="confirm">
+            <button type="button" class="toggle-pass" data-target="auth-confirm" aria-label="Toggle confirm password">&#128065;</button>
+          </div>
+          <small id="confirm-match" class="meta"></small>
+        </div>
+
+        <div style="display:flex;gap:8px; margin-top:8px;">
+          <button id="auth-submit" class="btn" type="submit">Login</button>
+          <button type="button" id="switch-auth" class="btn-outline">Switch to Register</button>
+        </div>
+      </form>
+    </div>
+  </dialog>
+
+  <!-- WISHLIST DIALOG -->
+  <dialog class="dialog" id="wishlist-dialog">
+    <div class="dialog-inner">
+      <div class="dialog-header">
+        <h4>My Wishlist</h4>
+        <button class="icon-btn" id="close-wishlist" aria-label="Close wishlist">✕</button>
+      </div>
+      <div id="wishlist-list" class="grid"></div>
+    </div>
+  </dialog>
+
+  <!-- SAVED DIALOG -->
+  <dialog class="dialog" id="saved-dialog">
+    <div class="dialog-inner">
+      <div class="dialog-header">
+        <h4>My Saved Cars</h4>
+        <button class="icon-btn" id="close-saved" aria-label="Close saved">✕</button>
+      </div>
+      <div id="saved-list" class="grid"></div>
+    </div>
+  </dialog>
+
+  <!-- TOAST -->
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+   <script>
+    function getStorage(key) {
+      return JSON.parse(localStorage.getItem(key)) || [];
+    }
+    function updateGlobalCounts() {
+      document.getElementById("cart-count").textContent = getStorage("cart").length;
+      document.getElementById("wishlist-count").textContent = getStorage("wishlist").length;
+      document.getElementById("saved-count").textContent = getStorage("savedCars").length;
+    }
+    updateGlobalCounts();
+  </script>
+  <script type="module" src="app.js"></script>
+</body>
+</html>

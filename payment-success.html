@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Payment Successful — Silas Car Rentals</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    .success-container {
+      text-align: center;
+      padding: 50px 20px;
+    }
+    .success-container h1 {
+      color: #28a745;
+      margin-bottom: 10px;
+    }
+    .success-details {
+      background: #fff;
+      display: inline-block;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+      margin-bottom: 20px;
+    }
+    .btn {
+      padding: 10px 20px;
+      border-radius: 6px;
+      margin: 5px;
+      text-decoration: none;
+      display: inline-block;
+    }
+    .btn-primary {
+      background: #007bff;
+      color: white;
+    }
+    .btn-secondary {
+      background: #6c757d;
+      color: white;
+    }
+    canvas {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      pointer-events: none;
+      z-index: 9999;
+    }
+  </style>
+</head>
+<body class="dashboard-body">
+
+  <canvas id="confetti"></canvas>
+
+  <main class="container section success-container">
+    <h1>🎉 Payment Successful!</h1>
+    <p>Your rental has been confirmed.</p>
+
+    <div class="success-details" id="booking-details">
+      <p><strong>Car:</strong> —</p>
+      <p><strong>Rental Period:</strong> —</p>
+      <p><strong>Total Price:</strong> —</p>
+    </div>
+
+    <a href="dashboard.html" class="btn btn-primary">Go to Dashboard</a>
+    <a href="book.html" class="btn btn-secondary">Book Another Car</a>
+  </main>
+
+  <script>
+    // Retrieve and display booking details before clearing
+    const currentRental = JSON.parse(localStorage.getItem('currentRental'));
+    if (currentRental) {
+      const detailsEl = document.getElementById('booking-details');
+      detailsEl.innerHTML = `
+        <p><strong>Car:</strong> ${currentRental.name}</p>
+        <p><strong>Rental Period:</strong> ${currentRental.startDate} to ${currentRental.endDate}</p>
+        <p><strong>Total Price:</strong> ₦${(currentRental.price * ((new Date(currentRental.endDate) - new Date(currentRental.startDate)) / (1000*60*60*24))).toLocaleString()}</p>
+      `;
+
+      // Remove from cart
+      let cart = JSON.parse(localStorage.getItem('cart')) || [];
+      cart = cart.filter(c => c.id !== currentRental.id);
+      localStorage.setItem('cart', JSON.stringify(cart));
+
+      // Clear current rental
+      localStorage.removeItem('currentRental');
+    }
+
+    // Confetti Animation
+    const canvas = document.getElementById('confetti');
+    const ctx = canvas.getContext('2d');
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    const confettiPieces = [];
+    const colors = ['#fce18a', '#ff726d', '#b48def', '#f4306d'];
+
+    function ConfettiPiece() {
+      this.x = Math.random() * canvas.width;
+      this.y = Math.random() * canvas.height - canvas.height;
+      this.size = Math.random() * 10 + 5;
+      this.color = colors[Math.floor(Math.random() * colors.length)];
+      this.speed = Math.random() * 3 + 2;
+      this.rotation = Math.random() * 360;
+    }
+
+    ConfettiPiece.prototype.update = function() {
+      this.y += this.speed;
+      if (this.y > canvas.height) {
+        this.y = -10;
+        this.x = Math.random() * canvas.width;
+      }
+      this.rotation += this.speed;
+    }
+
+    ConfettiPiece.prototype.draw = function() {
+      ctx.save();
+      ctx.translate(this.x, this.y);
+      ctx.rotate(this.rotation * Math.PI / 180);
+      ctx.fillStyle = this.color;
+      ctx.fillRect(-this.size/2, -this.size/2, this.size, this.size);
+      ctx.restore();
+    }
+
+    function initConfetti() {
+      for (let i = 0; i < 150; i++) {
+        confettiPieces.push(new ConfettiPiece());
+      }
+    }
+
+    function animateConfetti() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      confettiPieces.forEach(p => {
+        p.update();
+        p.draw();
+      });
+      requestAnimationFrame(animateConfetti);
+    }
+
+    initConfetti();
+    animateConfetti();
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Payment Failed — Silas Car Rentals</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    .failed-container {
+      text-align: center;
+      padding: 50px 20px;
+    }
+    .failed-container h1 {
+      color: #dc3545;
+      margin-bottom: 10px;
+    }
+    .failed-details {
+      background: #fff;
+      display: inline-block;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+      margin-bottom: 20px;
+    }
+    .btn {
+      padding: 10px 20px;
+      border-radius: 6px;
+      margin: 5px;
+      text-decoration: none;
+      display: inline-block;
+    }
+    .btn-primary {
+      background: #007bff;
+      color: white;
+    }
+    .btn-secondary {
+      background: #6c757d;
+      color: white;
+    }
+  </style>
+</head>
+<body class="dashboard-body">
+
+  <main class="container section failed-container">
+    <h1>❌ Payment Failed</h1>
+    <p>We couldn’t process your rental payment.</p>
+
+    <div class="failed-details" id="booking-details">
+      <p><strong>Car:</strong> —</p>
+      <p><strong>Rental Period:</strong> —</p>
+      <p><strong>Total Price:</strong> —</p>
+    </div>
+
+    <a href="checkout.html" class="btn btn-primary">Retry Payment</a>
+    <a href="book.html" class="btn btn-secondary">Choose Another Car</a>
+  </main>
+
+  <script>
+    // Retrieve booking details so user can retry easily
+    const currentRental = JSON.parse(localStorage.getItem('currentRental'));
+    if (currentRental) {
+      const detailsEl = document.getElementById('booking-details');
+      detailsEl.innerHTML = `
+        <p><strong>Car:</strong> ${currentRental.name}</p>
+        <p><strong>Rental Period:</strong> ${currentRental.startDate || 'N/A'} to ${currentRental.endDate || 'N/A'}</p>
+        <p><strong>Total Price:</strong> ₦${(currentRental.startDate && currentRental.endDate
+          ? (currentRental.price * ((new Date(currentRental.endDate) - new Date(currentRental.startDate)) / (1000*60*60*24)))
+          : currentRental.price
+        ).toLocaleString()}</p>
+      `;
+    }
+  </script>
+
+</body>
+</html>
