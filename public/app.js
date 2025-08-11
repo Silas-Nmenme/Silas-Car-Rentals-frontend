@@ -1,6 +1,7 @@
 // app.js (module) - Unified client logic for browse / cart / auth / booking / dashboard
 
 const BASE_URL = (window.__BASE_URL__ || "https://techyjaunt-auth-go43.onrender.com").replace(/\/$/, "");
+export { BASE_URL };
 const ENDPOINTS = {
   cars: `${BASE_URL}/api/cars`,
   car: (id) => `${BASE_URL}/api/cars/${id}`,
