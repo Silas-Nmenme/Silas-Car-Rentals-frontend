@@ -132,50 +132,56 @@
 
   <div id="toast"></div>
 
-  <script type="module">
-  import { BASE_URL, ENDPOINTS, showToast } from './app.js';
+  <script>
+const BASE_URL = "https://techyjaunt-auth-go43.onrender.com";
 
-  const authForm = document.querySelector("#auth-form");
+function showToast(msg, ms = 3000) {
+  const toast = document.getElementById("toast");
+  toast.textContent = msg;
+  toast.classList.add("show");
+  setTimeout(() => toast.classList.remove("show"), ms);
+}
 
-  authForm.addEventListener("submit", async (e) => {
-    e.preventDefault();
+document.getElementById("auth-form").addEventListener("submit", async (e) => {
+  e.preventDefault();
 
-    const name = authForm.name.value.trim();
-    const email = authForm.email.value.trim();
-    const phone = authForm.phone.value.trim();
-    const password = authForm.password.value.trim();
+  const name = e.target.name.value.trim();
+  const email = e.target.email.value.trim();
+  const phone = e.target.phone.value.trim();
+  const password = e.target.password.value.trim();
 
-    if (!name || !email || !phone || !password) {
-      showToast("Please fill in all fields");
+  if (!name || !email || !phone || !password) {
+    showToast("Please fill in all fields");
+    return;
+  }
+
+  const phonePattern = /^\+?\d{7,15}$/;
+  if (!phonePattern.test(phone)) {
+    showToast("Please enter a valid phone number");
+    return;
+  }
+
+  try {
+    const res = await fetch(`${BASE_URL}/api/users/signup`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ name, email, phone, password }),
+    });
+
+    const data = await res.json();
+    if (!res.ok) {
+      showToast(data.message || "Signup failed");
       return;
     }
 
-    // Simple phone validation (matches pattern attribute)
-    const phonePattern = /^\+?\d{7,15}$/;
-    if (!phonePattern.test(phone)) {
-      showToast("Please enter a valid phone number");
-      return;
-    }
+    showToast("Account created! Please login.");
+    setTimeout(() => window.location.href = "login.html", 1500);
+  } catch (err) {
+    console.error(err);
+    showToast("Network error, please try again later");
+  }
+});
+</script>
 
-    try {
-      const res = await fetch(ENDPOINTS.authSignup, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name, email, phone, password }),
-      });
-
-      if (!res.ok) {
-        const data = await res.json();
-        showToast(data.message || "Signup failed");
-        return;
-      }
-
-      showToast("Account created! Please check your email to verify.");
-      setTimeout(() => window.location.href = "login.html", 1500);
-    } catch (err) {
-      showToast("Network error, try again later");
-    }
-  });
-  </script>
 </body>
 </html>

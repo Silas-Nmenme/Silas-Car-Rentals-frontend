@@ -122,46 +122,52 @@
 
   <div id="toast"></div>
 
-  <script type="module">
-  import { BASE_URL, ENDPOINTS, showToast } from './app.js';
+  <script>
+const BASE_URL = "https://techyjaunt-auth-go43.onrender.com";
 
-  const authForm = document.querySelector("#auth-form");
+function showToast(msg, ms = 3000) {
+  const toast = document.getElementById("toast");
+  toast.textContent = msg;
+  toast.classList.add("show");
+  setTimeout(() => toast.classList.remove("show"), ms);
+}
 
-  authForm.addEventListener("submit", async (e) => {
-    e.preventDefault();
+document.getElementById("auth-form").addEventListener("submit", async (e) => {
+  e.preventDefault();
 
-    const email = authForm.email.value.trim();
-    const password = authForm.password.value.trim();
+  const email = e.target.email.value.trim();
+  const password = e.target.password.value.trim();
 
-    if (!email || !password) {
-      showToast("Please enter email and password");
+  if (!email || !password) {
+    showToast("Please enter email and password");
+    return;
+  }
+
+  try {
+    const res = await fetch(`${BASE_URL}/api/users/login`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email, password }),
+    });
+
+    const data = await res.json();
+    if (!res.ok) {
+      showToast(data.message || "Login failed");
       return;
     }
 
-    try {
-      const res = await fetch(ENDPOINTS.authLogin, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password }),
-      });
+    // Save JWT token
+    localStorage.setItem("token", data.token);
+    localStorage.setItem("user", JSON.stringify(data.user));
 
-      if (!res.ok) {
-        const data = await res.json();
-        showToast(data.message || "Login failed");
-        return;
-      }
+    showToast("Login successful! Redirecting...");
+    setTimeout(() => window.location.href = "dashboard.html", 1500);
+  } catch (err) {
+    console.error(err);
+    showToast("Network error, please try again later");
+  }
+});
+</script>
 
-      const data = await res.json();
-
-      // Save token or session info as needed, here assumed token in response:
-      localStorage.setItem("token", data.token);
-
-      showToast("Login successful! Redirecting...");
-      setTimeout(() => window.location.href = "dashboard.html", 1500);
-    } catch (err) {
-      showToast("Network error, try again later");
-    }
-  });
-  </script>
 </body>
 </html>
