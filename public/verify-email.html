@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Email Verification - Silas Car Rental</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #121212;
+      color: #e0e0e0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+    main {
+      background: #1f1f1f;
+      padding: 2rem;
+      border-radius: 8px;
+      max-width: 400px;
+      width: 90%;
+      text-align: center;
+      box-shadow: 0 0 12px rgba(0,0,0,0.9);
+    }
+    h1 {
+      color: #03dac5;
+      margin-bottom: 1.2rem;
+    }
+    input {
+      width: 100%;
+      padding: 0.8rem;
+      border: none;
+      border-radius: 6px;
+      background: #2a2a2a;
+      color: #fff;
+      font-size: 1rem;
+      margin-bottom: 1rem;
+    }
+    input:focus {
+      outline: 2px solid #03dac5;
+    }
+    button {
+      padding: 0.8rem;
+      width: 100%;
+      border: none;
+      border-radius: 6px;
+      background: #03dac5;
+      color: #121212;
+      font-size: 1.1rem;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #00b2a9;
+    }
+    #toast {
+      position: fixed;
+      bottom: 1.5rem;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #03dac5;
+      color: #121212;
+      padding: 0.7rem 1.2rem;
+      border-radius: 4px;
+      font-weight: 600;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+      z-index: 9999;
+    }
+    #toast.show {
+      opacity: 1;
+      pointer-events: auto;
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>Verify Your Email</h1>
+    <p>Enter the verification token you received in your email.</p>
+    <input type="text" id="token" placeholder="Paste your token here" required />
+    <button id="verifyBtn">Verify Email</button>
+  </main>
+
+  <div id="toast"></div>
+
+  <script>
+    const BASE_URL = "https://techyjaunt-auth-go43.onrender.com";
+
+    function showToast(msg, ms = 3000) {
+      const toast = document.getElementById('toast');
+      toast.textContent = msg;
+      toast.classList.add('show');
+      setTimeout(() => toast.classList.remove('show'), ms);
+    }
+
+    document.getElementById('verifyBtn').addEventListener('click', async () => {
+      const token = document.getElementById('token').value.trim();
+      if (!token) {
+        showToast("Please enter your verification token");
+        return;
+      }
+
+      try {
+        const res = await fetch(`${BASE_URL}/api/users/verify-email/${token}`, {
+          method: "GET"
+        });
+        const data = await res.json();
+
+        if (!res.ok) {
+          showToast(data.message || "Verification failed");
+          return;
+        }
+
+        showToast("Email verified successfully!");
+        setTimeout(() => window.location.href = "login.html", 1500);
+
+      } catch (err) {
+        showToast("Network error, please try again");
+      }
+    });
+
+    // Optional: auto-fill token if provided in query string ?token=abc123
+    const urlParams = new URLSearchParams(window.location.search);
+    const tokenParam = urlParams.get("token");
+    if (tokenParam) {
+      document.getElementById('token').value = tokenParam;
+    }
+  </script>
+</body>
+</html>
