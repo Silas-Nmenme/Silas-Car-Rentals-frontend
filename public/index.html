@@ -105,68 +105,91 @@
   <!-- TOAST -->
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
+  // index.js — Silas Car Rentals
   <script>
-    const API_BASE = "https://techyjaunt-auth-go43.onrender.com";
-    const carIdFromDB = "689479c630cf9351877939e6"; // Benz C300
-    const token = localStorage.getItem("token");
+const API_BASE = "https://techyjaunt-auth-go43.onrender.com";
+const BENZ_ID = "689479c630cf9351877939e6"; // Benz C300
+const token = localStorage.getItem("token");
 
-    function getStorage(key) {
-      return JSON.parse(localStorage.getItem(key)) || [];
-    }
-    function updateGlobalCounts() {
-      document.getElementById("cart-count").textContent = getStorage("cart").length;
-      document.getElementById("wishlist-count").textContent = getStorage("wishlist").length;
-      document.getElementById("saved-count").textContent = getStorage("savedCars").length;
-    }
-    function showToast(msg, ms=3000) {
-      const toast = document.getElementById("toast");
-      toast.textContent = msg;
-      toast.classList.add("show");
-      setTimeout(() => toast.classList.remove("show"), ms);
-    }
-    function addToStorage(key, car) {
-      let arr = getStorage(key);
-      if (!arr.find(c => c._id === car._id)) {
-        arr.push(car);
-        localStorage.setItem(key, JSON.stringify(arr));
-        showToast(`${car.make} added to ${key}`);
-        updateGlobalCounts();
-      } else {
-        showToast(`${car.make} already in ${key}`);
-      }
-    }
-    function openBookingForm(carId) {
-      if (!token) {
-        showToast("Please login first");
-        setTimeout(() => window.location.href = "login.html", 1200);
-        return;
-      }
-      localStorage.setItem("currentRentalId", carId);
-      window.location.href = "book.html";
-    }
-    async function fetchCar() {
-      try {
-        const res = await fetch(`${API_BASE}/api/cars/${carIdFromDB}`);
-        const car = await res.json();
-        if (!res.ok) throw new Error();
-        document.getElementById("car-count").textContent = "1 car available";
-        document.getElementById("cars-grid").innerHTML = `
-          <div class="car-card">
-            <img src="${car.image || 'https://via.placeholder.com/300x200'}" alt="${car.make}">
-            <h3>${car.make} ${car.model}</h3>
-            <p>₦${car.price.toLocaleString()} / day</p>
-            <button onclick="openBookingForm('${car._id}')">Book Now</button>
-            <button onclick='addToStorage("cart", ${JSON.stringify(car).replace(/"/g, "&quot;")})'>Add to Cart</button>
-            <button onclick='addToStorage("wishlist", ${JSON.stringify(car).replace(/"/g, "&quot;")})'>Wishlist</button>
-            <button onclick='addToStorage("savedCars", ${JSON.stringify(car).replace(/"/g, "&quot;")})'>Save</button>
-          </div>
-        `;
-      } catch {
-        document.getElementById("cars-grid").innerHTML = "<p>Failed to load cars.</p>";
-      }
-    }
+// ===== Helpers =====
+function getStorage(key) {
+  return JSON.parse(localStorage.getItem(key)) || [];
+}
+
+function updateGlobalCounts() {
+  document.getElementById("cart-count").textContent = getStorage("cart").length;
+  document.getElementById("wishlist-count").textContent = getStorage("wishlist").length;
+  document.getElementById("saved-count").textContent = getStorage("savedCars").length;
+}
+
+function showToast(msg, ms = 3000) {
+  const toast = document.getElementById("toast");
+  toast.textContent = msg;
+  toast.classList.add("show");
+  setTimeout(() => toast.classList.remove("show"), ms);
+}
+
+function addToStorage(key, car) {
+  let arr = getStorage(key);
+  if (!arr.find(c => c._id === car._id)) {
+    arr.push(car);
+    localStorage.setItem(key, JSON.stringify(arr));
+    showToast(`${car.make} ${car.model} added to ${key}`);
     updateGlobalCounts();
-    fetchCar();
+  } else {
+    showToast(`${car.make} ${car.model} already in ${key}`);
+  }
+}
+
+function openBookingForm(carId) {
+  if (!token) {
+    showToast("Please login first");
+    setTimeout(() => window.location.href = "login.html", 1200);
+    return;
+  }
+  localStorage.setItem("currentRentalId", carId);
+  window.location.href = "book.html";
+}
+
+// ===== Fetch Cars =====
+async function fetchCar() {
+  try {
+    const res = await fetch(`${API_BASE}/api/cars/get-cars`);
+    const cars = await res.json();
+
+    if (!res.ok) throw new Error();
+
+    const car = cars.find(c => c._id === BENZ_ID);
+    const grid = document.getElementById("cars-grid");
+    const count = document.getElementById("car-count");
+
+    if (!car) {
+      grid.innerHTML = "<p>Car not found.</p>";
+      count.textContent = "0 cars available";
+      return;
+    }
+
+    count.textContent = "1 car available";
+    grid.innerHTML = `
+      <div class="car-card">
+        <img src="${car.image || 'https://via.placeholder.com/300x200'}" alt="${car.make}">
+        <h3>${car.make} ${car.model}</h3>
+        <p>₦${car.price.toLocaleString()} / day</p>
+        <button onclick="openBookingForm('${car._id}')">Book Now</button>
+        <button onclick='addToStorage("cart", ${JSON.stringify(car).replace(/"/g, "&quot;")})'>Add to Cart</button>
+        <button onclick='addToStorage("wishlist", ${JSON.stringify(car).replace(/"/g, "&quot;")})'>Wishlist</button>
+        <button onclick='addToStorage("savedCars", ${JSON.stringify(car).replace(/"/g, "&quot;")})'>Save</button>
+      </div>
+    `;
+  } catch (err) {
+    document.getElementById("cars-grid").innerHTML = "<p>Failed to load car.</p>";
+  }
+}
+
+// ===== Init =====
+updateGlobalCounts();
+fetchCar();
+
   </script>
 </body>
 </html>
