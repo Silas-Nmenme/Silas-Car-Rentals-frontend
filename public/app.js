@@ -9,7 +9,6 @@ const qsa = (s) => Array.from(document.querySelectorAll(s));
 function showToast(message, duration = 3000, bgColor = "#03dac5") {
   let toast = document.getElementById("toast");
 
-  // Create toast element if missing
   if (!toast) {
     toast = document.createElement("div");
     toast.id = "toast";
@@ -267,7 +266,7 @@ function renderCars(cars) {
   });
 }
 
-// --- WISHLIST & SAVED FUNCTIONS ---
+// --- NEW: Wishlist & Saved + Global Action Handler ---
 function addToWishlist(car) {
   const wishlist = getStorage("wishlist");
   if (wishlist.find(c => c._id === car._id)) {
@@ -292,7 +291,6 @@ function addToSaved(car) {
   showToast("Car saved");
 }
 
-// --- GLOBAL BUTTON ACTION HANDLER ---
 document.addEventListener("click", async (e) => {
   const btn = e.target.closest("button[data-action]");
   if (!btn) return;
