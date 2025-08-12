@@ -9,6 +9,7 @@ const qsa = (s) => Array.from(document.querySelectorAll(s));
 function showToast(message, duration = 3000, bgColor = "#03dac5") {
   let toast = document.getElementById("toast");
 
+  // Create toast element if missing
   if (!toast) {
     toast = document.createElement("div");
     toast.id = "toast";
@@ -265,55 +266,6 @@ function renderCars(cars) {
     });
   });
 }
-
-// --- NEW: Wishlist & Saved + Global Action Handler ---
-function addToWishlist(car) {
-  const wishlist = getStorage("wishlist");
-  if (wishlist.find(c => c._id === car._id)) {
-    showToast("Car already in wishlist", 3000, "#ff9800");
-    return;
-  }
-  wishlist.push(car);
-  setStorage("wishlist", wishlist);
-  updateGlobalCounts();
-  showToast("Added to wishlist");
-}
-
-function addToSaved(car) {
-  const saved = getStorage("savedCars");
-  if (saved.find(c => c._id === car._id)) {
-    showToast("Car already saved", 3000, "#ff9800");
-    return;
-  }
-  saved.push(car);
-  setStorage("savedCars", saved);
-  updateGlobalCounts();
-  showToast("Car saved");
-}
-
-document.addEventListener("click", async (e) => {
-  const btn = e.target.closest("button[data-action]");
-  if (!btn) return;
-  const action = btn.dataset.action;
-  const id = btn.dataset.id;
-  
-  try {
-    const res = await fetch(`${API_BASE}/api/cars/${id}`);
-    const car = await res.json();
-    if (!res.ok) return showToast(car.message || "Error fetching car", 3000, "#f44336");
-
-    if (action === "rent-now") {
-      addToCart(car);
-      window.location.href = "cart.html";
-    }
-    if (action === "add-cart") addToCart(car);
-    if (action === "add-wishlist") addToWishlist(car);
-    if (action === "add-saved") addToSaved(car);
-  } catch (err) {
-    console.error(err);
-    showToast("Network error", 3000, "#f44336");
-  }
-});
 
 // Fetch cars on page load
 fetchCars();
