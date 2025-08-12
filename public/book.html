@@ -1,172 +1,149 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Book a Car — Silas Car Rentals</title>
-<link rel="stylesheet" href="style.css" />
-<style>
-  .car-card { border: 1px solid #ddd; border-radius: 12px; padding: 15px; background: #fff; text-align: center; }
-  .car-card img { width: 100%; height: 150px; object-fit: cover; border-radius: 8px; margin-bottom: 10px; }
-  #booking-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); justify-content: center; align-items: center; z-index: 999; }
-  .modal-content { background: #fff; padding: 20px; border-radius: 8px; width: 90%; max-width: 400px; }
-</style>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Book a Car - Silas Car Rentals</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-
 <header class="navbar">
   <div class="container nav-inner">
-    <a href="index.html" class="brand">
-      <div class="brand-mark">SC</div>
-      <span class="brand-name">Silas Rentals</span>
-    </a>
-    <div class="nav-actions">
-      <button onclick="viewCart()">Cart (<span id="cart-count">0</span>)</button>
-    </div>
+    <a href="index.html" class="brand"><div class="brand-mark">SC</div><span>Silas Car Rentals</span></a>
+    <button onclick="window.history.back()" class="btn btn-outline">← Back</button>
   </div>
 </header>
 
-<main class="container section">
-  <h1>Book Your Car 🚗</h1>
-  <div id="car-container">Loading car details...</div>
-</main>
+<main class="section container">
+  <h2>Book Your Car</h2>
 
-<!-- Booking Modal -->
-<div id="booking-modal">
-  <div class="modal-content">
-    <h2>Complete Your Booking</h2>
-    <form id="booking-form">
-      <input type="hidden" id="carId" name="carId">
-      <label>Email</label>
-      <input type="email" id="email" name="email" required>
-
-      <label>Phone Number</label>
-      <input type="tel" id="phone_number" name="phone_number" required>
-
-      <label>Start Date</label>
-      <input type="date" id="startDate" name="startDate" required>
-
-      <label>End Date</label>
-      <input type="date" id="endDate" name="endDate" required>
-
-      <button type="submit">Proceed to Payment</button>
-      <button type="button" onclick="closeModal()">Cancel</button>
-    </form>
+  <!-- Car details -->
+  <div id="car-details" style="margin-bottom:20px; padding:10px; border:1px solid #ccc; border-radius:8px;">
+    <img id="car-image" src="" alt="Car" style="max-width:300px; border-radius:8px;">
+    <h3 id="car-title"></h3>
+    <p id="car-price"></p>
   </div>
-</div>
 
-<div id="toast"></div>
+  <!-- Booking form -->
+  <form id="booking-form">
+    <label>Email</label>
+    <input type="email" id="email" required>
+
+    <label>Phone_Number</label>
+    <input type="tel" id="phone_number" required>
+    <label>Start Date</label>
+    <input type="date" id="statDate" required>
+
+    <label>End Date</label>
+    <input type="date" id="endDate" required>
+
+    <button type="submit" class="btn">Confirm Booking</button>
+  </form>
+
+  <div class="toast" id="toast"></div>
+</main>
 
 <script>
 const API_BASE = "https://techyjaunt-auth-go43.onrender.com";
-const token = localStorage.getItem("token");
-const carIdFromDB = "689479c630cf9351877939e6"; // Car ID from DB
+const placeholderImage = "https://vehicle-images.dealerinspire.com/a1a7-11002896/W1KAF4GB4SR252999/00f2d6ad30e089cb5c02791d58c3af6a.jpg";
+
+let currentCar = JSON.parse(localStorage.getItem("currentCar")) || null;
+let currentUser = JSON.parse(localStorage.getItem("user")) || null; // assuming you store logged in user here
 
 function showToast(msg, ms=3000) {
   const toast = document.getElementById("toast");
   toast.textContent = msg;
-  toast.style.display = "block";
-  setTimeout(() => toast.style.display = "none", ms);
-}
-
-// Load car from backend
-async function fetchCar() {
-  try {
-    const res = await fetch(`${API_BASE}/api/cars/${carIdFromDB}`);
-    const car = await res.json();
-    if (!res.ok) throw new Error(car.message || "Failed to fetch car");
-    renderCar(car);
-  } catch (err) {
-    console.error(err);
-    document.getElementById('car-container').innerHTML = "<p>Failed to load car.</p>";
-  }
+  toast.classList.add("show");
+  setTimeout(() => toast.classList.remove("show"), ms);
 }
 
 function renderCar(car) {
-  document.getElementById("car-container").innerHTML = `
-    <div class="car-card">
-      <img src="${car.image || 'https://via.placeholder.com/300x200'}" alt="${car.make}">
-      <h3>${car.make} ${car.model}</h3>
-      <p>₦${car.price.toLocaleString()} / day</p>
-      <button onclick="openBookingForm('${car._id}')">Book Now</button>
-      <button onclick='addToStorage("cart", ${JSON.stringify(car).replace(/"/g, '&quot;')})'>Add to Cart</button>
-      <button onclick='addToStorage("wishlist", ${JSON.stringify(car).replace(/"/g, '&quot;')})'>Wishlist</button>
-      <button onclick='addToStorage("savedCars", ${JSON.stringify(car).replace(/"/g, '&quot;')})'>Save</button>
-    </div>
-  `;
+  document.getElementById("car-image").src = car.image || placeholderImage;
+  document.getElementById("car-title").textContent = `${car.make} ${car.model}`;
+  document.getElementById("car-price").textContent = `₦${car.price.toLocaleString()} / day`;
 }
 
-function addToStorage(key, car) {
-  let arr = JSON.parse(localStorage.getItem(key)) || [];
-  if (!arr.find(c => c._id === car._id)) {
-    arr.push(car);
-    localStorage.setItem(key, JSON.stringify(arr));
-    showToast(`${car.make} added to ${key}`);
-    updateCartCount();
-  } else {
-    showToast(`${car.make} already in ${key}`);
+// Try updating car details from backend
+async function fetchCarFromBackend() {
+  if (!currentCar || !currentCar._id) return;
+  try {
+    const res = await fetch(`${API_BASE}/api/cars/get-cars`);
+    if (!res.ok) throw new Error();
+    const cars = await res.json();
+    const car = cars.find(c => c._id === currentCar._id);
+    if (car) {
+      car.image = car.image && car.image.trim() !== "" ? car.image : placeholderImage;
+      currentCar = car;
+      localStorage.setItem("currentCar", JSON.stringify(car));
+      renderCar(car);
+    }
+  } catch (err) {
+    console.warn("Backend unavailable, using stored car data", err);
   }
 }
 
-function updateCartCount() {
-  document.getElementById("cart-count").textContent =
-    (JSON.parse(localStorage.getItem("cart")) || []).length;
-}
-
-function openBookingForm(carId) {
+// Booking form submit
+document.getElementById("booking-form").addEventListener("submit", async e => {
+  e.preventDefault();
+  const token = localStorage.getItem("token");
   if (!token) {
     showToast("Please login first");
-    setTimeout(() => window.location.href = "login.html", 1200);
+    setTimeout(() => window.location.href = "login.html", 1500);
     return;
   }
-  document.getElementById("carId").value = carId;
-  document.getElementById("booking-modal").style.display = "flex";
-}
 
-function closeModal() {
-  document.getElementById("booking-modal").style.display = "none";
-}
+  if (!currentUser || !currentUser._id) {
+    showToast("User information not found. Please log in again.");
+    setTimeout(() => window.location.href = "login.html", 1500);
+    return;
+  }
 
-document.getElementById("booking-form").addEventListener("submit", async (e) => {
-  e.preventDefault();
-  const formData = new FormData(e.target);
-  const carId = formData.get("carId");
-
-  const payload = {
-    email: formData.get("email"),
-    phone_number: formData.get("phone_number"),
-    startDate: formData.get("startDate"),
-    endDate: formData.get("endDate")
+  const bookingData = {
+    carId: currentCar._id,
+    email: document.getElementById("email").value,
+    phone_number: document.getElementById("phone").value,
+    startDate: document.getElementById("pickupDate").value,
+    endDate: document.getElementById("returnDate").value,
+    userId: currentUser._id // from stored logged in user
   };
 
   try {
-    const res = await fetch(`${API_BASE}/api/payment/pay/${carId}`, {
+    const res = await fetch(`${API_BASE}/api/bookings`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
         "Authorization": `Bearer ${token}`
       },
-      body: JSON.stringify(payload)
+      body: JSON.stringify(bookingData)
     });
 
     const data = await res.json();
-    if (!res.ok) {
-      showToast(data.message || "Booking failed");
-      return;
-    }
-    if (data.redirectLink) {
-      window.location.href = data.redirectLink;
-    } else {
-      showToast("No payment link received");
-    }
-  } catch {
-    showToast("Error connecting to server");
+    if (!res.ok) throw new Error(data.message || "Booking failed");
+
+    // Save booking for checkout
+    const bookingToStore = {
+      car: currentCar,
+      pickupDate: bookingData.startDate,
+      returnDate: bookingData.endDate,
+      phoneNumber: bookingData.phone_number,
+      email: bookingData.email
+    };
+    localStorage.setItem("lastBooking", JSON.stringify(bookingToStore));
+
+    showToast("Booking confirmed!");
+    setTimeout(() => window.location.href = "checkout.html", 1500);
+  } catch (err) {
+    showToast(err.message || "Booking error");
   }
 });
 
-fetchCar();
-updateCartCount();
+// Init
+if (currentCar) {
+  renderCar(currentCar);
+  fetchCarFromBackend();
+} else {
+  document.getElementById("car-details").innerHTML = "<p>No car selected. Please go back and choose one.</p>";
+}
 </script>
-
 </body>
 </html>

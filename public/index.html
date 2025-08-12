@@ -107,8 +107,21 @@
 
   <script>
 const API_BASE = "https://techyjaunt-auth-go43.onrender.com";
-const BENZ_ID = "689479c630cf9351877939e6"; // Benz C300
-const token = localStorage.getItem("token");
+const BENZ_ID = "689479c630cf9351877939e6"; 
+const placeholderImage = "https://vehicle-images.dealerinspire.com/a1a7-11002896/W1KAF4GB4SR252999/00f2d6ad30e089cb5c02791d58c3af6a.jpg";
+
+// Hardcoded default car (offline-first)
+const defaultCar = {
+  _id: BENZ_ID,
+  make: "Mercedes-Benz",
+  model: "C300",
+  year: 2025,
+  price: 40000,
+  color: "Black",
+  brand: "Mercedes-Benz",
+  description: "Brand new luxury sedan",
+  image: placeholderImage
+};
 
 // ===== Helpers =====
 function getStorage(key) {
@@ -141,6 +154,7 @@ function addToStorage(key, car) {
 }
 
 function openBookingForm(carId) {
+  const token = localStorage.getItem("token");
   if (!token) {
     showToast("Please login first");
     setTimeout(() => window.location.href = "login.html", 1200);
@@ -150,45 +164,52 @@ function openBookingForm(carId) {
   window.location.href = "book.html";
 }
 
-// ===== Fetch Cars =====
+// ===== Render Function =====
+function renderCar(car) {
+  const grid = document.getElementById("cars-grid");
+  const count = document.getElementById("car-count");
+
+  count.textContent = "1 car available";
+  grid.innerHTML = `
+    <div class="car-card">
+      <img src="${car.image || placeholderImage}" alt="${car.make}" style="width:100%; height:auto; border-radius:8px;">
+      <h3>${car.make} ${car.model}</h3>
+      <p><strong>₦${car.price.toLocaleString()}</strong> / day</p>
+      <div style="display:flex; gap:8px; flex-wrap:wrap; margin-top:10px;">
+        <button class="btn" onclick="openBookingForm('${car._id}')">Book Now</button>
+        <button class="btn btn-outline" onclick='addToStorage("cart", ${JSON.stringify(car).replace(/"/g, "&quot;")})'>Add to Cart</button>
+        <button class="btn btn-outline" onclick='addToStorage("wishlist", ${JSON.stringify(car).replace(/"/g, "&quot;")})'>Wishlist</button>
+        <button class="btn btn-outline" onclick='addToStorage("savedCars", ${JSON.stringify(car).replace(/"/g, "&quot;")})'>Save</button>
+      </div>
+    </div>
+  `;
+}
+
+// ===== Load Data =====
 async function fetchCar() {
+  // First, show offline car instantly
+  renderCar(defaultCar);
+
   try {
     const res = await fetch(`${API_BASE}/api/cars/get-cars`);
-    const cars = await res.json();
-
     if (!res.ok) throw new Error();
-
+    const cars = await res.json();
     const car = cars.find(c => c._id === BENZ_ID);
-    const grid = document.getElementById("cars-grid");
-    const count = document.getElementById("car-count");
-
-    if (!car) {
-      grid.innerHTML = "<p>Car not found.</p>";
-      count.textContent = "0 cars available";
-      return;
+    if (car) {
+      // Ensure image fallback if missing
+      car.image = car.image && car.image.trim() !== "" ? car.image : placeholderImage;
+      renderCar(car);
     }
-
-    count.textContent = "1 car available";
-    grid.innerHTML = `
-      <div class="car-card">
-        <img src="${car.image || '../assets/c300 black.webp'}" alt="${car.make}">
-        <h3>${car.make} ${car.model}</h3>
-        <p>₦${car.price.toLocaleString()} / day</p>
-        <button onclick="openBookingForm('${car._id}')">Book Now</button>
-        <button onclick='addToStorage("cart", ${JSON.stringify(car).replace(/"/g, "&quot;")})'>Add to Cart</button>
-        <button onclick='addToStorage("wishlist", ${JSON.stringify(car).replace(/"/g, "&quot;")})'>Wishlist</button>
-        <button onclick='addToStorage("savedCars", ${JSON.stringify(car).replace(/"/g, "&quot;")})'>Save</button>
-      </div>
-    `;
   } catch (err) {
-    document.getElementById("cars-grid").innerHTML = "<p>Failed to load car.</p>";
+    console.warn("Using offline car data - backend unreachable", err);
   }
 }
 
 // ===== Init =====
 updateGlobalCounts();
 fetchCar();
+</script>
 
-  </script>
+
 </body>
 </html>
