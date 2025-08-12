@@ -105,7 +105,6 @@
   <!-- TOAST -->
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
-  // index.js — Silas Car Rentals
   <script>
 const API_BASE = "https://techyjaunt-auth-go43.onrender.com";
 const BENZ_ID = "689479c630cf9351877939e6"; // Benz C300
@@ -172,7 +171,7 @@ async function fetchCar() {
     count.textContent = "1 car available";
     grid.innerHTML = `
       <div class="car-card">
-        <img src="${car.image || 'https://via.placeholder.com/300x200'}" alt="${car.make}">
+        <img src="${car.image || '../assets/c300 black.webp'}" alt="${car.make}">
         <h3>${car.make} ${car.model}</h3>
         <p>₦${car.price.toLocaleString()} / day</p>
         <button onclick="openBookingForm('${car._id}')">Book Now</button>
