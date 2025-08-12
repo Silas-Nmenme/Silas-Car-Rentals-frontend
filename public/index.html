@@ -9,168 +9,45 @@
   <meta name="theme-color" content="#0b0e11">
 </head>
 <body>
-  <header class="navbar" role="banner">
+  <header class="navbar">
     <div class="container nav-inner">
-      <a href="index.html" class="brand" aria-label="Silas Car Rentals home">
+      <a href="index.html" class="brand">
         <div class="brand-mark">SC</div>
         <span class="brand-name">Silas Car Rentals</span>
       </a>
 
-      <nav class="nav-links" aria-label="Main navigation">
+      <nav class="nav-links">
         <a class="nav-link active" href="#browse">Browse</a>
         <a class="nav-link" href="book.html">Book</a>
         <a class="nav-link" href="#how">How it Works</a>
-        <a class="nav-link" href="#testimonials">Testimonials</a>
-        <a class="nav-link" href="#contact">Contact</a>
       </nav>
 
-      <div class="nav-actions" role="region" aria-label="User actions">
-        <div class="auth-actions" id="guest-actions">
-          <button class="btn btn-sm btn-login" onclick="location.href='login.html'">Login</button>
-          <button class="btn btn-outline btn-sm btn-signup" onclick="location.href='signup.html'">Sign up</button>
+      <div class="nav-actions">
+        <div id="guest-actions">
+          <button class="btn btn-sm" onclick="location.href='login.html'">Login</button>
+          <button class="btn btn-outline btn-sm" onclick="location.href='signup.html'">Sign up</button>
         </div>
-
-        <div class="user-menu hidden" id="user-actions" aria-hidden="true">
-          <span class="user-name" id="user-name">User</span>
-          <button class="btn-sm btn-ghost" id="open-history" title="My rentals">My Rentals</button>
-          <button onclick="window.location.href='wishlist.html'" class="btn-sm btn-ghost" id="open-wishlist">❤️ Wishlist (<span id="wishlist-count">0</span>)</button>
-          <button class="btn btn-sm" id="logout-btn" title="Sign out">Logout</button>
+        <div id="user-actions" class="hidden">
+          <span id="user-name">User</span>
+          <button onclick="window.location.href='wishlist.html'">❤️ Wishlist (<span id="wishlist-count">0</span>)</button>
+          <button onclick="window.location.href='cart.html'">🧾 Cart (<span id="cart-count">0</span>)</button>
+          <button onclick="window.location.href='saved.html'">💾 Saved (<span id="saved-count">0</span>)</button>
+          <button id="logout-btn">Logout</button>
         </div>
-
-        <button id="open-cart" onclick="window.location.href='cart.html'" class="btn btn-ghost" aria-label="Open booking cart" title="Cart">
-          🧾 Cart (<span id="cart-count">0</span>)
-        </button>
-        <button onclick="window.location.href='saved.html'" class="btn btn-ghost" title="Saved Cars">💾 Saved (<span id="saved-count">0</span>)</button>
-
-        <button class="mobile-menu-btn" id="mobile-menu-btn" aria-label="Open menu">☰</button>
       </div>
     </div>
   </header>
 
   <main>
-    <section class="hero section" id="hero">
-      <div class="container hero-inner">
-        <span class="pill">Trusted • Fast • Secure</span>
-        <h1 class="hero-title">Rent the right car for your trip — fast and secure</h1>
-        <p class="hero-subtitle">Browse available cars, add them to your booking cart, then checkout after login.</p>
-      </div>
+    <section id="browse" class="section container">
+      <h2>Available Cars</h2>
+      <div id="car-count" class="meta">Loading...</div>
+      <div id="cars-grid" class="grid"></div>
     </section>
-
-    <section id="browse" class="section container" aria-labelledby="browse-heading">
-      <h2 id="browse-heading" style="margin-bottom:16px">Available Cars</h2>
-      <div id="car-count" style="color:var(--muted); margin-bottom:8px;">Loading...</div>
-      <div class="grid" id="cars-grid" aria-live="polite"></div>
-    </section>
-
-    <section id="how" class="section">
-      <div class="container max-600">
-        <h3>How it works</h3>
-        <ol>
-          <li>Browse cars and add to your booking cart</li>
-          <li>Proceed to checkout — sign in/sign up when prompted</li>
-          <li>Confirm rental dates and pay securely</li>
-        </ol>
-      </div>
-    </section>
-
-    <section id="testimonials" class="section">
-      <div class="container">
-        <h3>What customers say</h3>
-        <div class="grid">
-          <div class="card card-content">"Fast service & clean cars!" — Ada</div>
-          <div class="card card-content">"Great pricing and customer support." — Emeka</div>
-          <div class="card card-content">"Hassle-free booking." — Chinedu</div>
-        </div>
-      </div>
-    </section>
-
-    <footer id="contact" class="footer section">
-      <div class="container footer-inner">
-        <div>
-          <strong>Silas Car Rentals</strong><br/>
-          <small class="meta">silasonyekachi15@gmail.com • +234 810 758 6167</small>
-        </div>
-        <div>
-          <small class="meta">© <span id="year"></span> Silas Car Rentals</small>
-        </div>
-      </div>
-    </footer>
   </main>
 
-  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <div class="toast" id="toast"></div>
 
-  <script>
-const API_BASE = "https://techyjaunt-auth-go43.onrender.com";
-const BENZ_ID = "689479c630cf9351877939e6"; 
-const placeholderImage = "https://vehicle-images.dealerinspire.com/a1a7-11002896/W1KAF4GB4SR252999/00f2d6ad30e089cb5c02791d58c3af6a.jpg";
-
-const defaultCar = {
-  _id: BENZ_ID,
-  make: "Mercedes-Benz",
-  model: "C300",
-  year: 2025,
-  price: 40000,
-  color: "Black",
-  brand: "Mercedes-Benz",
-  description: "Brand new luxury sedan",
-  image: placeholderImage
-};
-
-function getStorage(key) {
-  return JSON.parse(localStorage.getItem(key)) || [];
-}
-
-function updateGlobalCounts() {
-  document.getElementById("cart-count").textContent = getStorage("cart").length;
-  document.getElementById("wishlist-count").textContent = getStorage("wishlist").length;
-  document.getElementById("saved-count").textContent = getStorage("savedCars").length;
-}
-
-function showToast(msg, ms = 3000) {
-  const toast = document.getElementById("toast");
-  toast.textContent = msg;
-  toast.classList.add("show");
-  setTimeout(() => toast.classList.remove("show"), ms);
-}
-
-function renderCar(car) {
-  const grid = document.getElementById("cars-grid");
-  const count = document.getElementById("car-count");
-
-  count.textContent = "1 car available";
-  grid.innerHTML = `
-    <div class="car-card">
-      <img src="${car.image || placeholderImage}" alt="${car.make}" style="width:100%; height:auto; border-radius:8px;">
-      <h3>${car.make} ${car.model}</h3>
-      <p><strong>₦${car.price.toLocaleString()}</strong> / day</p>
-      <div style="display:flex; gap:8px; flex-wrap:wrap; margin-top:10px;">
-        <button class="btn" data-action="rent-now" data-id="${car._id}">Rent Now</button>
-        <button class="btn btn-outline" data-action="add-cart" data-id="${car._id}">Add to Cart</button>
-        <button class="btn btn-outline" data-action="add-wishlist" data-id="${car._id}">Wishlist</button>
-        <button class="btn btn-outline" data-action="add-saved" data-id="${car._id}">Save</button>
-      </div>
-    </div>
-  `;
-}
-
-async function fetchCar() {
-  renderCar(defaultCar);
-  try {
-    const res = await fetch(`${API_BASE}/api/cars/get-cars`);
-    if (!res.ok) throw new Error();
-    const cars = await res.json();
-    const car = cars.find(c => c._id === BENZ_ID);
-    if (car) {
-      car.image = car.image && car.image.trim() !== "" ? car.image : placeholderImage;
-      renderCar(car);
-    }
-  } catch (err) {
-    console.warn("Using offline car data - backend unreachable", err);
-  }
-}
-
-updateGlobalCounts();
-fetchCar();
-</script>
+  <script src="app.js"></script>
 </body>
 </html>
