@@ -6,7 +6,11 @@
   <title>Dashboard — Silas Car Rentals</title>
   <link rel="stylesheet" href="style.css" />
   <style>
-    /* Modal Styles */
+    /* General Styling */
+    .hidden { display: none !important; }
+    .clickable { cursor: pointer; }
+
+    /* Modal */
     .modal-overlay {
       position: fixed;
       inset: 0;
@@ -27,29 +31,15 @@
       overflow-y: auto;
       animation: slideUp 0.3s ease;
     }
-    .modal h2 { margin-bottom: 10px; }
-    .modal .card {
-      border: 1px solid #ddd;
-      border-radius: 12px;
-      padding: 15px;
-      margin-bottom: 10px;
-      text-align: center;
-    }
-    .modal .btn {
-      margin: 5px;
-    }
-    @keyframes fadeIn {
-      from { opacity: 0; }
-      to { opacity: 1; }
-    }
-    @keyframes slideUp {
-      from { transform: translateY(20px); opacity: 0; }
-      to { transform: translateY(0); opacity: 1; }
-    }
+    .modal .card { border: 1px solid #ddd; border-radius: 12px; padding: 15px; margin-bottom: 10px; text-align: center; }
+    .modal .btn { margin: 5px; }
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    @keyframes slideUp { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
   </style>
 </head>
 <body class="dashboard-body">
 
+  <!-- HEADER -->
   <header class="navbar">
     <div class="container nav-inner">
       <a href="index.html" class="brand">
@@ -63,105 +53,61 @@
     </div>
   </header>
 
+  <!-- MAIN -->
   <main class="container section">
     <h1>Welcome, <span id="dash-username">User</span> 👋</h1>
-    <p class="meta">Manage your rentals, wishlist, saved cars, and (if admin) view analytics.</p>
+    <p class="meta">Manage your rentals, wishlist, saved cars, and if you're an admin, view & manage bookings.</p>
 
-    <!-- User Stats -->
+    <!-- USER STATS -->
     <section class="stats-grid" id="user-stats">
-      <div class="stat-card">
-        <h2 id="total-rentals">0</h2>
-        <p>Total Rentals</p>
-      </div>
-      <div class="stat-card clickable" id="wishlist-stat">
-        <h2 id="wishlist-count-stat">0</h2>
-        <p>Wishlist Items</p>
-      </div>
-      <div class="stat-card clickable" id="saved-cars-stat">
-        <h2 id="saved-count-stat">0</h2>
-        <p>Saved Cars</p>
-      </div>
-      <div class="stat-card clickable" id="cart-stat">
-        <h2 id="cart-count-stat">0</h2>
-        <p>Cart</p>
-      </div>
+      <div class="stat-card"><h2 id="total-rentals">0</h2><p>Total Rentals</p></div>
+      <div class="stat-card clickable" id="wishlist-stat"><h2 id="wishlist-count-stat">0</h2><p>Wishlist Items</p></div>
+      <div class="stat-card clickable" id="saved-cars-stat"><h2 id="saved-count-stat">0</h2><p>Saved Cars</p></div>
+      <div class="stat-card clickable" id="cart-stat"><h2 id="cart-count-stat">0</h2><p>Cart</p></div>
     </section>
 
-    <!-- Rentals Table -->
+    <!-- RENTAL HISTORY -->
     <section>
       <h2>Rental History</h2>
       <table class="data-table">
-        <thead>
-          <tr>
-            <th>Car</th>
-            <th>Start</th>
-            <th>End</th>
-            <th>Price</th>
-            <th>Status</th>
-          </tr>
-        </thead>
-        <tbody id="rentals-table-body">
-          <tr><td colspan="5" class="meta">Loading...</td></tr>
-        </tbody>
+        <thead><tr><th>Car</th><th>Start</th><th>End</th><th>Price</th><th>Status</th></tr></thead>
+        <tbody id="rentals-table-body"><tr><td colspan="5" class="meta">Loading...</td></tr></tbody>
       </table>
     </section>
 
-    <!-- Wishlist -->
+    <!-- WISHLIST -->
     <section>
-      <h2>My Wishlist ❤️ 
-        <a href="book.html?section=wishlist" class="btn btn-sm btn-primary view-all-btn" style="display:none;">View All</a>
-      </h2>
-      <div class="grid" id="wishlist-grid">
-        <p class="meta">Loading wishlist...</p>
-      </div>
+      <h2>My Wishlist ❤️</h2>
+      <div class="grid" id="wishlist-grid"><p class="meta">Loading wishlist...</p></div>
     </section>
 
-    <!-- Saved Cars -->
+    <!-- SAVED CARS -->
     <section>
-      <h2>Saved Cars 🚗
-        <a href="book.html?section=savedCars" class="btn btn-sm btn-primary view-all-btn" style="display:none;">View All</a>
-      </h2>
-      <div class="grid" id="saved-cars-grid">
-        <p class="meta">Loading saved cars...</p>
-      </div>
+      <h2>Saved Cars 🚗</h2>
+      <div class="grid" id="saved-cars-grid"><p class="meta">Loading saved cars...</p></div>
     </section>
 
-    <!-- Admin Analytics -->
+    <!-- ADMIN ANALYTICS -->
     <section id="admin-analytics" class="hidden">
       <h2>Admin Analytics 📊</h2>
       <div class="stats-grid">
-        <div class="stat-card">
-          <h2 id="admin-total-users">0</h2>
-          <p>Total Users</p>
-        </div>
-        <div class="stat-card">
-          <h2 id="admin-total-cars">0</h2>
-          <p>Cars Listed</p>
-        </div>
-        <div class="stat-card">
-          <h2 id="admin-total-revenue">₦0</h2>
-          <p>Total Revenue</p>
-        </div>
+        <div class="stat-card"><h2 id="admin-total-users">0</h2><p>Total Users</p></div>
+        <div class="stat-card"><h2 id="admin-total-cars">0</h2><p>Cars Listed</p></div>
+        <div class="stat-card"><h2 id="admin-total-revenue">₦0</h2><p>Total Revenue</p></div>
       </div>
+    </section>
 
-      <h3 style="margin-top:20px">Recent Bookings</h3>
+    <!-- BOOKINGS PANEL (ADMIN) -->
+    <section id="admin-bookings" class="hidden">
+      <h2>Manage Bookings 📅</h2>
       <table class="data-table">
-        <thead>
-          <tr>
-            <th>User</th>
-            <th>Car</th>
-            <th>Period</th>
-            <th>Amount</th>
-          </tr>
-        </thead>
-        <tbody id="admin-bookings-body">
-          <tr><td colspan="4" class="meta">Loading...</td></tr>
-        </tbody>
+        <thead><tr><th>User</th><th>Car</th><th>Pickup</th><th>Return</th><th>Status</th><th>Action</th></tr></thead>
+        <tbody id="bookings-table-body"><tr><td colspan="6" class="meta">Loading...</td></tr></tbody>
       </table>
     </section>
   </main>
 
-  <!-- Modals -->
+  <!-- MODAL -->
   <div class="modal-overlay" id="modal-overlay">
     <div class="modal" id="modal-content">
       <h2 id="modal-title">Items</h2>
@@ -169,225 +115,144 @@
     </div>
   </div>
 
+  <!-- TOAST -->
   <div class="toast" id="toast"></div>
 
-  <script type="module" src="app.js"></script>
   <script type="module">
     import { BASE_URL, ENDPOINTS, showToast } from './app.js';
 
     const token = localStorage.getItem('token');
-    if (!token) {
-      showToast('Please login first');
-      setTimeout(() => window.location.href = 'login.html', 1500);
-    }
+    if (!token) { showToast('Please login first'); setTimeout(() => window.location.href = 'login.html', 1500); }
 
+    // Elements
     const userNameEl = document.getElementById('dash-username');
     const logoutBtn = document.getElementById('logout-btn');
-
     const totalRentalsEl = document.getElementById('total-rentals');
     const wishlistCountEl = document.getElementById('wishlist-count-stat');
     const savedCountEl = document.getElementById('saved-count-stat');
     const cartCountEl = document.getElementById('cart-count');
     const cartCountStatEl = document.getElementById('cart-count-stat');
-
     const rentalsTableBody = document.getElementById('rentals-table-body');
     const wishlistGrid = document.getElementById('wishlist-grid');
     const savedCarsGrid = document.getElementById('saved-cars-grid');
-
     const adminAnalyticsSection = document.getElementById('admin-analytics');
-    const adminTotalUsersEl = document.getElementById('admin-total-users');
-    const adminTotalCarsEl = document.getElementById('admin-total-cars');
-    const adminTotalRevenueEl = document.getElementById('admin-total-revenue');
-    const adminBookingsBody = document.getElementById('admin-bookings-body');
+    const adminBookingsSection = document.getElementById('admin-bookings');
+    const bookingsTableBody = document.getElementById('bookings-table-body');
 
+    // Modal
     const modalOverlay = document.getElementById('modal-overlay');
     const modalTitle = document.getElementById('modal-title');
     const modalItems = document.getElementById('modal-items');
 
     function openModal(title, items, type) {
       modalTitle.textContent = title;
-      if (items.length === 0) {
-        modalItems.innerHTML = `<p class="meta">No items in ${title.toLowerCase()}.</p>`;
-      } else {
-        modalItems.innerHTML = items.map(car => `
+      modalItems.innerHTML = items.length
+        ? items.map(car => `
           <div class="card">
             <h3>${car.name}</h3>
             <p>₦${car.price.toLocaleString()}</p>
-            ${type === 'cart' 
-              ? `<button class="btn btn-primary btn-sm" onclick='rentNow(${JSON.stringify(car).replace(/"/g, '&quot;')})'>Rent Now</button>` 
-              : ''}
+            ${type === 'cart'
+              ? `<button class="btn btn-primary btn-sm" onclick='rentNow(${JSON.stringify(car).replace(/"/g, '&quot;')})'>Rent Now</button>` : ''}
             <button class="btn btn-outline btn-sm" onclick='removeFrom("${type}", ${car.id})'>Remove</button>
-          </div>
-        `).join('');
-      }
+          </div>`).join('')
+        : `<p class="meta">No items in ${title.toLowerCase()}.</p>`;
       modalOverlay.style.display = 'flex';
     }
+    function closeModal() { modalOverlay.style.display = 'none'; }
+    modalOverlay.addEventListener('click', e => { if (e.target === modalOverlay) closeModal(); });
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
 
-    function closeModal() {
-      modalOverlay.style.display = 'none';
-    }
+    // Wishlist/Saved/Carts click
+    document.getElementById('wishlist-stat').addEventListener('click', () => openModal('Wishlist', JSON.parse(localStorage.getItem('wishlist')) || [], 'wishlist'));
+    document.getElementById('saved-cars-stat').addEventListener('click', () => openModal('Saved Cars', JSON.parse(localStorage.getItem('savedCars')) || [], 'savedCars'));
+    document.getElementById('cart-stat').addEventListener('click', () => openModal('Cart', JSON.parse(localStorage.getItem('cart')) || [], 'cart'));
+    document.getElementById('cart-btn').addEventListener('click', () => openModal('Cart', JSON.parse(localStorage.getItem('cart')) || [], 'cart'));
 
-    window.removeFrom = function(key, id) {
-      let arr = JSON.parse(localStorage.getItem(key)) || [];
-      arr = arr.filter(c => c.id !== id);
-      localStorage.setItem(key, JSON.stringify(arr));
-      renderAllPreviews();
-    };
-
-    window.rentNow = function(car) {
-      removeFrom('cart', car.id);
-      localStorage.setItem('currentRental', JSON.stringify(car));
-      window.location.href = 'book.html';
-    };
-
-    modalOverlay.addEventListener('click', e => {
-      if (e.target === modalOverlay) closeModal();
-    });
-
-    document.addEventListener('keydown', e => {
-      if (e.key === 'Escape') closeModal();
-    });
-
-    document.getElementById('wishlist-stat').addEventListener('click', () => {
-      openModal('Wishlist', JSON.parse(localStorage.getItem('wishlist')) || [], 'wishlist');
-    });
-    document.getElementById('saved-cars-stat').addEventListener('click', () => {
-      openModal('Saved Cars', JSON.parse(localStorage.getItem('savedCars')) || [], 'savedCars');
-    });
-    document.getElementById('cart-stat').addEventListener('click', () => {
-      openModal('Cart', JSON.parse(localStorage.getItem('cart')) || [], 'cart');
-    });
-    document.getElementById('cart-btn').addEventListener('click', () => {
-      openModal('Cart', JSON.parse(localStorage.getItem('cart')) || [], 'cart');
-    });
-
+    // Render Previews
     function renderPreview(id, storageKey) {
       const data = JSON.parse(localStorage.getItem(storageKey)) || [];
-      const container = document.getElementById(id);
-      const section = container.closest("section");
-      const viewAllBtn = section.querySelector(".view-all-btn");
-
-      if (data.length === 0) {
-        container.innerHTML = `<p class="meta">No ${storageKey} yet.</p>`;
-        if (viewAllBtn) viewAllBtn.style.display = "none";
-      } else {
-        container.innerHTML = data.slice(0, 3).map(car => `
-          <div class="card">
-            <h3>${car.name}</h3>
-            <p>₦${car.price.toLocaleString()}</p>
-            <button class="btn btn-outline btn-sm" onclick='removeFrom("${storageKey}", ${car.id})'>Remove</button>
-          </div>
-        `).join("");
-        if (viewAllBtn) viewAllBtn.style.display = "inline-block";
-      }
+      document.getElementById(id).innerHTML = data.length
+        ? data.slice(0, 3).map(car => `<div class="card"><h3>${car.name}</h3><p>₦${car.price.toLocaleString()}</p></div>`).join('')
+        : `<p class="meta">No ${storageKey} yet.</p>`;
     }
-
     function renderCounts() {
       wishlistCountEl.textContent = (JSON.parse(localStorage.getItem('wishlist')) || []).length;
       savedCountEl.textContent = (JSON.parse(localStorage.getItem('savedCars')) || []).length;
-      const cartLength = (JSON.parse(localStorage.getItem('cart')) || []).length;
-      cartCountEl.textContent = cartLength;
-      cartCountStatEl.textContent = cartLength;
+      const cartLen = (JSON.parse(localStorage.getItem('cart')) || []).length;
+      cartCountEl.textContent = cartLen;
+      cartCountStatEl.textContent = cartLen;
     }
+    function renderAllPreviews() { renderCounts(); renderPreview('wishlist-grid', 'wishlist'); renderPreview('saved-cars-grid', 'savedCars'); }
 
-    function renderAllPreviews() {
-      renderCounts();
-      renderPreview('wishlist-grid', 'wishlist');
-      renderPreview('saved-cars-grid', 'savedCars');
-    }
-
+    // Fetch Profile
     async function fetchUserProfile() {
       try {
-        const res = await fetch(BASE_URL + ENDPOINTS.authMe, {
-          headers: { Authorization: 'Bearer ' + token }
-        });
-        if (!res.ok) throw new Error('Unauthorized');
+        const res = await fetch(BASE_URL + ENDPOINTS.authMe, { headers: { Authorization: 'Bearer ' + token } });
+        if (!res.ok) throw new Error();
         const user = await res.json();
-        userNameEl.textContent = user.name || user.email || 'User';
-        if (user.role === 'admin') {
-          adminAnalyticsSection.classList.remove('hidden');
-          loadAdminAnalytics();
-        }
-      } catch {
-        showToast('Session expired. Redirecting...');
-        setTimeout(() => {
-          localStorage.removeItem('token');
-          window.location.href = 'login.html';
-        }, 1500);
-      }
+        userNameEl.textContent = user.name || user.email;
+        if (user.role === 'admin') { adminAnalyticsSection.classList.remove('hidden'); adminBookingsSection.classList.remove('hidden'); loadAdminData(); }
+      } catch { showToast('Session expired'); setTimeout(() => { localStorage.removeItem('token'); location.href = 'login.html'; }, 1500); }
     }
 
+    // Fetch Stats
     async function fetchUserStats() {
       try {
-        const res = await fetch(BASE_URL + ENDPOINTS.userStats, {
-          headers: { Authorization: 'Bearer ' + token }
-        });
-        if (!res.ok) throw new Error('Failed to load user stats');
+        const res = await fetch(BASE_URL + ENDPOINTS.userStats, { headers: { Authorization: 'Bearer ' + token } });
         const stats = await res.json();
         totalRentalsEl.textContent = stats.totalRentals ?? 0;
-      } catch {
-        showToast('Failed to load user stats');
-      }
+      } catch { showToast('Failed to load stats'); }
     }
 
+    // Rental History
     async function fetchRentalHistory() {
       try {
-        const res = await fetch(BASE_URL + ENDPOINTS.rentalHistory, {
-          headers: { Authorization: 'Bearer ' + token }
-        });
-        if (!res.ok) throw new Error('Failed to load rental history');
+        const res = await fetch(BASE_URL + ENDPOINTS.rentalHistory, { headers: { Authorization: 'Bearer ' + token } });
         const rentals = await res.json();
-        if (rentals.length === 0) {
-          rentalsTableBody.innerHTML = `<tr><td colspan="5" class="meta">No rentals found</td></tr>`;
-          return;
-        }
-        rentalsTableBody.innerHTML = rentals.map(rental => `
-          <tr>
-            <td>${rental.carName}</td>
-            <td>${new Date(rental.startDate).toLocaleDateString()}</td>
-            <td>${new Date(rental.endDate).toLocaleDateString()}</td>
-            <td>₦${rental.price.toLocaleString()}</td>
-            <td>${rental.status}</td>
-          </tr>
-        `).join('');
-      } catch {
-        rentalsTableBody.innerHTML = `<tr><td colspan="5" class="meta">Failed to load rental history</td></tr>`;
-      }
+        rentalsTableBody.innerHTML = rentals.length
+          ? rentals.map(r => `<tr><td>${r.carName}</td><td>${new Date(r.startDate).toLocaleDateString()}</td><td>${new Date(r.endDate).toLocaleDateString()}</td><td>₦${r.price.toLocaleString()}</td><td>${r.status}</td></tr>`).join('')
+          : `<tr><td colspan="5" class="meta">No rentals found</td></tr>`;
+      } catch { rentalsTableBody.innerHTML = `<tr><td colspan="5" class="meta">Error loading rentals</td></tr>`; }
     }
 
-    async function loadAdminAnalytics() {
+    // Admin Bookings
+    async function loadAdminData() {
       try {
-        const res = await fetch(BASE_URL + ENDPOINTS.adminAnalytics, {
-          headers: { Authorization: 'Bearer ' + token }
-        });
-        if (!res.ok) throw new Error('Failed to load admin analytics');
-        const analytics = await res.json();
-        adminTotalUsersEl.textContent = analytics.totalUsers ?? 0;
-        adminTotalCarsEl.textContent = analytics.totalCars ?? 0;
-        adminTotalRevenueEl.textContent = `₦${(analytics.totalRevenue || 0).toLocaleString()}`;
-        if (!analytics.recentBookings || analytics.recentBookings.length === 0) {
-          adminBookingsBody.innerHTML = `<tr><td colspan="4" class="meta">No recent bookings</td></tr>`;
-          return;
-        }
-        adminBookingsBody.innerHTML = analytics.recentBookings.map(booking => `
-          <tr>
-            <td>${booking.userName}</td>
-            <td>${booking.carName}</td>
-            <td>${new Date(booking.startDate).toLocaleDateString()} – ${new Date(booking.endDate).toLocaleDateString()}</td>
-            <td>₦${booking.amount.toLocaleString()}</td>
-          </tr>
-        `).join('');
-      } catch {
-        adminBookingsBody.innerHTML = `<tr><td colspan="4" class="meta">Failed to load admin analytics</td></tr>`;
-      }
+        // Analytics
+        const analyticsRes = await fetch(BASE_URL + ENDPOINTS.adminAnalytics, { headers: { Authorization: 'Bearer ' + token } });
+        const analytics = await analyticsRes.json();
+        document.getElementById('admin-total-users').textContent = analytics.totalUsers ?? 0;
+        document.getElementById('admin-total-cars').textContent = analytics.totalCars ?? 0;
+        document.getElementById('admin-total-revenue').textContent = `₦${(analytics.totalRevenue || 0).toLocaleString()}`;
+
+        // Bookings
+        const bookingsRes = await fetch(BASE_URL + '/api/bookings', { headers: { Authorization: 'Bearer ' + token } });
+        const bookings = await bookingsRes.json();
+        bookingsTableBody.innerHTML = bookings.length
+          ? bookings.map(b => `<tr><td>${b.email}</td><td>${b.car?.make || ''} ${b.car?.model || ''}</td><td>${new Date(b.startDate).toLocaleDateString()}</td><td>${new Date(b.endDate).toLocaleDateString()}</td><td>${b.status || 'Pending'}</td><td><button onclick="updateBookingStatus('${b._id}','approved')" class="btn btn-sm btn-success">Approve</button><button onclick="updateBookingStatus('${b._id}','rejected')" class="btn btn-sm btn-danger">Reject</button></td></tr>`).join('')
+          : `<tr><td colspan="6" class="meta">No bookings found</td></tr>`;
+      } catch { bookingsTableBody.innerHTML = `<tr><td colspan="6" class="meta">Error loading bookings</td></tr>`; }
     }
 
-    logoutBtn.addEventListener('click', () => {
-      localStorage.removeItem('token');
-      window.location.href = 'login.html';
-    });
+    window.updateBookingStatus = async function(id, status) {
+      if (!confirm(`Mark booking as ${status}?`)) return;
+      try {
+        const res = await fetch(BASE_URL + `/api/bookings/${id}`, {
+          method: 'PATCH',
+          headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + token },
+          body: JSON.stringify({ status })
+        });
+        if (!res.ok) throw new Error();
+        showToast(`Booking ${status}`);
+        loadAdminData();
+      } catch { showToast('Failed to update booking'); }
+    }
 
-    (async function initDashboard() {
+    // Logout
+    logoutBtn.addEventListener('click', () => { localStorage.removeItem('token'); location.href = 'login.html'; });
+
+    // Init
+    (async function init() {
       await fetchUserProfile();
       await fetchUserStats();
       await fetchRentalHistory();

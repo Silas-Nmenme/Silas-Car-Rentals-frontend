@@ -9,7 +9,9 @@
 <body>
 <header class="navbar">
   <div class="container nav-inner">
-    <a href="index.html" class="brand"><div class="brand-mark">SC</div><span>Silas Car Rentals</span></a>
+    <a href="index.html" class="brand">
+      <div class="brand-mark">SC</div><span>Silas Car Rentals</span>
+    </a>
     <button onclick="window.history.back()" class="btn btn-outline">← Back</button>
   </div>
 </header>
@@ -29,13 +31,16 @@
     <label>Email</label>
     <input type="email" id="email" required>
 
-    <label>Phone_Number</label>
+    <label>Phone Number</label>
     <input type="tel" id="phone_number" required>
+    
     <label>Start Date</label>
-    <input type="date" id="statDate" required>
+    <input type="date" id="startDate" required>
 
     <label>End Date</label>
     <input type="date" id="endDate" required>
+
+    
 
     <button type="submit" class="btn">Confirm Booking</button>
   </form>
@@ -47,9 +52,24 @@
 const API_BASE = "https://techyjaunt-auth-go43.onrender.com";
 const placeholderImage = "https://vehicle-images.dealerinspire.com/a1a7-11002896/W1KAF4GB4SR252999/00f2d6ad30e089cb5c02791d58c3af6a.jpg";
 
-let currentCar = JSON.parse(localStorage.getItem("currentCar")) || null;
-let currentUser = JSON.parse(localStorage.getItem("user")) || null; // assuming you store logged in user here
+// ===== Load stored data safely =====
+let currentCar = null;
+try {
+  const storedCar = localStorage.getItem("currentCar");
+  if (storedCar) currentCar = JSON.parse(storedCar);
+} catch (e) {
+  console.warn("Invalid stored car:", e);
+}
 
+let currentUser = null;
+try {
+  const storedUser = localStorage.getItem("user");
+  if (storedUser) currentUser = JSON.parse(storedUser);
+} catch (e) {
+  console.warn("Invalid stored user:", e);
+}
+
+// ===== Helpers =====
 function showToast(msg, ms=3000) {
   const toast = document.getElementById("toast");
   toast.textContent = msg;
@@ -82,9 +102,17 @@ async function fetchCarFromBackend() {
   }
 }
 
-// Booking form submit
+// ===== Booking form submit =====
 document.getElementById("booking-form").addEventListener("submit", async e => {
   e.preventDefault();
+
+  // Must be logged in
+  if (!currentUser || !currentUser._id || !currentUser.email) {
+    showToast("Please login first");
+    setTimeout(() => window.location.href = "login.html", 1500);
+    return;
+  }
+
   const token = localStorage.getItem("token");
   if (!token) {
     showToast("Please login first");
@@ -92,23 +120,16 @@ document.getElementById("booking-form").addEventListener("submit", async e => {
     return;
   }
 
-  if (!currentUser || !currentUser._id) {
-    showToast("User information not found. Please log in again.");
-    setTimeout(() => window.location.href = "login.html", 1500);
-    return;
-  }
-
   const bookingData = {
-    carId: currentCar._id,
-    email: document.getElementById("email").value,
+    email: currentUser.email,
     phone_number: document.getElementById("phone").value,
     startDate: document.getElementById("pickupDate").value,
     endDate: document.getElementById("returnDate").value,
-    userId: currentUser._id // from stored logged in user
+    userId: currentUser._id
   };
 
   try {
-    const res = await fetch(`${API_BASE}/api/bookings`, {
+    const res = await fetch(`${API_BASE}/api/bookings/${currentCar._id}`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -121,14 +142,10 @@ document.getElementById("booking-form").addEventListener("submit", async e => {
     if (!res.ok) throw new Error(data.message || "Booking failed");
 
     // Save booking for checkout
-    const bookingToStore = {
+    localStorage.setItem("lastBooking", JSON.stringify({
       car: currentCar,
-      pickupDate: bookingData.startDate,
-      returnDate: bookingData.endDate,
-      phoneNumber: bookingData.phone_number,
-      email: bookingData.email
-    };
-    localStorage.setItem("lastBooking", JSON.stringify(bookingToStore));
+      ...bookingData
+    }));
 
     showToast("Booking confirmed!");
     setTimeout(() => window.location.href = "checkout.html", 1500);
@@ -137,7 +154,7 @@ document.getElementById("booking-form").addEventListener("submit", async e => {
   }
 });
 
-// Init
+// ===== Init =====
 if (currentCar) {
   renderCar(currentCar);
   fetchCarFromBackend();
