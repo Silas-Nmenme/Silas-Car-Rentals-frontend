@@ -3,33 +3,67 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Login - TechyJaunt</title>
+  <title>Login - Silas Car Rental</title>
   <style>
     body {
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       background: #121212;
       color: #e0e0e0;
       margin: 0; padding: 0;
-      display: flex; justify-content: center; align-items: center;
-      height: 100vh;
+    }
+    header {
+      background: #1f1f1f;
+      padding: 1rem 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.4);
+    }
+    header h1 {
+      color: #03dac5;
+      margin: 0;
+      font-size: 1.4rem;
+    }
+    header nav a {
+      color: #e0e0e0;
+      text-decoration: none;
+      margin-left: 1.5rem;
+      font-weight: 500;
+    }
+    header nav a:hover {
+      color: #03dac5;
+    }
+    .back-btn {
+      background: #03dac5;
+      color: #121212;
+      border: none;
+      padding: 0.5rem 1rem;
+      border-radius: 4px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: background 0.3s;
+    }
+    .back-btn:hover {
+      background: #00b2a9;
     }
     main {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 2rem;
+    }
+    .form-container {
       background: #1f1f1f;
       border-radius: 8px;
       padding: 2rem 3rem;
       max-width: 400px;
-      width: 90%;
+      width: 100%;
       box-shadow: 0 0 12px rgba(0,0,0,0.9);
     }
-    h1 {
+    h2 {
       margin-bottom: 1.2rem;
       text-align: center;
       color: #03dac5;
-    }
-    form {
-      display: flex;
-      flex-direction: column;
-      gap: 1rem;
     }
     label {
       font-weight: 600;
@@ -38,19 +72,17 @@
       display: block;
       color: #bbb;
     }
-    input[type="email"],
-    input[type="password"] {
+    input {
       padding: 0.75rem 1rem;
       border-radius: 6px;
       border: none;
       font-size: 1rem;
       background: #2a2a2a;
       color: #eee;
-      outline-offset: 2px;
-      outline-color: #03dac5;
+      margin-bottom: 1rem;
+      width: 100%;
     }
-    input[type="email"]:focus,
-    input[type="password"]:focus {
+    input:focus {
       outline: 2px solid #03dac5;
       background: #222;
     }
@@ -64,6 +96,7 @@
       color: #121212;
       cursor: pointer;
       transition: background-color 0.3s ease;
+      width: 100%;
     }
     button:hover {
       background: #00b2a9;
@@ -104,70 +137,80 @@
   </style>
 </head>
 <body>
+
+  <!-- Header -->
+  <header>
+    <h1>Silas Car Rental</h1>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="cars.html">Cars</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+    <button class="back-btn" onclick="history.back()">← Back</button>
+  </header>
+
   <main>
-    <h1>Welcome Back</h1>
-    <form id="auth-form" data-mode="login" novalidate>
-      <label for="email">Email address</label>
-      <input type="email" id="email" name="email" required autocomplete="email" placeholder="you@example.com" />
+    <div class="form-container">
+      <h2>Login</h2>
+      <form id="login-form" novalidate>
+        <label for="email">Email address</label>
+        <input type="email" id="email" name="email" required placeholder="you@example.com">
 
-      <label for="password">Password</label>
-      <input type="password" id="password" name="password" required autocomplete="current-password" placeholder="Your password" />
+        <label for="password">Password</label>
+        <input type="password" id="password" name="password" required placeholder="Enter your password">
 
-      <button type="submit">Login</button>
-    </form>
-    <div class="footer-text">
-      Don't have an account? <a href="signup.html">Sign up here</a>
+        <button type="submit">Login</button>
+      </form>
+      <div class="footer-text">
+        Don't have an account? <a href="signup.html">Sign up here</a>
+      </div>
     </div>
   </main>
 
   <div id="toast"></div>
 
   <script>
-const BASE_URL = "https://techyjaunt-auth-go43.onrender.com";
+    const BASE_URL = "https://techyjaunt-auth-go43.onrender.com";
 
-function showToast(msg, ms = 3000) {
-  const toast = document.getElementById("toast");
-  toast.textContent = msg;
-  toast.classList.add("show");
-  setTimeout(() => toast.classList.remove("show"), ms);
-}
-
-document.getElementById("auth-form").addEventListener("submit", async (e) => {
-  e.preventDefault();
-
-  const email = e.target.email.value.trim();
-  const password = e.target.password.value.trim();
-
-  if (!email || !password) {
-    showToast("Please enter email and password");
-    return;
-  }
-
-  try {
-    const res = await fetch(`${BASE_URL}/api/users/login`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email, password }),
-    });
-
-    const data = await res.json();
-    if (!res.ok) {
-      showToast(data.message || "Login failed");
-      return;
+    function showToast(msg, ms = 3000) {
+      const toast = document.getElementById('toast');
+      toast.textContent = msg;
+      toast.classList.add('show');
+      setTimeout(() => toast.classList.remove('show'), ms);
     }
 
-    // Save JWT token
-    localStorage.setItem("token", data.token);
-    localStorage.setItem("user", JSON.stringify(data.user));
+    document.getElementById("login-form").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const email = e.target.email.value.trim();
+      const password = e.target.password.value.trim();
 
-    showToast("Login successful! Redirecting...");
-    setTimeout(() => window.location.href = "dashboard.html", 1500);
-  } catch (err) {
-    console.error(err);
-    showToast("Network error, please try again later");
-  }
-});
-</script>
+      if (!email || !password) {
+        showToast("Please fill in all fields");
+        return;
+      }
+
+      try {
+        const res = await fetch(`${BASE_URL}/api/users/login`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email, password })
+        });
+
+        const data = await res.json();
+
+        if (!res.ok) {
+          showToast(data.message || "Login failed");
+          return;
+        }
+
+        localStorage.setItem("token", data.token);
+        showToast("Login successful!");
+        setTimeout(() => window.location.href = "dashboard.html", 1000);
+      } catch {
+        showToast("Network error, try again later");
+      }
+    });
+  </script>
 
 </body>
 </html>

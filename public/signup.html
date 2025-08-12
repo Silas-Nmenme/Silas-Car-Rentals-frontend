@@ -5,31 +5,66 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Sign Up - Silas Car Rental</title>
   <style>
+    /* ==== Dark Theme Reset ==== */
     body {
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       background: #121212;
       color: #e0e0e0;
       margin: 0; padding: 0;
-      display: flex; justify-content: center; align-items: center;
-      height: 100vh;
+    }
+    header {
+      background: #1f1f1f;
+      padding: 1rem 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.4);
+    }
+    header h1 {
+      color: #03dac5;
+      margin: 0;
+      font-size: 1.4rem;
+    }
+    header nav a {
+      color: #e0e0e0;
+      text-decoration: none;
+      margin-left: 1.5rem;
+      font-weight: 500;
+    }
+    header nav a:hover {
+      color: #03dac5;
+    }
+    .back-btn {
+      background: #03dac5;
+      color: #121212;
+      border: none;
+      padding: 0.5rem 1rem;
+      border-radius: 4px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: background 0.3s;
+    }
+    .back-btn:hover {
+      background: #00b2a9;
     }
     main {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 2rem;
+    }
+    .form-container {
       background: #1f1f1f;
       border-radius: 8px;
       padding: 2rem 3rem;
       max-width: 400px;
-      width: 90%;
+      width: 100%;
       box-shadow: 0 0 12px rgba(0,0,0,0.9);
     }
-    h1 {
+    h2 {
       margin-bottom: 1.2rem;
       text-align: center;
       color: #03dac5;
-    }
-    form {
-      display: flex;
-      flex-direction: column;
-      gap: 1rem;
     }
     label {
       font-weight: 600;
@@ -38,23 +73,17 @@
       display: block;
       color: #bbb;
     }
-    input[type="text"],
-    input[type="email"],
-    input[type="password"],
-    input[type="tel"] {
+    input {
       padding: 0.75rem 1rem;
       border-radius: 6px;
       border: none;
       font-size: 1rem;
       background: #2a2a2a;
       color: #eee;
-      outline-offset: 2px;
-      outline-color: #03dac5;
+      margin-bottom: 1rem;
+      width: 100%;
     }
-    input[type="text"]:focus,
-    input[type="email"]:focus,
-    input[type="password"]:focus,
-    input[type="tel"]:focus {
+    input:focus {
       outline: 2px solid #03dac5;
       background: #222;
     }
@@ -68,6 +97,7 @@
       color: #121212;
       cursor: pointer;
       transition: background-color 0.3s ease;
+      width: 100%;
     }
     button:hover {
       background: #00b2a9;
@@ -108,25 +138,39 @@
   </style>
 </head>
 <body>
+
+  <!-- Header -->
+  <header>
+    <h1>Silas Car Rental</h1>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="cars.html">Cars</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+    <button class="back-btn" onclick="history.back()">← Back</button>
+  </header>
+
   <main>
-    <h1>Create Account</h1>
-    <form id="auth-form" novalidate>
-      <label for="name">Full Name</label>
-      <input type="text" id="name" name="name" required autocomplete="name" placeholder="Your full name" minlength="3" />
+    <div class="form-container">
+      <h2>Create Account</h2>
+      <form id="auth-form" novalidate>
+        <label for="name">Full Name</label>
+        <input type="text" id="name" name="name" required placeholder="Your full name" minlength="3">
 
-      <label for="email">Email address</label>
-      <input type="email" id="email" name="email" required autocomplete="email" placeholder="you@example.com" />
+        <label for="email">Email address</label>
+        <input type="email" id="email" name="email" required placeholder="you@example.com">
 
-      <label for="phone">Phone Number</label>
-      <input type="tel" id="phone" name="phone" required autocomplete="tel" placeholder="+1234567890" pattern="^\+?\d{7,15}$" />
+        <label for="phone">Phone Number</label>
+        <input type="tel" id="phone" name="phone" required placeholder="+1234567890" pattern="^\+?\d{7,15}$">
 
-      <label for="password">Password</label>
-      <input type="password" id="password" name="password" required autocomplete="new-password" placeholder="Create a password" minlength="6" />
+        <label for="password">Password</label>
+        <input type="password" id="password" name="password" required placeholder="Create a password" minlength="6">
 
-      <button type="submit">Sign Up</button>
-    </form>
-    <div class="footer-text">
-      Already have an account? <a href="login.html">Login here</a>
+        <button type="submit">Sign Up</button>
+      </form>
+      <div class="footer-text">
+        Already have an account? <a href="login.html">Login here</a>
+      </div>
     </div>
   </main>
 
@@ -144,7 +188,6 @@
 
     document.getElementById("auth-form").addEventListener("submit", async (e) => {
       e.preventDefault();
-
       const name = e.target.name.value.trim();
       const email = e.target.email.value.trim();
       const phone = e.target.phone.value.trim();
@@ -155,17 +198,11 @@
         return;
       }
 
-      const phonePattern = /^\+?\d{7,15}$/;
-      if (!phonePattern.test(phone)) {
-        showToast("Please enter a valid phone number");
-        return;
-      }
-
       try {
         const res = await fetch(`${BASE_URL}/api/users/signup`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ name, email, phoneNumber: phone, password }),
+          body: JSON.stringify({ name, email, phoneNumber: phone, password })
         });
 
         const data = await res.json();
@@ -175,12 +212,13 @@
           return;
         }
 
-        showToast("Account created! Please check your email to verify.");
-        setTimeout(() => window.location.href = "verify-email.html", 1500);
-      } catch (err) {
+        // Redirect to verify email with token
+        window.location.href = `verify-email.html?token=${data.user?.emailToken}`;
+      } catch {
         showToast("Network error, try again later");
       }
     });
   </script>
+
 </body>
 </html>
