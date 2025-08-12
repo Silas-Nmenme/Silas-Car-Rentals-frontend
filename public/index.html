@@ -54,46 +54,6 @@
         <span class="pill">Trusted • Fast • Secure</span>
         <h1 class="hero-title">Rent the right car for your trip — fast and secure</h1>
         <p class="hero-subtitle">Browse available cars, add them to your booking cart, then checkout after login.</p>
-
-        <div class="hero-actions">
-          <div class="max-600">
-            <div class="filters" id="filters" role="search">
-              <div class="field">
-                <label for="q">Search</label>
-                <input id="q" placeholder="Search model, make, plate..." aria-label="Search cars" />
-              </div>
-
-              <div class="field">
-                <label for="type">Type</label>
-                <select id="type" aria-label="Car type">
-                  <option value="">Any</option>
-                  <option>Hatchback</option>
-                  <option>Sedan</option>
-                  <option>SUV</option>
-                  <option>Van</option>
-                </select>
-              </div>
-
-              <div class="field">
-                <label for="minPrice">Min Price (₦)</label>
-                <input id="minPrice" type="number" placeholder="0" aria-label="Minimum price" />
-              </div>
-
-              <div class="field">
-                <label for="maxPrice">Max Price (₦)</label>
-                <input id="maxPrice" type="number" placeholder="100000" aria-label="Maximum price" />
-              </div>
-
-              <div class="field">
-                <label>&nbsp;</label>
-                <div style="display:flex; gap:8px">
-                  <button class="btn" id="apply-filters">Apply</button>
-                  <button class="btn btn-outline" id="clear-filters">Reset</button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
       </div>
     </section>
 
@@ -101,16 +61,7 @@
     <section id="browse" class="section container" aria-labelledby="browse-heading">
       <h2 id="browse-heading" style="margin-bottom:16px">Available Cars</h2>
       <div id="car-count" style="color:var(--muted); margin-bottom:8px;">Loading...</div>
-
-      <!-- Skeleton holder (shown while loading) -->
-      <div class="grid" id="skeleton-grid" aria-hidden="true"></div>
-
-      <!-- Real cards -->
       <div class="grid" id="cars-grid" aria-live="polite"></div>
-
-      <div style="margin-top:18px; display:flex; justify-content:center;">
-        <button class="btn btn-outline" id="load-more" style="display:none">Load more</button>
-      </div>
     </section>
 
     <!-- HOW IT WORKS -->
@@ -151,99 +102,14 @@
     </footer>
   </main>
 
-  <!-- CART DRAWER -->
-  <dialog id="cart-dialog" class="dialog" aria-hidden="true" aria-label="Booking cart">
-    <div class="dialog-inner" style="max-width:720px">
-      <div class="dialog-header">
-        <h3>Your booking cart</h3>
-        <button class="icon-btn" id="close-cart" aria-label="Close cart">✕</button>
-      </div>
-
-      <div id="cart-items" style="display:grid; gap:10px; margin-bottom:12px;">
-        <!-- items injected here -->
-      </div>
-
-      <div style="display:flex;justify-content:space-between;align-items:center; gap:12px;">
-        <div class="meta" id="cart-summary">0 items</div>
-        <div style="display:flex;gap:8px">
-          <button class="btn btn-outline" id="clear-cart">Clear</button>
-          <button class="btn" id="proceed-to-checkout">Proceed to Checkout</button>
-        </div>
-      </div>
-    </div>
-  </dialog>
-
-  <!-- AUTH DIALOG (reused modal) -->
-  <dialog id="auth-dialog" class="dialog glass-auth" aria-modal="true">
-    <div class="dialog-inner">
-      <div class="dialog-header">
-        <h2 id="auth-title">Login</h2>
-        <button id="close-auth" class="btn-close" aria-label="Close auth">&times;</button>
-      </div>
-      <form id="auth-form" autocomplete="off" novalidate>
-        <div id="auth-name-group" class="form-group hidden">
-          <label for="auth-name">Full Name</label>
-          <input type="text" id="auth-name" name="name" placeholder="Your full name">
-        </div>
-        <div class="form-group">
-          <label for="auth-email">Email</label>
-          <input type="email" id="auth-email" name="email" required>
-        </div>
-        <div id="auth-phone-group" class="form-group hidden">
-          <label for="auth-phone">Phone Number</label>
-          <input type="tel" id="auth-phone" name="phone">
-        </div>
-        <div class="form-group password-wrapper">
-          <label for="auth-password">Password</label>
-          <div class="password-input">
-            <input type="password" id="auth-password" name="password" minlength="6" required>
-            <button type="button" class="toggle-pass" data-target="auth-password" aria-label="Toggle password">&#128065;</button>
-          </div>
-          <small id="password-strength" class="meta"></small>
-        </div>
-        <div id="auth-confirm-group" class="form-group hidden">
-          <label for="auth-confirm">Confirm Password</label>
-          <div class="password-input">
-            <input type="password" id="auth-confirm" name="confirm">
-            <button type="button" class="toggle-pass" data-target="auth-confirm" aria-label="Toggle confirm password">&#128065;</button>
-          </div>
-          <small id="confirm-match" class="meta"></small>
-        </div>
-
-        <div style="display:flex;gap:8px; margin-top:8px;">
-          <button id="auth-submit" class="btn" type="submit">Login</button>
-          <button type="button" id="switch-auth" class="btn-outline">Switch to Register</button>
-        </div>
-      </form>
-    </div>
-  </dialog>
-
-  <!-- WISHLIST DIALOG -->
-  <dialog class="dialog" id="wishlist-dialog">
-    <div class="dialog-inner">
-      <div class="dialog-header">
-        <h4>My Wishlist</h4>
-        <button class="icon-btn" id="close-wishlist" aria-label="Close wishlist">✕</button>
-      </div>
-      <div id="wishlist-list" class="grid"></div>
-    </div>
-  </dialog>
-
-  <!-- SAVED DIALOG -->
-  <dialog class="dialog" id="saved-dialog">
-    <div class="dialog-inner">
-      <div class="dialog-header">
-        <h4>My Saved Cars</h4>
-        <button class="icon-btn" id="close-saved" aria-label="Close saved">✕</button>
-      </div>
-      <div id="saved-list" class="grid"></div>
-    </div>
-  </dialog>
-
   <!-- TOAST -->
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
-   <script>
+  <script>
+    const API_BASE = "https://techyjaunt-auth-go43.onrender.com";
+    const carIdFromDB = "689479c630cf9351877939e6"; // Benz C300
+    const token = localStorage.getItem("token");
+
     function getStorage(key) {
       return JSON.parse(localStorage.getItem(key)) || [];
     }
@@ -252,8 +118,55 @@
       document.getElementById("wishlist-count").textContent = getStorage("wishlist").length;
       document.getElementById("saved-count").textContent = getStorage("savedCars").length;
     }
+    function showToast(msg, ms=3000) {
+      const toast = document.getElementById("toast");
+      toast.textContent = msg;
+      toast.classList.add("show");
+      setTimeout(() => toast.classList.remove("show"), ms);
+    }
+    function addToStorage(key, car) {
+      let arr = getStorage(key);
+      if (!arr.find(c => c._id === car._id)) {
+        arr.push(car);
+        localStorage.setItem(key, JSON.stringify(arr));
+        showToast(`${car.make} added to ${key}`);
+        updateGlobalCounts();
+      } else {
+        showToast(`${car.make} already in ${key}`);
+      }
+    }
+    function openBookingForm(carId) {
+      if (!token) {
+        showToast("Please login first");
+        setTimeout(() => window.location.href = "login.html", 1200);
+        return;
+      }
+      localStorage.setItem("currentRentalId", carId);
+      window.location.href = "book.html";
+    }
+    async function fetchCar() {
+      try {
+        const res = await fetch(`${API_BASE}/api/cars/${carIdFromDB}`);
+        const car = await res.json();
+        if (!res.ok) throw new Error();
+        document.getElementById("car-count").textContent = "1 car available";
+        document.getElementById("cars-grid").innerHTML = `
+          <div class="car-card">
+            <img src="${car.image || 'https://via.placeholder.com/300x200'}" alt="${car.make}">
+            <h3>${car.make} ${car.model}</h3>
+            <p>₦${car.price.toLocaleString()} / day</p>
+            <button onclick="openBookingForm('${car._id}')">Book Now</button>
+            <button onclick='addToStorage("cart", ${JSON.stringify(car).replace(/"/g, "&quot;")})'>Add to Cart</button>
+            <button onclick='addToStorage("wishlist", ${JSON.stringify(car).replace(/"/g, "&quot;")})'>Wishlist</button>
+            <button onclick='addToStorage("savedCars", ${JSON.stringify(car).replace(/"/g, "&quot;")})'>Save</button>
+          </div>
+        `;
+      } catch {
+        document.getElementById("cars-grid").innerHTML = "<p>Failed to load cars.</p>";
+      }
+    }
     updateGlobalCounts();
+    fetchCar();
   </script>
-  <script type="module" src="app.js"></script>
 </body>
 </html>

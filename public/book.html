@@ -1,191 +1,172 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Book a Car — Silas Car Rentals</title>
-  <link rel="stylesheet" href="style.css" />
-  <style>
-    .search-filter {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      margin-bottom: 20px;
-    }
-    .search-filter input, .search-filter select {
-      padding: 8px;
-      border-radius: 6px;
-      border: 1px solid #ccc;
-      flex: 1;
-    }
-    .car-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill,minmax(250px,1fr));
-      gap: 20px;
-    }
-    .car-card {
-      border: 1px solid #ddd;
-      border-radius: 12px;
-      padding: 15px;
-      background: #fff;
-      text-align: center;
-    }
-    .car-card h3 { margin-bottom: 5px; }
-    .car-card p { margin-bottom: 8px; }
-    .btn-sm { font-size: 0.85rem; padding: 5px 10px; }
-  </style>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Book a Car — Silas Car Rentals</title>
+<link rel="stylesheet" href="style.css" />
+<style>
+  .car-card { border: 1px solid #ddd; border-radius: 12px; padding: 15px; background: #fff; text-align: center; }
+  .car-card img { width: 100%; height: 150px; object-fit: cover; border-radius: 8px; margin-bottom: 10px; }
+  #booking-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); justify-content: center; align-items: center; z-index: 999; }
+  .modal-content { background: #fff; padding: 20px; border-radius: 8px; width: 90%; max-width: 400px; }
+</style>
 </head>
-<body class="dashboard-body">
+<body>
 
-  <header class="navbar">
-    <div class="container nav-inner">
-      <a href="dashboard.html" class="brand">
-        <div class="brand-mark">SC</div>
-        <span class="brand-name">Silas Rentals</span>
-      </a>
-      <div class="nav-actions">
-        <button class="btn-sm btn-ghost" id="cart-btn">Cart (<span id="cart-count">0</span>)</button>
-      </div>
+<header class="navbar">
+  <div class="container nav-inner">
+    <a href="index.html" class="brand">
+      <div class="brand-mark">SC</div>
+      <span class="brand-name">Silas Rentals</span>
+    </a>
+    <div class="nav-actions">
+      <button onclick="viewCart()">Cart (<span id="cart-count">0</span>)</button>
     </div>
-  </header>
+  </div>
+</header>
 
-  <main class="container section">
-    <h1>Book Your Car 🚗</h1>
+<main class="container section">
+  <h1>Book Your Car 🚗</h1>
+  <div id="car-container">Loading car details...</div>
+</main>
 
-    <!-- Search & Filter -->
-    <div class="search-filter">
-      <input type="text" id="searchInput" placeholder="Search by name or brand...">
-      <select id="priceFilter">
-        <option value="">All Prices</option>
-        <option value="low">Below ₦5,000/day</option>
-        <option value="mid">₦5,000 - ₦15,000/day</option>
-        <option value="high">Above ₦15,000/day</option>
-      </select>
+<!-- Booking Modal -->
+<div id="booking-modal">
+  <div class="modal-content">
+    <h2>Complete Your Booking</h2>
+    <form id="booking-form">
+      <input type="hidden" id="carId" name="carId">
+      <label>Email</label>
+      <input type="email" id="email" name="email" required>
+
+      <label>Phone Number</label>
+      <input type="tel" id="phone_number" name="phone_number" required>
+
+      <label>Start Date</label>
+      <input type="date" id="startDate" name="startDate" required>
+
+      <label>End Date</label>
+      <input type="date" id="endDate" name="endDate" required>
+
+      <button type="submit">Proceed to Payment</button>
+      <button type="button" onclick="closeModal()">Cancel</button>
+    </form>
+  </div>
+</div>
+
+<div id="toast"></div>
+
+<script>
+const API_BASE = "https://techyjaunt-auth-go43.onrender.com";
+const token = localStorage.getItem("token");
+const carIdFromDB = "689479c630cf9351877939e6"; // Car ID from DB
+
+function showToast(msg, ms=3000) {
+  const toast = document.getElementById("toast");
+  toast.textContent = msg;
+  toast.style.display = "block";
+  setTimeout(() => toast.style.display = "none", ms);
+}
+
+// Load car from backend
+async function fetchCar() {
+  try {
+    const res = await fetch(`${API_BASE}/api/cars/${carIdFromDB}`);
+    const car = await res.json();
+    if (!res.ok) throw new Error(car.message || "Failed to fetch car");
+    renderCar(car);
+  } catch (err) {
+    console.error(err);
+    document.getElementById('car-container').innerHTML = "<p>Failed to load car.</p>";
+  }
+}
+
+function renderCar(car) {
+  document.getElementById("car-container").innerHTML = `
+    <div class="car-card">
+      <img src="${car.image || 'https://via.placeholder.com/300x200'}" alt="${car.make}">
+      <h3>${car.make} ${car.model}</h3>
+      <p>₦${car.price.toLocaleString()} / day</p>
+      <button onclick="openBookingForm('${car._id}')">Book Now</button>
+      <button onclick='addToStorage("cart", ${JSON.stringify(car).replace(/"/g, '&quot;')})'>Add to Cart</button>
+      <button onclick='addToStorage("wishlist", ${JSON.stringify(car).replace(/"/g, '&quot;')})'>Wishlist</button>
+      <button onclick='addToStorage("savedCars", ${JSON.stringify(car).replace(/"/g, '&quot;')})'>Save</button>
     </div>
+  `;
+}
 
-    <!-- Cars Grid -->
-    <div id="car-grid" class="car-grid">
-      <p class="meta">Loading cars...</p>
-    </div>
-  </main>
+function addToStorage(key, car) {
+  let arr = JSON.parse(localStorage.getItem(key)) || [];
+  if (!arr.find(c => c._id === car._id)) {
+    arr.push(car);
+    localStorage.setItem(key, JSON.stringify(arr));
+    showToast(`${car.make} added to ${key}`);
+    updateCartCount();
+  } else {
+    showToast(`${car.make} already in ${key}`);
+  }
+}
 
-  <div class="toast" id="toast"></div>
+function updateCartCount() {
+  document.getElementById("cart-count").textContent =
+    (JSON.parse(localStorage.getItem("cart")) || []).length;
+}
 
-  <script type="module">
-    import { BASE_URL, ENDPOINTS, showToast } from './app.js';
+function openBookingForm(carId) {
+  if (!token) {
+    showToast("Please login first");
+    setTimeout(() => window.location.href = "login.html", 1200);
+    return;
+  }
+  document.getElementById("carId").value = carId;
+  document.getElementById("booking-modal").style.display = "flex";
+}
 
-    const grid = document.getElementById('car-grid');
-    const searchInput = document.getElementById('searchInput');
-    const priceFilter = document.getElementById('priceFilter');
-    const cartCountEl = document.getElementById('cart-count');
+function closeModal() {
+  document.getElementById("booking-modal").style.display = "none";
+}
 
-    let allCars = [];
-    const params = new URLSearchParams(window.location.search);
-    const section = params.get('section');
-    const token = localStorage.getItem('token');
+document.getElementById("booking-form").addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const formData = new FormData(e.target);
+  const carId = formData.get("carId");
 
-    function updateCounts() {
-      cartCountEl.textContent = (JSON.parse(localStorage.getItem('cart')) || []).length;
+  const payload = {
+    email: formData.get("email"),
+    phone_number: formData.get("phone_number"),
+    startDate: formData.get("startDate"),
+    endDate: formData.get("endDate")
+  };
+
+  try {
+    const res = await fetch(`${API_BASE}/api/payment/pay/${carId}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${token}`
+      },
+      body: JSON.stringify(payload)
+    });
+
+    const data = await res.json();
+    if (!res.ok) {
+      showToast(data.message || "Booking failed");
+      return;
     }
-
-    function saveToStorage(key, car) {
-      let arr = JSON.parse(localStorage.getItem(key)) || [];
-      if (!arr.find(c => c.id === car.id)) {
-        arr.push(car);
-        localStorage.setItem(key, JSON.stringify(arr));
-        showToast(`${car.name} added to ${key}`);
-        updateCounts();
-      } else {
-        showToast(`${car.name} is already in ${key}`);
-      }
+    if (data.redirectLink) {
+      window.location.href = data.redirectLink;
+    } else {
+      showToast("No payment link received");
     }
+  } catch {
+    showToast("Error connecting to server");
+  }
+});
 
-    function rentNow(car) {
-      if (!token) {
-        localStorage.setItem('currentRental', JSON.stringify(car));
-        window.location.href = 'login.html';
-        return;
-      }
-      localStorage.setItem('currentRental', JSON.stringify(car));
-      window.location.href = 'checkout.html';
-    }
+fetchCar();
+updateCartCount();
+</script>
 
-    function renderCars(cars) {
-      if (cars.length === 0) {
-        grid.innerHTML = `<p class="meta">No cars found.</p>`;
-        return;
-      }
-      grid.innerHTML = cars.map(car => `
-        <div class="car-card">
-          <h3>${car.name}</h3>
-          <p>Brand: ${car.brand}</p>
-          <p>₦${car.price.toLocaleString()}/day</p>
-          <button class="btn btn-sm btn-primary" onclick='rentNow(${JSON.stringify(car).replace(/"/g, "&quot;")})'>Rent Now</button>
-          <button class="btn btn-sm btn-outline" onclick='saveToStorage("cart", ${JSON.stringify(car).replace(/"/g, "&quot;")})'>Add to Cart</button>
-          <button class="btn btn-sm btn-outline" onclick='saveToStorage("wishlist", ${JSON.stringify(car).replace(/"/g, "&quot;")})'>Add to Wishlist</button>
-          <button class="btn btn-sm btn-outline" onclick='saveToStorage("savedCars", ${JSON.stringify(car).replace(/"/g, "&quot;")})'>Save</button>
-        </div>
-      `).join('');
-    }
-
-    window.saveToStorage = saveToStorage;
-    window.rentNow = rentNow;
-
-    function filterCars() {
-      let filtered = allCars;
-      const searchTerm = searchInput.value.toLowerCase();
-      if (searchTerm) {
-        filtered = filtered.filter(c => c.name.toLowerCase().includes(searchTerm) || c.brand.toLowerCase().includes(searchTerm));
-      }
-      const priceVal = priceFilter.value;
-      if (priceVal) {
-        filtered = filtered.filter(c => {
-          if (priceVal === 'low') return c.price < 5000;
-          if (priceVal === 'mid') return c.price >= 5000 && c.price <= 15000;
-          if (priceVal === 'high') return c.price > 15000;
-        });
-      }
-      renderCars(filtered);
-    }
-
-    searchInput.addEventListener('input', filterCars);
-    priceFilter.addEventListener('change', filterCars);
-
-    async function fetchCars() {
-      try {
-        let cars;
-        if (section) {
-          cars = JSON.parse(localStorage.getItem(section)) || [];
-        } else {
-          const res = await fetch(BASE_URL + ENDPOINTS.cars);
-          if (!res.ok) throw new Error();
-          cars = await res.json();
-        }
-        allCars = cars;
-        filterCars();
-      } catch {
-        // Fallback sample cars
-        allCars = [
-          { id: 1, name: "Mercedes Benz 2025", brand: "Mercedes", price: 20000 },
-          { id: 2, name: "Toyota Corolla 2023", brand: "Toyota", price: 8000 },
-          { id: 3, name: "Honda Civic 2024", brand: "Honda", price: 10000 }
-        ];
-        filterCars();
-      }
-    }
-
-    function checkCurrentRental() {
-      const rental = JSON.parse(localStorage.getItem('currentRental'));
-      if (rental) {
-        showToast(`Pre-filled rental for ${rental.name}`);
-        searchInput.value = rental.name;
-        filterCars();
-        localStorage.removeItem('currentRental');
-      }
-    }
-
-    fetchCars().then(checkCurrentRental);
-    updateCounts();
-  </script>
 </body>
 </html>
