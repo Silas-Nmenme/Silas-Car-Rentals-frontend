@@ -33,14 +33,14 @@
         <div class="user-menu hidden" id="user-actions" aria-hidden="true">
           <span class="user-name" id="user-name">User</span>
           <button class="btn-sm btn-ghost" id="open-history" title="My rentals">My Rentals</button>
-          <button class="btn-sm btn-ghost" id="open-wishlist">❤️ Wishlist (<span id="wishlist-count">0</span>)</button>
+          <button onclick="window.location.href='wishlist.html'" class="btn-sm btn-ghost" id="open-wishlist">❤️ Wishlist (<span id="wishlist-count">0</span>)</button>
           <button class="btn btn-sm" id="logout-btn" title="Sign out">Logout</button>
         </div>
 
-        <button id="open-cart" class="btn btn-ghost" aria-label="Open booking cart" title="Cart">
+        <button id="open-cart" onclick="window.location.href='cart.html'" class="btn btn-ghost" aria-label="Open booking cart" title="Cart">
           🧾 Cart (<span id="cart-count">0</span>)
         </button>
-        <button class="btn btn-ghost" title="Saved Cars">💾 Saved (<span id="saved-count">0</span>)</button>
+        <button onclick="window.location.href='saved.html'" class="btn btn-ghost" title="Saved Cars">💾 Saved (<span id="saved-count">0</span>)</button>
 
         <button class="mobile-menu-btn" id="mobile-menu-btn" aria-label="Open menu">☰</button>
       </div>
@@ -48,7 +48,6 @@
   </header>
 
   <main>
-    <!-- HERO -->
     <section class="hero section" id="hero">
       <div class="container hero-inner">
         <span class="pill">Trusted • Fast • Secure</span>
@@ -57,14 +56,12 @@
       </div>
     </section>
 
-    <!-- BROWSE / CAR GRID -->
     <section id="browse" class="section container" aria-labelledby="browse-heading">
       <h2 id="browse-heading" style="margin-bottom:16px">Available Cars</h2>
       <div id="car-count" style="color:var(--muted); margin-bottom:8px;">Loading...</div>
       <div class="grid" id="cars-grid" aria-live="polite"></div>
     </section>
 
-    <!-- HOW IT WORKS -->
     <section id="how" class="section">
       <div class="container max-600">
         <h3>How it works</h3>
@@ -76,7 +73,6 @@
       </div>
     </section>
 
-    <!-- TESTIMONIALS -->
     <section id="testimonials" class="section">
       <div class="container">
         <h3>What customers say</h3>
@@ -88,7 +84,6 @@
       </div>
     </section>
 
-    <!-- CONTACT / FOOTER -->
     <footer id="contact" class="footer section">
       <div class="container footer-inner">
         <div>
@@ -102,7 +97,6 @@
     </footer>
   </main>
 
-  <!-- TOAST -->
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
   <script>
@@ -110,7 +104,6 @@ const API_BASE = "https://techyjaunt-auth-go43.onrender.com";
 const BENZ_ID = "689479c630cf9351877939e6"; 
 const placeholderImage = "https://vehicle-images.dealerinspire.com/a1a7-11002896/W1KAF4GB4SR252999/00f2d6ad30e089cb5c02791d58c3af6a.jpg";
 
-// Hardcoded default car (offline-first)
 const defaultCar = {
   _id: BENZ_ID,
   make: "Mercedes-Benz",
@@ -123,7 +116,6 @@ const defaultCar = {
   image: placeholderImage
 };
 
-// ===== Helpers =====
 function getStorage(key) {
   return JSON.parse(localStorage.getItem(key)) || [];
 }
@@ -141,30 +133,6 @@ function showToast(msg, ms = 3000) {
   setTimeout(() => toast.classList.remove("show"), ms);
 }
 
-function addToStorage(key, car) {
-  let arr = getStorage(key);
-  if (!arr.find(c => c._id === car._id)) {
-    arr.push(car);
-    localStorage.setItem(key, JSON.stringify(arr));
-    showToast(`${car.make} ${car.model} added to ${key}`);
-    updateGlobalCounts();
-  } else {
-    showToast(`${car.make} ${car.model} already in ${key}`);
-  }
-}
-
-function openBookingForm(carId) {
-  const token = localStorage.getItem("token");
-  if (!token) {
-    showToast("Please login first");
-    setTimeout(() => window.location.href = "login.html", 1200);
-    return;
-  }
-  localStorage.setItem("currentRentalId", carId);
-  window.location.href = "book.html";
-}
-
-// ===== Render Function =====
 function renderCar(car) {
   const grid = document.getElementById("cars-grid");
   const count = document.getElementById("car-count");
@@ -176,27 +144,23 @@ function renderCar(car) {
       <h3>${car.make} ${car.model}</h3>
       <p><strong>₦${car.price.toLocaleString()}</strong> / day</p>
       <div style="display:flex; gap:8px; flex-wrap:wrap; margin-top:10px;">
-        <button class="btn" onclick="openBookingForm('${car._id}')">Book Now</button>
-        <button class="btn btn-outline" onclick='addToStorage("cart", ${JSON.stringify(car).replace(/"/g, "&quot;")})'>Add to Cart</button>
-        <button class="btn btn-outline" onclick='addToStorage("wishlist", ${JSON.stringify(car).replace(/"/g, "&quot;")})'>Wishlist</button>
-        <button class="btn btn-outline" onclick='addToStorage("savedCars", ${JSON.stringify(car).replace(/"/g, "&quot;")})'>Save</button>
+        <button class="btn" data-action="rent-now" data-id="${car._id}">Rent Now</button>
+        <button class="btn btn-outline" data-action="add-cart" data-id="${car._id}">Add to Cart</button>
+        <button class="btn btn-outline" data-action="add-wishlist" data-id="${car._id}">Wishlist</button>
+        <button class="btn btn-outline" data-action="add-saved" data-id="${car._id}">Save</button>
       </div>
     </div>
   `;
 }
 
-// ===== Load Data =====
 async function fetchCar() {
-  // First, show offline car instantly
   renderCar(defaultCar);
-
   try {
     const res = await fetch(`${API_BASE}/api/cars/get-cars`);
     if (!res.ok) throw new Error();
     const cars = await res.json();
     const car = cars.find(c => c._id === BENZ_ID);
     if (car) {
-      // Ensure image fallback if missing
       car.image = car.image && car.image.trim() !== "" ? car.image : placeholderImage;
       renderCar(car);
     }
@@ -205,11 +169,8 @@ async function fetchCar() {
   }
 }
 
-// ===== Init =====
 updateGlobalCounts();
 fetchCar();
 </script>
-
-
 </body>
 </html>
