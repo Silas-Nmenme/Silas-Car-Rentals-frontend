@@ -76,7 +76,7 @@ function moveToWishlist(id) {
   if (car && !wishlist.find(c => c._id === id)) {
     wishlist.push(car);
     setStorage("wishlist", wishlist);
-    removeFromCart(id);
+    removeFromCart(id, false);
     showToast("Moved to wishlist");
   } else showToast("Already in wishlist");
 }
@@ -87,16 +87,16 @@ function moveToSaved(id) {
   if (car && !saved.find(c => c._id === id)) {
     saved.push(car);
     setStorage("savedCars", saved);
-    removeFromCart(id);
+    removeFromCart(id, false);
     showToast("Moved to saved cars");
   } else showToast("Already in saved cars");
 }
-function removeFromCart(id) {
+function removeFromCart(id, toast=true) {
   let cart = getStorage("cart").filter(c => c._id !== id);
   setStorage("cart", cart);
   updateCounts();
   renderCart();
-  showToast("Car removed from cart");
+  if (toast) showToast("Car removed from cart");
 }
 function clearCart() {
   setStorage("cart", []);
