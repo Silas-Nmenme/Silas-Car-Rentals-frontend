@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>FAQ - Silas Car Rentals</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #121212;
+      color: #e0e0e0;
+      margin: 0; padding: 0;
+      line-height: 1.6;
+    }
+    header {
+      background: #1f1f1f;
+      padding: 1rem 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.4);
+    }
+    header h1 {
+      color: #03dac5;
+      margin: 0;
+      font-size: 1.4rem;
+    }
+    header nav a {
+      color: #e0e0e0;
+      text-decoration: none;
+      margin-left: 1.5rem;
+      font-weight: 500;
+    }
+    header nav a:hover {
+      color: #03dac5;
+    }
+    .back-btn {
+      background: #03dac5;
+      color: #121212;
+      border: none;
+      padding: 0.5rem 1rem;
+      border-radius: 4px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: background 0.3s;
+    }
+    .back-btn:hover {
+      background: #00b2a9;
+    }
+    main {
+      max-width: 800px;
+      margin: 2rem auto;
+      padding: 2rem;
+    }
+    h2 {
+      color: #03dac5;
+      margin-top: 2rem;
+      margin-bottom: 1rem;
+    }
+    h3 {
+      color: #bbb;
+      margin-top: 1.5rem;
+      margin-bottom: 0.5rem;
+    }
+    p, li {
+      margin-bottom: 0.8rem;
+      color: #ccc;
+    }
+    ul {
+      padding-left: 1.5rem;
+    }
+    .section {
+      background: #1f1f1f;
+      padding: 1.5rem;
+      border-radius: 8px;
+      margin-bottom: 1.5rem;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+    }
+    .faq-item {
+      margin-bottom: 2rem;
+      border-bottom: 1px solid #333;
+      padding-bottom: 1rem;
+    }
+    .faq-question {
+      font-weight: bold;
+      color: #03dac5;
+      margin-bottom: 0.5rem;
+    }
+    .faq-answer {
+      color: #ccc;
+      line-height: 1.6;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>Silas Car Rentals</h1>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="terms.html">Terms & Conditions</a>
+      <a href="contact.html">Contact</a>
+      <a href="faq.html">FAQ</a>
+    </nav>
+    <button class="back-btn" onclick="history.back()">← Back</button>
+  </header>
+
+  <main>
+    <h1>Frequently Asked Questions</h1>
+    <p>Find answers to common questions about Silas Car Rentals services, bookings, and policies.</p>
+
+    <div class="section">
+      <div class="faq-item">
+        <div class="faq-question">How do I book a car?</div>
+        <div class="faq-answer">
+          <p>Booking a car is simple:</p>
+          <ol>
+            <li>Browse our available cars on the website</li>
+            <li>Select your preferred vehicle and rental dates</li>
+            <li>Add to cart and proceed to checkout</li>
+            <li>Sign up or log in to complete your booking</li>
+            <li>Confirm your booking and make payment</li>
+          </ol>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question">What documents do I need to rent a car?</div>
+        <div class="faq-answer">
+          <p>You need:</p>
+          <ul>
+            <li>Valid driver's license (minimum 2 years)</li>
+            <li>Government-issued ID or passport</li>
+            <li>Credit card for payment and security deposit</li>
+            <li>Minimum age: 21 for standard vehicles, 25 for luxury cars</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question">What is the cancellation policy?</div>
+        <div class="faq-answer">
+          <p>Our cancellation policy is as follows:</p>
+          <ul>
+            <li>24+ hours before pickup: Full refund</li>
+            <li>Less than 24 hours: 50% cancellation fee</li>
+            <li>No-show: Full rental charge applies</li>
+            <li>Early return: No refund for unused days</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question">What payment methods do you accept?</div>
+        <div class="faq-answer">
+          <p>We accept:</p>
+          <ul>
+            <li>Credit cards (Visa, Mastercard, American Express)</li>
+            <li>Debit cards with Visa/Mastercard logo</li>
+            <li>Bank transfers (for corporate bookings)</li>
+            <li>Cash payments at our office</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question">Is insurance included in the rental?</div>
+        <div class="faq-answer">
+          <p>All rentals include basic third-party liability insurance. Additional coverage options are available:</p>
+          <ul>
+            <li>Collision Damage Waiver (CDW)</li>
+            <li>Theft Protection (TP)</li>
+            <li>Personal Accident Insurance (PAI)</li>
+            <li>Super Collision Damage Waiver (SCDW)</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question">Can I extend my rental period?</div>
+        <div class="faq-answer">
+          <p>Yes, extensions are possible subject to availability. Contact us at least 2 hours before your scheduled return time. Additional charges may apply.</p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question">What happens if I return the car late?</div>
+        <div class="faq-answer">
+          <p>Late returns are subject to charges:</p>
+          <ul>
+            <li>Grace period: 29 minutes</li>
+            <li>After grace period: Full daily rate applies</li>
+            <li>Extensions must be requested in advance</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question">Do you offer delivery services?</div>
+        <div class="faq-answer">
+          <p>Yes, we offer delivery and pickup services within Lagos State. Additional charges apply based on distance.</p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question">What is your fuel policy?</div>
+        <div class="faq-answer">
+          <p>Cars must be returned with the same fuel level as received. Refueling service is available at additional cost.</p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question">Can I drive outside Lagos?</div>
+        <div class="faq-answer">
+          <p>Yes, you can drive within Nigeria. For international travel, special arrangements and additional insurance may be required.</p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question">What should I do in case of an accident?</div>
+        <div class="faq-answer">
+          <p>In case of an accident:</p>
+          <ol>
+            <li>Ensure everyone's safety first</li>
+            <li>Contact our 24/7 support line immediately</li>
+            <li>Take photos of the damage</li>
+            <li>File a police report if required</li>
+            <li>Follow our accident procedures</li>
+          </ol>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question">Do you offer discounts?</div>
+        <div class="faq-answer">
+          <p>We offer various discounts:</p>
+          <ul>
+            <li>Long-term rental discounts</li>
+            <li>Corporate rates for businesses</li>
+            <li>Seasonal promotions</li>
+            <li>Loyalty program benefits</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question">How do I report a problem with my rental?</div>
+        <div class="faq-answer">
+          <p>Contact us immediately via phone, email, or our website. Our 24/7 support team will assist you promptly.</p>
+        </div>
+      </div>
+    </div>
+  </main>
+</body>
+</html>

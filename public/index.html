@@ -17,7 +17,8 @@
       </a>
 
       <nav class="nav-links" aria-label="Main navigation">
-        <a class="nav-link active" href="#browse">Browse</a>
+        <a class="nav-link active" href="index.html">Home</a>
+        <a class="nav-link" href="cars.html">Browse Cars</a>
         <a class="nav-link" href="book.html">Book</a>
         <a class="nav-link" href="#how">How it Works</a>
         <a class="nav-link" href="#testimonials">Testimonials</a>
@@ -56,19 +57,61 @@
       </div>
     </section>
 
-    <section id="browse" class="section container" aria-labelledby="browse-heading">
-      <h2 id="browse-heading" style="margin-bottom:16px">Available Cars</h2>
-      <div id="car-count" style="color:var(--muted); margin-bottom:8px;">Loading...</div>
-      <div class="grid" id="cars-grid" aria-live="polite"></div>
+    <section id="about" class="hero section" style="background: linear-gradient(135deg, rgba(3, 218, 197, 0.1), rgba(1, 135, 134, 0.1));">
+      <div class="container hero-inner">
+        <span class="pill">Since 2020 • Lagos, Nigeria</span>
+        <h1 class="hero-title">Nigeria's Trusted Premium Car Rental Service</h1>
+        <p class="hero-subtitle">
+          From luxury sedans to spacious SUVs, we deliver excellence in every journey. 
+          With 5,000+ satisfied customers and 200+ premium vehicles, experience the difference 
+          that quality, reliability, and exceptional service make.
+        </p>
+        
+        <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; margin: 2rem 0;">
+          <a href="about.html" class="btn btn-primary btn-lg">
+            Read More About Us
+          </a>
+          <a href="book.html" class="btn btn-outline btn-lg">
+            Book Your Ride
+          </a>
+        </div>
+        
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 2rem; margin-top: 3rem; max-width: 600px; margin-left: auto; margin-right: auto;">
+          <div style="text-align: center;">
+            <h3 style="color: var(--primary); font-size: 2rem; margin: 0;">5,000+</h3>
+            <p style="color: var(--muted); margin: 0; font-size: 0.9rem;">Happy Customers</p>
+          </div>
+          <div style="text-align: center;">
+            <h3 style="color: var(--primary); font-size: 2rem; margin: 0;">200+</h3>
+            <p style="color: var(--muted); margin: 0; font-size: 0.9rem;">Premium Vehicles</p>
+          </div>
+          <div style="text-align: center;">
+            <h3 style="color: var(--primary); font-size: 2rem; margin: 0;">98%</h3>
+            <p style="color: var(--muted); margin: 0; font-size: 0.9rem;">Satisfaction Rate</p>
+          </div>
+        </div>
+      </div>
     </section>
+
+    
 
     <section id="how" class="section">
       <div class="container max-600">
-        <h3>How it works</h3>
-        <ol>
-          <li>Browse cars and add to your booking cart</li>
-          <li>Proceed to checkout — sign in/sign up when prompted</li>
-          <li>Confirm rental dates and pay securely</li>
+        <h3>How It Works</h3>
+        <p class="section-subtitle">Three simple steps to your perfect ride</p>
+        <ol class="process-list">
+          <li>
+            <strong>Explore & Select</strong><br>
+            Browse our curated fleet of premium vehicles. Filter by brand, price, or features to find the perfect car for your needs.
+          </li>
+          <li>
+            <strong>Secure Booking</strong><br>
+            Add your chosen vehicle to the booking cart, select your rental dates, and proceed to our secure checkout. New users can create an account seamlessly during this process.
+          </li>
+          <li>
+            <strong>Drive Away</strong><br>
+            Complete your payment through our encrypted gateway, receive instant confirmation, and collect your vehicle at the scheduled time. It's that simple.
+          </li>
         </ol>
       </div>
     </section>
@@ -86,18 +129,93 @@
 
     <footer id="contact" class="footer section">
       <div class="container footer-inner">
-        <div>
-          <strong>Silas Car Rentals</strong><br/>
-          <small class="meta">silasonyekachi15@gmail.com • +234 810 758 6167</small>
+        <div class="footer-main">
+          <div class="footer-brand">
+            <div class="brand-footer">
+              <div class="brand-mark" style="width: 50px; height: 50px; background: linear-gradient(135deg, #03dac5, #018786); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 1.5rem; color: #0b0e11; margin-bottom: 1rem;">SC</div>
+              <h3 style="color: #03dac5; margin-bottom: 0.5rem;">Silas Car Rentals</h3>
+              <p style="color: #ccc; font-size: 0.9rem; line-height: 1.6; margin-bottom: 1rem;">
+                Premium car rental service offering luxury and standard vehicles for business and leisure travel across Nigeria.
+              </p>
+            </div>
+            <div class="contact-info">
+              <div style="margin-bottom: 0.8rem;">
+                <strong style="color: #03dac5;">📧 Email:</strong><br/>
+                <a href="mailto:silasonyekachi15@gmail.com" style="color: #ccc; text-decoration: none;">silasonyekachi15@gmail.com</a>
+              </div>
+              <div style="margin-bottom: 0.8rem;">
+                <strong style="color: #03dac5;">📞 Phone:</strong><br/>
+                <a href="tel:+2348107586167" style="color: #ccc; text-decoration: none;">+234 810 758 6167</a>
+              </div>
+              <div>
+                <strong style="color: #03dac5;">📍 Location:</strong><br/>
+                <span style="color: #ccc;">Lagos, Nigeria</span>
+              </div>
+            </div>
+          </div>
+          
+          <div class="footer-services">
+            <h4 style="color: #03dac5; margin-bottom: 1rem; font-size: 1.2rem;">Our Services</h4>
+            <ul style="list-style: none; padding: 0;">
+              <li style="margin-bottom: 0.6rem;"><a href="book.html" style="color: #ccc; text-decoration: none; transition: color 0.3s;">🚗 Car Rentals</a></li>
+              <li style="margin-bottom: 0.6rem;"><a href="book.html" style="color: #ccc; text-decoration: none; transition: color 0.3s;">👔 Corporate Services</a></li>
+              <li style="margin-bottom: 0.6rem;"><a href="book.html" style="color: #ccc; text-decoration: none; transition: color 0.3s;">✈️ Airport Transfers</a></li>
+              <li style="margin-bottom: 0.6rem;"><a href="book.html" style="color: #ccc; text-decoration: none; transition: color 0.3s;">🎯 Chauffeur Services</a></li>
+              <li style="margin-bottom: 0.6rem;"><a href="book.html" style="color: #ccc; text-decoration: none; transition: color 0.3s;">📅 Long-term Rentals</a></li>
+            </ul>
+          </div>
+          
+          <div class="footer-company">
+            <h4 style="color: #03dac5; margin-bottom: 1rem; font-size: 1.2rem;">Company</h4>
+            <ul style="list-style: none; padding: 0;">
+              <li style="margin-bottom: 0.6rem;"><a href="about.html" style="color: #ccc; text-decoration: none; transition: color 0.3s;">About Us</a></li>
+              <li style="margin-bottom: 0.6rem;"><a href="terms.html" style="color: #ccc; text-decoration: none; transition: color 0.3s;">Terms & Conditions</a></li>
+              <li style="margin-bottom: 0.6rem;"><a href="privacy.html" style="color: #ccc; text-decoration: none; transition: color 0.3s;">Privacy Policy</a></li>
+              <li style="margin-bottom: 0.6rem;"><a href="faq.html" style="color: #ccc; text-decoration: none; transition: color 0.3s;">FAQ</a></li>
+              <li style="margin-bottom: 0.6rem;"><a href="contact.html" style="color: #ccc; text-decoration: none; transition: color 0.3s;">Contact Support</a></li>
+            </ul>
+          </div>
+          
+          <div class="footer-newsletter">
+            <h4 style="color: #03dac5; margin-bottom: 1rem; font-size: 1.2rem;">Stay Updated</h4>
+            <p style="color: #ccc; margin-bottom: 1rem; font-size: 0.9rem;">Get exclusive deals and updates</p>
+            <div style="display: flex; gap: 0.5rem;">
+              <input type="email" placeholder="Enter your email" style="flex: 1; padding: 0.5rem; border: 1px solid #333; background: #1a1a1a; color: #ccc; border-radius: 4px; font-size: 0.9rem;">
+              <button style="padding: 0.5rem 1rem; background: #03dac5; color: #0b0e11; border: none; border-radius: 4px; cursor: pointer; font-weight: bold;">Subscribe</button>
+            </div>
+          </div>
         </div>
-        <div>
-          <small class="meta">© <span id="year"></span> Silas Car Rentals</small>
+        
+        <div class="footer-divider" style="margin: 2rem 0; border-top: 1px solid #333;"></div>
+        
+        <div class="footer-bottom-row">
+          <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
+            <div>
+              <p style="color: #ccc; margin: 0; font-size: 0.9rem;">
+                © <span id="year"></span> Silas Car Rentals. All rights reserved.
+              </p>
+            </div>
+            
+            <div class="social-links" style="display: flex; gap: 1rem; align-items: center;">
+              <a href="#" style="color: #ccc; text-decoration: none; font-size: 1.2rem; transition: color 0.3s;" title="Facebook">📘</a>
+              <a href="#" style="color: #ccc; text-decoration: none; font-size: 1.2rem; transition: color 0.3s;" title="Twitter">🐦</a>
+              <a href="#" style="color: #ccc; text-decoration: none; font-size: 1.2rem; transition: color 0.3s;" title="Instagram">📷</a>
+              <a href="https://wa.link/c73sw8" style="color: #ccc; text-decoration: none; font-size: 1.2rem; transition: color 0.3s;" title="WhatsApp">📱</a>
+            </div>
+          </div>
         </div>
       </div>
     </footer>
   </main>
 
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <!-- Scroll to top button -->
+  <button id="scroll-to-top" class="scroll-to-top" aria-label="Scroll to top">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <path d="M12 19V5M5 12l7-7 7 7"/>
+    </svg>
+  </button>
 
   <script>
 const API_BASE = "https://techyjaunt-auth-go43.onrender.com";
@@ -171,6 +289,33 @@ async function fetchCar() {
 
 updateGlobalCounts();
 fetchCar();
+
+// Scroll to top functionality
+const scrollToTopBtn = document.getElementById('scroll-to-top');
+
+// Show/hide scroll button based on scroll position
+window.addEventListener('scroll', () => {
+  const scrollHeight = document.documentElement.scrollHeight;
+  const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+  const clientHeight = document.documentElement.clientHeight;
+  
+  // Show button when scrolled near the bottom (within 200px of bottom)
+  const isNearBottom = scrollTop + clientHeight >= scrollHeight - 200;
+  
+  if (isNearBottom && scrollTop > 300) {
+    scrollToTopBtn.classList.add('show');
+  } else {
+    scrollToTopBtn.classList.remove('show');
+  }
+});
+
+// Scroll to top when button is clicked
+scrollToTopBtn.addEventListener('click', () => {
+  window.scrollTo({
+    top: 0,
+    behavior: 'smooth'
+  });
+});
 </script>
 </body>
 </html>

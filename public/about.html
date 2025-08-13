@@ -1,0 +1,405 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>About Us - Silas Car Rentals</title>
+  <meta name="description" content="Learn about Silas Car Rentals - Nigeria's trusted premium car rental service since 2020. Discover our mission, values, and commitment to excellence." />
+  <link rel="stylesheet" href="style.css" />
+  <meta name="theme-color" content="#0b0e11">
+  <style>
+    .about-hero {
+      background: linear-gradient(135deg, rgba(3, 218, 197, 0.1), rgba(1, 135, 134, 0.1));
+      padding: 4rem 0;
+      margin: 2rem 0;
+      border-radius: 16px;
+    }
+    
+    .timeline {
+      position: relative;
+      max-width: 800px;
+      margin: 3rem auto;
+    }
+    
+    .timeline::after {
+      content: '';
+      position: absolute;
+      width: 3px;
+      background: var(--primary);
+      top: 0;
+      bottom: 0;
+      left: 50%;
+      margin-left: -1.5px;
+    }
+    
+    .timeline-item {
+      padding: 10px 40px;
+      position: relative;
+      background-color: inherit;
+      width: 50%;
+    }
+    
+    .timeline-item::after {
+      content: '';
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      right: -10px;
+      background: var(--primary);
+      border-radius: 50%;
+      top: 15px;
+    }
+    
+    .timeline-item:nth-child(even) {
+      left: 50%;
+    }
+    
+    .timeline-item:nth-child(even)::after {
+      left: -10px;
+    }
+    
+    .values-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 2rem;
+      margin: 3rem 0;
+    }
+    
+    .value-card {
+      background: rgba(3, 218, 197, 0.05);
+      padding: 2rem;
+      border-radius: 12px;
+      border: 1px solid rgba(3, 218, 197, 0.1);
+      text-align: center;
+      transition: transform 0.3s ease;
+    }
+    
+    .value-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 25px rgba(3, 218, 197, 0.1);
+    }
+    
+    .value-icon {
+      font-size: 3rem;
+      margin-bottom: 1rem;
+    }
+    
+    .certifications {
+      display: flex;
+      justify-content: center;
+      gap: 2rem;
+      flex-wrap: wrap;
+      margin: 3rem 0;
+    }
+    
+    .cert-badge {
+      background: rgba(3, 218, 197, 0.1);
+      padding: 1rem 2rem;
+      border-radius: 25px;
+      border: 1px solid rgba(3, 218, 197, 0.2);
+      font-weight: bold;
+      color: var(--primary);
+    }
+    
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 2rem;
+      margin: 3rem 0;
+    }
+    
+    .stat-card {
+      text-align: center;
+      padding: 2rem;
+      background: rgba(3, 218, 197, 0.05);
+      border-radius: 12px;
+    }
+    
+    .stat-number {
+      font-size: 2.5rem;
+      font-weight: bold;
+      color: var(--primary);
+      display: block;
+    }
+    
+    .stat-label {
+      color: var(--text-secondary);
+      margin-top: 0.5rem;
+    }
+    
+    @media (max-width: 768px) {
+      .timeline::after {
+        left: 31px;
+      }
+      
+      .timeline-item {
+        width: 100%;
+        padding-left: 70px;
+        padding-right: 25px;
+      }
+      
+      .timeline-item::after {
+        left: 21px;
+      }
+      
+      .timeline-item:nth-child(even) {
+        left: 0%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="navbar" role="banner">
+    <div class="container nav-inner">
+      <a href="index.html" class="brand" aria-label="Silas Car Rentals home">
+        <div class="brand-mark">SC</div>
+        <span class="brand-name">Silas Car Rentals</span>
+      </a>
+
+      <nav class="nav-links" aria-label="Main navigation">
+        <a class="nav-link" href="index.html">Home</a>
+        <a class="nav-link" href="book.html">Book</a>
+        <a class="nav-link active" href="about.html">About</a>
+        <a class="nav-link" href="#services">Services</a>
+        <a class="nav-link" href="#testimonials">Testimonials</a>
+        <a class="nav-link" href="contact.html">Contact</a>
+      </nav>
+
+      <div class="nav-actions" role="region" aria-label="User actions">
+        <div class="auth-actions" id="guest-actions">
+          <button class="btn btn-sm btn-login" onclick="location.href='login.html'">Login</button>
+          <button class="btn btn-outline btn-sm btn-signup" onclick="location.href='signup.html'">Sign up</button>
+        </div>
+
+        <div class="user-menu hidden" id="user-actions" aria-hidden="true">
+          <span class="user-name" id="user-name">User</span>
+          <button class="btn-sm btn-ghost" id="open-history" title="My rentals">My Rentals</button>
+          <button onclick="window.location.href='wishlist.html'" class="btn-sm btn-ghost" id="open-wishlist">❤️ Wishlist (<span id="wishlist-count">0</span>)</button>
+          <button class="btn btn-sm" id="logout-btn" title="Sign out">Logout</button>
+        </div>
+
+        <button id="open-cart" onclick="window.location.href='cart.html'" class="btn btn-ghost" aria-label="Open booking cart" title="Cart">
+          🧾 Cart (<span id="cart-count">0</span>)
+        </button>
+        <button onclick="window.location.href='saved.html'" class="btn btn-ghost" title="Saved Cars">💾 Saved (<span id="saved-count">0</span>)</button>
+
+        <button class="mobile-menu-btn" id="mobile-menu-btn" aria-label="Open menu">☰</button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- Hero Section -->
+    <section class="about-hero">
+      <div class="container">
+        <div style="text-align: center;">
+          <span class="pill">Since 2020 • Lagos, Nigeria</span>
+          <h1 class="hero-title">About Silas Car Rentals</h1>
+          <p class="hero-subtitle">Nigeria's trusted premium car rental service, delivering excellence in every journey since 2020.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Our Story Section -->
+    <section class="section">
+      <div class="container">
+        <h2 style="text-align: center; margin-bottom: 3rem; color: var(--primary);">Our Journey</h2>
+        
+        <div class="timeline">
+          <div class="timeline-item">
+            <div class="card">
+              <h3 style="color: var(--primary);">2020 - The Beginning</h3>
+              <p>Founded by Silas Nmenme with a vision to revolutionize car rental services in Nigeria. Started with just 5 premium vehicles and a commitment to excellence.</p>
+            </div>
+          </div>
+          
+          <div class="timeline-item">
+            <div class="card">
+              <h3 style="color: var(--primary);">2021 - Rapid Growth</h3>
+              <p>Expanded fleet to 50+ vehicles, serving over 1,000 satisfied customers. Introduced 24/7 customer support and mobile booking platform.</p>
+            </div>
+          </div>
+          
+          <div class="timeline-item">
+            <div class="card">
+              <h3 style="color: var(--primary);">2022 - Market Leadership</h3>
+              <p>Became Lagos's most trusted car rental platform with 150+ premium vehicles and 98% customer satisfaction rate.</p>
+            </div>
+          </div>
+          
+          <div class="timeline-item">
+            <div class="card">
+              <h3 style="color: var(--primary);">2023 - Innovation</h3>
+              <p>Launched advanced booking system, real-time vehicle tracking, and expanded services nationwide with 5,000+ happy customers.</p>
+            </div>
+          </div>
+          
+          <div class="timeline-item">
+            <div class="card">
+              <h3 style="color: var(--primary);">2024 - Future Forward</h3>
+              <p>Continuing to innovate with electric vehicle options, AI-powered recommendations, and expanded coverage across Nigeria.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Mission & Vision Section -->
+    <section class="section">
+      <div class="container">
+        <div style="text-align: center; margin-bottom: 3rem;">
+          <h2 style="color: var(--primary);">Our Mission & Vision</h2>
+        </div>
+        
+        <div class="values-grid">
+          <div class="value-card">
+            <div class="value-icon">🎯</div>
+            <h3>Mission</h3>
+            <p>To provide premium, reliable, and affordable car rental services that exceed customer expectations while maintaining the highest standards of safety and professionalism.</p>
+          </div>
+          
+          <div class="value-card">
+            <div class="value-icon">👁️</div>
+            <h3>Vision</h3>
+            <p>To become Africa's leading car rental platform, setting the standard for excellence in customer service, vehicle quality, and innovative technology solutions.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Core Values Section -->
+    <section class="section">
+      <div class="container">
+        <h2 style="text-align: center; margin-bottom: 3rem; color: var(--primary);">Our Core Values</h2>
+        
+        <div class="values-grid">
+          <div class="value-card">
+            <div class="value-icon">🤝</div>
+            <h3>Customer First</h3>
+            <p>Every decision we make puts our customers at the center. We listen, understand, and deliver beyond expectations.</p>
+          </div>
+          
+          <div class="value-card">
+            <div class="value-icon">✨</div>
+            <h3>Excellence</h3>
+            <p>We strive for perfection in every aspect of our service, from vehicle maintenance to customer interactions.</p>
+          </div>
+          
+          <div class="value-card">
+            <div class="value-icon">🔒</div>
+            <h3>Trust & Safety</h3>
+            <p>Your safety is our priority. All vehicles undergo rigorous maintenance and safety checks before every rental.</p>
+          </div>
+          
+          <div class="value-card">
+            <div class="value-icon">🚀</div>
+            <h3>Innovation</h3>
+            <p>We continuously invest in technology and processes to make car rental easier, faster, and more enjoyable.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Statistics Section -->
+    <section class="section">
+      <div class="container">
+        <h2 style="text-align: center; margin-bottom: 3rem; color: var(--primary);">By The Numbers</h2>
+        
+        <div class="stats-grid">
+          <div class="stat-card">
+            <span class="stat-number">5,000+</span>
+            <span class="stat-label">Happy Customers</span>
+          </div>
+          
+          <div class="stat-card">
+            <span class="stat-number">200+</span>
+            <span class="stat-label">Premium Vehicles</span>
+          </div>
+          
+          <div class="stat-card">
+            <span class="stat-number">98%</span>
+            <span class="stat-label">Customer Satisfaction</span>
+          </div>
+          
+          <div class="stat-card">
+            <span class="stat-number">24/7</span>
+            <span class="stat-label">Customer Support</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Certifications Section -->
+    <section class="section">
+      <div class="container">
+        <h2 style="text-align: center; margin-bottom: 3rem; color: var(--primary);">Our Certifications</h2>
+        
+        <div class="certifications">
+          <div class="cert-badge">FRSC Certified</div>
+          <div class="cert-badge">Lagos State Licensed</div>
+          <div class="cert-badge">Insurance Compliant</div>
+          <div class="cert-badge">ISO 9001 Quality</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Call to Action -->
+    <section class="section" style="text-align: center; padding: 4rem 0;">
+      <div class="container">
+        <h2 style="color: var(--primary); margin-bottom: 1rem;">Ready to Experience Excellence?</h2>
+        <p style="margin-bottom: 2rem;">Join thousands of satisfied customers who trust Silas Car Rentals for their transportation needs.</p>
+        <a href="book.html" class="btn btn-primary btn-lg">Book Your Ride Now</a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-section">
+          <h3>Silas Car Rentals</h3>
+          <p>Nigeria's trusted premium car rental service since 2020.</p>
+          <div class="social-links">
+            <a href="#" aria-label="Facebook">📘</a>
+            <a href="#" aria-label="Twitter">🐦</a>
+            <a href="#" aria-label="Instagram">📷</a>
+            <a href="#" aria-label="LinkedIn">💼</a>
+          </div>
+        </div>
+        
+        <div class="footer-section">
+          <h4>Quick Links</h4>
+          <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="book.html">Book</a></li>
+            <li><a href="about.html">About</a></li>
+            <li><a href="contact.html">Contact</a></li>
+          </ul>
+        </div>
+        
+        <div class="footer-section">
+          <h4>Support</h4>
+          <ul>
+            <li><a href="faq.html">FAQ</a></li>
+            <li><a href="privacy.html">Privacy Policy</a></li>
+            <li><a href="terms.html">Terms of Service</a></li>
+          </ul>
+        </div>
+        
+        <div class="footer-section">
+          <h4>Contact Info</h4>
+          <p>📍 Lagos, Nigeria</p>
+          <p>📞 +234 810 758 6167</p>
+          <p>✉️ silasonyekachi15@gmail.com</p>
+        </div>
+      </div>
+      
+      <div class="footer-bottom">
+        <p>&copy; 2025 Silas Car Rentals. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>

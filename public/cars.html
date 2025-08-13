@@ -1,0 +1,257 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Available Cars - Silas Car Rentals</title>
+  <meta name="description" content="Browse our premium fleet of cars available for rent in Lagos, Nigeria." />
+  <link rel="stylesheet" href="style.css" />
+  <meta name="theme-color" content="#0b0e11">
+</head>
+<body>
+  <header class="navbar" role="banner">
+    <div class="container nav-inner">
+      <a href="index.html" class="brand" aria-label="Silas Car Rentals home">
+        <div class="brand-mark">SC</div>
+        <span class="brand-name">Silas Car Rentals</span>
+      </a>
+
+      <nav class="nav-links" aria-label="Main navigation">
+        <a class="nav-link" href="index.html">Home</a>
+        <a class="nav-link active" href="cars.html">Browse Cars</a>
+        <a class="nav-link" href="book.html">Book</a>
+        <a class="nav-link" href="index.html#how">How it Works</a>
+        <a class="nav-link" href="index.html#testimonials">Testimonials</a>
+        <a class="nav-link" href="index.html#contact">Contact</a>
+      </nav>
+
+      <div class="nav-actions" role="region" aria-label="User actions">
+        <div class="auth-actions" id="guest-actions">
+          <button class="btn btn-sm btn-login" onclick="location.href='login.html'">Login</button>
+          <button class="btn btn-outline btn-sm btn-signup" onclick="location.href='signup.html'">Sign up</button>
+        </div>
+
+        <div class="user-menu hidden" id="user-actions" aria-hidden="true">
+          <span class="user-name" id="user-name">User</span>
+          <button class="btn-sm btn-ghost" id="open-history" title="My rentals">My Rentals</button>
+          <button onclick="window.location.href='wishlist.html'" class="btn-sm btn-ghost" id="open-wishlist">❤️ Wishlist (<span id="wishlist-count">0</span>)</button>
+          <button class="btn btn-sm" id="logout-btn" title="Sign out">Logout</button>
+        </div>
+
+        <button id="open-cart" onclick="window.location.href='cart.html'" class="btn btn-ghost" aria-label="Open booking cart" title="Cart">
+          🧾 Cart (<span id="cart-count">0</span>)
+        </button>
+        <button onclick="window.location.href='saved.html'" class="btn btn-ghost" title="Saved Cars">💾 Saved (<span id="saved-count">0</span>)</button>
+
+        <button class="mobile-menu-btn" id="mobile-menu-btn" aria-label="Open menu">☰</button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero section" style="background: linear-gradient(135deg, rgba(3, 218, 197, 0.1), rgba(1, 135, 134, 0.1));">
+      <div class="container hero-inner">
+        <span class="pill">Premium Fleet</span>
+        <h1 class="hero-title">Browse Our Available Cars</h1>
+        <p class="hero-subtitle">Discover our curated selection of luxury and standard vehicles ready for your next journey.</p>
+      </div>
+    </section>
+
+    <section id="browse" class="section container" aria-labelledby="browse-heading">
+      <h2 id="browse-heading" style="margin-bottom:16px">Available Cars</h2>
+      <div id="car-count" style="color:var(--muted); margin-bottom:8px;">Loading...</div>
+      <div class="grid" id="cars-grid" aria-live="polite"></div>
+    </section>
+  </main>
+
+  <footer id="contact" class="footer section">
+    <div class="container footer-inner">
+      <div class="footer-main">
+        <div class="footer-brand">
+          <div class="brand-footer">
+            <div class="brand-mark" style="width: 50px; height: 50px; background: linear-gradient(135deg, #03dac5, #018786); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 1.5rem; color: #0b0e11; margin-bottom: 1rem;">SC</div>
+            <h3 style="color: #03dac5; margin-bottom: 0.5rem;">Silas Car Rentals</h3>
+            <p style="color: #ccc; font-size: 0.9rem; line-height: 1.6; margin-bottom: 1rem;">
+              Premium car rental service offering luxury and standard vehicles for business and leisure travel across Nigeria.
+            </p>
+          </div>
+          <div class="contact-info">
+            <div style="margin-bottom: 0.8rem;">
+              <strong style="color: #03dac5;">📧 Email:</strong><br/>
+              <a href="mailto:silasonyekachi15@gmail.com" style="color: #ccc; text-decoration: none;">silasonyekachi15@gmail.com</a>
+            </div>
+            <div style="margin-bottom: 0.8rem;">
+              <strong style="color: #03dac5;">📞 Phone:</strong><br/>
+              <a href="tel:+2348107586167" style="color: #ccc; text-decoration: none;">+234 810 758 6167</a>
+            </div>
+            <div>
+              <strong style="color: #03dac5;">📍 Location:</strong><br/>
+              <span style="color: #ccc;">Lagos, Nigeria</span>
+            </div>
+          </div>
+        </div>
+        
+        <div class="footer-services">
+          <h4 style="color: #03dac5; margin-bottom: 1rem; font-size: 1.2rem;">Our Services</h4>
+          <ul style="list-style: none; padding: 0;">
+            <li style="margin-bottom: 0.6rem;"><a href="book.html" style="color: #ccc; text-decoration: none; transition: color 0.3s;">🚗 Car Rentals</a></li>
+            <li style="margin-bottom: 0.6rem;"><a href="book.html" style="color: #ccc; text-decoration: none; transition: color 0.3s;">👔 Corporate Services</a></li>
+            <li style="margin-bottom: 0.6rem;"><a href="book.html" style="color: #ccc; text-decoration: none; transition: color 0.3s;">✈️ Airport Transfers</a></li>
+            <li style="margin-bottom: 0.6rem;"><a href="book.html" style="color: #ccc; text-decoration: none; transition: color 0.3s;">🎯 Chauffeur Services</a></li>
+            <li style="margin-bottom: 0.6rem;"><a href="book.html" style="color: #ccc; text-decoration: none; transition: color 0.3s;">📅 Long-term Rentals</a></li>
+          </ul>
+        </div>
+        
+        <div class="footer-company">
+          <h4 style="color: #03dac5; margin-bottom: 1rem; font-size: 1.2rem;">Company</h4>
+          <ul style="list-style: none; padding: 0;">
+            <li style="margin-bottom: 0.6rem;"><a href="about.html" style="color: #ccc; text-decoration: none; transition: color 0.3s;">About Us</a></li>
+            <li style="margin-bottom: 0.6rem;"><a href="terms.html" style="color: #ccc; text-decoration: none; transition: color 0.3s;">Terms & Conditions</a></li>
+            <li style="margin-bottom: 0.6rem;"><a href="privacy.html" style="color: #ccc; text-decoration: none; transition: color 0.3s;">Privacy Policy</a></li>
+            <li style="margin-bottom: 0.6rem;"><a href="faq.html" style="color: #ccc; text-decoration: none; transition: color 0.3s;">FAQ</a></li>
+            <li style="margin-bottom: 0.6rem;"><a href="contact.html" style="color: #ccc; text-decoration: none; transition: color 0.3s;">Contact Support</a></li>
+          </ul>
+        </div>
+        
+        <div class="footer-newsletter">
+          <h4 style="color: #03dac5; margin-bottom: 1rem; font-size: 1.2rem;">Stay Updated</h4>
+          <p style="color: #ccc; margin-bottom: 1rem; font-size: 0.9rem;">Get exclusive deals and updates</p>
+          <div style="display: flex; gap: 0.5rem;">
+            <input type="email" placeholder="Enter your email" style="flex: 1; padding: 0.5rem; border: 1px solid #333; background: #1a1a1a; color: #ccc; border-radius: 4px; font-size: 0.9rem;">
+            <button style="padding: 0.5rem 1rem; background: #03dac5; color: #0b0e11; border: none; border-radius: 4px; cursor: pointer; font-weight: bold;">Subscribe</button>
+          </div>
+        </div>
+      </div>
+      
+      <div class="footer-divider" style="margin: 2rem 0; border-top: 1px solid #333;"></div>
+      
+      <div class="footer-bottom-row">
+        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
+          <div>
+            <p style="color: #ccc; margin: 0; font-size: 0.9rem;">
+              © <span id="year"></span> Silas Car Rentals. All rights reserved.
+            </p>
+          </div>
+          
+          <div class="social-links" style="display: flex; gap: 1rem; align-items: center;">
+            <a href="#" style="color: #ccc; text-decoration: none; font-size: 1.2rem; transition: color 0.3s;" title="Facebook">📘</a>
+            <a href="#" style="color: #ccc; text-decoration: none; font-size: 1.2rem; transition: color 0.3s;" title="Twitter">🐦</a>
+            <a href="#" style="color: #ccc; text-decoration: none; font-size: 1.2rem; transition: color 0.3s;" title="Instagram">📷</a>
+            <a href="https://wa.link/c73sw8" style="color: #ccc; text-decoration: none; font-size: 1.2rem; transition: color 0.3s;" title="WhatsApp">📱</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <!-- Scroll to top button -->
+  <button id="scroll-to-top" class="scroll-to-top" aria-label="Scroll to top">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <path d="M12 19V5M5 12l7-7 7 7"/>
+    </svg>
+  </button>
+
+  <script>
+const API_BASE = "https://techyjaunt-auth-go43.onrender.com";
+const BENZ_ID = "689479c630cf9351877939e6"; 
+const placeholderImage = "https://vehicle-images.dealerinspire.com/a1a7-11002896/W1KAF4GB4SR252999/00f2d6ad30e089cb5c02791d58c3af6a.jpg";
+
+const defaultCar = {
+  _id: BENZ_ID,
+  make: "Mercedes-Benz",
+  model: "C300",
+  year: 2025,
+  price: 40000,
+  color: "Black",
+  brand: "Mercedes-Benz",
+  description: "Brand new luxury sedan",
+  image: placeholderImage
+};
+
+function getStorage(key) {
+  return JSON.parse(localStorage.getItem(key)) || [];
+}
+
+function updateGlobalCounts() {
+  document.getElementById("cart-count").textContent = getStorage("cart").length;
+  document.getElementById("wishlist-count").textContent = getStorage("wishlist").length;
+  document.getElementById("saved-count").textContent = getStorage("savedCars").length;
+}
+
+function showToast(msg, ms = 3000) {
+  const toast = document.getElementById("toast");
+  toast.textContent = msg;
+  toast.classList.add("show");
+  setTimeout(() => toast.classList.remove("show"), ms);
+}
+
+function renderCar(car) {
+  const grid = document.getElementById("cars-grid");
+  const count = document.getElementById("car-count");
+
+  count.textContent = "1 car available";
+  grid.innerHTML = `
+    <div class="car-card">
+      <img src="${car.image || placeholderImage}" alt="${car.make}" style="width:100%; height:auto; border-radius:8px;">
+      <h3>${car.make} ${car.model}</h3>
+      <p><strong>₦${car.price.toLocaleString()}</strong> / day</p>
+      <div style="display:flex; gap:8px; flex-wrap:wrap; margin-top:10px;">
+        <button class="btn" data-action="rent-now" data-id="${car._id}">Rent Now</button>
+        <button class="btn btn-outline" data-action="add-cart" data-id="${car._id}">Add to Cart</button>
+        <button class="btn btn-outline" data-action="add-wishlist" data-id="${car._id}">Wishlist</button>
+        <button class="btn btn-outline" data-action="add-saved" data-id="${car._id}">Save</button>
+      </div>
+    </div>
+  `;
+}
+
+async function fetchCar() {
+  renderCar(defaultCar);
+  try {
+    const res = await fetch(`${API_BASE}/api/cars/get-cars`);
+    if (!res.ok) throw new Error();
+    const cars = await res.json();
+    const car = cars.find(c => c._id === BENZ_ID);
+    if (car) {
+      car.image = car.image && car.image.trim() !== "" ? car.image : placeholderImage;
+      renderCar(car);
+    }
+  } catch (err) {
+    console.warn("Using offline car data - backend unreachable", err);
+  }
+}
+
+updateGlobalCounts();
+fetchCar();
+
+// Scroll to top functionality
+const scrollToTopBtn = document.getElementById('scroll-to-top');
+
+// Show/hide scroll button based on scroll position
+window.addEventListener('scroll', () => {
+  const scrollHeight = document.documentElement.scrollHeight;
+  const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+  const clientHeight = document.documentElement.clientHeight;
+  
+  // Show button when scrolled near the bottom (within 200px of bottom)
+  const isNearBottom = scrollTop + clientHeight >= scrollHeight - 200;
+  
+  if (isNearBottom && scrollTop > 300) {
+    scrollToTopBtn.classList.add('show');
+  } else {
+    scrollToTopBtn.classList.remove('show');
+  }
+});
+
+// Scroll to top when button is clicked
+scrollToTopBtn.addEventListener('click', () => {
+  window.scrollTo({
+    top: 0,
+    behavior: 'smooth'
+  });
+});
+</script>
+</body>
+</html>
