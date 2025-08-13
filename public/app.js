@@ -1,5 +1,7 @@
 // app.js
-const API_BASE = "https://techyjaunt-auth-go43.onrender.com";
+const API_BASE = window.location.hostname.includes("localhost") || window.location.hostname.includes("127.0.0.1")
+  ? "http://localhost:4500"
+  : "https://techyjaunt-auth-go43.onrender.com";
 
 // Shortcuts
 const qs = (s) => document.querySelector(s);
