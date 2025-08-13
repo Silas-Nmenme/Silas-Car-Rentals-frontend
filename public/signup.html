@@ -223,12 +223,7 @@
   <div id="toast"></div>
 
   <script>
-  // Auto-switch between local and production URLs
-  const BASE_URL =
-    window.location.hostname.includes("localhost") ||
-    window.location.hostname.includes("127.0.0.1")
-      ? "http://localhost:4500"
-      : "https://techyjaunt-auth-go43.onrender.com";
+  const BASE_URL = "https://techyjaunt-auth-go43.onrender.com";
 
   function showToast(msg, ms = 3000) {
     const toast = document.getElementById('toast');
@@ -281,7 +276,7 @@
         method: "POST",
         headers: { "Content-Type": "application/json" },
         credentials: "include", // in case backend uses sessions
-        body: JSON.stringify({ name, email, password, phoneNumber }) // match backend exactly
+        body: JSON.stringify({ name, email, password, phoneNumber })
       });
 
       const data = await res.json();
