@@ -51,6 +51,7 @@
       justify-content: center;
       align-items: center;
       padding: 2rem;
+    }
     .form-container {
       background: #1f1f1f;
       border-radius: 8px;
@@ -246,15 +247,9 @@
       e.preventDefault();
       const email = e.target.email.value.trim();
       const password = e.target.password.value.trim();
-      const termsAccepted = e.target.terms.checked;
 
       if (!email || !password) {
         showToast("Please fill in all fields");
-        return;
-      }
-
-      if (!termsAccepted) {
-        showToast("Please accept the Terms and Conditions");
         return;
       }
 
