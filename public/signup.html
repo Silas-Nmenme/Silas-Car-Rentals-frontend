@@ -280,7 +280,8 @@
       if (token) {
         window.location.href = `verify-email.html?token=${token}`;
       } else {
-        showToast("Signup successful! Please check your email.");
+        // Always redirect to verify-email page after successful signup
+        window.location.href = 'verify-email.html';
       }
 
     } catch (error) {
