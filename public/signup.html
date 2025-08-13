@@ -256,39 +256,12 @@
       }
     }
 
-    // Password confirmation validation
-    function validatePasswordMatch() {
-      const password = document.getElementById('password').value;
-      const confirmPassword = document.getElementById('confirmPassword').value;
-      const confirmMatch = document.getElementById('confirm-match');
-      
-      if (confirmPassword.length > 0) {
-        if (password === confirmPassword) {
-          confirmMatch.textContent = "Passwords match ✓";
-          confirmMatch.className = "match";
-          return true;
-        } else {
-          confirmMatch.textContent = "Passwords do not match ✗";
-          confirmMatch.className = "no-match";
-          return false;
-        }
-      } else {
-        confirmMatch.textContent = "";
-        return false;
-      }
-    }
-
-    // Add event listeners for password validation
-    document.getElementById('password').addEventListener('input', validatePasswordMatch);
-    document.getElementById('confirmPassword').addEventListener('input', validatePasswordMatch);
-
     document.getElementById("auth-form").addEventListener("submit", async (e) => {
       e.preventDefault();
       const name = e.target.name.value.trim();
       const email = e.target.email.value.trim();
       const phone = e.target.phone.value.trim();
       const password = e.target.password.value.trim();
-      // const confirmPassword = e.target.confirmPassword.value.trim();
 
       if (!name || !email || !phone || !password) {
         showToast("Please fill in all fields");
