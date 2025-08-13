@@ -163,20 +163,7 @@
       color: #03dac5;
     }
     
-    #confirm-match {
-      font-size: 0.8rem;
-      margin-top: -0.5rem;
-      margin-bottom: 0.5rem;
-      height: 1rem;
-    }
-    
-    #confirm-match.match {
-      color: #03dac5;
-    }
-    
-    #confirm-match.no-match {
-      color: #ff6b6b;
-    }
+    /* Confirm Password styles removed */
   </style>
 </head>
 <body>
@@ -216,17 +203,7 @@
           </button>
         </div>
 
-        <label for="confirmPassword">Confirm Password</label>
-        <div class="password-input">
-          <input type="password" id="confirmPassword" name="confirmPassword" required placeholder="Confirm your password" minlength="6">
-          <button type="button" class="toggle-pass" onclick="togglePassword('confirmPassword')" title="Toggle confirm password visibility" aria-label="Toggle confirm password visibility">
-            <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-              <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
-              <circle cx="12" cy="12" r="3"></circle>
-            </svg>
-          </button>
-        </div>
-        <div id="confirm-match"></div>
+        <!-- Confirm Password functionality removed -->
 
         <div style="display: flex; align-items: center; margin: 1rem 0;">
           <input type="checkbox" id="terms" name="terms" required style="width: auto; margin-right: 0.5rem;">
@@ -311,15 +288,10 @@
       const email = e.target.email.value.trim();
       const phone = e.target.phone.value.trim();
       const password = e.target.password.value.trim();
-      const confirmPassword = e.target.confirmPassword.value.trim();
+      // const confirmPassword = e.target.confirmPassword.value.trim();
 
-      if (!name || !email || !phone || !password || !confirmPassword) {
+      if (!name || !email || !phone || !password) {
         showToast("Please fill in all fields");
-        return;
-      }
-
-      if (password !== confirmPassword) {
-        showToast("Passwords do not match");
         return;
       }
 
