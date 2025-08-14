@@ -150,8 +150,15 @@ async function subscribeNewsletter(e) {
   e.preventDefault();
   const email = e.target[0].value;
 
+  // Basic email validation
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!emailRegex.test(email)) {
+    document.getElementById('newsletter-message').textContent = 'Please enter a valid email address.';
+    return;
+  }
+
   try {
-    const res = await fetch(`${baseUrl}/api/newsletter`, {
+    const res = await fetch(`${API_BASE}/api/newsletter/subscribe`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email })
@@ -160,11 +167,13 @@ async function subscribeNewsletter(e) {
     const data = await res.json();
     if (!res.ok) throw new Error(data.message || 'Newsletter subscription failed.');
 
-    document.getElementById('newsletter-message').textContent = data.message;
+    document.getElementById('newsletter-message').textContent = data.message || 'Successfully subscribed to newsletter!';
+    document.getElementById('newsletter-message').style.color = '#03dac5';
     e.target.reset();
   } catch (err) {
     console.error('Newsletter Error:', err);
-    document.getElementById('newsletter-message').textContent = 'Failed to subscribe to newsletter.';
+    document.getElementById('newsletter-message').textContent = err.message || 'Failed to subscribe to newsletter.';
+    document.getElementById('newsletter-message').style.color = '#f44336';
   }
 }
 
