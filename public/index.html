@@ -179,10 +179,13 @@
           <div class="footer-newsletter">
             <h4 style="color: #03dac5; margin-bottom: 1rem; font-size: 1.2rem;">Stay Updated</h4>
             <p style="color: #ccc; margin-bottom: 1rem; font-size: 0.9rem;">Get exclusive deals and updates</p>
-            <div style="display: flex; gap: 0.5rem;">
-              <input type="email" placeholder="Enter your email" style="flex: 1; padding: 0.5rem; border: 1px solid #333; background: #1a1a1a; color: #ccc; border-radius: 4px; font-size: 0.9rem;">
-              <button style="padding: 0.5rem 1rem; background: #03dac5; color: #0b0e11; border: none; border-radius: 4px; cursor: pointer; font-weight: bold;">Subscribe</button>
-            </div>
+            <form id="newsletter-form" style="display: flex; gap: 0.5rem; flex-direction: column;">
+              <div style="display: flex; gap: 0.5rem;">
+                <input type="email" name="email" placeholder="Enter your email" required style="flex: 1; padding: 0.5rem; border: 1px solid #333; background: #1a1a1a; color: #ccc; border-radius: 4px; font-size: 0.9rem;">
+                <button type="submit" style="padding: 0.5rem 1rem; background: #03dac5; color: #0b0e11; border: none; border-radius: 4px; cursor: pointer; font-weight: bold;">Subscribe</button>
+              </div>
+              <div id="newsletter-message" style="font-size: 0.8rem; margin-top: 0.5rem; min-height: 1rem;"></div>
+            </form>
           </div>
         </div>
         

@@ -126,6 +126,34 @@ document.addEventListener("click", (e) => {
   }
 });
 
+document.addEventListener("DOMContentLoaded", () => {
+  const newsletterForm = document.getElementById("newsletter-form");
+  if (newsletterForm) {
+    newsletterForm.addEventListener("submit", subscribeNewsletter);
+  }
+});
+
+document.addEventListener("DOMContentLoaded", () => {
+  const newsletterForm = document.getElementById("newsletter-form");
+  if (newsletterForm) {
+    newsletterForm.addEventListener("submit", subscribeNewsletter);
+  }
+});
+
+document.addEventListener("DOMContentLoaded", () => {
+  const newsletterForm = document.getElementById("newsletter-form");
+  if (newsletterForm) {
+    newsletterForm.addEventListener("submit", subscribeNewsletter);
+  }
+});
+
+document.addEventListener("DOMContentLoaded", () => {
+  const newsletterForm = document.getElementById("newsletter-form");
+  if (newsletterForm) {
+    newsletterForm.addEventListener("submit", subscribeNewsletter);
+  }
+});
+
 // --- CHECKOUT ---
 const proceedToCheckoutBtn = qs("#proceed-to-checkout");
 if (proceedToCheckoutBtn) {
@@ -145,7 +173,13 @@ if (proceedToCheckoutBtn) {
   });
 }
 
-// Newsletter subscription
+document.addEventListener('DOMContentLoaded', () => {
+  const newsletterForm = document.getElementById('newsletter-form');
+  if (newsletterForm) {
+    newsletterForm.addEventListener('submit', subscribeNewsletter);
+  }
+});
+
 async function subscribeNewsletter(e) {
   e.preventDefault();
   const email = e.target[0].value;
@@ -301,5 +335,11 @@ function renderCars(cars) {
 
 // Fetch cars on page load
 fetchCars();
+
+// Newsletter subscription form event listener
+const newsletterForm = document.getElementById('newsletter-form');
+if (newsletterForm) {
+  newsletterForm.addEventListener('submit', subscribeNewsletter);
+}
 
 
