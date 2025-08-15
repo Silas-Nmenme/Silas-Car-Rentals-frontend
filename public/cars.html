@@ -229,6 +229,92 @@ async function fetchCar() {
 updateGlobalCounts();
 fetchCar();
 
+// Add event listeners for car action buttons
+document.addEventListener('click', async (e) => {
+  const action = e.target.dataset.action;
+  const carId = e.target.dataset.id;
+  
+  if (!action || !carId) return;
+  
+  try {
+    let car;
+    
+    // Fetch car details if we have the ID
+    if (carId === BENZ_ID) {
+      car = defaultCar;
+    } else {
+      const res = await fetch(`${API_BASE}/api/cars/${carId}`);
+      car = await res.json();
+      if (!res.ok) {
+        showToast("Error fetching car details", 3000, "#f44336");
+        return;
+      }
+    }
+    
+    switch (action) {
+      case 'rent-now':
+        // Add to cart and redirect
+        addToCart(car);
+        setTimeout(() => {
+          window.location.href = 'cart.html';
+        }, 1000);
+        break;
+        
+      case 'add-cart':
+        addToCart(car);
+        break;
+        
+      case 'add-wishlist':
+        addToWishlist(car);
+        break;
+        
+      case 'add-saved':
+        addToSaved(car);
+        break;
+    }
+  } catch (err) {
+    console.error(err);
+    showToast("Network error", 3000, "#f44336");
+  }
+});
+
+// Helper functions for cart, wishlist, and saved cars
+function addToCart(car) {
+  const cart = getStorage("cart");
+  if (cart.find((c) => c._id === car._id)) {
+    showToast("Car already in cart", 3000, "#ff9800");
+    return;
+  }
+  cart.push(car);
+  localStorage.setItem("cart", JSON.stringify(cart));
+  updateGlobalCounts();
+  showToast("Added to cart");
+}
+
+function addToWishlist(car) {
+  const wishlist = getStorage("wishlist");
+  if (wishlist.find((c) => c._id === car._id)) {
+    showToast("Car already in wishlist", 3000, "#ff9800");
+    return;
+  }
+  wishlist.push(car);
+  localStorage.setItem("wishlist", JSON.stringify(wishlist));
+  updateGlobalCounts();
+  showToast("Added to wishlist");
+}
+
+function addToSaved(car) {
+  const savedCars = getStorage("savedCars");
+  if (savedCars.find((c) => c._id === car._id)) {
+    showToast("Car already saved", 3000, "#ff9800");
+    return;
+  }
+  savedCars.push(car);
+  localStorage.setItem("savedCars", JSON.stringify(savedCars));
+  updateGlobalCounts();
+  showToast("Car saved");
+}
+
 // Scroll to top functionality
 const scrollToTopBtn = document.getElementById('scroll-to-top');
 
