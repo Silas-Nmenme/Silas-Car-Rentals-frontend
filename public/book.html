@@ -68,6 +68,20 @@
       font-size: 0.875rem;
       margin-top: 0.25rem;
     }
+    
+    .car-selector {
+      margin-bottom: 2rem;
+      padding: 1rem;
+      background: #f8f9fa;
+      border-radius: 8px;
+    }
+    
+    .car-selector label {
+      display: block;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+      color: #333;
+    }
   </style>
 </head>
 <body>
@@ -109,6 +123,14 @@
       <!-- Hidden carId field -->
       <input type="hidden" id="carId" name="carId" />
       
+      <!-- Car Selection -->
+      <div class="car-selector">
+        <label for="car-select">Select Car:</label>
+        <select id="car-select" class="form-control">
+          <option value="">Loading cars...</option>
+        </select>
+      </div>
+      
       <!-- Contact Information -->
       <div class="form-group">
         <label for="email">Email Address *</label>
@@ -131,72 +153,10 @@
         </div>
         
         <div class="form-group">
-          <label for="pickup-time">Pickup Time *</label>
-          <select id="pickup-time" name="pickup-time" required>
-            <option value="">Select time</option>
-            <option value="08:00">8:00 AM</option>
-            <option value="09:00">9:00 AM</option>
-            <option value="10:00">10:00 AM</option>
-            <option value="11:00">11:00 AM</option>
-            <option value="12:00">12:00 PM</option>
-            <option value="13:00">1:00 PM</option>
-            <option value="14:00">2:00 PM</option>
-            <option value="15:00">3:00 PM</option>
-            <option value="16:00">4:00 PM</option>
-            <option value="17:00">5:00 PM</option>
-          </select>
-        </div>
-      </div>
-      
-      <div class="form-row">
-        <div class="form-group">
           <label for="return-date">Return Date *</label>
           <input type="date" id="return-date" name="endDate" required />
           <div class="error-message" id="return-date-error"></div>
         </div>
-        
-        <div class="form-group">
-          <label for="return-time">Return Time *</label>
-          <select id="return-time" name="return-time" required>
-            <option value="">Select time</option>
-            <option value="08:00">8:00 AM</option>
-            <option value="09:00">9:00 AM</option>
-            <option value="10:00">10:00 AM</option>
-            <option value="11:00">11:00 AM</option>
-            <option value="12:00">12:00 PM</option>
-            <option value="13:00">1:00 PM</option>
-            <option value="14:00">2:00 PM</option>
-            <option value="15:00">3:00 PM</option>
-            <option value="16:00">4:00 PM</option>
-            <option value="17:00">5:00 PM</option>
-          </select>
-        </div>
-      </div>
-      
-      <div class="form-group">
-        <label for="pickup-location">Pickup Location</label>
-        <select id="pickup-location" name="pickup-location" required>
-          <option value="">Select pickup location</option>
-          <option value="lagos-airport">Lagos Airport (Murtala Muhammed)</option>
-          <option value="lagos-victoria">Victoria Island</option>
-          <option value="lagos-ikeja">Ikeja</option>
-          <option value="abuja-airport">Abuja Airport</option>
-          <option value="abuja-central">Abuja Central</option>
-          <option value="port-harcourt">Port Harcourt</option>
-        </select>
-      </div>
-      
-      <div class="form-group">
-        <label for="return-location">Return Location</label>
-        <select id="return-location" name="return-location" required>
-          <option value="">Select return location</option>
-          <option value="lagos-airport">Lagos Airport (Murtala Muhammed)</option>
-          <option value="lagos-victoria">Victoria Island</option>
-          <option value="lagos-ikeja">Ikeja</option>
-          <option value="abuja-airport">Abuja Airport</option>
-          <option value="abuja-central">Abuja Central</option>
-          <option value="port-harcourt">Port Harcourt</option>
-        </select>
       </div>
       
       <button type="submit" class="btn btn-primary btn-lg" id="submitBtn">
@@ -226,14 +186,10 @@
       
       // Get car ID from URL parameters
       const urlParams = new URLSearchParams(window.location.search);
-      const carId = urlParams.get('carId') || localStorage.getItem('selectedCarId');
+      const initialCarId = urlParams.get('carId') || localStorage.getItem('selectedCarId');
       
-      if (carId) {
-        document.getElementById('carId').value = carId;
-      } else {
-        alert('No car selected. Please go back and select a car first.');
-        window.location.href = 'cars.html';
-      }
+      // Load available cars
+      loadAvailableCars(initialCarId);
       
       // Get user info if logged in
       const user = JSON.parse(localStorage.getItem('user'));
@@ -246,14 +202,6 @@
       const cart = JSON.parse(localStorage.getItem('cart')) || [];
       document.getElementById('cart-count').textContent = cart.length;
       
-      // Auto-update return location when pickup location changes
-      document.getElementById('pickup-location').addEventListener('change', function() {
-        const returnLocation = document.getElementById('return-location');
-        if (!returnLocation.value) {
-          returnLocation.value = this.value;
-        }
-      });
-      
       // Auto-set return date to 1 day after pickup
       document.getElementById('pickup-date').addEventListener('change', function() {
         const returnDate = document.getElementById('return-date');
@@ -265,6 +213,11 @@
         if (!returnDate.value || new Date(returnDate.value) <= pickup) {
           returnDate.value = nextDay.toISOString().split('T')[0];
         }
+      });
+      
+      // Car selection change
+      document.getElementById('car-select').addEventListener('change', function() {
+        document.getElementById('carId').value = this.value;
       });
       
       // Form submission
@@ -333,6 +286,11 @@
         
         try {
           const carId = document.getElementById('carId').value;
+          if (!carId) {
+            alert('Please select a car');
+            return;
+          }
+          
           const response = await fetch(`/api/payment/pay/${carId}`, {
             method: 'POST',
             headers: {
@@ -361,6 +319,35 @@
         }
       });
     });
+    
+    async function loadAvailableCars(initialCarId) {
+      try {
+        const response = await fetch('/api/cars');
+        const cars = await response.json();
+        
+        const carSelect = document.getElementById('car-select');
+        carSelect.innerHTML = '<option value="">Select a car</option>';
+        
+        cars.forEach(car => {
+          const option = document.createElement('option');
+          option.value = car.id;
+          option.textContent = `${car.make} ${car.model} (${car.year}) - ₦${car.pricePerDay}/day`;
+          carSelect.appendChild(option);
+        });
+        
+        // Set initial car selection
+        if (initialCarId) {
+          carSelect.value = initialCarId;
+          document.getElementById('carId').value = initialCarId;
+        } else if (cars.length > 0) {
+          carSelect.value = cars[0].id;
+          document.getElementById('carId').value = cars[0].id;
+        }
+      } catch (error) {
+        console.error('Error loading cars:', error);
+        document.getElementById('car-select').innerHTML = '<option value="">Error loading cars</option>';
+      }
+    }
   </script>
 </body>
 </html>
