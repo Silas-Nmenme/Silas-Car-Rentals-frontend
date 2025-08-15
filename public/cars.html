@@ -201,7 +201,7 @@ function renderCar(car) {
       <h3>${car.make} ${car.model}</h3>
       <p><strong>₦${car.price.toLocaleString()}</strong> / day</p>
       <div style="display:flex; gap:8px; flex-wrap:wrap; margin-top:10px;">
-        <button class="btn" data-action="rent-now" data-id="${car._id}">Rent Now</button>
+        <button class="btn" onclick="window.location.href='book.html?carId=${car._id}'">Rent Now</button>
         <button class="btn btn-outline" data-action="add-cart" data-id="${car._id}">Add to Cart</button>
         <button class="btn btn-outline" data-action="add-wishlist" data-id="${car._id}">Wishlist</button>
         <button class="btn btn-outline" data-action="add-saved" data-id="${car._id}">Save</button>
