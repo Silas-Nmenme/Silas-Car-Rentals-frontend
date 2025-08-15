@@ -535,7 +535,7 @@
 
         localStorage.setItem("token", data.token);
         showToast("Login successful!");
-        setTimeout(() => window.location.href = "dashboard.html", 1000);
+        setTimeout(() => window.location.href = "./dashboard/index.html", 1000);
       } catch {
         showToast("Network error, try again later");
       }
