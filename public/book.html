@@ -3,419 +3,364 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Dashboard - Silas Car Rentals</title>
+  <title>Book a Car - Silas Car Rentals</title>
   <link rel="stylesheet" href="style.css" />
   <style>
-    /* Dashboard specific styles */
-    .dashboard-body {
-      background-color: #f5f5f5;
-    }
-    .stats-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 1rem;
-      margin: 2rem 0;
-    }
-    .stat-card {
-      background: white;
-      padding: 1.5rem;
-      border-radius: 8px;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    .booking-hero {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      padding: 3rem 0;
       text-align: center;
     }
-    .stat-card h2 {
-      font-size: 2rem;
-      margin: 0;
-      color: #007bff;
-    }
-    .stat-card p {
-      margin: 0.5rem 0 0 0;
-      color: #666;
-    }
-    .data-table {
-      width: 100%;
-      border-collapse: collapse;
-      margin: 1rem 0;
-    }
-    .data-table th,
-    .data-table td {
-      padding: 0.75rem;
-      text-align: left;
-      border-bottom: 1px solid #ddd;
-    }
-    .data-table th {
-      background-color: #f8f9fa;
-      font-weight: 600;
-    }
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-      gap: 1rem;
-      margin: 1rem 0;
-    }
-    .card {
-      background: white;
-      border-radius: 8px;
-      padding: 1rem;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-    }
-    .hidden { display: none !important; }
-    .clickable { cursor: pointer; }
     
-    /* Modal */
-    .modal-overlay {
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,0.6);
-      display: none;
-      align-items: center;
-      justify-content: center;
-      z-index: 9999;
-      animation: fadeIn 0.3s ease;
-    }
-    .modal {
-      background: #fff;
+    .booking-form {
+      background: rgb(79, 188, 186);
       border-radius: 15px;
-      padding: 20px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+      padding: 2rem;
+      margin: 2rem 0;
       max-width: 600px;
-      width: 90%;
-      max-height: 80vh;
-      overflow-y: auto;
-      animation: slideUp 0.3s ease;
+      margin-left: auto;
+      margin-right: auto;
     }
-    .modal .card {
+    
+    .form-group {
+      margin-bottom: 1.5rem;
+    }
+    
+    .form-group label {
+      display: block;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+      color: #333;
+    }
+    
+    .form-group input,
+    .form-group select {
+      width: 100%;
+      padding: 0.75rem;
       border: 1px solid #ddd;
-      border-radius: 12px;
-      padding: 15px;
-      margin-bottom: 10px;
+      border-radius: 8px;
+      font-size: 1rem;
+    }
+    
+    .form-group input:focus,
+    .form-group select:focus {
+      outline: none;
+      border-color: #007bff;
+      box-shadow: 0 0 0 3px rgba(0,123,255,0.1);
+    }
+    
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+    
+    .loading {
+      display: none;
       text-align: center;
+      padding: 1rem;
     }
-    .modal .btn {
-      margin: 5px;
+    
+    .error-message {
+      color: #dc3545;
+      font-size: 0.875rem;
+      margin-top: 0.25rem;
     }
-    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-    @keyframes slideUp { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
   </style>
 </head>
-<body class="dashboard-body">
-
+<body>
   <!-- HEADER -->
   <header class="navbar">
     <div class="container nav-inner">
       <a href="index.html" class="brand">
         <div class="brand-mark">SC</div>
-        <span class="brand-name">Silas Dashboard</span>
+        <span class="brand-name">Silas Car Rentals</span>
       </a>
+      <nav class="nav-links">
+        <a href="index.html">Home</a>
+        <a href="cars.html">Browse Cars</a>
+        <a href="about.html">About</a>
+        <a href="contact.html">Contact</a>
+      </nav>
       <div class="nav-actions">
-        <button class="btn-sm btn-ghost" id="cart-btn">Cart (<span id="cart-count">0</span>)</button>
-        <button class="btn-sm btn-ghost" id="logout-btn">Logout</button>
+        <button class="btn-sm btn-ghost" onclick="window.location.href='cart.html'">
+          Cart (<span id="cart-count">0</span>)
+        </button>
+        <button class="btn-sm btn-primary" onclick="window.location.href='dashboard.html'">My Account</button>
       </div>
     </div>
   </header>
 
-  <!-- MAIN -->
+  <!-- HERO SECTION -->
+  <section class="booking-hero">
+    <div class="container">
+      <h1>Book Your Perfect Car</h1>
+      <p>Simple and quick booking process</p>
+    </div>
+  </section>
+
+  <!-- MAIN CONTENT -->
   <main class="container section">
-    <h1>Welcome, <span id="dash-username">User</span> 👋</h1>
-    <p class="meta">Manage your rentals, wishlist, saved cars, and if you're an admin, view & manage bookings.</p>
-
-    <!-- USER STATS -->
-    <section class="stats-grid" id="user-stats">
-      <div class="stat-card"><h2 id="total-rentals">0</h2><p>Total Rentals</p></div>
-      <div class="stat-card clickable" id="wishlist-stat"><h2 id="wishlist-count-stat">0</h2><p>Wishlist Items</p></div>
-      <div class="stat-card clickable" id="saved-cars-stat"><h2 id="saved-count-stat">0</h2><p>Saved Cars</p></div>
-      <div class="stat-card clickable" id="cart-stat"><h2 id="cart-count-stat">0</h2><p>Cart</p></div>
-    </section>
-
-    <!-- RENTAL HISTORY -->
-    <section>
-      <h2>Rental History</h2>
-      <table class="data-table">
-        <thead><tr><th>Car</th><th>Start</th><th>End</th><th>Price</th><th>Status</th></tr></thead>
-        <tbody id="rentals-table-body"><tr><td colspan="5" class="meta">Loading...</td></tbody>
-      </table>
-    </section>
-
-    <!-- WISHLIST -->
-    <section>
-      <h2>My Wishlist ❤️</h2>
-      <div class="grid" id="wishlist-grid"><p class="meta">Loading wishlist...</p></div>
-    </section>
-
-    <!-- SAVED CARS -->
-    <section>
-      <h2>Saved Cars 🚗</h2>
-      <div class="grid" id="saved-cars-grid"><p class="meta">Loading saved cars...</p></div>
-    </section>
-
-    <!-- ADMIN ANALYTICS -->
-    <section id="admin-analytics" class="hidden">
-      <h2>Admin Analytics 📊</h2>
-      <div class="stats-grid">
-        <div class="stat-card"><h2 id="admin-total-users">0</h2><p>Total Users</p></div>
-        <div class="stat-card"><h2 id="admin-total-cars">0</h2><p>Cars Listed</p></div>
-        <div class="stat-card"><h2 id="admin-total-revenue">₦0</h2><p>Total Revenue</p></div>
+    <form class="booking-form" id="bookingForm">
+      <h2>Booking Details</h2>
+      
+      <!-- Hidden carId field -->
+      <input type="hidden" id="carId" name="carId" />
+      
+      <!-- Contact Information -->
+      <div class="form-group">
+        <label for="email">Email Address *</label>
+        <input type="email" id="email" name="email" required placeholder="your.email@example.com" />
+        <div class="error-message" id="email-error"></div>
       </div>
-    </section>
-
-    <!-- BOOKINGS PANEL (ADMIN) -->
-    <section id="admin-bookings" class="hidden">
-      <h2>Manage Bookings 📅</h2>
-      <table class="data-table">
-        <thead><tr><th>User</th><th>Car</th><th>Pickup</th><th>Return</th><th>Status</th><th>Action</th></tr></thead>
-        <tbody id="bookings-table-body"><tr><td colspan="6" class="meta">Loading...</td></tbody>
-      </table>
-    </section>
+      
+      <div class="form-group">
+        <label for="phone">Phone Number *</label>
+        <input type="tel" id="phone" name="phone_number" required placeholder="+2348012345678" />
+        <div class="error-message" id="phone-error"></div>
+      </div>
+      
+      <!-- Booking Details -->
+      <div class="form-row">
+        <div class="form-group">
+          <label for="pickup-date">Pickup Date *</label>
+          <input type="date" id="pickup-date" name="startDate" required />
+          <div class="error-message" id="pickup-date-error"></div>
+        </div>
+        
+        <div class="form-group">
+          <label for="pickup-time">Pickup Time *</label>
+          <select id="pickup-time" name="pickup-time" required>
+            <option value="">Select time</option>
+            <option value="08:00">8:00 AM</option>
+            <option value="09:00">9:00 AM</option>
+            <option value="10:00">10:00 AM</option>
+            <option value="11:00">11:00 AM</option>
+            <option value="12:00">12:00 PM</option>
+            <option value="13:00">1:00 PM</option>
+            <option value="14:00">2:00 PM</option>
+            <option value="15:00">3:00 PM</option>
+            <option value="16:00">4:00 PM</option>
+            <option value="17:00">5:00 PM</option>
+          </select>
+        </div>
+      </div>
+      
+      <div class="form-row">
+        <div class="form-group">
+          <label for="return-date">Return Date *</label>
+          <input type="date" id="return-date" name="endDate" required />
+          <div class="error-message" id="return-date-error"></div>
+        </div>
+        
+        <div class="form-group">
+          <label for="return-time">Return Time *</label>
+          <select id="return-time" name="return-time" required>
+            <option value="">Select time</option>
+            <option value="08:00">8:00 AM</option>
+            <option value="09:00">9:00 AM</option>
+            <option value="10:00">10:00 AM</option>
+            <option value="11:00">11:00 AM</option>
+            <option value="12:00">12:00 PM</option>
+            <option value="13:00">1:00 PM</option>
+            <option value="14:00">2:00 PM</option>
+            <option value="15:00">3:00 PM</option>
+            <option value="16:00">4:00 PM</option>
+            <option value="17:00">5:00 PM</option>
+          </select>
+        </div>
+      </div>
+      
+      <div class="form-group">
+        <label for="pickup-location">Pickup Location</label>
+        <select id="pickup-location" name="pickup-location" required>
+          <option value="">Select pickup location</option>
+          <option value="lagos-airport">Lagos Airport (Murtala Muhammed)</option>
+          <option value="lagos-victoria">Victoria Island</option>
+          <option value="lagos-ikeja">Ikeja</option>
+          <option value="abuja-airport">Abuja Airport</option>
+          <option value="abuja-central">Abuja Central</option>
+          <option value="port-harcourt">Port Harcourt</option>
+        </select>
+      </div>
+      
+      <div class="form-group">
+        <label for="return-location">Return Location</label>
+        <select id="return-location" name="return-location" required>
+          <option value="">Select return location</option>
+          <option value="lagos-airport">Lagos Airport (Murtala Muhammed)</option>
+          <option value="lagos-victoria">Victoria Island</option>
+          <option value="lagos-ikeja">Ikeja</option>
+          <option value="abuja-airport">Abuja Airport</option>
+          <option value="abuja-central">Abuja Central</option>
+          <option value="port-harcourt">Port Harcourt</option>
+        </select>
+      </div>
+      
+      <button type="submit" class="btn btn-primary btn-lg" id="submitBtn">
+        <span id="submit-text">Proceed to Payment</span>
+        <span id="loading-text" style="display: none;">Processing...</span>
+      </button>
+      
+      <div class="loading" id="loading">
+        <p>Processing your booking...</p>
+      </div>
+    </form>
   </main>
 
-  <!-- MODAL -->
-  <div class="modal-overlay" id="modal-overlay">
-    <div class="modal" id="modal-content">
-      <h2 id="modal-title">Items</h2>
-      <div id="modal-items"></div>
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="container">
+      <p>&copy; 2024 Silas Car Rentals. All rights reserved.</p>
     </div>
-  </div>
+  </footer>
 
-  <!-- TOAST -->
-  <div class="toast" id="toast"></div>
-
-  <script type="module">
-    // Import from app.js
-    const API_BASE = "https://techyjaunt-auth-go43.onrender.com";
-    
-    // Storage helpers
-    function getStorage(key) {
-      try {
-        return JSON.parse(localStorage.getItem(key)) || [];
-      } catch {
-        return [];
+  <script>
+    // Set minimum date to today
+    document.addEventListener('DOMContentLoaded', function() {
+      const today = new Date().toISOString().split('T')[0];
+      document.getElementById('pickup-date').min = today;
+      document.getElementById('return-date').min = today;
+      
+      // Get car ID from URL parameters
+      const urlParams = new URLSearchParams(window.location.search);
+      const carId = urlParams.get('carId') || localStorage.getItem('selectedCarId');
+      
+      if (carId) {
+        document.getElementById('carId').value = carId;
+      } else {
+        alert('No car selected. Please go back and select a car first.');
+        window.location.href = 'cars.html';
       }
-    }
-    
-    function setStorage(key, value) {
-      localStorage.setItem(key, JSON.stringify(value));
-    }
-
-    // Elements
-    const userNameEl = document.getElementById('dash-username');
-    const logoutBtn = document.getElementById('logout-btn');
-    const totalRentalsEl = document.getElementById('total-rentals');
-    const wishlistCountEl = document.getElementById('wishlist-count-stat');
-    const savedCountEl = document.getElementById('saved-count-stat');
-    const cartCountEl = document.getElementById('cart-count');
-    const cartCountStatEl = document.getElementById('cart-count-stat');
-    const rentalsTableBody = document.getElementById('rentals-table-body');
-    const wishlistGrid = document.getElementById('wishlist-grid');
-    const savedCarsGrid = document.getElementById('saved-cars-grid');
-    const adminAnalyticsSection = document.getElementById('admin-analytics');
-    const adminBookingsSection = document.getElementById('admin-bookings');
-    const bookingsTableBody = document.getElementById('bookings-table-body');
-
-    // Modal
-    const modalOverlay = document.getElementById('modal-overlay');
-    const modalTitle = document.getElementById('modal-title');
-    const modalItems = document.getElementById('modal-items');
-
-    // Toast
-    function showToast(msg, ms=3000) {
-      const toast = document.getElementById("toast");
-      toast.textContent = msg;
-      toast.classList.add("show");
-      setTimeout(() => toast.classList.remove("show"), ms);
-    }
-
-    function openModal(title, items, type) {
-      modalTitle.textContent = title;
-      modalItems.innerHTML = items.length
-        ? items.map(car => `
-          <div class="card">
-            <h3>${car.make || car.name} ${car.model}</h3>
-            <p>₦${car.price.toLocaleString()}</p>
-            ${type === 'cart'
-              ? `<button class="btn btn-primary btn-sm" onclick='rentNow(${JSON.stringify(car).replace(/"/g, '"')})'>Rent Now</button>` : ''}
-            <button class="btn btn-outline btn-sm" onclick='removeFrom("${type}", "${car._id || car.id}")'>Remove</button>
-          </div>`).join('')
-        : `<p class="meta">No items in ${title.toLowerCase()}.</p>`;
-      modalOverlay.style.display = 'flex';
-    }
-    
-    function closeModal() { 
-      modalOverlay.style.display = 'none'; 
-    }
-    
-    modalOverlay.addEventListener('click', e => { 
-      if (e.target === modalOverlay) closeModal(); 
-    });
-    
-    document.addEventListener('keydown', e => { 
-      if (e.key === 'Escape') closeModal(); 
-    });
-
-    // Wishlist/Saved/Carts click
-    document.getElementById('wishlist-stat').addEventListener('click', () => openModal('Wishlist', getStorage('wishlist'), 'wishlist'));
-    document.getElementById('saved-cars-stat').addEventListener('click', () => openModal('Saved Cars', getStorage('savedCars'), 'savedCars'));
-    document.getElementById('cart-stat').addEventListener('click', () => openModal('Cart', getStorage('cart'), 'cart'));
-    document.getElementById('cart-btn').addEventListener('click', () => openModal('Cart', getStorage('cart'), 'cart'));
-
-    // Render Previews
-    function renderPreview(id, storageKey) {
-      const data = getStorage(storageKey);
-      document.getElementById(id).innerHTML = data.length
-        ? data.slice(0, 3).map(car => `<div class="card"><h3>${car.make || car.name} ${car.model}</h3><p>₦${car.price.toLocaleString()}</p></div>`).join('')
-        : `<p class="meta">No ${storageKey} yet.</p>`;
-    }
-    
-    function renderCounts() {
-      wishlistCountEl.textContent = getStorage('wishlist').length;
-      savedCountEl.textContent = getStorage('savedCars').length;
-      const cartLen = getStorage('cart').length;
-      cartCountEl.textContent = cartLen;
-      cartCountStatEl.textContent = cartLen;
-    }
-    
-    function renderAllPreviews() { 
-      renderCounts(); 
-      renderPreview('wishlist-grid', 'wishlist'); 
-      renderPreview('saved-cars-grid', 'savedCars'); 
-    }
-
-    // Global functions
-    window.rentNow = function(car) {
-      localStorage.setItem('currentCar', JSON.stringify(car));
-      window.location.href = 'book.html';
-    };
-    
-    window.removeFrom = function(type, id) {
-      const storage = getStorage(type);
-      const filtered = storage.filter(item => (item._id || item.id) !== id);
-      setStorage(type, filtered);
-      renderAllPreviews();
-      openModal(type.charAt(0).toUpperCase() + type.slice(1), filtered, type);
-    };
-
-    // Auth header helper
-    function getAuthHeaders() {
-      const token = localStorage.getItem('token');
-      return token ? { Authorization: `Bearer ${token}` } : {};
-    }
-
-    // Fetch Profile
-    async function fetchUserProfile() {
-      try {
-        const token = localStorage.getItem('token');
-        if (!token) {
-          showToast('Please login first');
-          setTimeout(() => window.location.href = 'login.html', 1500);
+      
+      // Get user info if logged in
+      const user = JSON.parse(localStorage.getItem('user'));
+      if (user) {
+        document.getElementById('email').value = user.email || '';
+        document.getElementById('phone').value = user.phone || '';
+      }
+      
+      // Update cart count
+      const cart = JSON.parse(localStorage.getItem('cart')) || [];
+      document.getElementById('cart-count').textContent = cart.length;
+      
+      // Auto-update return location when pickup location changes
+      document.getElementById('pickup-location').addEventListener('change', function() {
+        const returnLocation = document.getElementById('return-location');
+        if (!returnLocation.value) {
+          returnLocation.value = this.value;
+        }
+      });
+      
+      // Auto-set return date to 1 day after pickup
+      document.getElementById('pickup-date').addEventListener('change', function() {
+        const returnDate = document.getElementById('return-date');
+        const pickup = new Date(this.value);
+        const nextDay = new Date(pickup);
+        nextDay.setDate(nextDay.getDate() + 1);
+        
+        returnDate.min = this.value;
+        if (!returnDate.value || new Date(returnDate.value) <= pickup) {
+          returnDate.value = nextDay.toISOString().split('T')[0];
+        }
+      });
+      
+      // Form submission
+      document.getElementById('bookingForm').addEventListener('submit', async function(e) {
+        e.preventDefault();
+        
+        // Clear previous errors
+        document.querySelectorAll('.error-message').forEach(el => el.textContent = '');
+        
+        // Validate form
+        let isValid = true;
+        
+        const email = document.getElementById('email').value;
+        const phone = document.getElementById('phone').value;
+        const startDate = document.getElementById('pickup-date').value;
+        const endDate = document.getElementById('return-date').value;
+        
+        if (!email) {
+          document.getElementById('email-error').textContent = 'Email is required';
+          isValid = false;
+        }
+        
+        if (!phone) {
+          document.getElementById('phone-error').textContent = 'Phone number is required';
+          isValid = false;
+        }
+        
+        if (!startDate) {
+          document.getElementById('pickup-date-error').textContent = 'Pickup date is required';
+          isValid = false;
+        }
+        
+        if (!endDate) {
+          document.getElementById('return-date-error').textContent = 'Return date is required';
+          isValid = false;
+        }
+        
+        if (new Date(endDate) <= new Date(startDate)) {
+          document.getElementById('return-date-error').textContent = 'Return date must be after pickup date';
+          isValid = false;
+        }
+        
+        if (!isValid) return;
+        
+        // Get user ID from localStorage
+        const user = JSON.parse(localStorage.getItem('user'));
+        if (!user || !user.id) {
+          alert('Please login first to continue with booking');
+          window.location.href = 'login.html';
           return;
         }
-
-        const res = await fetch(`${API_BASE}/api/auth/me`, {
-          headers: { Authorization: `Bearer ${token}` }
-        });
         
-        if (!res.ok) throw new Error();
-        const user = await res.json();
-        userNameEl.textContent = user.name || user.email;
+        // Prepare booking data
+        const bookingData = {
+          email: email,
+          phone_number: phone,
+          startDate: startDate,
+          endDate: endDate,
+          userId: user.id
+        };
         
-        // Check if admin
-        if (user.role === 'admin') {
-          adminAnalyticsSection.classList.remove('hidden');
-          adminBookingsSection.classList.remove('hidden');
-          loadAdminData();
+        // Show loading
+        document.getElementById('submitBtn').disabled = true;
+        document.getElementById('submit-text').style.display = 'none';
+        document.getElementById('loading-text').style.display = 'inline';
+        
+        try {
+          const carId = document.getElementById('carId').value;
+          const response = await fetch(`/api/payment/pay/${carId}`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${localStorage.getItem('token')}`
+            },
+            body: JSON.stringify(bookingData)
+          });
+          
+          const result = await response.json();
+          
+          if (response.ok && result.paymentUrl) {
+            // Redirect to FlutterWave payment
+            window.location.href = result.paymentUrl;
+          } else {
+            alert(result.message || 'Error processing payment');
+          }
+        } catch (error) {
+          console.error('Error:', error);
+          alert('Error processing booking. Please try again.');
+        } finally {
+          // Hide loading
+          document.getElementById('submitBtn').disabled = false;
+          document.getElementById('submit-text').style.display = 'inline';
+          document.getElementById('loading-text').style.display = 'none';
         }
-      } catch (e) {
-        showToast('Session expired');
-        setTimeout(() => {
-          localStorage.removeItem('token');
-          window.location.href = 'login.html';
-        }, 1500);
-      }
-    }
-
-    // Fetch Stats
-    async function fetchUserStats() {
-      try {
-        const res = await fetch(`${API_BASE}/api/user/stats`, {
-          headers: getAuthHeaders()
-        });
-        const stats = await res.json();
-        totalRentalsEl.textContent = stats.totalRentals ?? 0;
-      } catch {
-        showToast('Failed to load stats');
-      }
-    }
-
-    // Rental History
-    async function fetchRentalHistory() {
-      try {
-        const res = await fetch(`${API_BASE}/api/rentals/history`, {
-          headers: getAuthHeaders()
-        });
-        const rentals = await res.json();
-        rentalsTableBody.innerHTML = rentals.length
-          ? rentals.map(r => `<tr><td>${r.carName}</td><td>${new Date(r.startDate).toLocaleDateString()}</td><td>${new Date(r.endDate).toLocaleDateString()}</td><td>₦${r.price.toLocaleString()}</td><td>${r.status}</td></tr>`).join('')
-          : `<tr><td colspan="5" class="meta">No rentals found</td></tr>`;
-      } catch {
-        rentalsTableBody.innerHTML = `<tr><td colspan="5" class="meta">Error loading rentals</td></tr>`;
-      }
-    }
-
-    // Admin Bookings
-    async function loadAdminData() {
-      try {
-        // Analytics
-        const analyticsRes = await fetch(`${API_BASE}/api/admin/analytics`, {
-          headers: getAuthHeaders()
-        });
-        const analytics = await analyticsRes.json();
-        document.getElementById('admin-total-users').textContent = analytics.totalUsers ?? 0;
-        document.getElementById('admin-total-cars').textContent = analytics.totalCars ?? 0;
-        document.getElementById('admin-total-revenue').textContent = `₦${(analytics.totalRevenue || 0).toLocaleString()}`;
-
-        // Bookings
-        const bookingsRes = await fetch(`${API_BASE}/api/bookings`, {
-          headers: getAuthHeaders()
-        });
-        const bookings = await bookingsRes.json();
-        bookingsTableBody.innerHTML = bookings.length
-          ? bookings.map(b => `<tr><td>${b.email}</td><td>${b.car?.make || ''} ${b.car?.model || ''}</td><td>${new Date(b.startDate).toLocaleDateString()}</td><td>${new Date(b.endDate).toLocaleDateString()}</td><td>${b.status || 'Pending'}</td><td><button onclick="updateBookingStatus('${b._id}','approved')" class="btn btn-sm btn-success">Approve</button><button onclick="updateBookingStatus('${b._id}','rejected')" class="btn btn-sm btn-danger">Reject</button></td></tr>`).join('')
-          : `<tr><td colspan="6" class="meta">No bookings found</td></tr>`;
-      } catch {
-        bookingsTableBody.innerHTML = `<tr><td colspan="6" class="meta">Error loading bookings</td></tr>`;
-      }
-    }
-
-    window.updateBookingStatus = async function(id, status) {
-      if (!confirm(`Mark booking as ${status}?`)) return;
-      try {
-        const res = await fetch(`${API_BASE}/api/bookings/${id}`, {
-          method: 'PATCH',
-          headers: {
-            'Content-Type': 'application/json',
-            ...getAuthHeaders()
-          },
-          body: JSON.stringify({ status })
-        });
-        if (!res.ok) throw new Error();
-        showToast(`Booking ${status}`);
-        loadAdminData();
-      } catch {
-        showToast('Failed to update booking');
-      }
-    };
-
-    // Logout
-    logoutBtn.addEventListener('click', () => {
-      localStorage.removeItem('token');
-      window.location.href = 'login.html';
+      });
     });
-
-    // Init
-    (async function init() {
-      await fetchUserProfile();
-      await fetchUserStats();
-      await fetchRentalHistory();
-      renderAllPreviews();
-    })();
   </script>
 </body>
 </html>
