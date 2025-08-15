@@ -325,7 +325,8 @@
         const response = await fetch('https://techyjaunt-auth-go43.onrender.com/api/cars/get-cars');
         const text = await response.text();
         console.error('Response text:', text); // Log the response text
-        const cars = JSON.parse(text); // Attempt to parse the response
+        const data = JSON.parse(text); // Attempt to parse the response
+        const cars = data.cars; // Access the cars array
         console.log(cars); // Log the cars data
         
         const carSelect = document.getElementById('car-select');
