@@ -290,6 +290,79 @@ async function fetchCar() {
   }
 }
 
+// Newsletter subscription functionality
+document.addEventListener('DOMContentLoaded', function() {
+  const newsletterForm = document.getElementById('newsletter-form');
+  const newsletterMessage = document.getElementById('newsletter-message');
+
+  if (newsletterForm) {
+    newsletterForm.addEventListener('submit', async function(e) {
+      e.preventDefault();
+      
+      const emailInput = newsletterForm.querySelector('input[name="email"]');
+      const email = emailInput.value.trim();
+      
+      if (!email) {
+        showNewsletterMessage('Please enter your email address', 'error');
+        return;
+      }
+
+      if (!isValidEmail(email)) {
+        showNewsletterMessage('Please enter a valid email address', 'error');
+        return;
+      }
+
+      // Show loading state
+      const submitButton = newsletterForm.querySelector('button[type="submit"]');
+      const originalText = submitButton.textContent;
+      submitButton.textContent = 'Subscribing...';
+      submitButton.disabled = true;
+
+      try {
+        const response = await fetch(`${API_BASE}/api/newsletter/subscribe`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ email })
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+          showNewsletterMessage('Successfully subscribed! Thank you for joining our newsletter.', 'success');
+          emailInput.value = '';
+        } else {
+          showNewsletterMessage(data.message || 'Subscription failed. Please try again.', 'error');
+        }
+      } catch (error) {
+        console.error('Newsletter subscription error:', error);
+        showNewsletterMessage('Network error. Please check your connection and try again.', 'error');
+      } finally {
+        submitButton.textContent = originalText;
+        submitButton.disabled = false;
+      }
+    });
+  }
+
+  function showNewsletterMessage(message, type) {
+    newsletterMessage.textContent = message;
+    newsletterMessage.style.color = type === 'success' ? '#03dac5' : '#ff6b6b';
+    newsletterMessage.style.display = 'block';
+    
+    // Clear message after 5 seconds
+    setTimeout(() => {
+      newsletterMessage.textContent = '';
+      newsletterMessage.style.display = 'none';
+    }, 5000);
+  }
+
+  function isValidEmail(email) {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  }
+});
+
 updateGlobalCounts();
 fetchCar();
 

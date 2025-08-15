@@ -1,4 +1,4 @@
-// app.js
+// app.js - Fixed version
 const API_BASE = "https://techyjaunt-auth-go43.onrender.com";
 
 // Shortcuts
@@ -126,62 +126,6 @@ document.addEventListener("click", (e) => {
   }
 });
 
-document.addEventListener("DOMContentLoaded", () => {
-  const newsletterForm = document.getElementById("newsletter-form");
-  if (newsletterForm) {
-    newsletterForm.addEventListener("submit", subscribeNewsletter);
-  }
-});
-
-document.addEventListener("DOMContentLoaded", () => {
-  const newsletterForm = document.getElementById("newsletter-form");
-  if (newsletterForm) {
-    newsletterForm.addEventListener("submit", subscribeNewsletter);
-  }
-});
-
-document.addEventListener("DOMContentLoaded", () => {
-  const newsletterForm = document.getElementById("newsletter-form");
-  if (newsletterForm) {
-    newsletterForm.addEventListener("submit", subscribeNewsletter);
-  }
-});
-
-document.addEventListener("DOMContentLoaded", () => {
-  const newsletterForm = document.getElementById("newsletter-form");
-  if (newsletterForm) {
-    newsletterForm.addEventListener("submit", subscribeNewsletter);
-  }
-});
-
-document.addEventListener("DOMContentLoaded", () => {
-  const newsletterForm = document.getElementById("newsletter-form");
-  if (newsletterForm) {
-    newsletterForm.addEventListener("submit", subscribeNewsletter);
-  }
-});
-
-document.addEventListener("DOMContentLoaded", () => {
-  const newsletterForm = document.getElementById("newsletter-form");
-  if (newsletterForm) {
-    newsletterForm.addEventListener("submit", subscribeNewsletter);
-  }
-});
-
-document.addEventListener("DOMContentLoaded", () => {
-  const newsletterForm = document.getElementById("newsletter-form");
-  if (newsletterForm) {
-    newsletterForm.addEventListener("submit", subscribeNewsletter);
-  }
-});
-
-document.addEventListener("DOMContentLoaded", () => {
-  const newsletterForm = document.getElementById("newsletter-form");
-  if (newsletterForm) {
-    newsletterForm.addEventListener("submit", subscribeNewsletter);
-  }
-});
-
 // --- CHECKOUT ---
 const proceedToCheckoutBtn = qs("#proceed-to-checkout");
 if (proceedToCheckoutBtn) {
@@ -201,23 +145,26 @@ if (proceedToCheckoutBtn) {
   });
 }
 
-document.addEventListener('DOMContentLoaded', () => {
-  const newsletterForm = document.getElementById('newsletter-form');
-  if (newsletterForm) {
-    newsletterForm.addEventListener('submit', subscribeNewsletter);
-  }
-});
-
+// --- NEWSLETTER SUBSCRIPTION ---
 async function subscribeNewsletter(e) {
   e.preventDefault();
-  const email = e.target[0].value;
+  const emailInput = e.target.querySelector('input[type="email"]');
+  const email = emailInput.value.trim();
+  const messageDiv = document.getElementById('newsletter-message');
 
   // Basic email validation
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   if (!emailRegex.test(email)) {
-    document.getElementById('newsletter-message').textContent = 'Please enter a valid email address.';
+    messageDiv.textContent = 'Please enter a valid email address.';
+    messageDiv.style.color = '#f44336';
     return;
   }
+
+  // Show loading state
+  const submitBtn = e.target.querySelector('button[type="submit"]');
+  const originalText = submitBtn.textContent;
+  submitBtn.textContent = 'Subscribing...';
+  submitBtn.disabled = true;
 
   try {
     const res = await fetch(`${API_BASE}/api/newsletter/subscribe`, {
@@ -227,15 +174,33 @@ async function subscribeNewsletter(e) {
     });
 
     const data = await res.json();
-    if (!res.ok) throw new Error(data.message || 'Newsletter subscription failed.');
+    
+    if (!res.ok) {
+      throw new Error(data.message || 'Newsletter subscription failed.');
+    }
 
-    document.getElementById('newsletter-message').textContent = data.message || 'Successfully subscribed to newsletter!';
-    document.getElementById('newsletter-message').style.color = '#03dac5';
+    messageDiv.textContent = data.message || 'Successfully subscribed to newsletter!';
+    messageDiv.style.color = '#03dac5';
     e.target.reset();
+    
+    // Hide message after 5 seconds
+    setTimeout(() => {
+      messageDiv.textContent = '';
+    }, 5000);
+    
   } catch (err) {
     console.error('Newsletter Error:', err);
-    document.getElementById('newsletter-message').textContent = err.message || 'Failed to subscribe to newsletter.';
-    document.getElementById('newsletter-message').style.color = '#f44336';
+    messageDiv.textContent = err.message || 'Failed to subscribe to newsletter.';
+    messageDiv.style.color = '#f44336';
+    
+    // Hide error after 5 seconds
+    setTimeout(() => {
+      messageDiv.textContent = '';
+    }, 5000);
+  } finally {
+    // Reset button state
+    submitBtn.textContent = originalText;
+    submitBtn.disabled = false;
   }
 }
 
@@ -361,13 +326,13 @@ function renderCars(cars) {
   });
 }
 
+// Single DOMContentLoaded event listener for newsletter
+document.addEventListener('DOMContentLoaded', () => {
+  const newsletterForm = document.getElementById('newsletter-form');
+  if (newsletterForm) {
+    newsletterForm.addEventListener('submit', subscribeNewsletter);
+  }
+});
+
 // Fetch cars on page load
 fetchCars();
-
-// Newsletter subscription form event listener
-const newsletterForm = document.getElementById('newsletter-form');
-if (newsletterForm) {
-  newsletterForm.addEventListener('submit', subscribeNewsletter);
-}
-
-
