@@ -323,7 +323,10 @@
     async function loadAvailableCars(initialCarId) {
       try {
         const response = await fetch('https://techyjaunt-auth-go43.onrender.com/api/cars/get-cars');
-        const cars = await response.json();
+        const text = await response.text();
+        console.error('Response text:', text); // Log the response text
+        const cars = JSON.parse(text); // Attempt to parse the response
+        console.log(cars); // Log the cars data
         
         const carSelect = document.getElementById('car-select');
         carSelect.innerHTML = '<option value="">Select a car</option>';
