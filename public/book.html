@@ -322,7 +322,7 @@
     
     async function loadAvailableCars(initialCarId) {
       try {
-        const response = await fetch('/api/cars');
+        const response = await fetch('https://techyjaunt-auth-go43.onrender.com/api/cars/get-cars');
         const cars = await response.json();
         
         const carSelect = document.getElementById('car-select');
@@ -330,8 +330,8 @@
         
         cars.forEach(car => {
           const option = document.createElement('option');
-          option.value = car.id;
-          option.textContent = `${car.make} ${car.model} (${car.year}) - ₦${car.pricePerDay}/day`;
+          option.value = car._id;
+          option.textContent = `${car.make} ${car.model} (${car.year}) - ₦${car.price.toLocaleString()}/day`;
           carSelect.appendChild(option);
         });
         
@@ -340,8 +340,8 @@
           carSelect.value = initialCarId;
           document.getElementById('carId').value = initialCarId;
         } else if (cars.length > 0) {
-          carSelect.value = cars[0].id;
-          document.getElementById('carId').value = cars[0].id;
+          carSelect.value = cars[0]._id;
+          document.getElementById('carId').value = cars[0]._id;
         }
       } catch (error) {
         console.error('Error loading cars:', error);
