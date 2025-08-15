@@ -173,7 +173,7 @@
   <!-- FOOTER -->
   <footer class="footer">
     <div class="container">
-      <p>&copy; 2024 Silas Car Rentals. All rights reserved.</p>
+      <p>&copy; 2025 Silas Car Rentals. All rights reserved.</p>
     </div>
   </footer>
 
@@ -291,7 +291,7 @@
             return;
           }
           
-          const response = await fetch(`/api/payment/pay/${carId}`, {
+          const response = await fetch(`https://techyjaunt-auth-go43.onrender.com/api/payment/pay/${carId}`, {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
