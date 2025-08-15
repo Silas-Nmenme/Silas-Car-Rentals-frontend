@@ -3,8 +3,145 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Checkout - Silas Car Rentals</title>
+  <title>Booking Summary - Silas Car Rentals</title>
   <link rel="stylesheet" href="style.css" />
+  <style>
+    .checkout-container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 2rem 0;
+    }
+    
+    .summary-card {
+      background: white;
+      border-radius: 15px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+      overflow: hidden;
+      margin-bottom: 2rem;
+    }
+    
+    .summary-header {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      padding: 2rem;
+      text-align: center;
+    }
+    
+    .summary-body {
+      padding: 2rem;
+    }
+    
+    .car-details {
+      display: flex;
+      gap: 2rem;
+      margin-bottom: 2rem;
+      padding-bottom: 2rem;
+      border-bottom: 1px solid #eee;
+    }
+    
+    .car-image {
+      width: 200px;
+      height: 150px;
+      object-fit: cover;
+      border-radius: 8px;
+    }
+    
+    .car-info h3 {
+      margin: 0 0 0.5rem 0;
+      color: #333;
+    }
+    
+    .booking-details {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+    }
+    
+    .detail-item {
+      padding: 1rem;
+      background: #f8f9fa;
+      border-radius: 8px;
+    }
+    
+    .detail-item label {
+      font-weight: 600;
+      color: #666;
+      font-size: 0.875rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    
+    .detail-item p {
+      margin: 0.5rem 0 0 0;
+      font-size: 1.125rem;
+      color: #333;
+    }
+    
+    .price-breakdown {
+      background: #f8f9fa;
+      padding: 1.5rem;
+      border-radius: 8px;
+      margin-bottom: 2rem;
+    }
+    
+    .price-row {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 0.5rem;
+    }
+    
+    .price-row.total {
+      font-size: 1.25rem;
+      font-weight: bold;
+      border-top: 2px solid #ddd;
+      padding-top: 0.5rem;
+      margin-top: 0.5rem;
+    }
+    
+    .contact-info {
+      background: #f8f9fa;
+      padding: 1.5rem;
+      border-radius: 8px;
+      margin-bottom: 2rem;
+    }
+    
+    .btn-group {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+    }
+    
+    .btn-secondary {
+      background: #6c757d;
+      color: white;
+    }
+    
+    .btn-secondary:hover {
+      background: #5a6268;
+    }
+    
+    .error-message {
+      text-align: center;
+      padding: 2rem;
+      color: #dc3545;
+    }
+    
+    @media (max-width: 600px) {
+      .car-details {
+        flex-direction: column;
+      }
+      
+      .car-image {
+        width: 100%;
+        height: 200px;
+      }
+      
+      .booking-details {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
 </head>
 <body>
 <header class="navbar">
@@ -14,15 +151,16 @@
   </div>
 </header>
 
-<main class="section container">
-  <h2>Checkout</h2>
-
-  <div id="checkout-summary" style="margin-bottom:20px; padding:10px; border:1px solid #ccc; border-radius:8px;">
-    <!-- Booking details will go here -->
+<main class="section">
+  <div class="checkout-container">
+    <h1>Booking Summary</h1>
+    
+    <div id="checkout-content">
+      <!-- Content will be populated by JavaScript -->
+    </div>
+    
+    <div class="toast" id="toast"></div>
   </div>
-
-  <button id="pay-btn" class="btn">Make Payment</button>
-  <div class="toast" id="toast"></div>
 </main>
 
 <script>
@@ -38,15 +176,106 @@ function showToast(msg, ms=3000) {
   setTimeout(() => toast.classList.remove("show"), ms);
 }
 
+function formatDate(dateString) {
+  const date = new Date(dateString);
+  return date.toLocaleDateString('en-US', { 
+    weekday: 'long', 
+    year: 'numeric', 
+    month: 'long', 
+    day: 'numeric' 
+  });
+}
+
+function calculateDays(startDate, endDate) {
+  const start = new Date(startDate);
+  const end = new Date(endDate);
+  return Math.ceil((end - start) / (1000 * 60 * 60 * 24));
+}
+
 function renderBooking(booking) {
-  document.getElementById("checkout-summary").innerHTML = `
-    <img src="${booking.car.image || placeholderImage}" alt="${booking.car.make}" style="max-width:300px; border-radius:8px;">
-    <h3>${booking.car.make} ${booking.car.model}</h3>
-    <p><strong>₦${booking.car.price.toLocaleString()}</strong> / day</p>
-    <p><strong>Pickup:</strong> ${booking.pickupDate}</p>
-    <p><strong>Return:</strong> ${booking.returnDate}</p>
-    <p><strong>Phone:</strong> ${booking.phoneNumber}</p>
+  const days = booking.days || calculateDays(booking.pickupDate, booking.returnDate);
+  const totalAmount = booking.totalAmount || (booking.car.price * days);
+  
+  const content = `
+    <div class="summary-card">
+      <div class="summary-header">
+        <h2>Confirm Your Booking</h2>
+        <p>Please review your booking details before proceeding to payment</p>
+      </div>
+      
+      <div class="summary-body">
+        <div class="car-details">
+          <img src="${booking.car.image || placeholderImage}" alt="${booking.car.make} ${booking.car.model}" class="car-image">
+          <div class="car-info">
+            <h3>${booking.car.make} ${booking.car.model} (${booking.car.year})</h3>
+            <p style="color: #667eea; font-size: 1.25rem; font-weight: bold;">
+              ₦${booking.car.price.toLocaleString()} per day
+            </p>
+          </div>
+        </div>
+        
+        <div class="booking-details">
+          <div class="detail-item">
+            <label>Pickup Date</label>
+            <p>${formatDate(booking.pickupDate)}</p>
+          </div>
+          <div class="detail-item">
+            <label>Return Date</label>
+            <p>${formatDate(booking.returnDate)}</p>
+          </div>
+          <div class="detail-item">
+            <label>Duration</label>
+            <p>${days} day${days > 1 ? 's' : ''}</p>
+          </div>
+          <div class="detail-item">
+            <label>Booking ID</label>
+            <p>${booking.car._id.substring(0, 8)}...</p>
+          </div>
+        </div>
+        
+        <div class="contact-info">
+          <h4>Contact Information</h4>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 1rem;">
+            <div>
+              <label>Email</label>
+              <p>${booking.email || 'Not provided'}</p>
+            </div>
+            <div>
+              <label>Phone</label>
+              <p>${booking.phoneNumber || 'Not provided'}</p>
+            </div>
+          </div>
+        </div>
+        
+        <div class="price-breakdown">
+          <h4>Price Breakdown</h4>
+          <div class="price-row">
+            <span>Car rental (${days} day${days > 1 ? 's' : ''}):</span>
+            <span>₦${(booking.car.price * days).toLocaleString()}</span>
+          </div>
+          <div class="price-row">
+            <span>Service fee:</span>
+            <span>₦0</span>
+          </div>
+          <div class="price-row">
+            <span>Taxes:</span>
+            <span>₦0</span>
+          </div>
+          <div class="price-row total">
+            <span>Total Amount:</span>
+            <span>₦${totalAmount.toLocaleString()}</span>
+          </div>
+        </div>
+        
+        <div class="btn-group">
+          <button onclick="window.history.back()" class="btn btn-secondary">← Back to Booking</button>
+          <button id="pay-btn" class="btn btn-primary">Proceed to Payment</button>
+        </div>
+      </div>
+    </div>
   `;
+  
+  document.getElementById("checkout-content").innerHTML = content;
 }
 
 async function initiatePayment() {
@@ -62,6 +291,13 @@ async function initiatePayment() {
     return;
   }
 
+  // Show loading state
+  const payBtn = document.getElementById("pay-btn");
+  if (payBtn) {
+    payBtn.disabled = true;
+    payBtn.textContent = "Processing...";
+  }
+
   try {
     const res = await fetch(`${API_BASE}/api/payment/pay/${lastBooking.car._id}`, {
       method: "POST",
@@ -70,33 +306,56 @@ async function initiatePayment() {
         "Authorization": `Bearer ${token}`
       },
       body: JSON.stringify({
+        email: lastBooking.email,
+        phoneNumber: lastBooking.phoneNumber,
         pickupDate: lastBooking.pickupDate,
-        returnDate: lastBooking.returnDate,
-        phoneNumber: lastBooking.phoneNumber
+        returnDate: lastBooking.returnDate
       })
     });
 
     const data = await res.json();
+    
     if (!res.ok) throw new Error(data.message || "Payment initiation failed");
 
-    const paymentLink = data.redirectUrl || data.paymentLink;
+    const paymentLink = data.redirectUrl || data.paymentLink || data.paymentUrl;
     if (paymentLink) {
       window.location.href = paymentLink;
     } else {
       showToast("No payment link returned from backend");
+      if (payBtn) {
+        payBtn.disabled = false;
+        payBtn.textContent = "Proceed to Payment";
+      }
     }
   } catch (err) {
     showToast(err.message || "Payment error");
+    if (payBtn) {
+      payBtn.disabled = false;
+      payBtn.textContent = "Proceed to Payment";
+    }
   }
 }
 
-document.getElementById("pay-btn").addEventListener("click", initiatePayment);
+// Event delegation for pay button
+document.addEventListener("click", function(e) {
+  if (e.target && e.target.id === "pay-btn") {
+    initiatePayment();
+  }
+});
 
 // Init
 if (lastBooking) {
   renderBooking(lastBooking);
 } else {
-  document.getElementById("checkout-summary").innerHTML = "<p>No booking found. Please go back and book a car.</p>";
+  document.getElementById("checkout-content").innerHTML = `
+    <div class="error-message">
+      <h3>No booking found</h3>
+      <p>Please go back and book a car first.</p>
+      <button onclick="window.location.href='book.html'" class="btn btn-primary">
+        Book a Car
+      </button>
+    </div>
+  `;
 }
 </script>
 </body>
