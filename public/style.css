@@ -1,5 +1,6 @@
 /* --- Root Variables --- */
 :root {
+  /* Dark theme (default) */
   --bg:#0b0e11;
   --bg-soft:#0f1318;
   --card:#101418;
@@ -14,6 +15,76 @@
   --shadow: 0 10px 30px rgba(0,0,0,0.32);
   --radius:14px;
   --glass: rgba(255,255,255,0.02);
+  
+  /* Light theme variables */
+  --light-bg:#ffffff;
+  --light-bg-soft:#f8f9fa;
+  --light-card:#ffffff;
+  --light-muted:#6c757d;
+  --light-border:#dee2e6;
+  --light-ring:#0d9488;
+  --light-text:#212529;
+  --light-primary:#0d9488;
+  --light-primary-700:#0f766e;
+  --light-warn:#d97706;
+  --light-danger:#dc2626;
+  --light-shadow: 0 10px 30px rgba(0,0,0,0.1);
+  --light-glass: rgba(0,0,0,0.02);
+}
+
+/* Light theme styles */
+[data-theme="light"] {
+  --bg: var(--light-bg);
+  --bg-soft: var(--light-bg-soft);
+  --card: var(--light-card);
+  --muted: var(--light-muted);
+  --border: var(--light-border);
+  --ring: var(--light-ring);
+  --text: var(--light-text);
+  --primary: var(--light-primary);
+  --primary-700: var(--light-primary-700);
+  --warn: var(--light-warn);
+  --danger: var(--light-danger);
+  --shadow: var(--light-shadow);
+  --glass: var(--light-glass);
+}
+
+[data-theme="light"] body {
+  background: linear-gradient(180deg, var(--bg) 0%, #f8f9fa 100%);
+}
+
+[data-theme="light"] .navbar {
+  background: rgba(248, 249, 250, 0.65);
+  border-bottom: 1px solid var(--border);
+}
+
+[data-theme="light"] .brand-mark {
+  background: linear-gradient(135deg, #e2e8f0, #cbd5e1);
+  color: var(--text);
+}
+
+[data-theme="light"] .card {
+  background: linear-gradient(180deg, var(--card) 0%, var(--bg-soft) 100%);
+  border: 1px solid var(--border);
+}
+
+[data-theme="light"] .footer {
+  background: linear-gradient(135deg, var(--bg) 0%, #e2e8f0 100%);
+  color: var(--text);
+}
+
+[data-theme="light"] .footer::before {
+  background: linear-gradient(90deg, transparent, var(--primary), transparent);
+}
+
+[data-theme="light"] .btn-ghost {
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--text);
+}
+
+[data-theme="light"] .btn-ghost:hover {
+  background: var(--bg-soft);
 }
 
 /* --- Reset & base --- */
@@ -357,4 +428,43 @@ input,select{height:40px;padding:0 12px;background:#0f1318;border:1px solid var(
   color: #ef4444;
   background: rgba(239,68,68,0.15);
   border-color: rgba(239,68,68,0.25);
+}
+
+/* --- Theme Toggle Button --- */
+.theme-toggle {
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  font-size: 18px;
+  color: var(--muted);
+  transition: all 0.2s ease;
+}
+
+.theme-toggle:hover {
+  color: var(--text);
+  background: var(--glass);
+  transform: scale(1.05);
+}
+
+[data-theme="light"] .theme-toggle {
+  color: var(--muted);
+}
+
+[data-theme="light"] .theme-toggle:hover {
+  color: var(--text);
+  background: var(--glass);
+}
+
+/* Smooth theme transitions */
+* {
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+
+body {
+  transition: background 0.3s ease;
 }

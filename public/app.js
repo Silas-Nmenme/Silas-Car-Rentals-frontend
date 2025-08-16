@@ -1,9 +1,59 @@
-// app.js - Fixed version
+// app.js - Fixed version with theme toggle
 const API_BASE = "https://techyjaunt-auth-go43.onrender.com";
 
 // Shortcuts
 const qs = (s) => document.querySelector(s);
 const qsa = (s) => Array.from(document.querySelectorAll(s));
+
+// --- THEME TOGGLE FUNCTIONALITY ---
+function initThemeToggle() {
+  const themeToggle = document.getElementById('theme-toggle');
+  if (!themeToggle) return;
+
+  // Check for saved theme preference or use system preference
+  const savedTheme = localStorage.getItem('theme');
+  const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+  
+  // Set initial theme
+  if (savedTheme) {
+    document.documentElement.setAttribute('data-theme', savedTheme);
+    updateThemeIcon(savedTheme);
+  } else if (!prefersDark) {
+    // If system prefers light and no saved preference, set light
+    document.documentElement.setAttribute('data-theme', 'light');
+    updateThemeIcon('light');
+  }
+
+  // Add click listener
+  themeToggle.addEventListener('click', () => {
+    const currentTheme = document.documentElement.getAttribute('data-theme') || 'dark';
+    const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+    
+    document.documentElement.setAttribute('data-theme', newTheme);
+    localStorage.setItem('theme', newTheme);
+    updateThemeIcon(newTheme);
+    
+    // Show toast notification
+    showToast(`Switched to ${newTheme} mode`, 2000);
+  });
+}
+
+function updateThemeIcon(theme) {
+  const themeToggle = document.getElementById('theme-toggle');
+  if (!themeToggle) return;
+  
+  themeToggle.innerHTML = theme === 'dark' ? '☀️' : '🌙';
+  themeToggle.setAttribute('aria-label', `Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`);
+}
+
+// Listen for system theme changes
+window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
+  if (!localStorage.getItem('theme')) {
+    const newTheme = e.matches ? 'dark' : 'light';
+    document.documentElement.setAttribute('data-theme', newTheme);
+    updateThemeIcon(newTheme);
+  }
+});
 
 // --- TOAST FUNCTION (GLOBAL) ---
 function showToast(message, duration = 3000, bgColor = "#03dac5") {
