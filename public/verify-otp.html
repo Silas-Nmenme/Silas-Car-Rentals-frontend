@@ -211,8 +211,9 @@
         if (response.ok) {
           showMessage('OTP verified successfully! Redirecting...', 'success');
           setTimeout(() => {
-            // Redirect to reset password page with email
-            window.location.href = `reset-password.html?email=${encodeURIComponent(email)}`;
+            // Redirect to reset password page with userId
+            const userId = data.userId || data.id || email; // Use userId from response if available
+            window.location.href = `reset-password.html?userId=${encodeURIComponent(userId)}`;
           }, 1500);
         } else {
           showMessage(data.message || 'Invalid OTP', 'error');
