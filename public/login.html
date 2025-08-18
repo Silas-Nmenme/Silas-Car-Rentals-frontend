@@ -467,6 +467,7 @@
           <button type="submit">Login</button>
         </form>
         <div class="footer-text">
+          <a href="#" onclick="openForgotPasswordModal()" style="color: #03dac5; text-decoration: none; font-weight: 600;">Forgot Password?</a><br>
           Don't have an account? <a href="signup.html">Sign up here</a>
         </div>
       </div>
@@ -540,6 +541,10 @@
         showToast("Network error, try again later");
       }
     });
+
+    function openForgotPasswordModal() {
+      window.location.href = 'forgot-password.html';
+    }
   </script>
 
 </body>
