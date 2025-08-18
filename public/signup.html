@@ -623,6 +623,9 @@
       const GOOGLE_CLIENT_ID = '293889215515-658eba7e610fm5hfoetknip83lf2re1s.apps.googleusercontent.com';
       const REDIRECT_URI = window.location.origin + '/api/auth/google/callback';
       
+      // Debug: Log the redirect URI being used
+      console.log('Google OAuth Redirect URI:', REDIRECT_URI);
+      
       // Generate state for CSRF protection
       const state = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
       sessionStorage.setItem('oauth_state', state);
@@ -643,8 +646,12 @@
         state: state
       });
       
+      // Debug: Log the full OAuth URL
+      const oauthUrl = `https://accounts.google.com/o/oauth2/v2/auth?${params.toString()}`;
+      console.log('Google OAuth URL:', oauthUrl);
+      
       // Redirect to Google OAuth
-      window.location.href = `https://accounts.google.com/o/oauth2/v2/auth?${params.toString()}`;
+      window.location.href = oauthUrl;
     } catch (error) {
       console.error('Google sign-in error:', error);
       showToast('Failed to initiate Google sign-in');
