@@ -619,19 +619,26 @@
   });
 
   // Use the new Google Auth implementation
-  function signInWithGoogle() {
-    // This will be handled by the GoogleAuth class in google-auth.js
-    console.log('Google sign-in initiated');
-  }
-
-  // Add CSS for spinner animation
-  const style = document.createElement('style');
-  style.textContent = `
-    @keyframes spin {
-      to { transform: rotate(360deg); }
+  window.signInWithGoogle = function() {
+    if (window.googleAuth) {
+      window.googleAuth.signIn();
+    } else {
+      console.error('Google Auth not initialized');
+      showToast('Google authentication not available');
     }
-  `;
-  document.head.appendChild(style);
+  };
+
+  // Add CSS for spinner animation if not already added
+  if (!document.getElementById('spinner-styles')) {
+    const spinnerStyle = document.createElement('style');
+    spinnerStyle.id = 'spinner-styles';
+    spinnerStyle.textContent = `
+      @keyframes spin {
+        to { transform: rotate(360deg); }
+      }
+    `;
+    document.head.appendChild(spinnerStyle);
+  }
   </script>
 
 </body>
