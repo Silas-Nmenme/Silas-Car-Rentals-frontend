@@ -3,7 +3,9 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Create your account at Silas Car Rental and unlock access to premium car rental services.">
   <title>Sign Up - Silas Car Rental</title>
+  <link rel="icon" type="image/x-icon" href="/favicon.ico">
   <style>
     * {
       margin: 0;
@@ -16,6 +18,7 @@
       background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
       color: #e0e0e0;
       overflow-x: hidden;
+      min-height: 100vh;
     }
 
     header {
@@ -548,6 +551,7 @@
     }
   }
 
+  // Form validation and submission
   document.getElementById("auth-form").addEventListener("submit", async (e) => {
     e.preventDefault();
 
@@ -556,8 +560,21 @@
     const phoneNumber = e.target.phone.value.trim();
     const password = e.target.password.value.trim();
 
+    // Validation
     if (!name || !email || !phoneNumber || !password) {
       return showToast("Please fill in all fields");
+    }
+
+    if (name.length < 3) {
+      return showToast("Name must be at least 3 characters");
+    }
+
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      return showToast("Please enter a valid email address");
+    }
+
+    if (!/^\+?\d{7,15}$/.test(phoneNumber)) {
+      return showToast("Please enter a valid phone number");
     }
 
     if (password.length < 6) {
@@ -565,6 +582,10 @@
     }
 
     try {
+      const submitBtn = e.target.querySelector('button[type="submit"]');
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Creating Account...';
+
       const res = await fetch(`${BASE_URL}/api/users/signup`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -575,6 +596,8 @@
       const data = await res.json();
 
       if (!res.ok) {
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Sign Up';
         return showToast(data.message || "Signup failed");
       }
 
@@ -586,25 +609,42 @@
       }
 
     } catch (error) {
-      showToast("Network error, try again later");
+      const submitBtn = e.target.querySelector('button[type="submit"]');
+      submitBtn.disabled = false;
+      submitBtn.textContent = 'Sign Up';
+      console.error('Signup error:', error);
+      showToast("Network error, please try again");
     }
   });
-  </script>
 
-  <script>
+  // Google OAuth implementation
   function signInWithGoogle() {
     try {
-      // Generate a random state parameter for CSRF protection
+      const GOOGLE_CLIENT_ID = '293889215515-658eba7e610fm5hfoetknip83lf2re1s.apps.googleusercontent.com';
+      const REDIRECT_URI = window.location.origin + '/api/auth/google/callback';
+      
+      // Generate state for CSRF protection
       const state = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
       sessionStorage.setItem('oauth_state', state);
       
-      // Add loading state
+      // Show loading state
       const googleBtn = document.querySelector('button[onclick="signInWithGoogle()"]');
       googleBtn.disabled = true;
       googleBtn.innerHTML = '<span style="display: inline-block; width: 16px; height: 16px; border: 2px solid #757575; border-radius: 50%; border-top-color: transparent; animation: spin 1s linear infinite;"></span> Connecting...';
       
+      // Construct Google OAuth URL
+      const params = new URLSearchParams({
+        client_id: GOOGLE_CLIENT_ID,
+        redirect_uri: REDIRECT_URI,
+        response_type: 'code',
+        scope: 'https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email',
+        access_type: 'offline',
+        include_granted_scopes: 'true',
+        state: state
+      });
+      
       // Redirect to Google OAuth
-      window.location.href = `${BASE_URL}/api/users/google?state=${state}`;
+      window.location.href = `https://accounts.google.com/o/oauth2/v2/auth?${params.toString()}`;
     } catch (error) {
       console.error('Google sign-in error:', error);
       showToast('Failed to initiate Google sign-in');
@@ -626,7 +666,6 @@
       return;
     }
     
-    // If we have an authorization code, process it
     if (code) {
       handleGoogleCallback(code, state);
     }
@@ -634,7 +673,6 @@
 
   async function handleGoogleCallback(code, state) {
     try {
-      // Verify state parameter for CSRF protection
       const storedState = sessionStorage.getItem('oauth_state');
       if (state && state !== storedState) {
         showToast('Invalid authentication request');
@@ -659,19 +697,16 @@
         throw new Error(data.message || 'Google authentication failed');
       }
 
-      // Store the JWT token if provided
       if (data.token) {
         localStorage.setItem('authToken', data.token);
       }
 
-      // Store user info
       if (data.user) {
         localStorage.setItem('user', JSON.stringify(data.user));
       }
 
       showToast('Successfully signed up with Google!');
       
-      // Redirect to appropriate page
       setTimeout(() => {
         window.location.href = data.redirectUrl || 'dashboard.html';
       }, 1500);
