@@ -646,86 +646,11 @@
     }
   });
 
-  // Google OAuth functionality
+  // Google OAuth functionality - Fixed to redirect properly
   function handleGoogleSignUp() {
+    // Direct redirect to Google OAuth - this will show Google account selection
     const googleAuthUrl = `${BASE_URL}/api/users/google`;
-    
-    // Open Google OAuth in popup window for better UX
-    const popup = window.open(
-      googleAuthUrl,
-      'google-auth',
-      'width=500,height=600,scrollbars=yes,resizable=yes'
-    );
-    
-    // Handle popup window communication
-    const handleMessage = (event) => {
-      // Verify the message is from our expected origin
-      if (event.origin !== window.location.origin && event.origin !== BASE_URL) {
-        return;
-      }
-      
-      if (event.data.type === 'GOOGLE_AUTH_SUCCESS') {
-        window.removeEventListener('message', handleMessage);
-        
-        if (popup && !popup.closed) {
-          popup.close();
-        }
-        
-        // Exchange code for tokens
-        exchangeCodeForToken(event.data.code);
-        
-      } else if (event.data.type === 'GOOGLE_AUTH_ERROR') {
-        window.removeEventListener('message', handleMessage);
-        
-        if (popup && !popup.closed) {
-          popup.close();
-        }
-        
-        showToast(event.data.error || 'Google sign-in failed');
-      }
-    };
-    
-    window.addEventListener('message', handleMessage);
-    
-    // Fallback: if popup is blocked or fails, redirect directly
-    if (!popup || popup.closed || typeof popup.closed === 'undefined') {
-      window.location.href = googleAuthUrl;
-    }
-  }
-  
-  async function exchangeCodeForToken(code) {
-    try {
-      showToast('Completing Google sign-in...', 5000);
-      
-      const response = await fetch(`${BASE_URL}/api/users/google/callback`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        credentials: 'include',
-        body: JSON.stringify({ code })
-      });
-      
-      const data = await response.json();
-      
-      if (!response.ok) {
-        throw new Error(data.message || 'Google authentication failed');
-      }
-      
-      if (!data.token || !data.user) {
-        throw new Error('Invalid response from server');
-      }
-      
-      // Store user data
-      storeUserData(data);
-      
-      // Redirect to dashboard
-      window.location.href = 'dashboard.html';
-      
-    } catch (error) {
-      console.error('Google sign-in error:', error);
-      showToast(error.message || 'Google sign-in failed. Please try again.');
-    }
+    window.location.href = googleAuthUrl;
   }
   
   function storeUserData(data) {
