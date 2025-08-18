@@ -183,18 +183,27 @@
       const otp = document.getElementById('otp').value.trim();
       const messageDiv = document.getElementById('message');
       
+      // Get email from URL parameters
+      const urlParams = new URLSearchParams(window.location.search);
+      const email = urlParams.get('email');
+      
       if (!otp || otp.length !== 6) {
         showMessage('Please enter a valid 6-digit OTP', 'error');
         return;
       }
 
+      if (!email) {
+        showMessage('Email not found. Please restart the process.', 'error');
+        return;
+      }
+
       try {
-        const response = await fetch(`${BASE_URL}/api/users/verify-otp/${userId}`, {
+        const response = await fetch(`${BASE_URL}/api/users/verify-otp`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify({ otp })
+          body: JSON.stringify({ email, otp })
         });
 
         const data = await response.json();
@@ -202,9 +211,8 @@
         if (response.ok) {
           showMessage('OTP verified successfully! Redirecting...', 'success');
           setTimeout(() => {
-            // Redirect to reset password page with userId
-            const userId = data.userId || 'default-user-id';
-            window.location.href = `reset-password.html?userId=${userId}`;
+            // Redirect to reset password page with email
+            window.location.href = `reset-password.html?email=${encodeURIComponent(email)}`;
           }, 1500);
         } else {
           showMessage(data.message || 'Invalid OTP', 'error');
