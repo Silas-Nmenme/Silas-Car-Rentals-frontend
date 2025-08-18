@@ -107,25 +107,36 @@ class GoogleAuth {
   }
 
   /**
-   * Try popup flow with timeout
+   * Try popup flow with timeout - COOP-safe implementation
    */
   async tryPopupFlow(authUrl) {
     return new Promise((resolve) => {
+      // Use noopener,noreferrer to prevent COOP issues
       const popup = window.open(
         authUrl,
         'google-signin',
-        'width=500,height=600,scrollbars=yes,resizable=yes,top=100,left=500'
+        'width=500,height=600,scrollbars=yes,resizable=yes,top=100,left=500,noopener,noreferrer'
       );
 
-      if (!popup || popup.closed || typeof popup.closed === 'undefined') {
+      // COOP-safe check: Use a different approach since window.closed might be blocked
+      let popupAlive = true;
+      
+      // Fallback: If popup fails to open, resolve false immediately
+      if (!popup) {
         resolve(false);
         return;
       }
 
       // Set timeout for popup (5 minutes)
       const timeout = setTimeout(() => {
+        if (popupAlive) {
+          try {
+            popup.close();
+          } catch (e) {
+            // Ignore COOP errors when closing
+          }
+        }
         window.removeEventListener('message', handleMessage);
-        popup.close();
         this.showError('Google sign-in timed out. Please try again.');
         this.hideLoading();
         resolve(false);
@@ -138,13 +149,22 @@ class GoogleAuth {
 
         clearTimeout(timeout);
         window.removeEventListener('message', handleMessage);
+        popupAlive = false;
 
         if (event.data.type === 'GOOGLE_AUTH_SUCCESS') {
-          popup.close();
+          try {
+            popup.close();
+          } catch (e) {
+            // Ignore COOP errors when closing
+          }
           this.handleGoogleCallback(event.data.code);
           resolve(true);
         } else if (event.data.type === 'GOOGLE_AUTH_ERROR') {
-          popup.close();
+          try {
+            popup.close();
+          } catch (e) {
+            // Ignore COOP errors when closing
+          }
           this.showError('Google sign-in failed: ' + event.data.error);
           this.hideLoading();
           resolve(true); // Popup worked, but auth failed
@@ -153,16 +173,31 @@ class GoogleAuth {
 
       window.addEventListener('message', handleMessage);
 
-      // Check if popup is closed by user
-      const checkClosed = setInterval(() => {
-        if (popup.closed) {
-          clearInterval(checkClosed);
-          clearTimeout(timeout);
-          window.removeEventListener('message', handleMessage);
-          this.hideLoading();
-          resolve(true); // Popup was closed by user
+      // COOP-safe popup monitoring
+      const checkPopupStatus = () => {
+        if (!popupAlive) return;
+        
+        // Try to check if popup is still alive
+        try {
+          // This might throw due to COOP, so we handle it gracefully
+          if (popup.closed === true) {
+            popupAlive = false;
+            clearTimeout(timeout);
+            window.removeEventListener('message', handleMessage);
+            this.hideLoading();
+            resolve(true); // Popup was closed by user
+            return;
+          }
+        } catch (e) {
+          // COOP policy is blocking access, assume popup is still open
+          // We'll rely on the message handler or timeout
         }
-      }, 1000);
+        
+        setTimeout(checkPopupStatus, 2000); // Check less frequently
+      };
+
+      // Start monitoring
+      setTimeout(checkPopupStatus, 1000);
     });
   }
 

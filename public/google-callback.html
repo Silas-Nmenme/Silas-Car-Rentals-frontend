@@ -45,44 +45,64 @@
   </div>
 
   <script>
-    // Handle the Google OAuth callback
+    // Handle the Google OAuth callback with COOP-safe implementation
     window.addEventListener('DOMContentLoaded', () => {
       const urlParams = new URLSearchParams(window.location.search);
       const code = urlParams.get('code');
       const state = urlParams.get('state');
       const error = urlParams.get('error');
       
-      if (error) {
-        // Send error back to parent window
+      // COOP-safe message handling
+      const sendMessage = (message) => {
         if (window.opener) {
-          window.opener.postMessage({
-            type: 'GOOGLE_AUTH_ERROR',
-            error: error
-          }, '*');
+          try {
+            window.opener.postMessage(message, window.location.origin);
+          } catch (e) {
+            console.error('Failed to send message to opener:', e);
+            // Fallback: try with '*' if specific origin fails
+            window.opener.postMessage(message, '*');
+          }
         }
-        window.close();
-        return;
-      }
+      };
       
-      if (code) {
-        // Send success data back to parent window
-        if (window.opener) {
-          window.opener.postMessage({
-            type: 'GOOGLE_AUTH_SUCCESS',
-            code: code,
-            state: state
-          }, '*');
-        }
-        window.close();
+      if (error) {
+        sendMessage({
+          type: 'GOOGLE_AUTH_ERROR',
+          error: decodeURIComponent(error)
+        });
+      } else if (code) {
+        sendMessage({
+          type: 'GOOGLE_AUTH_SUCCESS',
+          code: code,
+          state: state
+        });
       } else {
         // No code received
-        if (window.opener) {
-          window.opener.postMessage({
-            type: 'GOOGLE_AUTH_ERROR',
-            error: 'No authorization code received'
-          }, '*');
+        sendMessage({
+          type: 'GOOGLE_AUTH_ERROR',
+          error: 'No authorization code received'
+        });
+      }
+      
+      // COOP-safe window closing
+      if (window.opener) {
+        try {
+          window.close();
+        } catch (e) {
+          console.error('Failed to close window:', e);
+          // Fallback: redirect to close page
+          window.location.href = 'about:blank';
         }
-        window.close();
+      } else {
+        // Handle redirect flow
+        if (error) {
+          window.location.href = `signup.html?error=${encodeURIComponent(error)}`;
+        } else if (code) {
+          // This should be handled by the main GoogleAuth class
+          window.location.href = `signup.html?code=${code}&state=${state}`;
+        } else {
+          window.location.href = 'signup.html?error=no_code';
+        }
       }
     });
   </script>
