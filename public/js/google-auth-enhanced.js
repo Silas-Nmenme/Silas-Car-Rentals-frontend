@@ -7,13 +7,15 @@ class GoogleAuth {
   constructor() {
     this.baseUrl = 'https://techyjaunt-auth-go43.onrender.com';
     this.clientId = '293889215515-658eba7e610fm5hfoetknip83lf2re1s.apps.googleusercontent.com';
+    
+    // Use dynamic redirect URI based on current environment
     this.redirectUri = `${window.location.origin}/google-callback.html`;
     
-    // Debug: Log the redirect URI being used
     console.log('Google OAuth Configuration:', {
       clientId: this.clientId,
       redirectUri: this.redirectUri,
-      currentOrigin: window.location.origin
+      currentOrigin: window.location.origin,
+      currentHostname: window.location.hostname
     });
   }
 
@@ -62,29 +64,14 @@ class GoogleAuth {
 
       this.showLoading();
 
-      // Get Google OAuth URL from backend
-      const response = await fetch(`${this.baseUrl}/api/users/google`, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-        }
-      });
-
-      if (!response.ok) {
-        throw new Error(`Failed to get Google OAuth URL: ${response.status}`);
-      }
-
-      const data = await response.json();
+      // Build the correct Google OAuth URL
+      const authUrl = this.buildGoogleAuthUrl();
       
-      if (data.authUrl) {
-        // Try popup first, fallback to redirect if needed
-        const popupSuccess = await this.tryPopupFlow(data.authUrl);
-        if (!popupSuccess) {
-          // Fallback to redirect flow
-          window.location.href = data.authUrl;
-        }
-      } else {
-        throw new Error('No auth URL received from server');
+      // Try popup first, fallback to redirect if needed
+      const popupSuccess = await this.tryPopupFlow(authUrl);
+      if (!popupSuccess) {
+        // Fallback to redirect flow
+        window.location.href = authUrl;
       }
 
     } catch (error) {
@@ -92,6 +79,30 @@ class GoogleAuth {
       this.showError(`Failed to initiate Google sign-in: ${error.message}`);
       this.hideLoading();
     }
+  }
+
+  /**
+   * Build Google OAuth URL
+   */
+  buildGoogleAuthUrl() {
+    const params = new URLSearchParams({
+      client_id: this.clientId,
+      redirect_uri: this.redirectUri,
+      response_type: 'code',
+      scope: 'openid email profile',
+      access_type: 'offline',
+      prompt: 'consent',
+      state: this.generateState()
+    });
+    
+    return `https://accounts.google.com/o/oauth2/v2/auth?${params.toString()}`;
+  }
+
+  /**
+   * Generate random state for security
+   */
+  generateState() {
+    return Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
   }
 
   /**
@@ -118,10 +129,7 @@ class GoogleAuth {
         'width=500,height=600,scrollbars=yes,resizable=yes,top=100,left=500,noopener,noreferrer'
       );
 
-      // COOP-safe check: Use a different approach since window.closed might be blocked
-      let popupAlive = true;
-      
-      // Fallback: If popup fails to open, resolve false immediately
+      // COOP-safe check: If popup fails to open, resolve false immediately
       if (!popup) {
         resolve(false);
         return;
@@ -129,12 +137,10 @@ class GoogleAuth {
 
       // Set timeout for popup (5 minutes)
       const timeout = setTimeout(() => {
-        if (popupAlive) {
-          try {
-            popup.close();
-          } catch (e) {
-            // Ignore COOP errors when closing
-          }
+        try {
+          popup.close();
+        } catch (e) {
+          // Ignore COOP errors when closing
         }
         window.removeEventListener('message', handleMessage);
         this.showError('Google sign-in timed out. Please try again.');
@@ -149,7 +155,6 @@ class GoogleAuth {
 
         clearTimeout(timeout);
         window.removeEventListener('message', handleMessage);
-        popupAlive = false;
 
         if (event.data.type === 'GOOGLE_AUTH_SUCCESS') {
           try {
@@ -175,15 +180,11 @@ class GoogleAuth {
 
       // COOP-safe popup monitoring
       const checkPopupStatus = () => {
-        if (!popupAlive) return;
-        
         // Try to check if popup is still alive
         try {
-          // This might throw due to COOP, so we handle it gracefully
           if (popup.closed === true) {
-            popupAlive = false;
-            clearTimeout(timeout);
             window.removeEventListener('message', handleMessage);
+            clearTimeout(timeout);
             this.hideLoading();
             resolve(true); // Popup was closed by user
             return;
@@ -408,7 +409,7 @@ class GoogleAuth {
    */
   static isAuthenticated() {
     try {
-      const tokenData = localStorage.getItem('authToken');
+      const tokenData = localStorage.getItem('authAuth');
       if (!tokenData) return false;
       
       const { token, expiresAt } = JSON.parse(tokenData);
