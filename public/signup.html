@@ -626,7 +626,14 @@
 
       // Construct the Google OAuth URL with proper redirect
       const GOOGLE_CLIENT_ID = '293889215515-658eba7e610fm5hfoetknip83lf2re1s.apps.googleusercontent.com';
-      const REDIRECT_URI = `${window.location.origin}/google-callback.html`;
+      
+      // Use the current origin to build the redirect URI
+      const protocol = window.location.protocol;
+      const hostname = window.location.hostname;
+      const port = window.location.port ? `:${window.location.port}` : '';
+      const REDIRECT_URI = `${protocol}//${hostname}${port}/google-callback.html`;
+      
+      console.log('Using redirect URI:', REDIRECT_URI);
       
       const params = new URLSearchParams({
         client_id: GOOGLE_CLIENT_ID,
