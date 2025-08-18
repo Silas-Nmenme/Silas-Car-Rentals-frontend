@@ -189,7 +189,7 @@
       }
 
       try {
-        const response = await fetch(`${BASE_URL}/verify-otp`, {
+        const response = await fetch(`${BASE_URL}/api/users/verify-otp/${userId}`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
