@@ -593,8 +593,68 @@
 
   <script>
   function signInWithGoogle() {
-    // Redirect to Google OAuth endpoint
-    window.location.href = `${BASE_URL}/google`;
+    // Redirect to Google OAuth endpoint with proper backend route
+    window.location.href = `${BASE_URL}/api/users/google`;
+  }
+
+  // Handle Google OAuth callback
+  window.addEventListener('DOMContentLoaded', () => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const code = urlParams.get('code');
+    const error = urlParams.get('error');
+    
+    if (error) {
+      showToast('Google sign-in failed. Please try again.');
+      // Clean URL
+      window.history.replaceState({}, document.title, window.location.pathname);
+    }
+    
+    // Check if we're coming from Google OAuth callback
+    if (window.location.pathname.includes('google/callback')) {
+      handleGoogleCallback();
+    }
+  });
+
+  async function handleGoogleCallback() {
+    try {
+      const res = await fetch(`${BASE_URL}/app/users/google/callback${window.location.search}`, {
+        method: 'GET',
+        credentials: 'include'
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        showToast(data.message || 'Google authentication failed');
+        setTimeout(() => {
+          window.location.href = 'signup.html';
+        }, 2000);
+        return;
+      }
+
+      // Successful Google sign-up/sign-in
+      showToast('Successfully signed up with Google!');
+      
+      // Redirect based on user state
+      if (data.isNewUser) {
+        // New user - redirect to complete profile or dashboard
+        setTimeout(() => {
+          window.location.href = 'dashboard.html';
+        }, 1500);
+      } else {
+        // Existing user - redirect to dashboard
+        setTimeout(() => {
+          window.location.href = 'dashboard.html';
+        }, 1500);
+      }
+
+    } catch (error) {
+      console.error('Google callback error:', error);
+      showToast('Authentication error occurred. Please try again.');
+      setTimeout(() => {
+        window.location.href = 'signup.html';
+      }, 2000);
+    }
   }
   </script>
 
