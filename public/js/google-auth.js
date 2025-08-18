@@ -8,6 +8,13 @@ class GoogleAuth {
     this.baseUrl = 'https://techyjaunt-auth-go43.onrender.com';
     this.clientId = '293889215515-658eba7e610fm5hfoetknip83lf2re1s.apps.googleusercontent.com';
     this.redirectUri = `${window.location.origin}/google-callback.html`;
+    
+    // Debug: Log the redirect URI being used
+    console.log('Google OAuth Configuration:', {
+      clientId: this.clientId,
+      redirectUri: this.redirectUri,
+      currentOrigin: window.location.origin
+    });
   }
 
   /**
@@ -51,6 +58,7 @@ class GoogleAuth {
       
       if (data.authUrl) {
         // Open popup for Google Sign-In
+        console.log('Google Auth URL:', data.authUrl);
         this.openGooglePopup(data.authUrl);
       } else {
         throw new Error('No auth URL received');
