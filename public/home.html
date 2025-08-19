@@ -28,8 +28,8 @@
       <div class="nav-actions" role="region" aria-label="User actions">
         <div class="user-menu" id="user-actions">
           <span class="user-name" id="user-name">User</span>
-          <button class="btn btn-sm" id="logout-btn" title="Sign out">Logout</button>
           <button class="btn btn-sm" id="dashboard-btn" title="Dashboard" onclick="location.href='dashboard.html'">Dashboard</button>
+          <button class="btn btn-sm" id="logout-btn" title="Sign out">Logout</button>
         </div>
 
         <button id="open-cart" onclick="window.location.href='cart.html'" class="btn btn-ghost" aria-label="Open booking cart" title="Cart">
@@ -88,15 +88,99 @@
                 Premium car rental service offering luxury and standard vehicles for business and leisure travel across Nigeria.
               </p>
             </div>
+            <div class="contact-info">
+              <div style="margin-bottom: 0.8rem;">
+                <strong style="color: #03dac5;">📧 Email:</strong><br/>
+                <a href="mailto:silasonyekachi15@gmail.com" style="color: #ccc; text-decoration: none;">silasonyekachi15@gmail.com</a>
+              </div>
+              <div style="margin-bottom: 0.8rem;">
+                <strong style="color: #03dac5;">📞 Phone:</strong><br/>
+                <a href="tel:+2348107586167" style="color: #ccc; text-decoration: none;">+234 810 758 6167</a>
+              </div>
+              <div>
+                <strong style="color: #03dac5;">📍 Location:</strong><br/>
+                <span style="color: #ccc;">Lagos, Nigeria</span>
+              </div>
+            </div>
+          </div>
+          
+          <div class="footer-services">
+            <h4 style="color: #03dac5; margin-bottom: 1rem; font-size: 1.2rem;">Our Services</h4>
+            <ul style="list-style: none; padding: 0;">
+              <li style="margin-bottom: 0.6rem;"><a href="book.html" style="color: #ccc; text-decoration: none; transition: color 0.3s;">🚗 Car Rentals</a></li>
+              <li style="margin-bottom: 0.6rem;"><a href="book.html" style="color: #ccc; text-decoration: none; transition: color 0.3s;">👔 Corporate Services</a></li>
+              <li style="margin-bottom: 0.6rem;"><a href="book.html" style="color: #ccc; text-decoration: none; transition: color 0.3s;">✈️ Airport Transfers</a></li>
+              <li style="margin-bottom: 0.6rem;"><a href="book.html" style="color: #ccc; text-decoration: none; transition: color 0.3s;">🎯 Chauffeur Services</a></li>
+              <li style="margin-bottom: 0.6rem;"><a href="book.html" style="color: #ccc; text-decoration: none; transition: color 0.3s;">📅 Long-term Rentals</a></li>
+            </ul>
+          </div>
+          
+          <div class="footer-company">
+            <h4 style="color: #03dac5; margin-bottom: 1rem; font-size: 1.2rem;">Company</h4>
+            <ul style="list-style: none; padding: 0;">
+              <li style="margin-bottom: 0.6rem;"><a href="about.html" style="color: #ccc; text-decoration: none; transition: color 0.3s;">About Us</a></li>
+              <li style="margin-bottom: 0.6rem;"><a href="terms.html" style="color: #ccc; text-decoration: none; transition: color 0.3s;">Terms & Conditions</a></li>
+              <li style="margin-bottom: 0.6rem;"><a href="privacy.html" style="color: #ccc; text-decoration: none; transition: color 0.3s;">Privacy Policy</a></li>
+              <li style="margin-bottom: 0.6rem;"><a href="faq.html" style="color: #ccc; text-decoration: none; transition: color 0.3s;">FAQ</a></li>
+              <li style="margin-bottom: 0.6rem;"><a href="contact.html" style="color: #ccc; text-decoration: none; transition: color 0.3s;">Contact Support</a></li>
+            </ul>
+          </div>
+          
+          <div class="footer-newsletter">
+            <h4 style="color: #03dac5; margin-bottom: 1rem; font-size: 1.2rem;">Stay Updated</h4>
+            <p style="color: #ccc; margin-bottom: 1rem; font-size: 0.9rem;">Get exclusive deals and updates</p>
+            <form id="newsletter-form" style="display: flex; gap: 0.5rem; flex-direction: column;">
+              <div style="display: flex; gap: 0.5rem;">
+                <input type="email" name="email" placeholder="Enter your email" required style="flex: 1; padding: 0.5rem; border: 1px solid #333; background: #1a1a1a; color: #ccc; border-radius: 4px; font-size: 0.9rem;">
+                <button type="submit" style="padding: 0.5rem 1rem; background: #03dac5; color: #0b0e11; border: none; border-radius: 4px; cursor: pointer; font-weight: bold;">Subscribe</button>
+              </div>
+              <div id="newsletter-message" style="font-size: 0.8rem; margin-top: 0.5rem; min-height: 1rem;"></div>
+            </form>
+          </div>
+        </div>
+        
+        <div class="footer-divider" style="margin: 2rem 0; border-top: 1px solid #333;"></div>
+        
+        <div class="footer-bottom-row">
+          <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
+            <div>
+              <p style="color: #ccc; margin: 0; font-size: 0.9rem;">
+                © <span id="year"></span> Silas Car Rentals. All rights reserved.
+              </p>
+            </div>
+            
+            <div class="social-links" style="display: flex; gap: 1rem; align-items: center;">
+              <a href="#" style="color: #ccc; text-decoration: none; font-size: 1.2rem; transition: color 0.3s;" title="Facebook">📘</a>
+              <a href="#" style="color: #ccc; text-decoration: none; font-size: 1.2rem; transition: color 0.3s;" title="Twitter">🐦</a>
+              <a href="#" style="color: #ccc; text-decoration: none; font-size: 1.2rem; transition: color 0.3s;" title="Instagram">📷</a>
+              <a href="https://wa.link/c73sw8" style="color: #ccc; text-decoration: none; font-size: 1.2rem; transition: color 0.3s;" title="WhatsApp">📱</a>
+            </div>
           </div>
         </div>
       </div>
     </footer>
   </main>
 
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <!-- Scroll to top button -->
+  <button id="scroll-to-top" class="scroll-to-top" aria-label="Scroll to top">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <path d="M12 19V5M5 12l7-7 7 7"/>
+    </svg>
+  </button>
+
   <script>
     const API_BASE = "https://techyjaunt-auth-go43.onrender.com";
     
+    // Toast notification function
+    function showToast(msg, ms = 3000) {
+      const toast = document.getElementById("toast");
+      toast.textContent = msg;
+      toast.classList.add("show");
+      setTimeout(() => toast.classList.remove("show"), ms);
+    }
+
     // Check authentication and load user info
     async function checkAuth() {
       const token = localStorage.getItem('token');
@@ -147,8 +231,113 @@
       window.location.href = 'login.html';
     });
     
+    // Newsletter subscription functionality
+    document.addEventListener('DOMContentLoaded', function() {
+      const newsletterForm = document.getElementById('newsletter-form');
+      const newsletterMessage = document.getElementById('newsletter-message');
+
+      if (newsletterForm) {
+        newsletterForm.addEventListener('submit', async function(e) {
+          e.preventDefault();
+          
+          const emailInput = newsletterForm.querySelector('input[name="email"]');
+          const email = emailInput.value.trim();
+          
+          if (!email) {
+            showNewsletterMessage('Please enter your email address', 'error');
+            return;
+          }
+
+          if (!isValidEmail(email)) {
+            showNewsletterMessage('Please enter a valid email address', 'error');
+            return;
+          }
+
+          // Show loading state
+          const submitButton = newsletterForm.querySelector('button[type="submit"]');
+          const originalText = submitButton.textContent;
+          submitButton.textContent = 'Subscribing...';
+          submitButton.disabled = true;
+
+          try {
+            const response = await fetch(`${API_BASE}/api/newsletter/subscribe`, {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({ email })
+            });
+
+            const data = await response.json();
+
+            if (response.ok) {
+              showNewsletterMessage('Successfully subscribed! Thank you for joining our newsletter.', 'success');
+              emailInput.value = '';
+            } else {
+              showNewsletterMessage(data.message || 'Subscription failed. Please try again.', 'error');
+            }
+          } catch (error) {
+            console.error('Newsletter subscription error:', error);
+            showNewsletterMessage('Network error. Please check your connection and try again.', 'error');
+          } finally {
+            submitButton.textContent = originalText;
+            submitButton.disabled = false;
+          }
+        });
+      }
+
+      function showNewsletterMessage(message, type) {
+        newsletterMessage.textContent = message;
+        newsletterMessage.style.color = type === 'success' ? '#03dac5' : '#ff6b6b';
+        newsletterMessage.style.display = 'block';
+        
+        // Clear message after 5 seconds
+        setTimeout(() => {
+          newsletterMessage.textContent = '';
+          newsletterMessage.style.display = 'none';
+        }, 5000);
+      }
+
+      function isValidEmail(email) {
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return emailRegex.test(email);
+      }
+    });
+
+    // Scroll to top functionality
+    const scrollToTopBtn = document.getElementById('scroll-to-top');
+
+    // Show/hide scroll button based on scroll position
+    window.addEventListener('scroll', () => {
+      const scrollHeight = document.documentElement.scrollHeight;
+      const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+      const clientHeight = document.documentElement.clientHeight;
+      
+      // Show button when scrolled near the bottom (within 200px of bottom)
+      const isNearBottom = scrollTop + clientHeight >= scrollHeight - 200;
+      
+      if (isNearBottom && scrollTop > 300) {
+        scrollToTopBtn.classList.add('show');
+      } else {
+        scrollToTopBtn.classList.remove('show');
+      }
+    });
+
+    // Scroll to top when button is clicked
+    scrollToTopBtn.addEventListener('click', () => {
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      });
+    });
+
+    // Set current year in footer
+    document.getElementById('year').textContent = new Date().getFullYear();
+    
     // Initialize on page load
     checkAuth();
   </script>
+</body>
+</html>
 </body>
 </html>
