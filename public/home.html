@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Silas Car Rentals - Home</title>
+  <meta name="description" content="Professional car rentals — browse, add to cart and checkout securely." />
+  <link rel="stylesheet" href="style.css" />
+  <meta name="theme-color" content="#0b0e11">
+</head>
+<body>
+  <header class="navbar" role="banner">
+    <div class="container nav-inner">
+      <a href="home.html" class="brand" aria-label="Silas Car Rentals home">
+        <div class="brand-mark">SC</div>
+        <span class="brand-name">Silas Car Rentals</span>
+      </a>
+
+      <nav class="nav-links" aria-label="Main navigation">
+        <a class="nav-link active" href="home.html">Home</a>
+        <a class="nav-link" href="cars.html">Browse Cars</a>
+        <a class="nav-link" href="book.html">Book</a>
+        <a class="nav-link" href="#how">How it Works</a>
+        <a class="nav-link" href="#testimonials">Testimonials</a>
+        <a class="nav-link" href="#contact">Contact</a>
+      </nav>
+
+      <div class="nav-actions" role="region" aria-label="User actions">
+        <div class="user-menu" id="user-actions">
+          <span class="user-name" id="user-name">User</span>
+          <button class="btn btn-sm" id="logout-btn" title="Sign out">Logout</button>
+          <button class="btn btn-sm" id="dashboard-btn" title="Dashboard" onclick="location.href='dashboard.html'">Dashboard</button>
+        </div>
+
+        <button id="open-cart" onclick="window.location.href='cart.html'" class="btn btn-ghost" aria-label="Open booking cart" title="Cart">
+          🧾 Cart (<span id="cart-count">0</span>)
+        </button>
+        <button onclick="window.location.href='saved.html'" class="btn btn-ghost" title="Saved Cars">💾 Saved (<span id="saved-count">0</span>)</button>
+        <button class="theme-toggle-switch" id="theme-toggle" aria-label="Toggle dark/light mode">
+          <span class="toggle-slider">
+            <span class="toggle-thumb"></span>
+          </span>
+        </button>
+
+        <button class="mobile-menu-btn" id="mobile-menu-btn" aria-label="Open menu">☰</button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero section" id="hero">
+      <div class="container hero-inner">
+        <span class="pill">Trusted • Fast • Secure</span>
+        <h1 class="hero-title">Welcome to Silas Car Rentals</h1>
+        <p class="hero-subtitle">Browse available cars, add them to your booking cart, then checkout after login.</p>
+      </div>
+    </section>
+
+    <section id="about" class="hero section" style="background: linear-gradient(135deg, rgba(3, 218, 197, 0.1), rgba(1, 135, 134, 0.1));">
+      <div class="container hero-inner">
+        <span class="pill">Since 2020 • Lagos, Nigeria</span>
+        <h1 class="hero-title">Nigeria's Trusted Premium Car Rental Service</h1>
+        <p class="hero-subtitle">
+          From luxury sedans to spacious SUVs, we deliver excellence in every journey. 
+          With 5,000+ satisfied customers and 200+ premium vehicles, experience the difference 
+          that quality, reliability, and exceptional service make.
+        </p>
+        
+        <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; margin: 2rem 0;">
+          <a href="about.html" class="btn btn-primary btn-lg">
+            Read More About Us
+          </a>
+          <a href="book.html" class="btn btn-outline btn-lg">
+            Book Your Ride
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <footer id="contact" class="footer section">
+      <div class="container footer-inner">
+        <div class="footer-main">
+          <div class="footer-brand">
+            <div class="brand-footer">
+              <div class="brand-mark" style="width: 50px; height: 50px; background: linear-gradient(135deg, #03dac5, #018786); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 1.5rem; color: #0b0e11; margin-bottom: 1rem;">SC</div>
+              <h3 style="color: #03dac5; margin-bottom: 0.5rem;">Silas Car Rentals</h3>
+              <p style="color: #ccc; font-size: 0.9rem; line-height: 1.6; margin-bottom: 1rem;">
+                Premium car rental service offering luxury and standard vehicles for business and leisure travel across Nigeria.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </footer>
+  </main>
+
+  <script>
+    const API_BASE = "https://techyjaunt-auth-go43.onrender.com";
+    
+    // Check authentication and load user info
+    async function checkAuth() {
+      const token = localStorage.getItem('token');
+      if (!token) {
+        window.location.href = 'login.html';
+        return;
+      }
+      
+      try {
+        const res = await fetch(`${API_BASE}/api/users/me`, {
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
+        
+        if (!res.ok) {
+          localStorage.removeItem('token');
+          window.location.href = 'login.html';
+          return;
+        }
+        
+        const user = await res.json();
+        document.getElementById('user-name').textContent = user.name || user.email;
+        
+        // Show dashboard button only for admins
+        const dashboardBtn = document.getElementById('dashboard-btn');
+        if (user.role === 'admin') {
+          dashboardBtn.style.display = 'inline-block';
+        } else {
+          dashboardBtn.style.display = 'none';
+        }
+      } catch (error) {
+        console.error('Auth check failed:', error);
+        localStorage.removeItem('token');
+        window.location.href = 'login.html';
+      }
+    }
+    
+    document.getElementById('logout-btn').addEventListener('click', function() {
+      localStorage.removeItem('token');
+      window.location.href = 'login.html';
+    });
+    
+    // Initialize on page load
+    checkAuth();
+  </script>
+</body>
+</html>
