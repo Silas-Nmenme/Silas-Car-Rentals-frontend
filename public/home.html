@@ -3,12 +3,13 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Silas Car Rentals - Professional Car Rental Service</title>
-  <meta name="description" content="Premium car rental service - browse luxury vehicles, book online, and enjoy seamless rental experience." />
+  <title>Silas Car Rentals - Premium Car Rental Service in Nigeria</title>
+  <meta name="description" content="Nigeria's leading premium car rental service. Browse luxury vehicles, book online, and enjoy seamless rental experience with 24/7 support.">
+  <meta name="keywords" content="car rental Nigeria, luxury car hire Lagos, premium car rental Abuja, SUV rental Port Harcourt, chauffeur service Nigeria">
   <link rel="stylesheet" href="style.css" />
   <meta name="theme-color" content="#0b0e11">
   <style>
-    /* Professional Navigation Styles */
+    /* Enhanced Professional Navigation Styles */
     .navbar {
       background: rgba(13, 17, 22, 0.95);
       backdrop-filter: blur(10px);
@@ -17,6 +18,7 @@
       position: sticky;
       top: 0;
       z-index: 1000;
+      transition: all 0.3s ease;
     }
     
     .nav-inner {
@@ -94,214 +96,231 @@
       width: 100%;
     }
     
-    /* Section Styles */
-    .section {
-      min-height: calc(100vh - 80px);
-      padding: 4rem 2rem;
-      display: none;
-    }
-    
-    .section.active {
-      display: block;
-      animation: fadeIn 0.3s ease-in;
-    }
-    
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(20px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-    
-    .container {
-      max-width: 1200px;
-      margin: 0 auto;
-    }
-    
-    /* Hero Section */
-    .hero {
+    /* Enhanced Hero Section */
+    .hero-section {
       background: linear-gradient(135deg, rgba(22, 163, 74, 0.1), rgba(13, 17, 22, 0.9));
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      padding: 6rem 0;
       text-align: center;
+      position: relative;
+      overflow: hidden;
     }
     
-    .hero-content h1 {
-      font-size: 3rem;
-      margin-bottom: 1rem;
+    .hero-content {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 0 2rem;
+    }
+    
+    .hero-title {
+      font-size: 3.5rem;
+      margin-bottom: 1.5rem;
       background: linear-gradient(135deg, #ffffff, #16a34a);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
+      line-height: 1.2;
     }
     
-    .hero-content p {
-      font-size: 1.2rem;
+    .hero-subtitle {
+      font-size: 1.5rem;
       color: var(--muted);
       margin-bottom: 2rem;
+      line-height: 1.6;
     }
     
-    /* Cars Section */
-    .cars-grid {
+    .hero-features {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 2rem;
+      margin: 3rem 0;
+    }
+    
+    .feature-item {
+      text-align: center;
+      padding: 1.5rem;
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 12px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    .feature-icon {
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+      color: var(--primary);
+    }
+    
+    .feature-title {
+      font-size: 1.2rem;
+      margin-bottom: 0.5rem;
+      font-weight: 600;
+    }
+    
+    .feature-description {
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+    
+    /* Enhanced Services Section */
+    .services-section {
+      padding: 5rem 0;
+      background: rgba(255, 255, 255, 0.02);
+    }
+    
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 3rem;
+      margin-top: 3rem;
+    }
+    
+    .service-card {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 16px;
+      padding: 2.5rem;
+      text-align: center;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    
+    .service-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    }
+    
+    .service-icon {
+      font-size: 3rem;
+      margin-bottom: 1.5rem;
+      color: var(--primary);
+    }
+    
+    .service-title {
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+      font-weight: 600;
+    }
+    
+    .service-description {
+      color: var(--muted);
+      line-height: 1.6;
+    }
+    
+    /* Enhanced Testimonials Section */
+    .testimonials-section {
+      padding: 5rem 0;
+      background: rgba(3, 218, 197, 0.05);
+    }
+    
+    .testimonials-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
       gap: 2rem;
-      margin-top: 2rem;
+      margin-top: 3rem;
     }
     
-    .car-card {
+    .testimonial-card {
       background: rgba(255, 255, 255, 0.05);
       border: 1px solid rgba(255, 255, 255, 0.1);
-      border-radius: 12px;
-      overflow: hidden;
-      transition: transform 0.3s ease;
+      border-radius: 16px;
+      padding: 2.5rem;
+      position: relative;
     }
     
-    .car-card:hover {
-      transform: translateY(-5px);
-    }
-    
-    .car-image {
-      width: 100%;
-      height: 200px;
-      background: linear-gradient(135deg, #333, #555);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 3rem;
-    }
-    
-    .car-details {
-      padding: 1.5rem;
-    }
-    
-    .car-title {
-      font-size: 1.3rem;
-      margin-bottom: 0.5rem;
-    }
-    
-    .car-price {
-      color: var(--primary);
-      font-size: 1.5rem;
-      font-weight: bold;
-    }
-    
-    /* Book Section */
-    .booking-form {
-      background: rgba(255, 255, 255, 0.05);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      border-radius: 12px;
-      padding: 2rem;
-      max-width: 600px;
-      margin: 0 auto;
-    }
-    
-    .form-group {
+    .testimonial-content {
+      font-style: italic;
       margin-bottom: 1.5rem;
+      line-height: 1.6;
     }
     
-    .form-group label {
-      display: block;
-      margin-bottom: 0.5rem;
-      font-weight: 500;
-    }
-    
-    .form-group input,
-    .form-group select {
-      width: 100%;
-      padding: 0.75rem;
-      border: 1px solid rgba(255, 255, 255, 0.2);
-      border-radius: 6px;
-      background: rgba(255, 255, 255, 0.05);
-      color: white;
-    }
-    
-    /* About Section */
-    .about-content {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 3rem;
-      align-items: center;
-    }
-    
-    .about-text h2 {
-      font-size: 2.5rem;
-      margin-bottom: 1rem;
-    }
-    
-    .about-stats {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 2rem;
-      margin-top: 2rem;
-    }
-    
-    .stat-item {
-      text-align: center;
-    }
-    
-    .stat-number {
-      font-size: 2.5rem;
+    .testimonial-author {
+      font-weight: 600;
       color: var(--primary);
-      font-weight: bold;
     }
     
-    /* Contact Section */
-    .contact-grid {
+    .testimonial-rating {
+      color: #fbbf24;
+      margin-top: 0.5rem;
+    }
+    
+    /* Enhanced Footer */
+    .footer {
+      background: rgba(13, 17, 22, 0.98);
+      padding: 4rem 0 2rem;
+      margin-top: 4rem;
+    }
+    
+    .footer-content {
       display: grid;
-      grid-template-columns: 1fr 1fr;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
       gap: 3rem;
+      margin-bottom: 2rem;
     }
     
-    .contact-info {
-      display: flex;
-      flex-direction: column;
-      gap: 1.5rem;
+    .footer-section h3 {
+      color: var(--primary);
+      margin-bottom: 1.5rem;
+      font-size: 1.3rem;
     }
     
-    .contact-item {
+    .footer-section ul {
+      list-style: none;
+      padding: 0;
+    }
+    
+    .footer-section ul li {
+      margin-bottom: 0.5rem;
+    }
+    
+    .footer-section ul li a {
+      color: var(--muted);
+      text-decoration: none;
+      transition: color 0.3s ease;
+    }
+    
+    .footer-section ul li a:hover {
+      color: var(--primary);
+    }
+    
+    .social-links {
       display: flex;
-      align-items: center;
       gap: 1rem;
+      margin-top: 1rem;
     }
     
-    .contact-icon {
-      width: 50px;
-      height: 50px;
-      background: var(--primary);
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+    .social-links a {
+      color: var(--muted);
+      font-size: 1.5rem;
+      transition: color 0.3s ease;
     }
     
-    /* Responsive */
+    .social-links a:hover {
+      color: var(--primary);
+    }
+    
+    /* Responsive Design */
     @media (max-width: 768px) {
-      .nav-inner {
-        flex-direction: column;
-        height: auto;
-        padding: 1rem;
+      .hero-title {
+        font-size: 2.5rem;
       }
       
-      .nav-links {
-        flex-direction: column;
-        gap: 1rem;
+      .hero-subtitle {
+        font-size: 1.2rem;
       }
       
-      .hero-content h1 {
-        font-size: 2rem;
-      }
-      
-      .about-content,
-      .contact-grid {
+      .hero-features {
         grid-template-columns: 1fr;
       }
       
-      .about-stats {
+      .services-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .testimonials-grid {
         grid-template-columns: 1fr;
       }
     }
   </style>
 </head>
 <body>
+  <!-- Enhanced Navigation -->
   <header class="navbar">
     <div class="nav-inner">
       <a href="#home" class="brand" onclick="showSection('home')">
@@ -311,9 +330,10 @@
       
       <nav class="nav-links">
         <a href="#home" class="nav-link active" onclick="showSection('home')">Home</a>
+        <a href="#services" class="nav-link" onclick="showSection('services')">Services</a>
         <a href="#cars" class="nav-link" onclick="showSection('cars')">Browse Cars</a>
-        <a href="#book" class="nav-link" onclick="showSection('book')">Book</a>
-        <a href="#about" class="nav-link" onclick="showSection('about')">About</a>
+        <a href="#testimonials" class="nav-link" onclick="showSection('testimonials')">Testimonials</a>
+        <a href="#about" class="nav-link" onclick="showSection('about')">About Us</a>
         <a href="#contact" class="nav-link" onclick="showSection('contact')">Contact</a>
       </nav>
       
@@ -321,267 +341,388 @@
         <button class="btn btn-primary" onclick="window.location.href='cart.html'">
           Cart <span id="cart-count">0</span>
         </button>
+        <button class="btn btn-outline" onclick="window.location.href='login.html'">Login</button>
       </div>
     </div>
   </header>
 
-  <main>
-    <!-- Home Section -->
-    <section id="home" class="section active">
-      <div class="hero">
-        <div class="hero-content">
-          <h1>Welcome to Premium Car Rentals</h1>
-          <p>Experience luxury and comfort with our premium fleet of vehicles. Book your perfect ride today.</p>
-          <button class="btn btn-primary btn-lg" onclick="showSection('cars')">Browse Cars</button>
-        </div>
-      </div>
-    </section>
-
-    <!-- Cars Section -->
-    <section id="cars" class="section">
-      <div class="container">
-        <h2>Browse Our Premium Fleet</h2>
-        <div class="cars-grid">
-          <div class="car-card">
-            <div class="car-image">🚗</div>
-            <div class="car-details">
-              <h3 class="car-title">Mercedes-Benz C300</h3>
-              <p>Luxury sedan with premium features</p>
-              <p class="car-price">₦40,000/day</p>
-              <button class="btn btn-primary" onclick="bookCar('mercedes-c300')">Book Now</button>
-            </div>
+  <!-- Enhanced Hero Section -->
+  <section id="home" class="section active">
+    <div class="hero-section">
+      <div class="hero-content">
+        <span class="pill">Trusted • Fast • Secure • 24/7 Support</span>
+        <h1 class="hero-title">Premium Car Rental Service in Nigeria</h1>
+        <p class="hero-subtitle">
+          Experience luxury and comfort with Nigeria's leading car rental service. 
+          From luxury sedans to spacious SUVs, we deliver excellence in every journey.
+        </p>
+        
+        <div class="hero-features">
+          <div class="feature-item">
+            <div class="feature-icon">🚗</div>
+            <h3 class="feature-title">200+ Premium Vehicles</h3>
+            <p class="feature-description">Luxury sedans, SUVs, and executive cars</p>
           </div>
-          
-          <div class="car-card">
-            <div class="car-image">🚙</div>
-            <div class="car-details">
-              <h3 class="car-title">BMW X5</h3>
-              <p>Premium SUV for family trips</p>
-              <p class="car-price">₦55,000/day</p>
-              <button class="btn btn-primary" onclick="bookCar('bmw-x5')">Book Now</button>
-            </div>
+          <div class="feature-item">
+            <div class="feature-icon">🛡️</div>
+            <h3 class="feature-title">24/7 Support</h3>
+            <p class="feature-description">Round-the-clock customer assistance</p>
           </div>
-          
-          <div class="car-card">
-            <div class="car-image">🏎️</div>
-            <div class="car-details">
-              <h3 class="car-title">Audi A6</h3>
-              <p>Elegant business class sedan</p>
-              <p class="car-price">₦45,000/day</p>
-              <button class="btn btn-primary" onclick="bookCar('audi-a6')">Book Now</button>
-            </div>
+          <div class="feature-item">
+            <div class="feature-icon">💳</div>
+            <h3 class="feature-title">Flexible Payment</h3>
+            <p class="feature-description">Multiple payment options available</p>
+          </div>
+          <div class="feature-item">
+            <div class="feature-icon">🎯</div>
+            <h3 class="feature-title">98% Satisfaction</h3>
+            <p class="feature-description">Customer satisfaction guaranteed</p>
           </div>
         </div>
-      </div>
-    </section>
-
-    <!-- Book Section -->
-    <section id="book" class="section">
-      <div class="container">
-        <h2>Book Your Perfect Ride</h2>
-        <div class="booking-form">
-          <div class="form-group">
-            <label>Select Car</label>
-            <select id="car-select">
-              <option value="">Choose a car...</option>
-              <option value="mercedes-c300">Mercedes-Benz C300 - ₦40,000/day</option>
-              <option value="bmw-x5">BMW X5 - ₦55,000/day</option>
-              <option value="audi-a6">Audi A6 - ₦45,000/day</option>
-            </select>
-          </div>
-          
-          <div class="form-group">
-            <label>Pickup Date</label>
-            <input type="date" id="pickup-date" min="">
-          </div>
-          
-          <div class="form-group">
-            <label>Return Date</label>
-            <input type="date" id="return-date" min="">
-          </div>
-          
-          <div class="form-group">
-            <label>Pickup Location</label>
-            <select id="pickup-location">
-              <option value="lagos">Lagos</option>
-              <option value="abuja">Abuja</option>
-              <option value="port-harcourt">Port Harcourt</option>
-            </select>
-          </div>
-          
-          <button class="btn btn-primary btn-lg" onclick="window.location.href='checkout.html'">Proceed to Checkout</button>
+        
+        <div style="margin-top: 3rem;">
+          <a href="#cars" class="btn btn-primary btn-lg" onclick="showSection('cars')">Browse Our Fleet</a>
+          <a href="#book" class="btn btn-outline btn-lg" onclick="showSection('book')" style="margin-left: 1rem;">Book Now</a>
         </div>
       </div>
-    </section>
+    </div>
+  </section>
 
-    <!-- About Section -->
-    <section id="about" class="section">
-      <div class="container">
-        <h2>About Silas Car Rentals</h2>
-        <div class="about-content">
-          <div class="about-text">
-            <p>Silas Car Rentals is Nigeria's premier luxury car rental service, established in 2020. We specialize in providing high-quality vehicles for business and leisure travelers.</p>
-            <p>Our mission is to deliver exceptional service, premium vehicles, and unforgettable experiences to every customer.</p>
-            
-            <div class="about-stats">
-              <div class="stat-item">
-                <div class="stat-number">5000+</div>
-                <p>Happy Customers</p>
-              </div>
-              <div class="stat-item">
-                <div class="stat-number">200+</div>
-                <p>Premium Vehicles</p>
-              </div>
-              <div class="stat-item">
-                <div class="stat-number">98%</div>
-                <p>Satisfaction Rate</p>
-              </div>
-            </div>
-          </div>
-          
-          <div>
-            <h3>Why Choose Us?</h3>
-            <ul>
-              <li>✅ Premium fleet of luxury vehicles</li>
-              <li>✅ 24/7 customer support</li>
-              <li>✅ Flexible rental terms</li>
-              <li>✅ Competitive pricing</li>
-              <li>✅ Easy online booking</li>
+  <!-- Enhanced Services Section -->
+  <section id="services" class="section">
+    <div class="container">
+      <h2 style="text-align: center; margin-bottom: 3rem; color: var(--primary);">Our Premium Services</h2>
+      
+      <div class="services-grid">
+        <div class="service-card">
+          <div class="service-icon">🚗</div>
+          <h3 class="service-title">Luxury Car Rentals</h3>
+          <p class="service-description">
+            Premium sedans, SUVs, and sports cars from top brands like Mercedes, BMW, and Audi. 
+            All vehicles are meticulously maintained and fully insured.
+          </p>
+        </div>
+        
+        <div class="service-card">
+          <div class="service-icon">👔</div>
+          <h3 class="service-title">Corporate Services</h3>
+          <p class="service-description">
+            Tailored solutions for business travelers including airport transfers, 
+            chauffeur services, and long-term rentals for corporate clients.
+          </p>
+        </div>
+        
+        <div class="service-card">
+          <div class="service-icon">✈️</div>
+          <h3 class="service-title">Airport Transfers</h3>
+          <p class="service-description">
+            Reliable pickup and drop-off services to all major airports in Nigeria. 
+            Flight tracking ensures on-time arrivals and departures.
+          </p>
+        </div>
+        
+        <div class="service-card">
+          <div class="service-icon">🛡️</div>
+          <h3 class="service-title">24/7 Support</h3>
+          <p class="service-description">
+            Round-the-clock customer support with dedicated account managers. 
+            Emergency assistance available anytime, anywhere.
+          </p>
+        </div>
+        
+        <div class="service-card">
+          <div class="service-icon">🎯</div>
+          <h3 class="service-title">Chauffeur Services</h3>
+          <p class="service-description">
+            Professional drivers for business meetings, events, and special occasions. 
+            All drivers are background-checked and professionally trained.
+          </p>
+        </div>
+        
+        <div class="service-card">
+          <div class="service-icon">📅</div>
+          <h3 class="service-title">Long-term Rentals</h3>
+          <p class="service-description">
+            Flexible rental periods from days to months with special rates for 
+            extended bookings. Perfect for business trips and relocations.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Enhanced Cars Section -->
+  <section id="cars" class="section">
+    <div class="container">
+      <h2 style="text-align: center; margin-bottom: 3rem; color: var(--primary);">Our Premium Fleet</h2>
+      
+      <div class="cars-grid">
+        <div class="car-card">
+          <div class="car-image">🚗</div>
+          <div class="car-details">
+            <h3 class="car-title">Mercedes-Benz C300</h3>
+            <p>Luxury sedan with premium features and advanced safety systems</p>
+            <p class="car-price">₦40,000/day</p>
+            <ul style="list-style: none; padding: 0; margin: 1rem 0;">
+              <li>✅ Automatic transmission</li>
+              <li>✅ Leather interior</li>
+              <li>✅ GPS navigation</li>
+              <li>✅ Insurance included</li>
             </ul>
+            <button class="btn btn-primary" onclick="window.location.href='book.html'">Book Now</button>
+          </div>
+        </div>
+        
+        <div class="car-card">
+          <div class="car-image">🚙</div>
+          <div class="car-details">
+            <h3 class="car-title">BMW X5</h3>
+            <p>Premium SUV perfect for family trips and business travel</p>
+            <p class="car-price">₦55,000/day</p>
+            <ul style="list-style: none; padding: 0; margin: 1rem 0;">
+              <li>✅ 7-seater capacity</li>
+              <li>✅ Panoramic sunroof</li>
+              <li>✅ Advanced safety features</li>
+              <li>✅ Child seat available</li>
+            </ul>
+            <button class="btn btn-primary" onclick="window.location.href='book.html'">Book Now</button>
+          </div>
+        </div>
+        
+        <div class="car-card">
+          <div class="car-image">🏎️</div>
+          <div class="car-details">
+            <h3 class="car-title">Audi A6</h3>
+            <p>Elegant business class sedan with cutting-edge technology</p>
+            <p class="car-price">₦45,000/day</p>
+            <ul style="list-style: none; padding: 0; margin: 1rem 0;">
+              <li>✅ Virtual cockpit</li>
+              <li>✅ Premium sound system</li>
+              <li>✅ Wireless charging</li>
+              <li>✅ Executive package</li>
+            </ul>
+            <button class="btn btn-primary" onclick="window.location.href='book.html'">Book Now</button>
           </div>
         </div>
       </div>
-    </section>
+    </div>
+  </section>
 
-    <!-- Contact Section -->
-    <section id="contact" class="section">
-      <div class="container">
-        <h2>Get In Touch</h2>
-        <div class="contact-grid">
-          <div class="contact-info">
-            <div class="contact-item">
-              <div class="contact-icon">📧</div>
-              <div>
-                <h4>Email</h4>
-                <p>info@silascarrentals.com</p>
-              </div>
-            </div>
-            
-            <div class="contact-item">
-              <div class="contact-icon">📞</div>
-              <div>
-                <h4>Phone</h4>
-                <p>+234 810 758 6167</p>
-              </div>
-            </div>
-            
-            <div class="contact-item">
-              <div class="contact-icon">📍</div>
-              <div>
-                <h4>Address</h4>
-                <p>Lagos, Nigeria</p>
-              </div>
-            </div>
+  <!-- Enhanced Testimonials Section -->
+  <section id="testimonials" class="section">
+    <div class="container">
+      <h2 style="text-align: center; margin-bottom: 3rem; color: var(--primary);">What Our Customers Say</h2>
+      
+      <div class="testimonials-grid">
+        <div class="testimonial-card">
+          <div class="testimonial-content">
+            "Outstanding service! The Mercedes C300 was immaculate and the booking process was seamless. Will definitely use again for my business trips."
           </div>
-          
-          <div>
-            <h3>Send us a message</h3>
-            <div class="booking-form">
-              <div class="form-group">
-                <label>Your Name</label>
-                <input type="text" id="contact-name" placeholder="Enter your name">
-              </div>
-              
-              <div class="form-group">
-                <label>Email</label>
-                <input type="email" id="contact-email" placeholder="Enter your email">
-              </div>
-              
-              <div class="form-group">
-                <label>Message</label>
-                <textarea id="contact-message" placeholder="How can we help you?"></textarea>
-              </div>
-              
-              <button class="btn btn-primary" onclick="alert('Thank you for your message! We will get back to you soon.')">Send Message</button>
-            </div>
+          <div class="testimonial-author">- Ada O., Lagos</div>
+          <div class="testimonial-rating">★★★★★</div>
+        </div>
+        
+        <div class="testimonial-card">
+          <div class="testimonial-content">
+            "The BMW X5 was perfect for our family vacation. Clean, comfortable, and the 24/7 support was incredibly helpful when we had questions."
+          </div>
+          <div class="testimonial-author">- Emeka K., Abuja</div>
+          <div class="testimonial-rating">★★★★★</div>
+        </div>
+        
+        <div class="testimonial-card">
+          <div class="testimonial-content">
+            "Professional service from start to finish. The Audi A6 exceeded expectations and the chauffeur service was top-notch."
+          </div>
+          <div class="testimonial-author">- Chinedu M., Port Harcourt</div>
+          <div class="testimonial-rating">★★★★★</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Enhanced About Section -->
+  <section id="about" class="section">
+    <div class="container">
+      <h2 style="text-align: center; margin-bottom: 3rem; color: var(--primary);">About Silas Car Rentals</h2>
+      
+      <div style="max-width: 800px; margin: 0 auto; text-align: center;">
+        <p style="font-size: 1.2rem; line-height: 1.8; margin-bottom: 2rem;">
+          Founded in 2020, Silas Car Rentals has become Nigeria's leading premium car rental service. 
+          We specialize in providing luxury vehicles for business and leisure travelers, 
+          with a commitment to excellence and customer satisfaction.
+        </p>
+        
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 2rem; margin: 3rem 0;">
+          <div style="text-align: center;">
+            <h3 style="color: var(--primary); font-size: 2.5rem;">5,000+</h3>
+            <p>Happy Customers</p>
+          </div>
+          <div style="text-align: center;">
+            <h3 style="color: var(--primary); font-size: 2.5rem;">200+</h3>
+            <p>Premium Vehicles</p>
+          </div>
+          <div style="text-align: center;">
+            <h3 style="color: var(--primary); font-size: 2.5rem;">98%</h3>
+            <p>Satisfaction Rate</p>
+          </div>
+          <div style="text-align: center;">
+            <h3 style="color: var(--primary); font-size: 2.5rem;">24/7</h3>
+            <p>Support Available</p>
           </div>
         </div>
       </div>
-    </section>
-  </main>
+    </div>
+  </section>
+
+  <!-- Enhanced Contact Section -->
+  <section id="contact" class="section">
+    <div class="container">
+      <h2 style="text-align: center; margin-bottom: 3rem; color: var(--primary);">Get In Touch</h2>
+      
+      <div style="max-width: 600px; margin: 0 auto;">
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem; margin-bottom: 3rem;">
+          <div style="text-align: center;">
+            <h3 style="color: var(--primary);">📍 Location</h3>
+            <p>Lagos, Nigeria</p>
+          </div>
+          <div style="text-align: center;">
+            <h3 style="color: var(--primary);">📞 Phone</h3>
+            <p>+234 810 758 6167</p>
+          </div>
+          <div style="text-align: center;">
+            <h3 style="color: var(--primary);">✉️ Email</h3>
+            <p>silasonyekachi15@gmail.com</p>
+          </div>
+        </div>
+        
+        <div class="booking-form">
+          <h3 style="text-align: center; margin-bottom: 2rem;">Quick Contact</h3>
+          <div class="form-group">
+            <label>Your Name</label>
+            <input type="text" id="contact-name" placeholder="Enter your name" required>
+          </div>
+          <div class="form-group">
+            <label>Email</label>
+            <input type="email" id="contact-email" placeholder="Enter your email" required>
+          </div>
+          <div class="form-group">
+            <label>Message</label>
+            <textarea id="contact-message" placeholder="How can we help you?" rows="4" required></textarea>
+          </div>
+          <button class="btn btn-primary btn-lg" style="width: 100%;" onclick="submitContactForm()">Send Message</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Enhanced Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-section">
+          <h3>Silas Car Rentals</h3>
+          <p>Nigeria's leading premium car rental service since 2020. Experience luxury, comfort, and reliability with every journey.</p>
+          <div class="social-links">
+            <a href="#" aria-label="Facebook">📘</a>
+            <a href="#" aria-label="Twitter">🐦</a>
+            <a href="#" aria-label="Instagram">📷</a>
+            <a href="#" aria-label="WhatsApp">📱</a>
+          </div>
+        </div>
+        
+        <div class="footer-section">
+          <h3>Quick Links</h3>
+          <ul>
+            <li><a href="#home" onclick="showSection('home')">Home</a></li>
+            <li><a href="#services" onclick="showSection('services')">Services</a></li>
+            <li><a href="#cars" onclick="showSection('cars')">Browse Cars</a></li>
+            <li><a href="#book" onclick="showSection('book')">Book Now</a></li>
+          </ul>
+        </div>
+        
+        <div class="footer-section">
+          <h3>Services</h3>
+          <ul>
+            <li><a href="#services" onclick="showSection('services')">Luxury Rentals</a></li>
+            <li><a href="#services" onclick="showSection('services')">Corporate Services</a></li>
+            <li><a href="#services" onclick="showSection('services')">Airport Transfers</a></li>
+            <li><a href="#services" onclick="showSection('services')">Chauffeur Services</a></li>
+          </ul>
+        </div>
+        
+        <div class="footer-section">
+          <h3>Contact</h3>
+          <ul>
+            <li>Lagos, Nigeria</li>
+            <li>+234 810 758 6167</li>
+            <li>silasonyekachi15@gmail.com</li>
+          </ul>
+        </div>
+      </div>
+      
+      <div style="text-align: center; margin-top: 2rem; padding-top: 2rem; border-top: 1px solid rgba(255, 255, 255, 0.1);">
+        <p>&copy; 2025 Silas Car Rentals. All rights reserved. | Premium car rental service in Nigeria.</p>
+      </div>
+    </div>
+  </footer>
 
   <script>
-    // Single Page Application Navigation
+    // Enhanced SPA Navigation
     function showSection(sectionName) {
-      // Hide all sections
       const sections = document.querySelectorAll('.section');
+      const navLinks = document.querySelectorAll('.nav-link');
+      
       sections.forEach(section => {
         section.classList.remove('active');
       });
       
-      // Show target section
-      const targetSection = document.getElementById(sectionName);
-      if (targetSection) {
-        targetSection.classList.add('active');
-      }
-      
-      // Update navigation active state
-      const navLinks = document.querySelectorAll('.nav-link');
       navLinks.forEach(link => {
         link.classList.remove('active');
       });
       
+      const targetSection = document.getElementById(sectionName);
       const activeLink = document.querySelector(`[onclick="showSection('${sectionName}')"]`);
+      
+      if (targetSection) {
+        targetSection.classList.add('active');
+      }
+      
       if (activeLink) {
         activeLink.classList.add('active');
       }
       
-      // Update URL without page reload
       history.pushState(null, null, `#${sectionName}`);
     }
     
-    // Handle browser back/forward buttons
-    window.addEventListener('popstate', function() {
-      const hash = window.location.hash.slice(1);
-      if (hash) {
-        showSection(hash);
+    // Contact form submission
+    function submitContactForm() {
+      const name = document.getElementById('contact-name').value;
+      const email = document.getElementById('contact-email').value;
+      const message = document.getElementById('contact-message').value;
+      
+      if (name && email && message) {
+        alert('Thank you for your message! We will get back to you soon.');
+        // Reset form
+        document.getElementById('contact-name').value = '';
+        document.getElementById('contact-email').value = '';
+        document.getElementById('contact-message').value = '';
       } else {
-        showSection('home');
+        alert('Please fill in all fields.');
       }
-    });
-    
-    // Initialize date pickers
-    function initializeDates() {
-      const today = new Date().toISOString().split('T')[0];
-      document.getElementById('pickup-date').min = today;
-      document.getElementById('return-date').min = today;
-    }
-    
-    // Booking functionality
-    function bookCar(carId) {
-      // Add to cart and redirect to booking
-      const cart = JSON.parse(localStorage.getItem('cart') || '[]');
-      cart.push({ id: carId, date: new Date().toISOString() });
-      localStorage.setItem('cart', JSON.stringify(cart));
-      updateCartCount();
-      window.location.href = 'cart.html';
-    }
-    
-    function updateCartCount() {
-      const cart = JSON.parse(localStorage.getItem('cart') || '[]');
-      document.getElementById('cart-count').textContent = cart.length;
     }
     
     // Initialize page
     document.addEventListener('DOMContentLoaded', function() {
-      initializeDates();
-      updateCartCount();
+      // Set minimum date for date pickers
+      const today = new Date().toISOString().split('T')[0];
+      const dateInputs = document.querySelectorAll('input[type="date"]');
+      dateInputs.forEach(input => {
+        input.min = today;
+      });
       
-      // Handle initial hash
-      const hash = window.location.hash.slice(1);
-      if (hash && document.getElementById(hash)) {
-        showSection(hash);
-      }
+      // Initialize cart count
+      updateCartCount();
     });
   </script>
 </body>
