@@ -1,9 +1,18 @@
 // Google OAuth Configuration and Handler
 class GoogleAuthHandler {
   constructor() {
-    this.baseUrl = 'https://techyjaunt-auth-go43.onrender.com';
-    this.isPopup = false;
+    this.baseUrl = window.APP_CONFIG?.API_BASE_URL || 'https://techyjaunt-auth-go43.onrender.com';
+    this.clientId = window.APP_CONFIG?.GOOGLE_CLIENT_ID || '293889215515-658eba7e610fm5hfoetknip83lf2re1s.apps.googleusercontent.com';
+    this.redirectUri = window.APP_CONFIG?.getRedirectUri() || `${window.location.origin}/google-callback.html`;
     this.init();
+    
+    // Log configuration for debugging
+    console.log('Google OAuth Config:', {
+      baseUrl: this.baseUrl,
+      redirectUri: this.redirectUri,
+      clientId: this.clientId,
+      environment: window.APP_CONFIG?.getEnvironment() || 'unknown'
+    });
   }
 
   init() {

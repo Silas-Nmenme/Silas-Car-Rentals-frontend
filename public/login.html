@@ -541,8 +541,9 @@
 
   <div id="toast"></div>
 
+  <script src="js/config.js"></script>
   <script>
-    const BASE_URL = "https://techyjaunt-auth-go43.onrender.com";
+    const BASE_URL = window.APP_CONFIG?.API_BASE_URL || "https://techyjaunt-auth-go43.onrender.com";
 
     function showToast(msg, ms = 3000) {
       const toast = document.getElementById('toast');
