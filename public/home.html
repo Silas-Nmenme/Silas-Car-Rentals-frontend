@@ -3,341 +3,586 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Silas Car Rentals - Home</title>
-  <meta name="description" content="Professional car rentals — browse, add to cart and checkout securely." />
+  <title>Silas Car Rentals - Professional Car Rental Service</title>
+  <meta name="description" content="Premium car rental service - browse luxury vehicles, book online, and enjoy seamless rental experience." />
   <link rel="stylesheet" href="style.css" />
   <meta name="theme-color" content="#0b0e11">
+  <style>
+    /* Professional Navigation Styles */
+    .navbar {
+      background: rgba(13, 17, 22, 0.95);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+    
+    .nav-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 80px;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 2rem;
+    }
+    
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+      color: white;
+    }
+    
+    .brand-mark {
+      width: 45px;
+      height: 45px;
+      background: linear-gradient(135deg, #16a34a, #15803d);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      font-size: 1.2rem;
+    }
+    
+    .brand-name {
+      font-size: 1.5rem;
+      font-weight: 700;
+      background: linear-gradient(135deg, #ffffff, #b9c2cc);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+      align-items: center;
+    }
+    
+    .nav-link {
+      color: var(--muted);
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 0.95rem;
+      transition: all 0.3s ease;
+      position: relative;
+      padding: 0.5rem 0;
+    }
+    
+    .nav-link:hover,
+    .nav-link.active {
+      color: var(--primary);
+    }
+    
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: var(--primary);
+      transition: width 0.3s ease;
+    }
+    
+    .nav-link:hover::after,
+    .nav-link.active::after {
+      width: 100%;
+    }
+    
+    /* Section Styles */
+    .section {
+      min-height: calc(100vh - 80px);
+      padding: 4rem 2rem;
+      display: none;
+    }
+    
+    .section.active {
+      display: block;
+      animation: fadeIn 0.3s ease-in;
+    }
+    
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    
+    /* Hero Section */
+    .hero {
+      background: linear-gradient(135deg, rgba(22, 163, 74, 0.1), rgba(13, 17, 22, 0.9));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+    }
+    
+    .hero-content h1 {
+      font-size: 3rem;
+      margin-bottom: 1rem;
+      background: linear-gradient(135deg, #ffffff, #16a34a);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    
+    .hero-content p {
+      font-size: 1.2rem;
+      color: var(--muted);
+      margin-bottom: 2rem;
+    }
+    
+    /* Cars Section */
+    .cars-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+      gap: 2rem;
+      margin-top: 2rem;
+    }
+    
+    .car-card {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 12px;
+      overflow: hidden;
+      transition: transform 0.3s ease;
+    }
+    
+    .car-card:hover {
+      transform: translateY(-5px);
+    }
+    
+    .car-image {
+      width: 100%;
+      height: 200px;
+      background: linear-gradient(135deg, #333, #555);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 3rem;
+    }
+    
+    .car-details {
+      padding: 1.5rem;
+    }
+    
+    .car-title {
+      font-size: 1.3rem;
+      margin-bottom: 0.5rem;
+    }
+    
+    .car-price {
+      color: var(--primary);
+      font-size: 1.5rem;
+      font-weight: bold;
+    }
+    
+    /* Book Section */
+    .booking-form {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 12px;
+      padding: 2rem;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+    
+    .form-group {
+      margin-bottom: 1.5rem;
+    }
+    
+    .form-group label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 500;
+    }
+    
+    .form-group input,
+    .form-group select {
+      width: 100%;
+      padding: 0.75rem;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 6px;
+      background: rgba(255, 255, 255, 0.05);
+      color: white;
+    }
+    
+    /* About Section */
+    .about-content {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3rem;
+      align-items: center;
+    }
+    
+    .about-text h2 {
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+    }
+    
+    .about-stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2rem;
+      margin-top: 2rem;
+    }
+    
+    .stat-item {
+      text-align: center;
+    }
+    
+    .stat-number {
+      font-size: 2.5rem;
+      color: var(--primary);
+      font-weight: bold;
+    }
+    
+    /* Contact Section */
+    .contact-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3rem;
+    }
+    
+    .contact-info {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+    
+    .contact-item {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+    
+    .contact-icon {
+      width: 50px;
+      height: 50px;
+      background: var(--primary);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    /* Responsive */
+    @media (max-width: 768px) {
+      .nav-inner {
+        flex-direction: column;
+        height: auto;
+        padding: 1rem;
+      }
+      
+      .nav-links {
+        flex-direction: column;
+        gap: 1rem;
+      }
+      
+      .hero-content h1 {
+        font-size: 2rem;
+      }
+      
+      .about-content,
+      .contact-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .about-stats {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
 </head>
 <body>
-  <header class="navbar" role="banner">
-    <div class="container nav-inner">
-      <a href="home.html" class="brand" aria-label="Silas Car Rentals home">
-        <div class="brand-mark">SC</div>
+  <header class="navbar">
+    <div class="nav-inner">
+      <a href="#home" class="brand" onclick="showSection('home')">
+        <div class="brand-mark">🚗</div>
         <span class="brand-name">Silas Car Rentals</span>
       </a>
-
-  <nav class="nav-links" aria-label="Main navigation">
-    <a class="nav-link active" href="home.html">Home</a>
-    <a class="nav-link" href="cars.html">Browse Cars</a>
-    <a class="nav-link" href="book.html">Book</a>
-    <a class="nav-link" href="#how">How it Works</a>
-    <a class="nav-link" href="#testimonials">Testimonials</a>
-    <a class="nav-link" href="#contact">Contact</a>
-  </nav>
-
-      <div class="nav-actions" role="region" aria-label="User actions">
-        <div class="user-menu" id="user-actions">
-          <span class="user-name" id="user-name">User</span>
-          <button class="btn btn-sm" id="dashboard-btn" title="Dashboard" onclick="location.href='dashboard.html'">Dashboard</button>
-          <button class="btn btn-sm" id="logout-btn" title="Sign out">Logout</button>
-        </div>
-
-        <button id="open-cart" onclick="window.location.href='cart.html'" class="btn btn-ghost" aria-label="Open booking cart" title="Cart">
-          🧾 Cart (<span id="cart-count">0</span>)
+      
+      <nav class="nav-links">
+        <a href="#home" class="nav-link active" onclick="showSection('home')">Home</a>
+        <a href="#cars" class="nav-link" onclick="showSection('cars')">Browse Cars</a>
+        <a href="#book" class="nav-link" onclick="showSection('book')">Book</a>
+        <a href="#about" class="nav-link" onclick="showSection('about')">About</a>
+        <a href="#contact" class="nav-link" onclick="showSection('contact')">Contact</a>
+      </nav>
+      
+      <div class="nav-actions">
+        <button class="btn btn-primary" onclick="window.location.href='cart.html'">
+          Cart <span id="cart-count">0</span>
         </button>
-        <button onclick="window.location.href='saved.html'" class="btn btn-ghost" title="Saved Cars">💾 Saved (<span id="saved-count">0</span>)</button>
-        <button class="theme-toggle-switch" id="theme-toggle" aria-label="Toggle dark/light mode">
-          <span class="toggle-slider">
-            <span class="toggle-thumb"></span>
-          </span>
-        </button>
-
-        <button class="mobile-menu-btn" id="mobile-menu-btn" aria-label="Open menu">☰</button>
       </div>
     </div>
   </header>
 
   <main>
-    <section class="hero section" id="hero">
-      <div class="container hero-inner">
-        <span class="pill">Trusted • Fast • Secure</span>
-        <h1 class="hero-title">Welcome to Silas Car Rentals</h1>
-        <p class="hero-subtitle">Browse available cars, add them to your booking cart, then checkout after login.</p>
-      </div>
-    </section>
-
-    <section id="about" class="hero section" style="background: linear-gradient(135deg, rgba(3, 218, 197, 0.1), rgba(1, 135, 134, 0.1));">
-      <div class="container hero-inner">
-        <span class="pill">Since 2020 • Lagos, Nigeria</span>
-        <h1 class="hero-title">Nigeria's Trusted Premium Car Rental Service</h1>
-        <p class="hero-subtitle">
-          From luxury sedans to spacious SUVs, we deliver excellence in every journey. 
-          With 5,000+ satisfied customers and 200+ premium vehicles, experience the difference 
-          that quality, reliability, and exceptional service make.
-        </p>
-        
-        <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; margin: 2rem 0;">
-          <a href="about.html" class="btn btn-primary btn-lg">
-            Read More About Us
-          </a>
-          <a href="book.html" class="btn btn-outline btn-lg">
-            Book Your Ride
-          </a>
+    <!-- Home Section -->
+    <section id="home" class="section active">
+      <div class="hero">
+        <div class="hero-content">
+          <h1>Welcome to Premium Car Rentals</h1>
+          <p>Experience luxury and comfort with our premium fleet of vehicles. Book your perfect ride today.</p>
+          <button class="btn btn-primary btn-lg" onclick="showSection('cars')">Browse Cars</button>
         </div>
       </div>
     </section>
 
-    <footer id="contact" class="footer section">
-      <div class="container footer-inner">
-        <div class="footer-main">
-          <div class="footer-brand">
-            <div class="brand-footer">
-              <div class="brand-mark" style="width: 50px; height: 50px; background: linear-gradient(135deg, #03dac5, #018786); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 1.5rem; color: #0b0e11; margin-bottom: 1rem;">SC</div>
-              <h3 style="color: #03dac5; margin-bottom: 0.5rem;">Silas Car Rentals</h3>
-              <p style="color: #ccc; font-size: 0.9rem; line-height: 1.6; margin-bottom: 1rem;">
-                Premium car rental service offering luxury and standard vehicles for business and leisure travel across Nigeria.
-              </p>
+    <!-- Cars Section -->
+    <section id="cars" class="section">
+      <div class="container">
+        <h2>Browse Our Premium Fleet</h2>
+        <div class="cars-grid">
+          <div class="car-card">
+            <div class="car-image">🚗</div>
+            <div class="car-details">
+              <h3 class="car-title">Mercedes-Benz C300</h3>
+              <p>Luxury sedan with premium features</p>
+              <p class="car-price">₦40,000/day</p>
+              <button class="btn btn-primary" onclick="bookCar('mercedes-c300')">Book Now</button>
             </div>
-            <div class="contact-info">
-              <div style="margin-bottom: 0.8rem;">
-                <strong style="color: #03dac5;">📧 Email:</strong><br/>
-                <a href="mailto:silasonyekachi15@gmail.com" style="color: #ccc; text-decoration: none;">silasonyekachi15@gmail.com</a>
+          </div>
+          
+          <div class="car-card">
+            <div class="car-image">🚙</div>
+            <div class="car-details">
+              <h3 class="car-title">BMW X5</h3>
+              <p>Premium SUV for family trips</p>
+              <p class="car-price">₦55,000/day</p>
+              <button class="btn btn-primary" onclick="bookCar('bmw-x5')">Book Now</button>
+            </div>
+          </div>
+          
+          <div class="car-card">
+            <div class="car-image">🏎️</div>
+            <div class="car-details">
+              <h3 class="car-title">Audi A6</h3>
+              <p>Elegant business class sedan</p>
+              <p class="car-price">₦45,000/day</p>
+              <button class="btn btn-primary" onclick="bookCar('audi-a6')">Book Now</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Book Section -->
+    <section id="book" class="section">
+      <div class="container">
+        <h2>Book Your Perfect Ride</h2>
+        <div class="booking-form">
+          <div class="form-group">
+            <label>Select Car</label>
+            <select id="car-select">
+              <option value="">Choose a car...</option>
+              <option value="mercedes-c300">Mercedes-Benz C300 - ₦40,000/day</option>
+              <option value="bmw-x5">BMW X5 - ₦55,000/day</option>
+              <option value="audi-a6">Audi A6 - ₦45,000/day</option>
+            </select>
+          </div>
+          
+          <div class="form-group">
+            <label>Pickup Date</label>
+            <input type="date" id="pickup-date" min="">
+          </div>
+          
+          <div class="form-group">
+            <label>Return Date</label>
+            <input type="date" id="return-date" min="">
+          </div>
+          
+          <div class="form-group">
+            <label>Pickup Location</label>
+            <select id="pickup-location">
+              <option value="lagos">Lagos</option>
+              <option value="abuja">Abuja</option>
+              <option value="port-harcourt">Port Harcourt</option>
+            </select>
+          </div>
+          
+          <button class="btn btn-primary btn-lg" onclick="window.location.href='checkout.html'">Proceed to Checkout</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="section">
+      <div class="container">
+        <h2>About Silas Car Rentals</h2>
+        <div class="about-content">
+          <div class="about-text">
+            <p>Silas Car Rentals is Nigeria's premier luxury car rental service, established in 2020. We specialize in providing high-quality vehicles for business and leisure travelers.</p>
+            <p>Our mission is to deliver exceptional service, premium vehicles, and unforgettable experiences to every customer.</p>
+            
+            <div class="about-stats">
+              <div class="stat-item">
+                <div class="stat-number">5000+</div>
+                <p>Happy Customers</p>
               </div>
-              <div style="margin-bottom: 0.8rem;">
-                <strong style="color: #03dac5;">📞 Phone:</strong><br/>
-                <a href="tel:+2348107586167" style="color: #ccc; text-decoration: none;">+234 810 758 6167</a>
+              <div class="stat-item">
+                <div class="stat-number">200+</div>
+                <p>Premium Vehicles</p>
               </div>
+              <div class="stat-item">
+                <div class="stat-number">98%</div>
+                <p>Satisfaction Rate</p>
+              </div>
+            </div>
+          </div>
+          
+          <div>
+            <h3>Why Choose Us?</h3>
+            <ul>
+              <li>✅ Premium fleet of luxury vehicles</li>
+              <li>✅ 24/7 customer support</li>
+              <li>✅ Flexible rental terms</li>
+              <li>✅ Competitive pricing</li>
+              <li>✅ Easy online booking</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="section">
+      <div class="container">
+        <h2>Get In Touch</h2>
+        <div class="contact-grid">
+          <div class="contact-info">
+            <div class="contact-item">
+              <div class="contact-icon">📧</div>
               <div>
-                <strong style="color: #03dac5;">📍 Location:</strong><br/>
-                <span style="color: #ccc;">Lagos, Nigeria</span>
+                <h4>Email</h4>
+                <p>info@silascarrentals.com</p>
               </div>
-            </div>
-          </div>
-          
-          <div class="footer-services">
-            <h4 style="color: #03dac5; margin-bottom: 1rem; font-size: 1.2rem;">Our Services</h4>
-            <ul style="list-style: none; padding: 0;">
-              <li style="margin-bottom: 0.6rem;"><a href="book.html" style="color: #ccc; text-decoration: none; transition: color 0.3s;">🚗 Car Rentals</a></li>
-              <li style="margin-bottom: 0.6rem;"><a href="book.html" style="color: #ccc; text-decoration: none; transition: color 0.3s;">👔 Corporate Services</a></li>
-              <li style="margin-bottom: 0.6rem;"><a href="book.html" style="color: #ccc; text-decoration: none; transition: color 0.3s;">✈️ Airport Transfers</a></li>
-              <li style="margin-bottom: 0.6rem;"><a href="book.html" style="color: #ccc; text-decoration: none; transition: color 0.3s;">🎯 Chauffeur Services</a></li>
-              <li style="margin-bottom: 0.6rem;"><a href="book.html" style="color: #ccc; text-decoration: none; transition: color 0.3s;">📅 Long-term Rentals</a></li>
-            </ul>
-          </div>
-          
-          <div class="footer-company">
-            <h4 style="color: #03dac5; margin-bottom: 1rem; font-size: 1.2rem;">Company</h4>
-            <ul style="list-style: none; padding: 0;">
-              <li style="margin-bottom: 0.6rem;"><a href="about.html" style="color: #ccc; text-decoration: none; transition: color 0.3s;">About Us</a></li>
-              <li style="margin-bottom: 0.6rem;"><a href="terms.html" style="color: #ccc; text-decoration: none; transition: color 0.3s;">Terms & Conditions</a></li>
-              <li style="margin-bottom: 0.6rem;"><a href="privacy.html" style="color: #ccc; text-decoration: none; transition: color 0.3s;">Privacy Policy</a></li>
-              <li style="margin-bottom: 0.6rem;"><a href="faq.html" style="color: #ccc; text-decoration: none; transition: color 0.3s;">FAQ</a></li>
-              <li style="margin-bottom: 0.6rem;"><a href="contact.html" style="color: #ccc; text-decoration: none; transition: color 0.3s;">Contact Support</a></li>
-            </ul>
-          </div>
-          
-          <div class="footer-newsletter">
-            <h4 style="color: #03dac5; margin-bottom: 1rem; font-size: 1.2rem;">Stay Updated</h4>
-            <p style="color: #ccc; margin-bottom: 1rem; font-size: 0.9rem;">Get exclusive deals and updates</p>
-            <form id="newsletter-form" style="display: flex; gap: 0.5rem; flex-direction: column;">
-              <div style="display: flex; gap: 0.5rem;">
-                <input type="email" name="email" placeholder="Enter your email" required style="flex: 1; padding: 0.5rem; border: 1px solid #333; background: #1a1a1a; color: #ccc; border-radius: 4px; font-size: 0.9rem;">
-                <button type="submit" style="padding: 0.5rem 1rem; background: #03dac5; color: #0b0e11; border: none; border-radius: 4px; cursor: pointer; font-weight: bold;">Subscribe</button>
-              </div>
-              <div id="newsletter-message" style="font-size: 0.8rem; margin-top: 0.5rem; min-height: 1rem;"></div>
-            </form>
-          </div>
-        </div>
-        
-        <div class="footer-divider" style="margin: 2rem 0; border-top: 1px solid #333;"></div>
-        
-        <div class="footer-bottom-row">
-          <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
-            <div>
-              <p style="color: #ccc; margin: 0; font-size: 0.9rem;">
-                © <span id="year"></span> Silas Car Rentals. All rights reserved.
-              </p>
             </div>
             
-            <div class="social-links" style="display: flex; gap: 1rem; align-items: center;">
-              <a href="#" style="color: #ccc; text-decoration: none; font-size: 1.2rem; transition: color 0.3s;" title="Facebook">📘</a>
-              <a href="#" style="color: #ccc; text-decoration: none; font-size: 1.2rem; transition: color 0.3s;" title="Twitter">🐦</a>
-              <a href="#" style="color: #ccc; text-decoration: none; font-size: 1.2rem; transition: color 0.3s;" title="Instagram">📷</a>
-              <a href="https://wa.link/c73sw8" style="color: #ccc; text-decoration: none; font-size: 1.2rem; transition: color 0.3s;" title="WhatsApp">📱</a>
+            <div class="contact-item">
+              <div class="contact-icon">📞</div>
+              <div>
+                <h4>Phone</h4>
+                <p>+234 810 758 6167</p>
+              </div>
+            </div>
+            
+            <div class="contact-item">
+              <div class="contact-icon">📍</div>
+              <div>
+                <h4>Address</h4>
+                <p>Lagos, Nigeria</p>
+              </div>
+            </div>
+          </div>
+          
+          <div>
+            <h3>Send us a message</h3>
+            <div class="booking-form">
+              <div class="form-group">
+                <label>Your Name</label>
+                <input type="text" id="contact-name" placeholder="Enter your name">
+              </div>
+              
+              <div class="form-group">
+                <label>Email</label>
+                <input type="email" id="contact-email" placeholder="Enter your email">
+              </div>
+              
+              <div class="form-group">
+                <label>Message</label>
+                <textarea id="contact-message" placeholder="How can we help you?"></textarea>
+              </div>
+              
+              <button class="btn btn-primary" onclick="alert('Thank you for your message! We will get back to you soon.')">Send Message</button>
             </div>
           </div>
         </div>
       </div>
-    </footer>
+    </section>
   </main>
 
-  <div class="toast" id="toast" role="status" aria-live="polite"></div>
-
-  <!-- Scroll to top button -->
-  <button id="scroll-to-top" class="scroll-to-top" aria-label="Scroll to top">
-    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-      <path d="M12 19V5M5 12l7-7 7 7"/>
-    </svg>
-  </button>
-
   <script>
-    const API_BASE = "https://techyjaunt-auth-go43.onrender.com";
-    
-    // Toast notification function
-    function showToast(msg, ms = 3000) {
-      const toast = document.getElementById("toast");
-      toast.textContent = msg;
-      toast.classList.add("show");
-      setTimeout(() => toast.classList.remove("show"), ms);
-    }
-
-    // Check authentication and load user info
-    async function checkAuth() {
-      const token = localStorage.getItem('token');
-      if (!token) {
-        window.location.href = 'login.html';
-        return;
-      }
-      
-      try {
-        const res = await fetch(`${API_BASE}/api/users/me`, {
-          headers: { 'Authorization': `Bearer ${token}` }
-        });
-        
-        if (!res.ok) {
-          // Handle 404 or other errors gracefully
-          if (res.status === 404) {
-            console.warn('User profile endpoint not found, proceeding with basic auth');
-            // Use token as-is since login was successful
-            document.getElementById('user-name').textContent = 'User';
-            return;
-          }
-          
-          // For other errors like 401, remove token
-          localStorage.removeItem('token');
-          window.location.href = 'login.html';
-          return;
-        }
-        
-        const user = await res.json();
-        document.getElementById('user-name').textContent = user.name || user.email;
-        
-        // Show dashboard button only for admins
-        const dashboardBtn = document.getElementById('dashboard-btn');
-        if (user.role === 'admin') {
-          dashboardBtn.style.display = 'inline-block';
-        } else {
-          dashboardBtn.style.display = 'none';
-        }
-      } catch (error) {
-        console.error('Auth check failed:', error);
-        // Don't redirect on network errors, allow user to stay logged in
-        document.getElementById('user-name').textContent = 'User';
-      }
-    }
-    
-    document.getElementById('logout-btn').addEventListener('click', function() {
-      localStorage.removeItem('token');
-      window.location.href = 'login.html';
-    });
-    
-    // Newsletter subscription functionality
-    document.addEventListener('DOMContentLoaded', function() {
-      const newsletterForm = document.getElementById('newsletter-form');
-      const newsletterMessage = document.getElementById('newsletter-message');
-
-      if (newsletterForm) {
-        newsletterForm.addEventListener('submit', async function(e) {
-          e.preventDefault();
-          
-          const emailInput = newsletterForm.querySelector('input[name="email"]');
-          const email = emailInput.value.trim();
-          
-          if (!email) {
-            showNewsletterMessage('Please enter your email address', 'error');
-            return;
-          }
-
-          if (!isValidEmail(email)) {
-            showNewsletterMessage('Please enter a valid email address', 'error');
-            return;
-          }
-
-          // Show loading state
-          const submitButton = newsletterForm.querySelector('button[type="submit"]');
-          const originalText = submitButton.textContent;
-          submitButton.textContent = 'Subscribing...';
-          submitButton.disabled = true;
-
-          try {
-            const response = await fetch(`${API_BASE}/api/newsletter/subscribe`, {
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/json',
-              },
-              body: JSON.stringify({ email })
-            });
-
-            const data = await response.json();
-
-            if (response.ok) {
-              showNewsletterMessage('Successfully subscribed! Thank you for joining our newsletter.', 'success');
-              emailInput.value = '';
-            } else {
-              showNewsletterMessage(data.message || 'Subscription failed. Please try again.', 'error');
-            }
-          } catch (error) {
-            console.error('Newsletter subscription error:', error);
-            showNewsletterMessage('Network error. Please check your connection and try again.', 'error');
-          } finally {
-            submitButton.textContent = originalText;
-            submitButton.disabled = false;
-          }
-        });
-      }
-
-      function showNewsletterMessage(message, type) {
-        newsletterMessage.textContent = message;
-        newsletterMessage.style.color = type === 'success' ? '#03dac5' : '#ff6b6b';
-        newsletterMessage.style.display = 'block';
-        
-        // Clear message after 5 seconds
-        setTimeout(() => {
-          newsletterMessage.textContent = '';
-          newsletterMessage.style.display = 'none';
-        }, 5000);
-      }
-
-      function isValidEmail(email) {
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        return emailRegex.test(email);
-      }
-    });
-
-    // Scroll to top functionality
-    const scrollToTopBtn = document.getElementById('scroll-to-top');
-
-    // Show/hide scroll button based on scroll position
-    window.addEventListener('scroll', () => {
-      const scrollHeight = document.documentElement.scrollHeight;
-      const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-      const clientHeight = document.documentElement.clientHeight;
-      
-      // Show button when scrolled near the bottom (within 200px of bottom)
-      const isNearBottom = scrollTop + clientHeight >= scrollHeight - 200;
-      
-      if (isNearBottom && scrollTop > 300) {
-        scrollToTopBtn.classList.add('show');
-      } else {
-        scrollToTopBtn.classList.remove('show');
-      }
-    });
-
-    // Scroll to top when button is clicked
-    scrollToTopBtn.addEventListener('click', () => {
-      window.scrollTo({
-        top: 0,
-        behavior: 'smooth'
+    // Single Page Application Navigation
+    function showSection(sectionName) {
+      // Hide all sections
+      const sections = document.querySelectorAll('.section');
+      sections.forEach(section => {
+        section.classList.remove('active');
       });
-    });
-
-    // Set current year in footer
-    document.getElementById('year').textContent = new Date().getFullYear();
+      
+      // Show target section
+      const targetSection = document.getElementById(sectionName);
+      if (targetSection) {
+        targetSection.classList.add('active');
+      }
+      
+      // Update navigation active state
+      const navLinks = document.querySelectorAll('.nav-link');
+      navLinks.forEach(link => {
+        link.classList.remove('active');
+      });
+      
+      const activeLink = document.querySelector(`[onclick="showSection('${sectionName}')"]`);
+      if (activeLink) {
+        activeLink.classList.add('active');
+      }
+      
+      // Update URL without page reload
+      history.pushState(null, null, `#${sectionName}`);
+    }
     
-    // Initialize on page load
-    checkAuth();
+    // Handle browser back/forward buttons
+    window.addEventListener('popstate', function() {
+      const hash = window.location.hash.slice(1);
+      if (hash) {
+        showSection(hash);
+      } else {
+        showSection('home');
+      }
+    });
+    
+    // Initialize date pickers
+    function initializeDates() {
+      const today = new Date().toISOString().split('T')[0];
+      document.getElementById('pickup-date').min = today;
+      document.getElementById('return-date').min = today;
+    }
+    
+    // Booking functionality
+    function bookCar(carId) {
+      // Add to cart and redirect to booking
+      const cart = JSON.parse(localStorage.getItem('cart') || '[]');
+      cart.push({ id: carId, date: new Date().toISOString() });
+      localStorage.setItem('cart', JSON.stringify(cart));
+      updateCartCount();
+      window.location.href = 'cart.html';
+    }
+    
+    function updateCartCount() {
+      const cart = JSON.parse(localStorage.getItem('cart') || '[]');
+      document.getElementById('cart-count').textContent = cart.length;
+    }
+    
+    // Initialize page
+    document.addEventListener('DOMContentLoaded', function() {
+      initializeDates();
+      updateCartCount();
+      
+      // Handle initial hash
+      const hash = window.location.hash.slice(1);
+      if (hash && document.getElementById(hash)) {
+        showSection(hash);
+      }
+    });
   </script>
-</body>
-</html>
 </body>
 </html>
