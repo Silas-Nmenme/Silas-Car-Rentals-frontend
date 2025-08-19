@@ -646,11 +646,15 @@
     }
   });
 
-  // Google OAuth functionality - Fixed to redirect properly
+  // Google OAuth functionality - Updated implementation
   function handleGoogleSignUp() {
-    // Direct redirect to Google OAuth - this will show Google account selection
-    const googleAuthUrl = `${BASE_URL}/api/users/google`;
-    window.location.href = googleAuthUrl;
+    if (window.googleAuth) {
+      window.googleAuth.initiateGoogleAuth('signup');
+    } else {
+      // Fallback to basic redirect
+      const googleAuthUrl = `${BASE_URL}/api/users/google?mode=signup`;
+      window.location.href = googleAuthUrl;
+    }
   }
   
   function storeUserData(data) {

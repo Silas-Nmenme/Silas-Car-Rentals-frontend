@@ -611,13 +611,18 @@
       window.location.href = 'forgot-password.html';
     }
 
-    // Google OAuth functionality - Fixed to redirect properly
+    // Google OAuth functionality - Updated implementation
     function handleGoogleLogin() {
-      // Direct redirect to Google OAuth - this will show Google account selection
-      const googleAuthUrl = `${BASE_URL}/api/users/google`;
-      window.location.href = googleAuthUrl;
+      if (window.googleAuth) {
+        window.googleAuth.initiateGoogleAuth('login');
+      } else {
+        // Fallback to basic redirect
+        const googleAuthUrl = `${BASE_URL}/api/users/google?mode=login`;
+        window.location.href = googleAuthUrl;
+      }
     }
   </script>
 
+<script src="js/google-auth.js"></script>
 </body>
 </html>
