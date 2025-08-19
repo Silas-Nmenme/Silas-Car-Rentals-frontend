@@ -341,7 +341,7 @@
         <button class="btn btn-primary" onclick="window.location.href='cart.html'">
           Cart <span id="cart-count">0</span>
         </button>
-        <button class="btn btn-outline" onclick="window.location.href='login.html'">Login</button>
+        <button class="btn btn-outline" onclick="window.location.href='login.html'">Logout</button>
       </div>
     </div>
   </header>
@@ -469,7 +469,14 @@
               <li>✅ GPS navigation</li>
               <li>✅ Insurance included</li>
             </ul>
-            <button class="btn btn-primary" onclick="window.location.href='book.html'">Book Now</button>
+            <button class="btn btn-primary" onclick="addToCart({
+              _id: 'mercedes-c300',
+              make: 'Mercedes-Benz',
+              model: 'C300',
+              year: 2023,
+              price: 40000,
+              image: 'assets/c300 black.webp'
+            })">Rent Now</button>
           </div>
         </div>
         
@@ -485,7 +492,14 @@
               <li>✅ Advanced safety features</li>
               <li>✅ Child seat available</li>
             </ul>
-            <button class="btn btn-primary" onclick="window.location.href='book.html'">Book Now</button>
+            <button class="btn btn-primary" onclick="addToCart({
+              _id: 'bmw-x5',
+              make: 'BMW',
+              model: 'X5',
+              year: 2023,
+              price: 55000,
+              image: 'https://via.placeholder.com/300'
+            })">Rent Now</button>
           </div>
         </div>
         
@@ -501,7 +515,14 @@
               <li>✅ Wireless charging</li>
               <li>✅ Executive package</li>
             </ul>
-            <button class="btn btn-primary" onclick="window.location.href='book.html'">Book Now</button>
+            <button class="btn btn-primary" onclick="addToCart({
+              _id: 'audi-a6',
+              make: 'Audi',
+              model: 'A6',
+              year: 2023,
+              price: 45000,
+              image: 'https://via.placeholder.com/300'
+            })">Rent Now</button>
           </div>
         </div>
       </div>
@@ -710,6 +731,39 @@
       } else {
         alert('Please fill in all fields.');
       }
+    }
+    
+    // Cart functionality
+    function getStorage(key) {
+      return JSON.parse(localStorage.getItem(key)) || [];
+    }
+    
+    function setStorage(key, value) {
+      localStorage.setItem(key, JSON.stringify(value));
+    }
+    
+    function updateCartCount() {
+      const cart = getStorage('cart');
+      const cartCountElement = document.getElementById('cart-count');
+      if (cartCountElement) {
+        cartCountElement.textContent = cart.length;
+      }
+    }
+    
+    function addToCart(car) {
+      const cart = getStorage('cart');
+      
+      // Check if car already exists in cart
+      const existingCar = cart.find(c => c._id === car._id);
+      if (existingCar) {
+        alert('This car is already in your cart!');
+        return;
+      }
+      
+      cart.push(car);
+      setStorage('cart', cart);
+      updateCartCount();
+      alert(`${car.make} ${car.model} has been added to your cart!`);
     }
     
     // Initialize page
