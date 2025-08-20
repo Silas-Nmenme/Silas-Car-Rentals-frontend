@@ -459,8 +459,8 @@
           totalAmount: totalAmount
         };
         
-        // Store booking data in localStorage
-        localStorage.setItem('lastBooking', JSON.stringify(bookingData));
+        console.log('Booking data:', bookingData); // Log the booking data
+        localStorage.setItem('lastBooking', JSON.stringify(bookingData)); // Store booking data in localStorage
         
         // Redirect to checkout page
         window.location.href = 'checkout.html';
@@ -470,8 +470,10 @@
     async function loadAvailableCars(initialCarId) {
       try {
         const response = await fetch('https://techyjaunt-auth-go43.onrender.com/api/cars/get-cars');
-        const text = await response.text();
-        console.error('Response text:', text); // Log the response text
+        console.log('Response status:', response.status); // Log the response status
+        if (!response.ok) throw new Error('Network response was not ok');
+        const text = await response.text(); // Log the response text
+        console.log('Response text:', text); // Log the response text
         const data = JSON.parse(text); // Attempt to parse the response
         const cars = data.cars; // Access the cars array
         console.log(cars); // Log the cars data
