@@ -452,7 +452,17 @@ document.addEventListener('DOMContentLoaded', function() {
   });
 });
 
-// Fetch cars from backend and populate select
+// Helper: get carId from query string or localStorage (cart)
+function getSelectedCarId() {
+  // Try query string first
+  const params = new URLSearchParams(window.location.search);
+  if (params.has('carId')) return params.get('carId');
+  // Or from localStorage (e.g., cart)
+  const cartCarId = localStorage.getItem('selectedCarId');
+  if (cartCarId) return cartCarId;
+  return '';
+}
+
 async function loadAvailableCars() {
   const carSelect = document.getElementById('car-select');
   carSelect.innerHTML = '<option value="">-- Select a car --</option>';
@@ -460,6 +470,10 @@ async function loadAvailableCars() {
     const res = await fetch(`${API_BASE}/api/cars`);
     if (!res.ok) throw new Error('Failed to fetch cars');
     const cars = await res.json();
+
+    // Get pre-selected carId (from query or localStorage)
+    const selectedCarId = getSelectedCarId();
+
     cars.forEach(car => {
       const opt = document.createElement('option');
       opt.value = car._id;
@@ -469,8 +483,17 @@ async function loadAvailableCars() {
       opt.dataset.year = car.year;
       opt.dataset.price = car.price;
       opt.dataset.image = car.image || '';
+      if (selectedCarId && car._id === selectedCarId) {
+        opt.selected = true;
+        document.getElementById('carId').value = car._id;
+      }
       carSelect.appendChild(opt);
     });
+
+    // If a car was pre-selected, set the hidden field
+    if (selectedCarId) {
+      document.getElementById('carId').value = selectedCarId;
+    }
   } catch (err) {
     carSelect.innerHTML = '<option value="">Unable to load cars</option>';
   }
