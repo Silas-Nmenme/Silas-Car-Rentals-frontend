@@ -344,8 +344,8 @@ document.addEventListener('DOMContentLoaded', function() {
   document.getElementById('pickup-date').min = today;
   document.getElementById('return-date').min = today;
 
-  // Load available cars from backend AND cart
-  loadAvailableCarsWithCart();
+  // Load cars from cart/localStorage first, then API
+  loadCarsFromCartAndAPI();
 
   // Pre-fill user info
   document.getElementById('email').value = user.email || '';
@@ -363,11 +363,6 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   });
 
-  // Car selection change
-  document.getElementById('car-select').addEventListener('change', function() {
-    document.getElementById('carId').value = this.value;
-  });
-
   // Form submission
   document.getElementById('bookingForm').addEventListener('submit', function(e) {
     e.preventDefault();
@@ -383,11 +378,9 @@ document.addEventListener('DOMContentLoaded', function() {
     const startDate = document.getElementById('pickup-date').value;
     const endDate = document.getElementById('return-date').value;
     const carId = document.getElementById('carId').value;
-    const carSelect = document.getElementById('car-select');
-    const selectedOption = carSelect.options[carSelect.selectedIndex];
 
     if (!carId) {
-      alert('Please select a car.');
+      alert('Please select a car from your cart or choose one from the available options.');
       isValid = false;
     }
     if (!email) {
@@ -412,31 +405,37 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     if (!isValid) return;
 
-    // Parse car details from data attributes
-    const carData = selectedOption.dataset;
-    const carMake = carData.make || '';
-    const carModel = carData.model || '';
-    const carYear = carData.year || '';
-    const carPrice = parseInt(carData.price || '0');
-    const carImage = carData.image || null;
+    // Get car details from cart or selected option
+    let carDetails;
+    const cartItems = JSON.parse(localStorage.getItem('cart') || '[]');
+    const cartCar = cartItems.find(c => c._id === carId);
+    
+    if (cartCar) {
+      carDetails = cartCar;
+    } else {
+      // Get from selected dropdown
+      const carSelect = document.getElementById('car-select');
+      const selectedOption = carSelect.options[carSelect.selectedIndex];
+      carDetails = {
+        _id: carId,
+        make: selectedOption.dataset.make,
+        model: selectedOption.dataset.model,
+        year: selectedOption.dataset.year,
+        price: parseInt(selectedOption.dataset.price),
+        image: selectedOption.dataset.image
+      };
+    }
 
     // Calculate number of days
     const start = new Date(startDate);
     const end = new Date(endDate);
     const days = Math.ceil((end - start) / (1000 * 60 * 60 * 24));
-    const totalAmount = carPrice * days;
+    const totalAmount = carDetails.price * days;
 
     // Prepare booking data for checkout
     const bookingData = {
       userId: user.id,
-      car: {
-        _id: carId,
-        make: carMake,
-        model: carModel,
-        year: carYear,
-        price: carPrice,
-        image: carImage
-      },
+      car: carDetails,
       pickupDate: startDate,
       returnDate: endDate,
       phoneNumber: phone,
@@ -445,39 +444,20 @@ document.addEventListener('DOMContentLoaded', function() {
       totalAmount: totalAmount
     };
 
-    localStorage.setItem('lastBooking', JSON.stringify(bookingData)); // Store booking data in localStorage
+    localStorage.setItem('lastBooking', JSON.stringify(bookingData));
 
     // Redirect to checkout page
     window.location.href = 'checkout.html';
   });
 });
 
-// Enhanced helper: get carId from query string, cart, or localStorage
-function getSelectedCarId() {
-  // Try query string first
-  const params = new URLSearchParams(window.location.search);
-  if (params.has('carId')) return params.get('carId');
-  
-  // Try cart items
-  const cartItems = JSON.parse(localStorage.getItem('cart') || '[]');
-  if (cartItems.length > 0) {
-    return cartItems[0]._id; // Return first cart item
-  }
-  
-  // Try localStorage selectedCarId
-  const cartCarId = localStorage.getItem('selectedCarId');
-  if (cartCarId) return cartCarId;
-  
-  return '';
-}
-
-// Enhanced function: load cars from API and integrate with cart
-async function loadAvailableCarsWithCart() {
+// Enhanced function: load cars from cart and API
+async function loadCarsFromCartAndAPI() {
   const carSelect = document.getElementById('car-select');
   carSelect.innerHTML = '<option value="">-- Select a car --</option>';
   
   try {
-    // Get cart items
+    // Get cart items first
     const cartItems = JSON.parse(localStorage.getItem('cart') || '[]');
     
     // Load cars from API
@@ -485,16 +465,12 @@ async function loadAvailableCarsWithCart() {
     if (!res.ok) throw new Error('Failed to fetch cars');
     const apiCars = await res.json();
     
-    // Get pre-selected carId
-    const selectedCarId = getSelectedCarId();
-    
-    // Create a combined list: prioritize cart items
+    // Create combined list: prioritize cart items
     let allCars = [];
     
-    // Add cart items first (if any)
+    // Add cart items first
     if (cartItems.length > 0) {
       cartItems.forEach(car => {
-        // Ensure cart items have the same structure as API cars
         const enhancedCar = {
           _id: car._id,
           make: car.make || 'Unknown',
@@ -505,7 +481,7 @@ async function loadAvailableCarsWithCart() {
           color: car.color || 'Black',
           description: car.description || 'No description available',
           brand: car.brand || car.make || 'Unknown',
-          fromCart: true // Mark as from cart
+          fromCart: true
         };
         allCars.push(enhancedCar);
       });
@@ -535,17 +511,11 @@ async function loadAvailableCarsWithCart() {
       opt.dataset.price = car.price;
       opt.dataset.image = car.image || '';
       
-      // Auto-select if this car was pre-selected
-      if (selectedCarId && car._id === selectedCarId) {
-        opt.selected = true;
-        document.getElementById('carId').value = car._id;
-      }
-      
       carSelect.appendChild(opt);
     });
     
-    // If we have cart items, auto-select the first one
-    if (cartItems.length > 0 && !selectedCarId) {
+    // Auto-select first cart item if available
+    if (cartItems.length > 0) {
       const firstCartCar = carSelect.querySelector(`option[value="${cartItems[0]._id}"]`);
       if (firstCartCar) {
         firstCartCar.selected = true;
@@ -553,17 +523,12 @@ async function loadAvailableCarsWithCart() {
       }
     }
     
-    // If a car was pre-selected, set the hidden field
-    if (selectedCarId) {
-      document.getElementById('carId').value = selectedCarId;
-    }
-    
-    // Show cart integration message if applicable
+    // Show cart integration message
     if (cartItems.length > 0) {
       const cartMessage = document.createElement('div');
       cartMessage.style.cssText = 'background: #e8f5e8; border: 1px solid #4caf50; padding: 1rem; border-radius: 8px; margin: 1rem 0;';
       cartMessage.innerHTML = `
-        <strong>📦 Cart Integration:</strong> ${cartItems.length} car${cartItems.length > 1 ? 's' : ''} from your cart are available for booking.
+        <strong>📦 Cart Integration:</strong> ${cartItems.length} car${cartItems.length > 1 ? 's' : ''} from your cart are ready for booking.
         ${cartItems.length > 1 ? '<br><small>Select any car from the dropdown above to proceed.</small>' : ''}
       `;
       
