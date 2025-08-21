@@ -279,9 +279,7 @@
       <!-- Car Selection -->
       <div class="car-selector">
         <label for="car-select">Select Car:</label>
-        <select id="car-select" class="form-control">
-          <option value="">Loading cars...</option>
-        </select>
+        <select id="car-select" class="form-control"></select>
       </div>
       
       <!-- Contact Information -->
@@ -301,13 +299,12 @@
       <div class="form-row">
         <div class="form-group">
           <label for="pickup-date">Pickup Date *</label>
-          <input type="date" id="pickup-date" name="startDate" required />
+          <input type="date" id="pickup-date" name="pickup_date" required />
           <div class="error-message" id="pickup-date-error"></div>
         </div>
-        
         <div class="form-group">
           <label for="return-date">Return Date *</label>
-          <input type="date" id="return-date" name="endDate" required />
+          <input type="date" id="return-date" name="return_date" required />
           <div class="error-message" id="return-date-error"></div>
         </div>
       </div>
@@ -331,176 +328,153 @@
   </footer>
 
   <script>
-    // Set minimum date to today
-    document.addEventListener('DOMContentLoaded', function() {
-      const today = new Date().toISOString().split('T')[0];
-      document.getElementById('pickup-date').min = today;
-      document.getElementById('return-date').min = today;
-      
-      // Get car ID from URL parameters
-      const urlParams = new URLSearchParams(window.location.search);
-      const initialCarId = urlParams.get('carId') || localStorage.getItem('selectedCarId');
-      
-      // Load available cars
-      loadAvailableCars(initialCarId);
-      
-      // Get user info if logged in
-      const user = JSON.parse(localStorage.getItem('user'));
-      if (user) {
-        document.getElementById('email').value = user.email || '';
-        document.getElementById('phone').value = user.phone || '';
-      }
-      
-      // Update cart count
-      const cart = JSON.parse(localStorage.getItem('cart')) || [];
-      document.getElementById('cart-count').textContent = cart.length;
-      
-      // Auto-set return date to 1 day after pickup
-      document.getElementById('pickup-date').addEventListener('change', function() {
-        const returnDate = document.getElementById('return-date');
-        const pickup = new Date(this.value);
-        const nextDay = new Date(pickup);
-        nextDay.setDate(nextDay.getDate() + 1);
-        
-        returnDate.min = this.value;
-        if (!returnDate.value || new Date(returnDate.value) <= pickup) {
-          returnDate.value = nextDay.toISOString().split('T')[0];
-        }
-      });
-      
-      // Car selection change
-      document.getElementById('car-select').addEventListener('change', function() {
-        document.getElementById('carId').value = this.value;
-      });
-      
-      // Form submission
-      document.getElementById('bookingForm').addEventListener('submit', function(e) {
-        e.preventDefault();
-        
-        // Clear previous errors
-        document.querySelectorAll('.error-message').forEach(el => el.textContent = '');
-        
-        // Validate form
-        let isValid = true;
-        
-        const email = document.getElementById('email').value;
-        const phone = document.getElementById('phone').value;
-        const startDate = document.getElementById('pickup-date').value;
-        const endDate = document.getElementById('return-date').value;
-        
-        if (!email) {
-          document.getElementById('email-error').textContent = 'Email is required';
-          isValid = false;
-        }
-        
-        if (!phone) {
-          document.getElementById('phone-error').textContent = 'Phone number is required';
-          isValid = false;
-        }
-        
-        if (!startDate) {
-          document.getElementById('pickup-date-error').textContent = 'Pickup date is required';
-          isValid = false;
-        }
-        
-        if (!endDate) {
-          document.getElementById('return-date-error').textContent = 'Return date is required';
-          isValid = false;
-        }
-        
-        if (new Date(endDate) <= new Date(startDate)) {
-          document.getElementById('return-date-error').textContent = 'Return date must be after pickup date';
-          isValid = false;
-        }
-        
-        if (!isValid) return;
-        
-        // Get user ID from localStorage
-        const user = JSON.parse(localStorage.getItem('user'));
-        if (!user || !user.id) {
-          alert('Please login first to continue with booking');
-          window.location.href = 'login.html';
-          return;
-        }
-        
-        // Get selected car details
-        const carId = document.getElementById('carId').value;
-        const carSelect = document.getElementById('car-select');
-        const selectedOption = carSelect.options[carSelect.selectedIndex];
-        const carText = selectedOption.textContent;
-        
-        // Parse car details from the text
-        const carMatch = carText.match(/^(.+?) \((\d{4})\) - ₦([\d,]+)\/day$/);
-        const carMakeModel = carMatch ? carMatch[1] : 'Unknown Car';
-        const carYear = carMatch ? carMatch[2] : 'Unknown Year';
-        const carPrice = carMatch ? parseInt(carMatch[3].replace(/,/g, '')) : 0;
-        
-        // Calculate number of days
-        const start = new Date(startDate);
-        const end = new Date(endDate);
-        const days = Math.ceil((end - start) / (1000 * 60 * 60 * 24));
-        const totalAmount = carPrice * days;
-        
-        // Prepare booking data for checkout
-        const bookingData = {
-          car: {
-            _id: carId,
-            make: carMakeModel.split(' ')[0],
-            model: carMakeModel.split(' ').slice(1).join(' '),
-            year: carYear,
-            price: carPrice,
-            image: null // Will be fetched in checkout
-          },
-          pickupDate: startDate,
-          returnDate: endDate,
-          phoneNumber: phone,
-          email: email,
-          days: days,
-          totalAmount: totalAmount
-        };
-        
-        console.log('Booking data:', bookingData); // Log the booking data
-        localStorage.setItem('lastBooking', JSON.stringify(bookingData)); // Store booking data in localStorage
-        
-        // Redirect to checkout page
-        window.location.href = 'checkout.html';
-      });
-    });
-    
-    async function loadAvailableCars(initialCarId) {
-      try {
-        const response = await fetch('https://techyjaunt-auth-go43.onrender.com/api/cars/get-cars');
-        console.log('Response status:', response.status); // Log the response status
-        if (!response.ok) throw new Error('Network response was not ok');
-        const text = await response.text(); // Log the response text
-        console.log('Response text:', text); // Log the response text
-        const data = JSON.parse(text); // Attempt to parse the response
-        const cars = data.cars; // Access the cars array
-        console.log(cars); // Log the cars data
-        
-        const carSelect = document.getElementById('car-select');
-        carSelect.innerHTML = '<option value="">Select a car</option>';
-        
-        cars.forEach(car => {
-          const option = document.createElement('option');
-          option.value = car._id;
-          option.textContent = `${car.make} ${car.model} (${car.year}) - ₦${car.price.toLocaleString()}/day`;
-          carSelect.appendChild(option);
-        });
-        
-        // Set initial car selection
-        if (initialCarId) {
-          carSelect.value = initialCarId;
-          document.getElementById('carId').value = initialCarId;
-        } else if (cars.length > 0) {
-          carSelect.value = cars[0]._id;
-          document.getElementById('carId').value = cars[0]._id;
-        }
-      } catch (error) {
-        console.error('Error loading cars:', error);
-        document.getElementById('car-select').innerHTML = '<option value="">Error loading cars</option>';
-      }
+const API_BASE = "https://techyjaunt-auth-go43.onrender.com"; // Change if your API base is different
+
+document.addEventListener('DOMContentLoaded', function() {
+  // Check login first
+  const user = JSON.parse(localStorage.getItem('user'));
+  if (!user || !user.id) {
+    alert('Please login first to continue with booking');
+    window.location.href = 'login.html';
+    return;
+  }
+
+  // Set minimum date to today
+  const today = new Date().toISOString().split('T')[0];
+  document.getElementById('pickup-date').min = today;
+  document.getElementById('return-date').min = today;
+
+  // Load available cars from backend
+  loadAvailableCars();
+
+  // Pre-fill user info
+  document.getElementById('email').value = user.email || '';
+  document.getElementById('phone').value = user.phone || '';
+
+  // Auto-set return date to 1 day after pickup
+  document.getElementById('pickup-date').addEventListener('change', function() {
+    const returnDate = document.getElementById('return-date');
+    const pickup = new Date(this.value);
+    const nextDay = new Date(pickup);
+    nextDay.setDate(nextDay.getDate() + 1);
+    returnDate.min = this.value;
+    if (!returnDate.value || new Date(returnDate.value) <= pickup) {
+      returnDate.value = nextDay.toISOString().split('T')[0];
     }
+  });
+
+  // Car selection change
+  document.getElementById('car-select').addEventListener('change', function() {
+    document.getElementById('carId').value = this.value;
+  });
+
+  // Form submission
+  document.getElementById('bookingForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+
+    // Clear previous errors
+    document.querySelectorAll('.error-message').forEach(el => el.textContent = '');
+
+    // Validate form
+    let isValid = true;
+
+    const email = document.getElementById('email').value.trim();
+    const phone = document.getElementById('phone').value.trim();
+    const startDate = document.getElementById('pickup-date').value;
+    const endDate = document.getElementById('return-date').value;
+    const carId = document.getElementById('carId').value;
+    const carSelect = document.getElementById('car-select');
+    const selectedOption = carSelect.options[carSelect.selectedIndex];
+
+    if (!carId) {
+      alert('Please select a car.');
+      isValid = false;
+    }
+    if (!email) {
+      document.getElementById('email-error').textContent = 'Email is required';
+      isValid = false;
+    }
+    if (!phone) {
+      document.getElementById('phone-error').textContent = 'Phone number is required';
+      isValid = false;
+    }
+    if (!startDate) {
+      document.getElementById('pickup-date-error').textContent = 'Pickup date is required';
+      isValid = false;
+    }
+    if (!endDate) {
+      document.getElementById('return-date-error').textContent = 'Return date is required';
+      isValid = false;
+    }
+    if (startDate && endDate && new Date(endDate) <= new Date(startDate)) {
+      document.getElementById('return-date-error').textContent = 'Return date must be after pickup date';
+      isValid = false;
+    }
+    if (!isValid) return;
+
+    // Parse car details from data attributes
+    const carData = selectedOption.dataset;
+    const carMake = carData.make || '';
+    const carModel = carData.model || '';
+    const carYear = carData.year || '';
+    const carPrice = parseInt(carData.price || '0');
+    const carImage = carData.image || null;
+
+    // Calculate number of days
+    const start = new Date(startDate);
+    const end = new Date(endDate);
+    const days = Math.ceil((end - start) / (1000 * 60 * 60 * 24));
+    const totalAmount = carPrice * days;
+
+    // Prepare booking data for checkout
+    const bookingData = {
+      userId: user.id,
+      car: {
+        _id: carId,
+        make: carMake,
+        model: carModel,
+        year: carYear,
+        price: carPrice,
+        image: carImage
+      },
+      pickupDate: startDate,
+      returnDate: endDate,
+      phoneNumber: phone,
+      email: email,
+      days: days,
+      totalAmount: totalAmount
+    };
+
+    localStorage.setItem('lastBooking', JSON.stringify(bookingData)); // Store booking data in localStorage
+
+    // Redirect to checkout page
+    window.location.href = 'checkout.html';
+  });
+});
+
+// Fetch cars from backend and populate select
+async function loadAvailableCars() {
+  const carSelect = document.getElementById('car-select');
+  carSelect.innerHTML = '<option value="">-- Select a car --</option>';
+  try {
+    const res = await fetch(`${API_BASE}/api/cars`);
+    if (!res.ok) throw new Error('Failed to fetch cars');
+    const cars = await res.json();
+    cars.forEach(car => {
+      const opt = document.createElement('option');
+      opt.value = car._id;
+      opt.textContent = `${car.make} ${car.model} (${car.year}) - ₦${car.price.toLocaleString()}/day`;
+      opt.dataset.make = car.make;
+      opt.dataset.model = car.model;
+      opt.dataset.year = car.year;
+      opt.dataset.price = car.price;
+      opt.dataset.image = car.image || '';
+      carSelect.appendChild(opt);
+    });
+  } catch (err) {
+    carSelect.innerHTML = '<option value="">Unable to load cars</option>';
+  }
+}
   </script>
 </body>
 </html>
