@@ -6,6 +6,7 @@
   <title>My Cart - Silas Car Rentals</title>
   <link rel="stylesheet" href="style.css" />
   <script src="cart-fix.js"></script>
+  <script src="booking-fix.js"></script>
 </head>
 <body>
 <header class="navbar">
@@ -45,7 +46,7 @@
       <span>Estimated Total:</span>
       <span id="cart-total-price">₦0</span>
     </div>
-    <button class="btn" style="width: 100%; margin-top: 1rem;" onclick="window.location.href='checkout.html'">
+    <button class="btn" style="width: 100%; margin-top: 1rem;" onclick="handleCartCheckout()">
       Proceed to Checkout
     </button>
   </div>
@@ -74,6 +75,29 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
     
+    // Handle checkout from cart
+    function handleCartCheckout() {
+        const cart = CartManager.getItems();
+        if (cart.length === 0) {
+            alert('Your cart is empty. Please add a car first.');
+            return;
+        }
+        
+        // For cart checkout, we'll use the first car in cart
+        const car = cart[0];
+        
+        // Set booking data for checkout
+        const bookingData = {
+            car: car,
+            source: 'cart'
+        };
+        
+        BookingManager.setBooking(bookingData);
+        
+        // Redirect to book.html to collect booking details
+        window.location.href = 'book.html?carId=' + car._id;
+    }
+    
     // Override renderCart for cart page
     window.renderCart = function() {
         const cart = CartManager.getItems();
@@ -84,3 +108,47 @@ document.addEventListener('DOMContentLoaded', function() {
                 <div style="text-align: center; padding: 3rem;">
                     <h3>Your cart is empty</h3>
                     <p style="margin: 1rem 0; color: var(--muted);">Start adding cars to your cart to see them here.</p>
+                    <button class="btn" onclick="window.location.href='cars.html'">Browse Cars</button>
+                </div>
+            `;
+            return;
+        }
+        
+        container.innerHTML = cart.map((car, index) => `
+            <div class="car-card" data-car-id="${car._id}">
+                <img src="${car.image}" alt="${car.make} ${car.model}" style="width:100%; height:200px; object-fit:cover; border-radius:8px;">
+                <div style="padding: 1rem;">
+                    <h3>${car.make} ${car.model}</h3>
+                    <p style="color: var(--muted);">${car.year} • ${car.color}</p>
+                    <p style="font-size: 1.2rem; font-weight: bold; color: var(--primary);">
+                        ₦${car.price.toLocaleString()}/day
+                    </p>
+                    <p style="font-size: 0.9rem; color: var(--muted); margin: 0.5rem 0;">
+                        ${car.description}
+                    </p>
+                    <div style="display: flex; gap: 8px; flex-wrap: wrap; margin-top: 1rem;">
+                        <button class="btn" onclick="window.location.href='book.html?carId=${car._id}'">
+                            Book Now
+                        </button>
+                        <button class="btn btn-outline" onclick="CartManager.remove('${car._id}')">
+                            Remove
+                        </button>
+                    </div>
+                </div>
+            </div>
+        `).join('');
+    }
+    
+    // Initialize cart display
+    updateCartSummary();
+    window.renderCart();
+    
+    // Update checkout button handler
+    const checkoutBtn = document.querySelector('#cart-summary button');
+    if (checkoutBtn) {
+        checkoutBtn.onclick = handleCartCheckout;
+    }
+});
+</script>
+</body>
+</html>

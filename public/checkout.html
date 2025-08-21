@@ -163,11 +163,10 @@
   </div>
 </main>
 
-<script>
+  <script src="booking-fix.js"></script>
+  <script>
 const API_BASE = "https://techyjaunt-auth-go43.onrender.com";
 const placeholderImage = "https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80";
-
-let lastBooking = JSON.parse(localStorage.getItem("lastBooking")) || null;
 
 function showToast(msg, ms=3000) {
   const toast = document.getElementById("toast");
@@ -186,14 +185,8 @@ function formatDate(dateString) {
   });
 }
 
-function calculateDays(startDate, endDate) {
-  const start = new Date(startDate);
-  const end = new Date(endDate);
-  return Math.ceil((end - start) / (1000 * 60 * 60 * 24));
-}
-
 function renderBooking(booking) {
-  const days = booking.days || calculateDays(booking.pickupDate, booking.returnDate);
+  const days = booking.days || BookingManager.calculateDays(booking.pickupDate, booking.returnDate);
   const totalAmount = booking.totalAmount || (booking.car.price * days);
   
   const content = `
@@ -286,7 +279,8 @@ async function initiatePayment() {
     return;
   }
 
-  if (!lastBooking || !lastBooking.car || !lastBooking.car._id) {
+  const booking = BookingManager.getBooking();
+  if (!booking || !booking.car || !booking.car._id) {
     showToast("No booking found. Please book a car first.");
     return;
   }
@@ -299,17 +293,17 @@ async function initiatePayment() {
   }
 
   try {
-    const res = await fetch(`${API_BASE}/api/payment/pay/${lastBooking.car._id}`, {
+    const res = await fetch(`${API_BASE}/api/payment/pay/${booking.car._id}`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
         "Authorization": `Bearer ${token}`
       },
       body: JSON.stringify({
-        email: lastBooking.email,
-        phoneNumber: lastBooking.phoneNumber,
-        pickupDate: lastBooking.pickupDate,
-        returnDate: lastBooking.returnDate
+        email: booking.email,
+        phoneNumber: booking.phoneNumber,
+        pickupDate: booking.pickupDate,
+        returnDate: booking.returnDate
       })
     });
 
@@ -343,20 +337,24 @@ document.addEventListener("click", function(e) {
   }
 });
 
-// Init
-if (lastBooking) {
-  renderBooking(lastBooking);
-} else {
-  document.getElementById("checkout-content").innerHTML = `
-    <div class="error-message">
-      <h3>No booking found</h3>
-      <p>Please go back and book a car first.</p>
-      <button onclick="window.location.href='book.html'" class="btn btn-primary">
-        Book a Car
-      </button>
-    </div>
-  `;
-}
+// Initialize checkout page
+document.addEventListener("DOMContentLoaded", function() {
+  const booking = BookingManager.getBooking();
+  
+  if (booking) {
+    renderBooking(booking);
+  } else {
+    document.getElementById("checkout-content").innerHTML = `
+      <div class="error-message">
+        <h3>No booking found</h3>
+        <p>Please go back and book a car first.</p>
+        <button onclick="window.location.href='book.html'" class="btn btn-primary">
+          Book a Car
+        </button>
+      </div>
+    `;
+  }
+});
 </script>
 </body>
 </html>

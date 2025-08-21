@@ -122,8 +122,10 @@
   </div>
 </main>
 
-<script>
+  <script src="booking-fix.js"></script>
+  <script>
 const placeholderImage = "https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80";
+
 function formatDate(dateString) {
   const date = new Date(dateString);
   return date.toLocaleDateString('en-US', { 
@@ -133,95 +135,98 @@ function formatDate(dateString) {
     day: 'numeric' 
   });
 }
-function calculateDays(startDate, endDate) {
-  const start = new Date(startDate);
-  const end = new Date(endDate);
-  return Math.ceil((end - start) / (1000 * 60 * 60 * 24));
-}
-const lastBooking = JSON.parse(localStorage.getItem("lastBooking")) || null;
-if (lastBooking) {
-  const days = lastBooking.days || calculateDays(lastBooking.pickupDate, lastBooking.returnDate);
-  const totalAmount = lastBooking.totalAmount || (lastBooking.car.price * days);
-  document.getElementById("order-summary-content").innerHTML = `
-    <div class="summary-card">
-      <div class="summary-header">
-        <h2>Thank you for your booking!</h2>
-        <p>Your order has been received and is being processed.</p>
-      </div>
-      <div class="summary-body">
-        <div class="car-details">
-          <img src="${lastBooking.car.image || placeholderImage}" alt="${lastBooking.car.make} ${lastBooking.car.model}" class="car-image">
-          <div class="car-info">
-            <h3>${lastBooking.car.make} ${lastBooking.car.model} (${lastBooking.car.year})</h3>
-            <p style="color: #16a34a; font-size: 1.25rem; font-weight: bold;">
-              ₦${lastBooking.car.price.toLocaleString()} per day
-            </p>
-          </div>
+
+document.addEventListener('DOMContentLoaded', function() {
+  const booking = BookingManager.getBooking();
+  
+  if (booking) {
+    const days = booking.days || BookingManager.calculateDays(booking.pickupDate, booking.returnDate);
+    const totalAmount = booking.totalAmount || (booking.car.price * days);
+    
+    document.getElementById("order-summary-content").innerHTML = `
+      <div class="summary-card">
+        <div class="summary-header">
+          <h2>Thank you for your booking!</h2>
+          <p>Your order has been received and is being processed.</p>
         </div>
-        <div class="booking-details">
-          <div class="detail-item">
-            <label>Pickup Date</label>
-            <p>${formatDate(lastBooking.pickupDate)}</p>
-          </div>
-          <div class="detail-item">
-            <label>Return Date</label>
-            <p>${formatDate(lastBooking.returnDate)}</p>
-          </div>
-          <div class="detail-item">
-            <label>Duration</label>
-            <p>${days} day${days > 1 ? 's' : ''}</p>
-          </div>
-          <div class="detail-item">
-            <label>Booking ID</label>
-            <p>${lastBooking.car._id.substring(0, 8)}...</p>
-          </div>
-        </div>
-        <div class="contact-info">
-          <h4>Contact Information</h4>
-          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 1rem;">
-            <div>
-              <label>Email</label>
-              <p>${lastBooking.email || 'Not provided'}</p>
-            </div>
-            <div>
-              <label>Phone</label>
-              <p>${lastBooking.phoneNumber || 'Not provided'}</p>
+        <div class="summary-body">
+          <div class="car-details">
+            <img src="${booking.car.image || placeholderImage}" alt="${booking.car.make} ${booking.car.model}" class="car-image">
+            <div class="car-info">
+              <h3>${booking.car.make} ${booking.car.model} (${booking.car.year})</h3>
+              <p style="color: #16a34a; font-size: 1.25rem; font-weight: bold;">
+                ₦${booking.car.price.toLocaleString()} per day
+              </p>
             </div>
           </div>
-        </div>
-        <div class="price-breakdown">
-          <h4>Price Breakdown</h4>
-          <div class="price-row">
-            <span>Car rental (${days} day${days > 1 ? 's' : ''}):</span>
-            <span>₦${(lastBooking.car.price * days).toLocaleString()}</span>
+          <div class="booking-details">
+            <div class="detail-item">
+              <label>Pickup Date</label>
+              <p>${formatDate(booking.pickupDate)}</p>
+            </div>
+            <div class="detail-item">
+              <label>Return Date</label>
+              <p>${formatDate(booking.returnDate)}</p>
+            </div>
+            <div class="detail-item">
+              <label>Duration</label>
+              <p>${days} day${days > 1 ? 's' : ''}</p>
+            </div>
+            <div class="detail-item">
+              <label>Booking ID</label>
+              <p>${booking.car._id.substring(0, 8)}...</p>
+            </div>
           </div>
-          <div class="price-row">
-            <span>Service fee:</span>
-            <span>₦0</span>
+          <div class="contact-info">
+            <h4>Contact Information</h4>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 1rem;">
+              <div>
+                <label>Email</label>
+                <p>${booking.email || 'Not provided'}</p>
+              </div>
+              <div>
+                <label>Phone</label>
+                <p>${booking.phoneNumber || 'Not provided'}</p>
+              </div>
+            </div>
           </div>
-          <div class="price-row">
-            <span>Taxes:</span>
-            <span>₦0</span>
-          </div>
-          <div class="price-row total">
-            <span>Total Amount:</span>
-            <span>₦${totalAmount.toLocaleString()}</span>
+          <div class="price-breakdown">
+            <h4>Price Breakdown</h4>
+            <div class="price-row">
+              <span>Car rental (${days} day${days > 1 ? 's' : ''}):</span>
+              <span>₦${(booking.car.price * days).toLocaleString()}</span>
+            </div>
+            <div class="price-row">
+              <span>Service fee:</span>
+              <span>₦0</span>
+            </div>
+            <div class="price-row">
+              <span>Taxes:</span>
+              <span>₦0</span>
+            </div>
+            <div class="price-row total">
+              <span>Total Amount:</span>
+              <span>₦${totalAmount.toLocaleString()}</span>
+            </div>
           </div>
         </div>
       </div>
-    </div>
-  `;
-} else {
-  document.getElementById("order-summary-content").innerHTML = `
-    <div class="error-message">
-      <h3>No order found</h3>
-      <p>Please book a car first.</p>
-      <button onclick="window.location.href='book.html'" class="btn btn-primary">
-        Book a Car
-      </button>
-    </div>
-  `;
-}
+    `;
+    
+    // Clear booking after showing order summary
+    BookingManager.clearBooking();
+  } else {
+    document.getElementById("order-summary-content").innerHTML = `
+      <div class="error-message">
+        <h3>No order found</h3>
+        <p>Please book a car first.</p>
+        <button onclick="window.location.href='book.html'" class="btn btn-primary">
+          Book a Car
+        </button>
+      </div>
+    `;
+  }
+});
 </script>
 </body>
 </html>

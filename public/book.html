@@ -327,8 +327,9 @@
     </div>
   </footer>
 
+  <script src="booking-fix.js"></script>
   <script>
-const API_BASE = "https://techyjaunt-auth-go43.onrender.com"; // Change if your API base is different
+const API_BASE = "https://techyjaunt-auth-go43.onrender.com";
 
 document.addEventListener('DOMContentLoaded', function() {
   // Check login first
@@ -361,6 +362,11 @@ document.addEventListener('DOMContentLoaded', function() {
     if (!returnDate.value || new Date(returnDate.value) <= pickup) {
       returnDate.value = nextDay.toISOString().split('T')[0];
     }
+  });
+
+  // Update car selection
+  document.getElementById('car-select').addEventListener('change', function() {
+    document.getElementById('carId').value = this.value;
   });
 
   // Form submission
@@ -426,13 +432,7 @@ document.addEventListener('DOMContentLoaded', function() {
       };
     }
 
-    // Calculate number of days
-    const start = new Date(startDate);
-    const end = new Date(endDate);
-    const days = Math.ceil((end - start) / (1000 * 60 * 60 * 24));
-    const totalAmount = carDetails.price * days;
-
-    // Prepare booking data for checkout
+    // Prepare booking data using unified system
     const bookingData = {
       userId: user.id,
       car: carDetails,
@@ -440,11 +440,11 @@ document.addEventListener('DOMContentLoaded', function() {
       returnDate: endDate,
       phoneNumber: phone,
       email: email,
-      days: days,
-      totalAmount: totalAmount
+      source: 'book'
     };
 
-    localStorage.setItem('lastBooking', JSON.stringify(bookingData));
+    // Set booking using unified system
+    BookingManager.setBooking(bookingData);
 
     // Redirect to checkout page
     window.location.href = 'checkout.html';
