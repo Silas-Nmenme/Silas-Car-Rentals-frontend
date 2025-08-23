@@ -432,7 +432,7 @@ document.addEventListener('DOMContentLoaded', function() {
       };
     }
 
-    // Prepare booking data using unified system
+    console.log("Car ID:", carId); // Debugging log
     const bookingData = {
       userId: user.id,
       car: carDetails,
@@ -443,7 +443,9 @@ document.addEventListener('DOMContentLoaded', function() {
       source: 'book'
     };
 
-    // Set booking using unified system
+    console.log("Car ID:", carId); // Debugging log
+    console.log("Pickup Date:", startDate); // Debugging log
+    console.log("Return Date:", endDate); // Debugging log
     BookingManager.setBooking(bookingData);
 
     // Redirect to checkout page

@@ -254,60 +254,14 @@ async function subscribeNewsletter(e) {
   }
 }
 
-// --- PAYMENT ---
-const authForm = qs("#auth-form");
-if (authForm) {
-  authForm.addEventListener("submit", async (e) => {
-    e.preventDefault();
-    const form = new FormData(authForm);
-    const email = form.get("email");
-    const phone = form.get("phone");
-    const startDate = qs("#rental-start")?.value;
-    const endDate = qs("#rental-end")?.value;
+// --- PAYMENT INTEGRATION WITH BOOKING SYSTEM ---
+// This payment logic has been moved to checkout.html to use the unified BookingManager system
+// The checkout.html page now handles all payment processing using booking data
+// instead of cart data for consistency across the application
 
-    if (!email || !phone || !startDate || !endDate) {
-      showToast("Please fill all checkout fields", 3000, "#f44336");
-      return;
-    }
-
-    const cart = getStorage("cart");
-    if (!cart.length) {
-      showToast("Cart is empty", 3000, "#ff9800");
-      return;
-    }
-    const car = cart[0];
-
-    try {
-      const resp = await fetch(`${API_BASE}/api/payment/pay/${car._id}`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          ...getAuthHeaders(),
-        },
-        body: JSON.stringify({
-          email,
-          phone_number: phone,
-          startDate,
-          endDate,
-        }),
-      });
-
-      const data = await resp.json();
-      if (!resp.ok) {
-        showToast(data.message || "Payment failed", 3000, "#f44336");
-        return;
-      }
-
-      if (data.redirectLink) {
-        window.location.href = data.redirectLink;
-      } else {
-        showToast("No payment link received", 3000, "#ff9800");
-      }
-    } catch (err) {
-      console.error(err);
-      showToast("Error connecting to server", 3000, "#f44336");
-    }
-  });
+// Ensure booking-fix.js is loaded for payment functionality
+if (typeof BookingManager === 'undefined') {
+  console.warn('BookingManager not found. Make sure booking-fix.js is loaded for payment functionality.');
 }
 
 // --- FETCH & RENDER CARS ---

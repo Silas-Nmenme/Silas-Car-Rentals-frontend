@@ -33,6 +33,7 @@
 
 <div class="toast" id="toast"></div>
 
+<script src="booking-fix.js"></script>
 <script>
 function getStorage(key) { return JSON.parse(localStorage.getItem(key)) || []; }
 function setStorage(key, value) { localStorage.setItem(key, JSON.stringify(value)); }
@@ -66,8 +67,18 @@ function renderSaved() {
   `).join("");
 }
 function checkoutCar(car) {
-  localStorage.setItem("currentCar", JSON.stringify(car));
-  window.location.href = "book.html";
+  // Use BookingManager to set booking data
+  if (typeof BookingManager !== 'undefined') {
+    BookingManager.setBooking({
+      car: car,
+      source: 'saved'
+    });
+    window.location.href = "book.html?carId=" + car._id;
+  } else {
+    // Fallback to old method if BookingManager not available
+    localStorage.setItem("currentCar", JSON.stringify(car));
+    window.location.href = "book.html";
+  }
 }
 function moveToCart(id) {
   let cart = getStorage("cart");

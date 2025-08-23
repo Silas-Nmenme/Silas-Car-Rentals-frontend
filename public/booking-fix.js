@@ -23,6 +23,7 @@
                     source: bookingData.source || 'book'
                 };
                 
+                console.log("Booking Data:", booking); // Debugging log
                 localStorage.setItem(BOOKING_STORAGE_KEY, JSON.stringify(booking));
                 return booking;
             } catch (error) {
