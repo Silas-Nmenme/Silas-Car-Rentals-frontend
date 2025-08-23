@@ -7,6 +7,94 @@
   <meta name="description" content="Professional car rentals — browse, add to cart and checkout securely." />
   <link rel="stylesheet" href="style.css" />
   <meta name="theme-color" content="#0b0e11">
+  <style>
+    /* Enhanced Professional Navigation Styles */
+    .navbar {
+      background: rgba(13, 17, 22, 0.95);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      transition: all 0.3s ease;
+    }
+    
+    .nav-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 80px;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 2rem;
+    }
+    
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+      color: white;
+    }
+    
+    .brand-mark {
+      width: 45px;
+      height: 45px;
+      background: linear-gradient(135deg, #16a34a, #15803d);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      font-size: 1.2rem;
+    }
+    
+    .brand-name {
+      font-size: 1.5rem;
+      font-weight: 700;
+      background: linear-gradient(135deg, #ffffff, #b9c2cc);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+      align-items: center;
+    }
+    
+    .nav-link {
+      color: var(--muted);
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 0.95rem;
+      transition: all 0.3s ease;
+      position: relative;
+      padding: 0.5rem 0;
+    }
+    
+    .nav-link:hover,
+    .nav-link.active {
+      color: var(--primary);
+    }
+    
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: var(--primary);
+      transition: width 0.3s ease;
+    }
+    
+    .nav-link:hover::after,
+    .nav-link.active::after {
+      width: 100%;
+    }
+  </style>
 </head>
 <body>
   <header class="navbar" role="banner">
@@ -225,7 +313,6 @@
     </svg>
   </button>
 
-  <script src="back-button-component.js"></script>
   <script>
 const API_BASE = "https://techyjaunt-auth-go43.onrender.com";
 const BENZ_ID = "689479c630cf9351877939e6"; 
