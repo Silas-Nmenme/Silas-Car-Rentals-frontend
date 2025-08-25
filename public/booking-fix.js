@@ -14,7 +14,17 @@
                 if (bookingData.cars && Array.isArray(bookingData.cars) && bookingData.cars.length > 0) {
                     // Multiple cars booking (from cart)
                     const booking = {
-                        userId: bookingData.userId || JSON.parse(localStorage.getItem('user'))?.id,
+                        userId: bookingData.userId || (function() {
+                            const userData = localStorage.getItem('user');
+                            let user = null;
+                            try {
+                                user = userData ? JSON.parse(userData) : null;
+                            } catch (e) {
+                                console.error('Error parsing user data:', e);
+                                user = null;
+                            }
+                            return user ? user.id : null;
+                        })(),
                         cars: bookingData.cars.map(car => this.enhanceCarData(car)),
                         pickupDate: bookingData.pickupDate,
                         returnDate: bookingData.returnDate,
@@ -46,7 +56,17 @@
                 }
                 
                 const booking = {
-                    userId: bookingData.userId || JSON.parse(localStorage.getItem('user'))?.id,
+                    userId: bookingData.userId || (function() {
+                        const userData = localStorage.getItem('user');
+                        let user = null;
+                        try {
+                            user = userData ? JSON.parse(userData) : null;
+                        } catch (e) {
+                            console.error('Error parsing user data:', e);
+                            user = null;
+                        }
+                        return user ? user.id : null;
+                    })(),
                     car: this.enhanceCarData(bookingData.car),
                     pickupDate: bookingData.pickupDate,
                     returnDate: bookingData.returnDate,

@@ -374,8 +374,16 @@
 const API_BASE = "https://techyjaunt-auth-go43.onrender.com";
 
 document.addEventListener('DOMContentLoaded', function() {
-  // Check login first
-  const user = JSON.parse(localStorage.getItem('user'));
+  // Check login first - handle null/undefined localStorage values
+  const userData = localStorage.getItem('user');
+  let user = null;
+  try {
+    user = userData ? JSON.parse(userData) : null;
+  } catch (e) {
+    console.error('Error parsing user data:', e);
+    user = null;
+  }
+  
   if (!user || !user.id) {
     alert('Please login first to continue with booking');
     window.location.href = 'login.html';
