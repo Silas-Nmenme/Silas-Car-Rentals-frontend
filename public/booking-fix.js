@@ -10,7 +10,31 @@
         // Create or update booking data
         setBooking: function(bookingData) {
             try {
-                // Validate required fields
+                // Handle multiple cars from cart
+                if (bookingData.cars && Array.isArray(bookingData.cars) && bookingData.cars.length > 0) {
+                    // Multiple cars booking (from cart)
+                    const booking = {
+                        userId: bookingData.userId || JSON.parse(localStorage.getItem('user'))?.id,
+                        cars: bookingData.cars.map(car => this.enhanceCarData(car)),
+                        pickupDate: bookingData.pickupDate,
+                        returnDate: bookingData.returnDate,
+                        email: bookingData.email,
+                        phoneNumber: bookingData.phoneNumber || bookingData.phone,
+                        days: bookingData.pickupDate && bookingData.returnDate ? 
+                            this.calculateDays(bookingData.pickupDate, bookingData.returnDate) : 1,
+                        totalAmount: bookingData.cars.reduce((total, car) => 
+                            total + this.calculateTotal(car.price, bookingData.pickupDate, bookingData.returnDate), 0),
+                        createdAt: new Date().toISOString(),
+                        source: bookingData.source || 'cart',
+                        isMultiCar: true
+                    };
+                    
+                    console.log("Multi-car Booking Data:", booking);
+                    localStorage.setItem(BOOKING_STORAGE_KEY, JSON.stringify(booking));
+                    return booking;
+                }
+                
+                // Single car booking (legacy support)
                 if (!bookingData.car || !bookingData.car._id) {
                     console.error('Car data is required for booking');
                     return null;
@@ -31,10 +55,11 @@
                     days: this.calculateDays(bookingData.pickupDate, bookingData.returnDate),
                     totalAmount: this.calculateTotal(bookingData.car?.price, bookingData.pickupDate, bookingData.returnDate),
                     createdAt: new Date().toISOString(),
-                    source: bookingData.source || 'book'
+                    source: bookingData.source || 'book',
+                    isMultiCar: false
                 };
                 
-                console.log("Booking Data:", booking); // Debugging log
+                console.log("Single-car Booking Data:", booking);
                 localStorage.setItem(BOOKING_STORAGE_KEY, JSON.stringify(booking));
                 return booking;
             } catch (error) {
@@ -98,8 +123,17 @@
             
             const errors = [];
             
-            if (!booking.car || !booking.car._id) {
-                errors.push('Car selection is required');
+            // Check for cars (single or multiple)
+            if (booking.isMultiCar) {
+                if (!booking.cars || !Array.isArray(booking.cars) || booking.cars.length === 0) {
+                    errors.push('Car selection is required');
+                } else if (!booking.cars.every(car => car && car._id)) {
+                    errors.push('Invalid car data in selection');
+                }
+            } else {
+                if (!booking.car || !booking.car._id) {
+                    errors.push('Car selection is required');
+                }
             }
             
             if (!booking.pickupDate) {

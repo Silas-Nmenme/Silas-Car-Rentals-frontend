@@ -83,19 +83,16 @@ document.addEventListener('DOMContentLoaded', function() {
             return;
         }
         
-        // For cart checkout, we'll use the first car in cart
-        const car = cart[0];
-        
-        // Set booking data for checkout
+        // Store all cart items for booking page
         const bookingData = {
-            car: car,
+            cars: cart,
             source: 'cart'
         };
         
         BookingManager.setBooking(bookingData);
         
         // Redirect to book.html to collect booking details
-        window.location.href = 'book.html?carId=' + car._id;
+        window.location.href = 'book.html?fromCart=true';
     }
     
     // Override renderCart for cart page

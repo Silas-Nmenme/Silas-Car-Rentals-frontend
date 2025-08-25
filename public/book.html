@@ -219,6 +219,48 @@
       margin-bottom: 0.5rem;
       color: #333;
     }
+
+    .selected-cars-display {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 1rem;
+      margin-top: 0.5rem;
+    }
+
+    .car-id-box {
+      background: #e8f5e8;
+      border: 2px solid #4caf50;
+      border-radius: 8px;
+      padding: 1rem;
+      text-align: center;
+      font-weight: 600;
+      color: #2e7d32;
+    }
+
+    .car-id-box.single {
+      background: #e3f2fd;
+      border-color: #2196f3;
+      color: #1565c0;
+    }
+
+    .car-details-box {
+      background: #f8f9fa;
+      border: 1px solid #dee2e6;
+      border-radius: 8px;
+      padding: 1rem;
+      margin-top: 0.5rem;
+    }
+
+    .car-details-box h4 {
+      margin: 0 0 0.5rem 0;
+      color: #333;
+    }
+
+    .car-details-box p {
+      margin: 0.25rem 0;
+      font-size: 0.9rem;
+      color: #666;
+    }
   </style>
 </head>
 <body>
@@ -277,9 +319,9 @@
       <input type="hidden" id="carId" name="carId" />
       
       <!-- Car Selection -->
-      <div class="car-selector">
-        <label for="car-select">Select Car:</label>
-        <select id="car-select" class="form-control"></select>
+      <div class="car-selector" id="car-selector">
+        <label>Selected Cars:</label>
+        <div id="selected-cars" class="selected-cars-display"></div>
       </div>
       
       <!-- Contact Information -->
@@ -345,8 +387,16 @@ document.addEventListener('DOMContentLoaded', function() {
   document.getElementById('pickup-date').min = today;
   document.getElementById('return-date').min = today;
 
-  // Load cars from cart/localStorage first, then API
-  loadCarsFromCartAndAPI();
+  // Check if coming from cart
+  const urlParams = new URLSearchParams(window.location.search);
+  const fromCart = urlParams.get('fromCart') === 'true';
+  
+  // Load cars based on source
+  if (fromCart) {
+    loadCarsFromCart();
+  } else {
+    loadCarsFromCartAndAPI();
+  }
 
   // Pre-fill user info
   document.getElementById('email').value = user.email || '';
@@ -362,11 +412,6 @@ document.addEventListener('DOMContentLoaded', function() {
     if (!returnDate.value || new Date(returnDate.value) <= pickup) {
       returnDate.value = nextDay.toISOString().split('T')[0];
     }
-  });
-
-  // Update car selection
-  document.getElementById('car-select').addEventListener('change', function() {
-    document.getElementById('carId').value = this.value;
   });
 
   // Form submission
@@ -553,6 +598,90 @@ async function loadCarsFromCartAndAPI() {
     console.error('Error loading cars:', err);
     carSelect.innerHTML = '<option value="">Unable to load cars</option>';
   }
+}
+
+// Function to load cars specifically from cart
+function loadCarsFromCart() {
+  const carSelect = document.getElementById('car-select');
+  const selectedCarsContainer = document.getElementById('selected-cars');
+  carSelect.innerHTML = '<option value="">-- Select a car --</option>';
+  selectedCarsContainer.innerHTML = '';
+  
+  try {
+    // Get cart items
+    const cartItems = JSON.parse(localStorage.getItem('cart') || '[]');
+    
+    if (cartItems.length === 0) {
+      // If no items in cart, show message and redirect
+      const noItemsMessage = document.createElement('div');
+      noItemsMessage.style.cssText = 'background: #fff3cd; border: 1px solid #ffeaa7; padding: 1rem; border-radius: 8px; margin: 1rem 0; text-align: center;';
+      noItemsMessage.innerHTML = `
+        <strong>🛒 Your cart is empty!</strong>
+        <p>No cars found in your cart. Please add cars to your cart first.</p>
+        <button onclick="window.location.href='cars.html'" class="btn btn-primary" style="margin-top: 0.5rem;">
+          Browse Cars
+        </button>
+      `;
+      
+      const carSelector = document.querySelector('.car-selector');
+      if (carSelector) {
+        carSelector.innerHTML = '';
+        carSelector.appendChild(noItemsMessage);
+      }
+      return;
+    }
+    
+    // Display cart items in the selected cars container
+    cartItems.forEach(car => {
+      const carBox = document.createElement('div');
+      carBox.className = 'car-id-box';
+      carBox.innerHTML = `
+        <h4>${car.make} ${car.model}</h4>
+        <p>${car.year} • ₦${car.price.toLocaleString()}/day</p>
+        <button onclick="selectCarFromCart('${car._id}')" class="btn btn-primary btn-sm" style="margin-top: 0.5rem;">
+          Select This Car
+        </button>
+      `;
+      selectedCarsContainer.appendChild(carBox);
+    });
+    
+    // Also populate dropdown with cart items
+    cartItems.forEach(car => {
+      const opt = document.createElement('option');
+      opt.value = car._id;
+      opt.textContent = `${car.make} ${car.model} (${car.year}) - ₦${car.price.toLocaleString()}/day [From Cart]`;
+      opt.dataset.make = car.make;
+      opt.dataset.model = car.model;
+      opt.dataset.year = car.year;
+      opt.dataset.price = car.price;
+      opt.dataset.image = car.image || '';
+      carSelect.appendChild(opt);
+    });
+    
+    // Auto-select first cart item
+    if (cartItems.length > 0) {
+      const firstCartCar = carSelect.querySelector(`option[value="${cartItems[0]._id}"]`);
+      if (firstCartCar) {
+        firstCartCar.selected = true;
+        document.getElementById('carId').value = cartItems[0]._id;
+      }
+    }
+    
+  } catch (err) {
+    console.error('Error loading cart cars:', err);
+    carSelect.innerHTML = '<option value="">Unable to load cart items</option>';
+  }
+}
+
+// Function to select a car from cart display
+function selectCarFromCart(carId) {
+  document.getElementById('carId').value = carId;
+  const carSelect = document.getElementById('car-select');
+  const option = carSelect.querySelector(`option[value="${carId}"]`);
+  if (option) {
+    option.selected = true;
+  }
+  alert('Car selected! Click "Proceed to Payment" to continue.');
 }
   </script>
 </body>
