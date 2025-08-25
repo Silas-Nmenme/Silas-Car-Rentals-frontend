@@ -6,7 +6,7 @@
   <title>My Cart - Silas Car Rentals</title>
   <link rel="stylesheet" href="style.css" />
   <script src="cart-fix.js"></script>
-  <script src="booking-fix.js"></script>
+  <script src="booking-fix-enhanced.js"></script>
 </head>
 <body>
 <header class="navbar">
@@ -79,20 +79,37 @@ document.addEventListener('DOMContentLoaded', function() {
     function handleCartCheckout() {
         const cart = CartManager.getItems();
         if (cart.length === 0) {
-            alert('Your cart is empty. Please add a car first.');
+            BookingManager.showError('Your cart is empty. Please add a car first.');
             return;
         }
         
-        // Store all cart items for booking page
-        const bookingData = {
-            cars: cart,
-            source: 'cart'
-        };
-        
-        BookingManager.setBooking(bookingData);
-        
-        // Redirect to book.html to collect booking details
-        window.location.href = 'book.html?fromCart=true';
+        try {
+            // Store all cart items for booking page
+            const bookingData = {
+                cars: cart,
+                source: 'cart'
+            };
+            
+            const booking = BookingManager.setBooking(bookingData);
+            
+            if (booking) {
+                console.log("Multi-car booking created:", booking);
+                
+                // Verify booking is stored correctly
+                const storedBooking = BookingManager.getBooking();
+                if (!storedBooking || !storedBooking.cars || storedBooking.cars.length === 0) {
+                    throw new Error('Failed to create multi-car booking. Please try again.');
+                }
+                
+                // Redirect to book.html to collect booking details
+                window.location.href = 'book.html?fromCart=true';
+            } else {
+                throw new Error('Failed to create booking. Please try again.');
+            }
+        } catch (error) {
+            console.error('Cart checkout error:', error);
+            BookingManager.showError(error.message || 'Failed to proceed to checkout. Please try again.');
+        }
     }
     
     // Override renderCart for cart page

@@ -369,7 +369,7 @@
     </div>
   </footer>
 
-  <script src="booking-fix.js"></script>
+  <script src="booking-fix-enhanced.js"></script>
   <script>
 const API_BASE = "https://techyjaunt-auth-go43.onrender.com";
 
@@ -439,11 +439,14 @@ document.addEventListener('DOMContentLoaded', function() {
       const carId = document.getElementById('carId').value;
 
       if (!carId) {
-        alert('Please select a car from your cart or choose one from the available options.');
+        BookingManager.showError('Please select a car from your cart or choose one from the available options.');
         isValid = false;
       }
       if (!email) {
         document.getElementById('email-error').textContent = 'Email is required';
+        isValid = false;
+      } else if (!BookingManager.isValidEmail(email)) {
+        document.getElementById('email-error').textContent = 'Please enter a valid email address';
         isValid = false;
       }
       if (!phone) {
@@ -464,60 +467,73 @@ document.addEventListener('DOMContentLoaded', function() {
       }
       if (!isValid) return;
 
-      // Get car details from cart or selected option
-      let carDetails;
-      const cartItems = JSON.parse(localStorage.getItem('cart') || '[]');
-      const cartCar = cartItems.find(c => c._id === carId);
-      
-      if (cartCar) {
-        carDetails = cartCar;
-        console.log("Car from cart:", carDetails);
-      } else {
-        // Get from selected dropdown
-        const carSelect = document.getElementById('car-select');
-        const selectedOption = carSelect.options[carSelect.selectedIndex];
-        carDetails = {
-          _id: carId,
-          make: selectedOption.dataset.make,
-          model: selectedOption.dataset.model,
-          year: selectedOption.dataset.year,
-          price: parseInt(selectedOption.dataset.price),
-          image: selectedOption.dataset.image
-        };
-        console.log("Car from dropdown:", carDetails);
-      }
+      // Show loading state
+      const submitBtn = document.getElementById('submitBtn');
+      const originalText = submitBtn.querySelector('#submit-text').textContent;
+      submitBtn.disabled = true;
+      submitBtn.querySelector('#submit-text').textContent = 'Processing...';
 
-      console.log("Car ID:", carId); // Debugging log
-      const bookingData = {
-        userId: user.id,
-        car: carDetails,
-        pickupDate: startDate,
-        returnDate: endDate,
-        phoneNumber: phone,
-        email: email,
-        source: 'book'
-      };
-
-      console.log("Booking Data:", bookingData); // Debugging log
-      const booking = BookingManager.setBooking(bookingData);
-      
-      if (booking) {
-        console.log("Booking set successfully:", booking);
-        // Verify booking is stored correctly
-        const storedBooking = BookingManager.getBooking();
-        console.log("Stored booking:", storedBooking);
+      try {
+        // Get car details from cart or selected option
+        let carDetails;
+        const cartItems = JSON.parse(localStorage.getItem('cart') || '[]');
+        const cartCar = cartItems.find(c => c._id === carId);
         
-        // Additional validation to ensure car data is complete
-        if (!storedBooking || !storedBooking.car || !storedBooking.car._id) {
-          alert('Booking data is incomplete. Please try again.');
-          BookingManager.clearBooking();
-          return;
+        if (cartCar) {
+          carDetails = cartCar;
+          console.log("Car from cart:", carDetails);
+        } else {
+          // Get from selected dropdown
+          const carSelect = document.getElementById('car-select');
+          const selectedOption = carSelect.options[carSelect.selectedIndex];
+          carDetails = {
+            _id: carId,
+            make: selectedOption.dataset.make,
+            model: selectedOption.dataset.model,
+            year: selectedOption.dataset.year,
+            price: parseInt(selectedOption.dataset.price),
+            image: selectedOption.dataset.image
+          };
+          console.log("Car from dropdown:", carDetails);
         }
+
+        const bookingData = {
+          userId: user.id,
+          car: carDetails,
+          pickupDate: startDate,
+          returnDate: endDate,
+          phoneNumber: phone,
+          email: email,
+          source: 'book'
+        };
+
+        console.log("Booking Data:", bookingData);
+        const booking = BookingManager.setBooking(bookingData);
         
-        // Redirect to checkout page
-        window.location.href = 'checkout.html';
-      } else {
-        alert('Failed to create booking. Please check the console for errors and try again.');
+        if (booking) {
+          console.log("Booking set successfully:", booking);
+          
+          // Verify booking is stored correctly
+          const storedBooking = BookingManager.getBooking();
+          console.log("Stored booking:", storedBooking);
+          
+          // Additional validation to ensure car data is complete
+          if (!storedBooking || !storedBooking.car || !storedBooking.car._id) {
+            throw new Error('Booking data is incomplete. Please try again.');
+          }
+          
+          // Redirect to checkout page
+          window.location.href = 'checkout.html';
+        } else {
+          throw new Error('Failed to create booking. Please try again.');
+        }
+      } catch (error) {
+        console.error('Booking error:', error);
+        BookingManager.showError(error.message || 'Failed to create booking. Please try again.');
+      } finally {
+        // Reset button state
+        submitBtn.disabled = false;
+        submitBtn.querySelector('#submit-text').textContent = originalText;
       }
     });
 });
