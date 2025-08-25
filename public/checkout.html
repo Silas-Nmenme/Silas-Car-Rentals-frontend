@@ -307,10 +307,19 @@ async function initiatePayment() {
       })
     });
 
+    // Check if response is OK before parsing JSON
+    if (!res.ok) {
+      throw new Error(`Payment initiation failed: ${res.status} ${res.statusText}`);
+    }
+
+    // Check if response has content before parsing
+    const contentType = res.headers.get('content-type');
+    if (!contentType || !contentType.includes('application/json')) {
+      throw new Error('Invalid response format from server');
+    }
+
     const data = await res.json();
     
-    if (!res.ok) throw new Error(data.message || "Payment initiation failed");
-
     const paymentLink = data.redirectUrl || data.paymentLink || data.paymentUrl;
     if (paymentLink) {
       window.location.href = paymentLink;
@@ -322,7 +331,8 @@ async function initiatePayment() {
       }
     }
   } catch (err) {
-    showToast(err.message || "Payment error");
+    console.error("Payment error:", err);
+    showToast(err.message || "Payment error. Please try again.");
     if (payBtn) {
       payBtn.disabled = false;
       payBtn.textContent = "Proceed to Payment";

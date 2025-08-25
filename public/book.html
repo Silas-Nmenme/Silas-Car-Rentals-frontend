@@ -414,97 +414,104 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   });
 
-  // Form submission
-  document.getElementById('bookingForm').addEventListener('submit', function(e) {
-    e.preventDefault();
+    // Form submission
+    document.getElementById('bookingForm').addEventListener('submit', function(e) {
+      e.preventDefault();
 
-    // Clear previous errors
-    document.querySelectorAll('.error-message').forEach(el => el.textContent = '');
+      // Clear previous errors
+      document.querySelectorAll('.error-message').forEach(el => el.textContent = '');
 
-    // Validate form
-    let isValid = true;
+      // Validate form
+      let isValid = true;
 
-    const email = document.getElementById('email').value.trim();
-    const phone = document.getElementById('phone').value.trim();
-    const startDate = document.getElementById('pickup-date').value;
-    const endDate = document.getElementById('return-date').value;
-    const carId = document.getElementById('carId').value;
+      const email = document.getElementById('email').value.trim();
+      const phone = document.getElementById('phone').value.trim();
+      const startDate = document.getElementById('pickup-date').value;
+      const endDate = document.getElementById('return-date').value;
+      const carId = document.getElementById('carId').value;
 
-    if (!carId) {
-      alert('Please select a car from your cart or choose one from the available options.');
-      isValid = false;
-    }
-    if (!email) {
-      document.getElementById('email-error').textContent = 'Email is required';
-      isValid = false;
-    }
-    if (!phone) {
-      document.getElementById('phone-error').textContent = 'Phone number is required';
-      isValid = false;
-    }
-    if (!startDate) {
-      document.getElementById('pickup-date-error').textContent = 'Pickup date is required';
-      isValid = false;
-    }
-    if (!endDate) {
-      document.getElementById('return-date-error').textContent = 'Return date is required';
-      isValid = false;
-    }
-    if (startDate && endDate && new Date(endDate) <= new Date(startDate)) {
-      document.getElementById('return-date-error').textContent = 'Return date must be after pickup date';
-      isValid = false;
-    }
-    if (!isValid) return;
+      if (!carId) {
+        alert('Please select a car from your cart or choose one from the available options.');
+        isValid = false;
+      }
+      if (!email) {
+        document.getElementById('email-error').textContent = 'Email is required';
+        isValid = false;
+      }
+      if (!phone) {
+        document.getElementById('phone-error').textContent = 'Phone number is required';
+        isValid = false;
+      }
+      if (!startDate) {
+        document.getElementById('pickup-date-error').textContent = 'Pickup date is required';
+        isValid = false;
+      }
+      if (!endDate) {
+        document.getElementById('return-date-error').textContent = 'Return date is required';
+        isValid = false;
+      }
+      if (startDate && endDate && new Date(endDate) <= new Date(startDate)) {
+        document.getElementById('return-date-error').textContent = 'Return date must be after pickup date';
+        isValid = false;
+      }
+      if (!isValid) return;
 
-    // Get car details from cart or selected option
-    let carDetails;
-    const cartItems = JSON.parse(localStorage.getItem('cart') || '[]');
-    const cartCar = cartItems.find(c => c._id === carId);
-    
-    if (cartCar) {
-      carDetails = cartCar;
-      console.log("Car from cart:", carDetails);
-    } else {
-      // Get from selected dropdown
-      const carSelect = document.getElementById('car-select');
-      const selectedOption = carSelect.options[carSelect.selectedIndex];
-      carDetails = {
-        _id: carId,
-        make: selectedOption.dataset.make,
-        model: selectedOption.dataset.model,
-        year: selectedOption.dataset.year,
-        price: parseInt(selectedOption.dataset.price),
-        image: selectedOption.dataset.image
-      };
-      console.log("Car from dropdown:", carDetails);
-    }
-
-    console.log("Car ID:", carId); // Debugging log
-    const bookingData = {
-      userId: user.id,
-      car: carDetails,
-      pickupDate: startDate,
-      returnDate: endDate,
-      phoneNumber: phone,
-      email: email,
-      source: 'book'
-    };
-
-    console.log("Booking Data:", bookingData); // Debugging log
-    const booking = BookingManager.setBooking(bookingData);
-    
-    if (booking) {
-      console.log("Booking set successfully:", booking);
-      // Verify booking is stored correctly
-      const storedBooking = BookingManager.getBooking();
-      console.log("Stored booking:", storedBooking);
+      // Get car details from cart or selected option
+      let carDetails;
+      const cartItems = JSON.parse(localStorage.getItem('cart') || '[]');
+      const cartCar = cartItems.find(c => c._id === carId);
       
-      // Redirect to checkout page
-      window.location.href = 'checkout.html';
-    } else {
-      alert('Failed to create booking. Please check the console for errors and try again.');
-    }
-  });
+      if (cartCar) {
+        carDetails = cartCar;
+        console.log("Car from cart:", carDetails);
+      } else {
+        // Get from selected dropdown
+        const carSelect = document.getElementById('car-select');
+        const selectedOption = carSelect.options[carSelect.selectedIndex];
+        carDetails = {
+          _id: carId,
+          make: selectedOption.dataset.make,
+          model: selectedOption.dataset.model,
+          year: selectedOption.dataset.year,
+          price: parseInt(selectedOption.dataset.price),
+          image: selectedOption.dataset.image
+        };
+        console.log("Car from dropdown:", carDetails);
+      }
+
+      console.log("Car ID:", carId); // Debugging log
+      const bookingData = {
+        userId: user.id,
+        car: carDetails,
+        pickupDate: startDate,
+        returnDate: endDate,
+        phoneNumber: phone,
+        email: email,
+        source: 'book'
+      };
+
+      console.log("Booking Data:", bookingData); // Debugging log
+      const booking = BookingManager.setBooking(bookingData);
+      
+      if (booking) {
+        console.log("Booking set successfully:", booking);
+        // Verify booking is stored correctly
+        const storedBooking = BookingManager.getBooking();
+        console.log("Stored booking:", storedBooking);
+        
+        // Additional validation to ensure car data is complete
+        if (!storedBooking || !storedBooking.car || !storedBooking.car._id) {
+          alert('Booking data is incomplete. Please try again.');
+          BookingManager.clearBooking();
+          return;
+        }
+        
+        // Redirect to checkout page
+        window.location.href = 'checkout.html';
+      } else {
+        alert('Failed to create booking. Please check the console for errors and try again.');
+      }
+    });
 });
 
 // Enhanced function: load cars from cart and API
