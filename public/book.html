@@ -418,6 +418,7 @@ document.addEventListener('DOMContentLoaded', function() {
     
     if (cartCar) {
       carDetails = cartCar;
+      console.log("Car from cart:", carDetails);
     } else {
       // Get from selected dropdown
       const carSelect = document.getElementById('car-select');
@@ -430,6 +431,7 @@ document.addEventListener('DOMContentLoaded', function() {
         price: parseInt(selectedOption.dataset.price),
         image: selectedOption.dataset.image
       };
+      console.log("Car from dropdown:", carDetails);
     }
 
     console.log("Car ID:", carId); // Debugging log
@@ -443,13 +445,20 @@ document.addEventListener('DOMContentLoaded', function() {
       source: 'book'
     };
 
-    console.log("Car ID:", carId); // Debugging log
-    console.log("Pickup Date:", startDate); // Debugging log
-    console.log("Return Date:", endDate); // Debugging log
-    BookingManager.setBooking(bookingData);
-
-    // Redirect to checkout page
-    window.location.href = 'checkout.html';
+    console.log("Booking Data:", bookingData); // Debugging log
+    const booking = BookingManager.setBooking(bookingData);
+    
+    if (booking) {
+      console.log("Booking set successfully:", booking);
+      // Verify booking is stored correctly
+      const storedBooking = BookingManager.getBooking();
+      console.log("Stored booking:", storedBooking);
+      
+      // Redirect to checkout page
+      window.location.href = 'checkout.html';
+    } else {
+      alert('Failed to create booking. Please check the console for errors and try again.');
+    }
   });
 });
 

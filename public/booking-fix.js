@@ -10,6 +10,17 @@
         // Create or update booking data
         setBooking: function(bookingData) {
             try {
+                // Validate required fields
+                if (!bookingData.car || !bookingData.car._id) {
+                    console.error('Car data is required for booking');
+                    return null;
+                }
+                
+                if (!bookingData.pickupDate || !bookingData.returnDate) {
+                    console.error('Pickup and return dates are required for booking');
+                    return null;
+                }
+                
                 const booking = {
                     userId: bookingData.userId || JSON.parse(localStorage.getItem('user'))?.id,
                     car: this.enhanceCarData(bookingData.car),
@@ -17,8 +28,8 @@
                     returnDate: bookingData.returnDate,
                     email: bookingData.email,
                     phoneNumber: bookingData.phoneNumber || bookingData.phone,
-                    days: bookingData.days || this.calculateDays(bookingData.pickupDate, bookingData.returnDate),
-                    totalAmount: bookingData.totalAmount || this.calculateTotal(bookingData.car?.price, bookingData.pickupDate, bookingData.returnDate),
+                    days: this.calculateDays(bookingData.pickupDate, bookingData.returnDate),
+                    totalAmount: this.calculateTotal(bookingData.car?.price, bookingData.pickupDate, bookingData.returnDate),
                     createdAt: new Date().toISOString(),
                     source: bookingData.source || 'book'
                 };

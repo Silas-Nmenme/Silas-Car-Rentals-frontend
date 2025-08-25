@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Booking Implementation</title>
+    <script src="public/booking-fix.js"></script>
+</head>
+<body>
+    <h1>Test Booking Implementation</h1>
+    <p>Open the browser console to see the test results.</p>
+    
+    <script>
+        // Test the booking functionality
+        console.log("Testing BookingManager implementation...");
+        
+        // Test data
+        const testCar = {
+            _id: "test-car-123",
+            make: "Toyota",
+            model: "Camry",
+            year: 2023,
+            price: 5000,
+            image: "https://example.com/car.jpg"
+        };
+        
+        const testBookingData = {
+            userId: "test-user-123",
+            car: testCar,
+            pickupDate: "2024-01-15",
+            returnDate: "2024-01-17",
+            email: "test@example.com",
+            phoneNumber: "+1234567890",
+            source: "test"
+        };
+        
+        // Test setBooking
+        console.log("Testing setBooking...");
+        const booking = BookingManager.setBooking(testBookingData);
+        console.log("Booking created:", booking);
+        
+        // Test getBooking
+        console.log("Testing getBooking...");
+        const retrievedBooking = BookingManager.getBooking();
+        console.log("Retrieved booking:", retrievedBooking);
+        
+        // Test validation
+        console.log("Testing validateBooking...");
+        const validation = BookingManager.validateBooking(retrievedBooking);
+        console.log("Validation result:", validation);
+        
+        // Test calculations
+        console.log("Testing calculateDays...");
+        const days = BookingManager.calculateDays("2024-01-15", "2024-01-17");
+        console.log("Days calculated:", days);
+        
+        console.log("Testing calculateTotal...");
+        const total = BookingManager.calculateTotal(5000, "2024-01-15", "2024-01-17");
+        console.log("Total calculated:", total);
+        
+        console.log("Test completed!");
+        
+        // Check if booking data is properly stored
+        const storedData = localStorage.getItem('currentBooking');
+        console.log("Raw localStorage data:", storedData);
+        
+        if (booking && retrievedBooking) {
+            console.log("✅ Booking implementation is working correctly!");
+            console.log("You can now proceed to test the book.html -> checkout.html flow.");
+        } else {
+            console.log("❌ There might be an issue with the booking implementation.");
+        }
+    </script>
+</body>
+</html>
