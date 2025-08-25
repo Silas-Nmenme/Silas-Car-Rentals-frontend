@@ -4,7 +4,7 @@
 You're experiencing "Error 400: redirect_uri_mismatch" when trying to use Google Sign-In. The issue is that the redirect URI configured in Google Cloud Console doesn't match what's being used by your application.
 
 ## Root Cause
-The backend server (`https://techyjaunt-auth-go43.onrender.com`) is generating OAuth URLs with redirect URIs that don't match your frontend domain. The current setup is trying to redirect to `http://localhost:4500/api/auth/google/callback` instead of your actual frontend callback URL.
+The backend server (`https://techyjaunt-auth-go43.onrender.com`) is generating OAuth URLs with redirect URIs that don't match your frontend domain. The current setup is trying to redirect to `http://localhost:4500/api/users/google/callback` instead of your actual frontend callback URL.
 
 ## Solution Steps
 
@@ -44,7 +44,7 @@ console.log('Current redirect URI:', `${window.location.origin}/google-callback.
 
 Your backend needs to be updated to use the correct redirect URI. Contact your backend developer or check if the backend supports dynamic redirect URIs.
 
-**Expected backend endpoint**: `POST /api/auth/google/callback`
+**Expected backend endpoint**: `POST /api/users/google/callback`
 **Expected payload**: `{ code: "google_auth_code", redirectUri: "https://yourdomain.com/google-callback.html" }`
 
 ### 5. Debug Commands

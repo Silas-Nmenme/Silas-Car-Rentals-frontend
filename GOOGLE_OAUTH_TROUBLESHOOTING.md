@@ -122,7 +122,7 @@ else popup.close();
 ### Backend Configuration
 
 Ensure your backend is configured to handle the callback:
-- **Endpoint**: `POST /api/auth/google/callback`
+- **Endpoint**: `POST /api/users/google/callback`
 - **Expected payload**: `{ code: "google_auth_code" }`
 - **Response**: `{ token: "jwt_token", user: { ...user_data } }`
 
