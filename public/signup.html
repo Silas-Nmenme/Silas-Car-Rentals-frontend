@@ -649,13 +649,10 @@
 
   // Google OAuth functionality - Updated implementation
   function handleGoogleSignUp() {
-    if (window.googleAuth) {
-      window.googleAuth.initiateGoogleAuth('signup');
-    } else {
-      // Fallback to basic redirect
-      const googleAuthUrl = `${BASE_URL}/api/users/google?mode=signup`;
-      window.location.href = googleAuthUrl;
-    }
+    // Redirect to backend Google OAuth endpoint
+    // The backend should handle the callback and redirect back to your frontend
+    const redirectUri = encodeURIComponent(window.location.origin + '/google-callback.html');
+    window.location.href = `${BASE_URL}/api/users/google?redirect_uri=${redirectUri}`;
   }
   
   function storeUserData(data) {
