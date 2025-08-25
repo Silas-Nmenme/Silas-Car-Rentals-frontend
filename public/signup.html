@@ -651,7 +651,7 @@
   function handleGoogleSignUp() {
     // Redirect to backend Google OAuth endpoint
     // The backend should handle the callback and redirect back to your frontend
-    const redirectUri = encodeURIComponent(window.location.origin + '/google-callback.html');
+    const redirectUri = encodeURIComponent('https://silascarrentals.netlify.app/google-callback.html');
     window.location.href = `${BASE_URL}/api/users/google?redirect_uri=${redirectUri}`;
   }
   
