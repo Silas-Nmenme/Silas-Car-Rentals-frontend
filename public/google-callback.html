@@ -181,7 +181,7 @@
         
         // Exchange code for tokens via backend
         const baseUrl = 'https://techyjaunt-auth-go43.onrender.com';
-        const response = await fetch(`${baseUrl}/api/users/google/callback`, {
+        const response = await fetch(`${baseUrl}/api/auth/google/callback`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',

@@ -53,7 +53,7 @@ class GoogleAuthHandler {
     const left = (window.screenX || window.screenLeft || 0) + (window.innerWidth - width) / 2;
     const top = (window.screenY || window.screenTop || 0) + (window.innerHeight - height) / 2;
 
-    const authUrl = `${this.baseUrl}/api/users/google?mode=${mode}`;
+    const authUrl = `${this.baseUrl}/api/auth/google?mode=${mode}`;
     
     const popup = window.open(
       authUrl,
@@ -80,7 +80,7 @@ class GoogleAuthHandler {
   }
 
   initiateRedirectFlow(mode) {
-    const authUrl = `${this.baseUrl}/api/users/google?mode=${mode}`;
+    const authUrl = `${this.baseUrl}/api/auth/google?mode=${mode}`;
     window.location.href = authUrl;
   }
 
@@ -108,7 +108,7 @@ class GoogleAuthHandler {
       console.log('Google auth success:', authData);
       
       // Exchange code for token
-      const response = await fetch(`${this.baseUrl}/api/users/google/callback`, {
+      const response = await fetch(`${this.baseUrl}/api/auth/google/callback`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

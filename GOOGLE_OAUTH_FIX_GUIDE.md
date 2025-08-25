@@ -44,7 +44,7 @@ console.log('Current redirect URI:', `${window.location.origin}/google-callback.
 
 Your backend needs to be updated to use the correct redirect URI. Contact your backend developer or check if the backend supports dynamic redirect URIs.
 
-**Expected backend endpoint**: `POST /api/users/google/callback`
+**Expected backend endpoint**: `POST /api/auth/google/callback`
 **Expected payload**: `{ code: "google_auth_code", redirectUri: "https://yourdomain.com/google-callback.html" }`
 
 ### 5. Debug Commands
