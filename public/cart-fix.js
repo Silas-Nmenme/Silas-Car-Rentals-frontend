@@ -164,6 +164,22 @@
     // Initialize cart display on page load
     document.addEventListener('DOMContentLoaded', function() {
         CartManager.updateDisplay();
+        
+        // Example: Assume each "Book Now" button has a data-car-id attribute
+        document.querySelectorAll('.book-now-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                // Check login status (adjust key as per your app)
+                const isLoggedIn = !!localStorage.getItem('userToken'); // or 'user', etc.
+                const carId = this.getAttribute('data-car-id');
+                if (isLoggedIn) {
+                    // Redirect to book.html with car id as query param
+                    window.location.href = `book.html?carId=${encodeURIComponent(carId)}`;
+                } else {
+                    // Show login message (replace with your modal/message logic)
+                    alert('Please login to continue booking.');
+                }
+            });
+        });
     });
     
     // Override existing functions for compatibility

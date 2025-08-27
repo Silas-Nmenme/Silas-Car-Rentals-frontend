@@ -486,6 +486,21 @@ document.addEventListener("DOMContentLoaded", function() {
     `;
   }
 });
-</script>
+
+window.addEventListener('DOMContentLoaded', function() {
+    const summary = JSON.parse(sessionStorage.getItem('bookingSummary') || '{}');
+    const summaryDiv = document.getElementById('booking-summary');
+    if (summaryDiv && Object.keys(summary).length > 0) {
+        summaryDiv.innerHTML = `
+            <h3>Booking Summary</h3>
+            <ul>
+                ${Object.entries(summary).map(([k, v]) => `<li><strong>${k}:</strong> ${v}</li>`).join('')}
+            </ul>
+        `;
+    }
+});
+  </script>
+<!-- Add this where you want the summary to appear -->
+<div id="booking-summary"></div>
 </body>
 </html>

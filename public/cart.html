@@ -112,6 +112,18 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
     
+    // Handle Book Now button click
+    function handleBookNow(carId) {
+        const token = localStorage.getItem("authToken");
+        if (!token) {
+            showToast("Please login first", 3000, "#f44336");
+            setTimeout(() => (window.location.href = "login.html"), 1200);
+            return;
+        }
+        // Redirect to book.html with the selected car ID
+        window.location.href = `book.html?carId=${carId}`;
+    }
+
     // Override renderCart for cart page
     window.renderCart = function() {
         const cart = CartManager.getItems();
@@ -141,7 +153,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         ${car.description}
                     </p>
                     <div style="display: flex; gap: 8px; flex-wrap: wrap; margin-top: 1rem;">
-                        <button class="btn" onclick="window.location.href='book.html?carId=${car._id}'">
+<button class="btn" onclick="handleBookNow('${car._id}')">
                             Book Now
                         </button>
                         <button class="btn btn-outline" onclick="CartManager.remove('${car._id}')">

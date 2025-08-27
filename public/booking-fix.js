@@ -259,6 +259,31 @@
                 BookingManager.clearBooking();
             }
         }
+        
+        // Get carId from URL
+        const params = new URLSearchParams(window.location.search);
+        const carId = params.get('carId');
+        if (carId) {
+            // Pre-fill form or fetch car details as needed
+            document.getElementById('car-id-input').value = carId; // adjust input ID
+        }
+        
+        document.getElementById('booking-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+    
+            // Gather form data
+            const formData = new FormData(this);
+            const summary = {};
+            formData.forEach((value, key) => {
+                summary[key] = value;
+            });
+    
+            // Save summary to sessionStorage (or localStorage)
+            sessionStorage.setItem('bookingSummary', JSON.stringify(summary));
+    
+            // Redirect to checkout.html
+            window.location.href = 'checkout.html';
+        });
     });
     
     console.log('Booking system initialized successfully');
