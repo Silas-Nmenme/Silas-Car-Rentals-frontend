@@ -154,25 +154,54 @@
 <main class="section">
   <div class="checkout-container">
     <h1>Booking Summary</h1>
-    
     <div id="checkout-content">
       <!-- Content will be populated by JavaScript -->
     </div>
-    
     <div class="toast" id="toast"></div>
   </div>
 </main>
 
-  <script src="booking-fix-enhanced.js"></script>
-  <script src="payment-fix-enhanced.js"></script>
-  <script>
+<script src="booking-fix-enhanced.js"></script>
+<script src="payment-fix-enhanced.js"></script>
+<script>
 const API_BASE = "https://techyjaunt-auth-go43.onrender.com";
-const placeholderImage = "https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80";
+const placeholderImage = "https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?auto=format&fit=crop&w=1000&q=80";
+
+// --- LOGIN CHECK: Only allow if user is logged in ---
+document.addEventListener("DOMContentLoaded", function() {
+  const userData = localStorage.getItem('user');
+  let user = null;
+  try {
+    user = userData ? JSON.parse(userData) : null;
+  } catch (e) {
+    user = null;
+  }
+  if (!user || !user.id) {
+    alert('Please login first to view your booking summary.');
+    window.location.href = 'login.html';
+    return;
+  }
+
+  // --- BOOKING SUMMARY ---
+  const booking = BookingManager.getBooking ? BookingManager.getBooking() : null;
+  if (booking) {
+    renderBooking(booking);
+  } else {
+    document.getElementById("checkout-content").innerHTML = `
+      <div class="error-message">
+        <h3>No booking found</h3>
+        <p>Please go back and book a car first.</p>
+        <button onclick="window.location.href='book.html'" class="btn btn-primary">
+          Book a Car
+        </button>
+      </div>
+    `;
+  }
+});
 
 function showToast(msg, ms=3000, bgColor="#03dac5") {
   const toast = document.getElementById("toast");
   if (!toast) return;
-  
   toast.textContent = msg;
   toast.style.background = bgColor;
   toast.classList.add("show");
@@ -190,14 +219,11 @@ function formatDate(dateString) {
 }
 
 function renderBooking(booking) {
-  if (!booking) return;
-  
-  const days = booking.days || BookingManager.calculateDays(booking.pickupDate, booking.returnDate);
-  const totalAmount = booking.totalAmount || 0;
-  
+  const days = booking.days || (BookingManager.calculateDays ? BookingManager.calculateDays(booking.pickupDate, booking.returnDate) : 1);
+  const totalAmount = booking.totalAmount || ((booking.car?.price || 0) * days);
+
   let carContent = '';
   if (booking.isMultiCar && booking.cars && booking.cars.length > 0) {
-    // Multi-car booking
     carContent = booking.cars.map(car => `
       <div class="car-details" style="margin-bottom: 1.5rem;">
         <img src="${car.image || placeholderImage}" alt="${car.make} ${car.model}" loading="lazy" class="car-image">
@@ -213,7 +239,6 @@ function renderBooking(booking) {
       </div>
     `).join('');
   } else if (booking.car) {
-    // Single car booking
     carContent = `
       <div class="car-details">
         <img src="${booking.car.image || placeholderImage}" alt="${booking.car.make} ${booking.car.model}" loading="lazy" class="car-image">
@@ -226,17 +251,15 @@ function renderBooking(booking) {
       </div>
     `;
   }
-  
+
   const content = `
     <div class="summary-card">
       <div class="summary-header">
         <h2>Confirm Your Booking</h2>
         <p>Please review your booking details before proceeding to payment</p>
       </div>
-      
       <div class="summary-body">
         ${carContent}
-        
         <div class="booking-details">
           <div class="detail-item">
             <label>Pickup Date</label>
@@ -255,7 +278,6 @@ function renderBooking(booking) {
             <p>${booking.isMultiCar ? 'Multiple Cars' : 'Single Car'}</p>
           </div>
         </div>
-        
         <div class="contact-info">
           <h4>Contact Information</h4>
           <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 1rem;">
@@ -269,10 +291,9 @@ function renderBooking(booking) {
             </div>
           </div>
         </div>
-        
         <div class="price-breakdown">
           <h4>Price Breakdown</h4>
-          ${booking.isMultiCar && booking.cars ? booking.cars.map((car, index) => `
+          ${booking.isMultiCar && booking.cars ? booking.cars.map(car => `
             <div class="price-row">
               <span>${car.make} ${car.model} (${days} day${days > 1 ? 's' : ''}):</span>
               <span>₦${(car.price * days).toLocaleString()}</span>
@@ -296,7 +317,6 @@ function renderBooking(booking) {
             <span>₦${totalAmount.toLocaleString()}</span>
           </div>
         </div>
-        
         <div class="btn-group">
           <button onclick="window.history.back()" class="btn btn-secondary">← Back to Booking</button>
           <button id="pay-btn" class="btn btn-primary">Proceed to Payment</button>
@@ -305,13 +325,15 @@ function renderBooking(booking) {
       </div>
     </div>
   `;
-  
   document.getElementById("checkout-content").innerHTML = content;
 }
 
+// Payment and booking submission logic
 async function initiatePayment() {
-  const token = localStorage.getItem("token");
-  if (!token) {
+  const userData = localStorage.getItem('user');
+  let user = null;
+  try { user = userData ? JSON.parse(userData) : null; } catch { user = null; }
+  if (!user || !user.id) {
     showToast("Please login first", 3000, "#f44336");
     setTimeout(() => window.location.href = "login.html", 1500);
     return;
