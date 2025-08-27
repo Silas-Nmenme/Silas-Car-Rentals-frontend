@@ -453,78 +453,42 @@ async function fetchCars() {
     applyFilters();
   }
   
-    // Ensure buttons work with offline data
-    document.querySelectorAll('.btn-outline').forEach(button => {
-        button.addEventListener('click', (e) => {
-            const action = e.target.dataset.action;
-            const carId = e.target.dataset.id;
-            const car = allCars.find(c => c._id === carId);
-            if (car) {
-                console.log("Button clicked:", action, "Car ID:", carId); // Debug log
-                console.log("Attempting to add to cart:", car); // Debug log
-                switch (action) {
-                    case 'add-cart':
-                        addToCart(car);
-                        break;
-                    case 'add-wishlist':
-                        addToWishlist(car);
-                        break;
-                    case 'add-saved':
-                        addToSaved(car);
-                        break;
-                }
-            }
-        });
-    });
 }
 
 updateGlobalCounts();
 fetchCars();
 
-// Add event listeners for car action buttons
-document.addEventListener('click', async (e) => {
+// Add event listeners for car action buttons using event delegation
+document.addEventListener('click', (e) => {
   const action = e.target.dataset.action;
   const carId = e.target.dataset.id;
   
-  console.log("Button clicked:", action, "Car ID:", carId); // Debug log
-
   if (!action || !carId) return;
   
-  try {
-    let car;
-    
-    // Fetch car details if we have the ID
-    if (carId === BENZ_ID) {
-      car = defaultCar;
-    } else {
-      const res = await fetch(`${API_BASE}/api/cars/${carId}`);
-      car = await res.json();
-      if (!res.ok) {
-        showToast("Error fetching car details", 3000, "#f44336");
-        return;
-      }
-    }
-    
-    console.log("Car details fetched:", car); // Debug log
-    console.log("Action performed:", action); // Debug log
-    console.log("Action performed:", action); // Debug log
-
-    switch (action) {
-      case 'add-cart':
-        addToCart(car);
-        break;
-        
-      case 'add-wishlist':
-        addToWishlist(car);
-        break;
-        
-      case 'add-saved':
-        addToSaved(car);
-        break;
-    }
-  } catch (err) {
-    console.error(err);
-    showToast("Network error", 3000, "#f44336");
+  // Find the car in our local data (allCars or filteredCars)
+  const car = allCars.find(c => c._id === carId) || filteredCars.find(c => c._id === carId);
+  
+  if (!car) {
+    console.error("Car not found:", carId);
+    showToast("Car not found", 3000, "#f44336");
+    return;
+  }
+  
+  console.log("Button clicked:", action, "Car ID:", carId);
+  console.log("Car details:", car);
+  
+  switch (action) {
+    case 'add-cart':
+      addToCart(car);
+      break;
+      
+    case 'add-wishlist':
+      addToWishlist(car);
+      break;
+      
+    case 'add-saved':
+      addToSaved(car);
+      break;
   }
 });
 
