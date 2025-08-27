@@ -15,49 +15,24 @@
       min-height: 100vh;
       margin: 0;
     }
-    
-    .processing-container {
-      text-align: center;
-      padding: 2rem;
-    }
-    
+    .processing-container { text-align: center; padding: 2rem; }
     .spinner {
       border: 4px solid rgba(3, 218, 197, 0.3);
       border-top: 4px solid #03dac5;
       border-radius: 50%;
-      width: 50px;
-      height: 50px;
+      width: 50px; height: 50px;
       animation: spin 1s linear infinite;
       margin: 0 auto 1rem;
     }
-    
-    @keyframes spin {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
-    }
-    
-    .error-message {
-      color: #ff6b6b;
-      margin-top: 1rem;
-      font-size: 0.9rem;
-    }
-    
+    @keyframes spin { 0%{transform:rotate(0)} 100%{transform:rotate(360deg)} }
+    .error-message { color: #ff6b6b; margin-top: 1rem; font-size: 0.9rem; }
     .retry-btn {
-      background: #03dac5;
-      color: #121212;
-      border: none;
-      padding: 0.75rem 1.5rem;
-      border-radius: 6px;
-      cursor: pointer;
-      font-weight: 600;
-      margin-top: 1rem;
-      transition: all 0.3s;
+      background: #03dac5; color: #121212;
+      border: none; padding: 0.75rem 1.5rem;
+      border-radius: 6px; cursor: pointer;
+      font-weight: 600; margin-top: 1rem; transition: all 0.3s;
     }
-    
-    .retry-btn:hover {
-      background: #00b2a9;
-      transform: translateY(-1px);
-    }
+    .retry-btn:hover { background: #00b2a9; transform: translateY(-1px); }
   </style>
 </head>
 <body>
@@ -72,183 +47,85 @@
   </div>
 
   <script>
-    // Handle the Google OAuth callback with COOP-safe implementation
     window.addEventListener('DOMContentLoaded', () => {
       const urlParams = new URLSearchParams(window.location.search);
       const code = urlParams.get('code');
       const state = urlParams.get('state');
       const error = urlParams.get('error');
       const errorDescription = urlParams.get('error_description');
-      
-      console.log('Google Callback Parameters:', { code, state, error, errorDescription });
-      
-      // COOP-safe message handling
-      const sendMessage = (message) => {
-        if (window.opener) {
-          try {
-            // Try to send message to opener
-            window.opener.postMessage(message, window.location.origin);
-            console.log('Message sent to opener:', message);
-          } catch (e) {
-            console.error('Failed to send message to opener:', e);
-            // Fallback: try with '*' if specific origin fails
-            try {
-              window.opener.postMessage(message, '*');
-              console.log('Message sent to opener with wildcard origin:', message);
-            } catch (e2) {
-              console.error('Failed to send message with wildcard:', e2);
-            }
-          }
-        } else {
-          console.log('No opener found, handling redirect flow');
-          handleRedirectFlow(message);
-        }
-      };
-      
+
       if (error) {
-        const errorMessage = errorDescription || decodeURIComponent(error);
-        console.error('Google OAuth Error:', errorMessage);
-        
-        sendMessage({
-          type: 'GOOGLE_AUTH_ERROR',
-          error: errorMessage
-        });
-        
-        // Show error if no opener
-        if (!window.opener) {
-          showError(errorMessage);
-        }
-      } else if (code) {
-        console.log('Google OAuth Success, code received');
-        
-        sendMessage({
-          type: 'GOOGLE_AUTH_SUCCESS',
-          code: code,
-          state: state
-        });
-        
-        // If no opener, handle redirect flow
-        if (!window.opener) {
-          handleRedirectSuccess(code, state);
-        }
-      } else {
-        const errorMsg = 'No authorization code received from Google';
-        console.error(errorMsg);
-        
-        sendMessage({
-          type: 'GOOGLE_AUTH_ERROR',
-          error: errorMsg
-        });
-        
-        if (!window.opener) {
-          showError(errorMsg);
-        }
+        showError(errorDescription || decodeURIComponent(error));
+        return;
       }
-      
-      // Close popup if this is a popup window
-      if (window.opener) {
-        console.log('Closing popup window...');
-        setTimeout(() => {
-          try {
-            window.close();
-          } catch (e) {
-            console.error('Failed to close window:', e);
-            // Fallback: redirect to close page
-            window.location.href = 'about:blank';
-          }
-        }, 1000);
+
+      if (code) {
+        handleRedirectSuccess(code, state);
+      } else {
+        showError('No authorization code received from Google');
       }
     });
-    
-    function handleRedirectFlow(message) {
-      if (message.type === 'GOOGLE_AUTH_SUCCESS') {
-        handleRedirectSuccess(message.code, message.state);
-      } else {
-        handleRedirectError(message.error);
-      }
-    }
-    
+
     async function handleRedirectSuccess(code, state) {
       try {
-        console.log('Handling redirect success with code:', code);
-        
-        // Show processing state
         document.querySelector('.processing-container').innerHTML = `
           <div class="spinner"></div>
           <h2>Completing Google Sign-In...</h2>
           <p>Please wait while we authenticate your account.</p>
         `;
-        
-        // Exchange code for tokens via backend
-        const baseUrl = 'https://techyjaunt-auth-go43.onrender.com';
+
+        const baseUrl = "https://techyjaunt-auth-go43.onrender.com";
         const response = await fetch(`${baseUrl}/api/users/google/callback`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          credentials: 'include',
-          body: JSON.stringify({ code })
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          credentials: "include",
+          body: JSON.stringify({ code, state })
         });
 
         const data = await response.json();
-        console.log('Backend response:', data);
+        if (!response.ok) throw new Error(data.message || `Authentication failed: ${response.status}`);
+        if (!data.token || !data.user) throw new Error("Invalid response from server");
 
-        if (!response.ok) {
-          throw new Error(data.message || `Authentication failed: ${response.status}`);
-        }
-
-        if (!data.token || !data.user) {
-          throw new Error('Invalid response from server');
-        }
-
-        // Store user data
         storeUserData(data);
-        
-        // Redirect to dashboard
-        window.location.href = 'dashboard.html';
-        
+
+        // ✅ Redirect new users to verify email
+        if (data.user.isNew) {
+          const tokenParam = data.user.verificationToken ? `?token=${data.user.verificationToken}` : "";
+          window.location.href = `verify-email.html${tokenParam}`;
+        } else {
+          window.location.href = "dashboard.html";
+        }
       } catch (error) {
-        console.error('Redirect flow error:', error);
-        showError(error.message || 'Authentication failed. Please try again.');
+        showError(error.message || "Authentication failed. Please try again.");
       }
     }
-    
-    function handleRedirectError(error) {
-      console.error('Redirect flow error:', error);
-      showError(error);
-    }
-    
+
     function storeUserData(data) {
       try {
-        // Store token with expiration
-        const tokenData = {
-          token: data.token,
-          expiresAt: Date.now() + (24 * 60 * 60 * 1000) // 24 hours
+        const userObj = {
+          id: data.user.id || data.user._id,
+          email: data.user.email,
+          name: data.user.name || "",
+          role: data.user.role || "user",
+          token: data.token
         };
-        localStorage.setItem('authToken', JSON.stringify(tokenData));
-        
-        // Store user data
-        localStorage.setItem('user', JSON.stringify(data.user));
-        
-        console.log('User data stored successfully');
-      } catch (error) {
-        console.error('Error storing user data:', error);
-        throw new Error('Failed to store authentication data');
+        localStorage.setItem("user", JSON.stringify(userObj));
+        localStorage.setItem("token", data.token); // backward compat
+        console.log("User stored:", userObj);
+      } catch (err) {
+        console.error("Storage error:", err);
+        throw new Error("Failed to store authentication data");
       }
     }
-    
+
     function showError(message) {
       document.querySelector('.spinner').style.display = 'none';
       document.querySelector('h2').textContent = 'Authentication Failed';
       document.querySelector('p').textContent = 'We couldn\'t complete your Google sign-in.';
-      
-      const errorContainer = document.getElementById('error-container');
-      const errorMessage = document.getElementById('error-message');
-      
-      errorMessage.textContent = message;
-      errorContainer.style.display = 'block';
+      document.getElementById('error-message').textContent = message;
+      document.getElementById('error-container').style.display = 'block';
     }
-    
+
     function goBack() {
       window.location.href = 'signup.html';
     }

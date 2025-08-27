@@ -46,7 +46,7 @@
       <span>Estimated Total:</span>
       <span id="cart-total-price">₦0</span>
     </div>
-    <button class="btn" style="width: 100%; margin-top: 1rem;" onclick="handleCartCheckout()">
+    <button class="btn" style="width: 100%; margin-top: 1rem;" id="cart-checkout-btn">
       Proceed to Checkout
     </button>
   </div>
@@ -55,125 +55,109 @@
 <div class="toast" id="toast"></div>
 
 <script>
+// --- Auth helper (unifies everywhere) ---
+function getCurrentUser() {
+  // Preferred: a single 'user' JSON with { id, token, email, ... }
+  try {
+    const u = JSON.parse(localStorage.getItem('user') || 'null');
+    if (u && (u.token || u.id)) return u;
+  } catch {}
+  // Back-compat for older pages:
+  const legacyToken = localStorage.getItem('authToken') || localStorage.getItem('userToken') || localStorage.getItem('token');
+  if (legacyToken) return { token: legacyToken };
+  return null;
+}
+
+function showToast(msg, ms=2500) {
+  const t = document.getElementById('toast');
+  if (!t) return;
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'), ms);
+}
+
 // Enhanced cart page functionality
 document.addEventListener('DOMContentLoaded', function() {
-    // Update cart summary
-    function updateCartSummary() {
-        const cart = CartManager.getItems();
-        const summary = document.getElementById('cart-summary');
-        const totalItems = document.getElementById('cart-total-items');
-        const totalPrice = document.getElementById('cart-total-price');
-        
-        if (cart.length > 0) {
-            summary.style.display = 'block';
-            totalItems.textContent = cart.length;
-            
-            const total = cart.reduce((sum, car) => sum + (car.price || 0), 0);
-            totalPrice.textContent = `₦${total.toLocaleString()}`;
-        } else {
-            summary.style.display = 'none';
-        }
+  function updateCartSummary() {
+    const cart = CartManager.getItems();
+    const summary = document.getElementById('cart-summary');
+    const totalItems = document.getElementById('cart-total-items');
+    const totalPrice = document.getElementById('cart-total-price');
+    if (cart.length > 0) {
+      summary.style.display = 'block';
+      totalItems.textContent = cart.length;
+      const total = cart.reduce((sum, car) => sum + (car.price || 0), 0);
+      totalPrice.textContent = `₦${total.toLocaleString()}`;
+    } else {
+      summary.style.display = 'none';
     }
-    
-    // Handle checkout from cart
-    function handleCartCheckout() {
-        const cart = CartManager.getItems();
-        if (cart.length === 0) {
-            BookingManager.showError('Your cart is empty. Please add a car first.');
-            return;
-        }
-        
-        try {
-            // Store all cart items for booking page
-            const bookingData = {
-                cars: cart,
-                source: 'cart'
-            };
-            
-            const booking = BookingManager.setBooking(bookingData);
-            
-            if (booking) {
-                console.log("Multi-car booking created:", booking);
-                
-                // Verify booking is stored correctly
-                const storedBooking = BookingManager.getBooking();
-                if (!storedBooking || !storedBooking.cars || storedBooking.cars.length === 0) {
-                    throw new Error('Failed to create multi-car booking. Please try again.');
-                }
-                
-                // Redirect to book.html to collect booking details
-                window.location.href = 'book.html?fromCart=true';
-            } else {
-                throw new Error('Failed to create booking. Please try again.');
-            }
-        } catch (error) {
-            console.error('Cart checkout error:', error);
-            BookingManager.showError(error.message || 'Failed to proceed to checkout. Please try again.');
-        }
-    }
-    
-    // Handle Book Now button click
-    function handleBookNow(carId) {
-        const token = localStorage.getItem("authToken");
-        if (!token) {
-            showToast("Please login first", 3000, "#f44336");
-            setTimeout(() => (window.location.href = "login.html"), 1200);
-            return;
-        }
-        // Redirect to book.html with the selected car ID
-        window.location.href = `book.html?carId=${carId}`;
-    }
+  }
 
-    // Override renderCart for cart page
-    window.renderCart = function() {
-        const cart = CartManager.getItems();
-        const container = document.getElementById('cart-items');
-        
-        if (!cart.length) {
-            container.innerHTML = `
-                <div style="text-align: center; padding: 3rem;">
-                    <h3>Your cart is empty</h3>
-                    <p style="margin: 1rem 0; color: var(--muted);">Start adding cars to your cart to see them here.</p>
-                    <button class="btn" onclick="window.location.href='cars.html'">Browse Cars</button>
-                </div>
-            `;
-            return;
-        }
-        
-        container.innerHTML = cart.map((car, index) => `
-            <div class="car-card" data-car-id="${car._id}">
-                <img src="${car.image}" alt="${car.make} ${car.model}" loading="lazy" style="width:100%; height:200px; object-fit:cover; border-radius:8px;">
-                <div style="padding: 1rem;">
-                    <h3>${car.make} ${car.model}</h3>
-                    <p style="color: var(--muted);">${car.year} • ${car.color}</p>
-                    <p style="font-size: 1.2rem; font-weight: bold; color: var(--primary);">
-                        ₦${car.price.toLocaleString()}/day
-                    </p>
-                    <p style="font-size: 0.9rem; color: var(--muted); margin: 0.5rem 0;">
-                        ${car.description}
-                    </p>
-                    <div style="display: flex; gap: 8px; flex-wrap: wrap; margin-top: 1rem;">
-<button class="btn" onclick="handleBookNow('${car._id}')">
-                            Book Now
-                        </button>
-                        <button class="btn btn-outline" onclick="CartManager.remove('${car._id}')">
-                            Remove
-                        </button>
-                    </div>
-                </div>
-            </div>
-        `).join('');
+  // Proceed directly to checkout.html (not book.html)
+  async function handleCartCheckout() {
+    const user = getCurrentUser();
+    if (!user || !user.token) {
+      showToast('Please login to continue');
+      setTimeout(()=>window.location.href='login.html', 900);
+      return;
     }
-    
-    // Initialize cart display
-    updateCartSummary();
-    window.renderCart();
-    
-    // Update checkout button handler
-    const checkoutBtn = document.querySelector('#cart-summary button');
-    if (checkoutBtn) {
-        checkoutBtn.onclick = handleCartCheckout;
+    const cart = CartManager.getItems();
+    if (!cart.length) {
+      showToast('Your cart is empty.');
+      return;
     }
+    try {
+      const bookingData = {
+        isMultiCar: cart.length > 1,
+        cars: cart,
+        car: cart.length === 1 ? cart[0] : undefined,
+        source: 'cart',
+        // let checkout collect/confirm dates & contact if not already set
+      };
+      BookingManager.setBooking(bookingData);
+      // also drop a compatible fallback for pages that don't load BookingManager in time
+      sessionStorage.setItem('booking', JSON.stringify(bookingData));
+      window.location.href = 'checkout.html';
+    } catch (e) {
+      console.error(e);
+      showToast('Could not proceed to checkout.');
+    }
+  }
+
+  window.renderCart = function() {
+    const cart = CartManager.getItems();
+    const container = document.getElementById('cart-items');
+    if (!cart.length) {
+      container.innerHTML = `
+        <div style="text-align:center; padding:3rem;">
+          <h3>Your cart is empty</h3>
+          <p style="margin:1rem 0; color:var(--muted);">Start adding cars to your cart to see them here.</p>
+          <button class="btn" onclick="window.location.href='cars.html'">Browse Cars</button>
+        </div>
+      `;
+      return;
+    }
+    container.innerHTML = cart.map(car => `
+      <div class="car-card" data-car-id="${car._id}">
+        <img src="${car.image}" alt="${car.make} ${car.model}" loading="lazy" style="width:100%; height:200px; object-fit:cover; border-radius:8px;">
+        <div style="padding: 1rem;">
+          <h3>${car.make} ${car.model}</h3>
+          <p style="color: var(--muted);">${car.year} • ${car.color}</p>
+          <p style="font-size: 1.2rem; font-weight: bold; color: var(--primary);">₦${car.price.toLocaleString()}/day</p>
+          <p style="font-size:.9rem; color:var(--muted); margin:.5rem 0;">${car.description || ''}</p>
+          <div style="display:flex; gap:8px; flex-wrap:wrap; margin-top:1rem;">
+            <button class="btn" onclick="window.location.href='book.html?carId=${car._id}'">Book Now</button>
+            <button class="btn btn-outline" onclick="CartManager.remove('${car._id}')">Remove</button>
+          </div>
+        </div>
+      </div>
+    `).join('');
+  };
+
+  updateCartSummary();
+  window.renderCart();
+  const checkoutBtn = document.getElementById('cart-checkout-btn');
+  if (checkoutBtn) checkoutBtn.onclick = handleCartCheckout;
 });
 </script>
 </body>
