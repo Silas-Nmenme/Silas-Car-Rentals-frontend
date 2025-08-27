@@ -7,6 +7,7 @@
   <meta name="description" content="Browse our premium fleet of cars available for rent in Lagos, Nigeria." />
   <link rel="stylesheet" href="style.css" />
   <meta name="theme-color" content="#0b0e11">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
   <header class="navbar" role="banner">
@@ -51,18 +52,105 @@
   </header>
 
   <main>
-    <section class="hero section" style="background: linear-gradient(135deg, rgba(3, 218, 197, 0.1), rgba(1, 135, 134, 0.1));">
+    <!-- Enhanced Hero Section -->
+    <section class="hero section" style="background: linear-gradient(135deg, rgba(3, 218, 197, 0.15), rgba(1, 135, 134, 0.15)), url('https://images.unsplash.com/photo-1449965408869-eaa3f722e40d?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80') center/cover;">
+      <div class="hero-overlay"></div>
       <div class="container hero-inner">
         <span class="pill">Premium Fleet</span>
-        <h1 class="hero-title">Browse Our Available Cars</h1>
-        <p class="hero-subtitle">Discover our curated selection of luxury and standard vehicles ready for your next journey.</p>
+        <h1 class="hero-title">Discover Your Perfect Ride</h1>
+        <p class="hero-subtitle">Explore our curated collection of luxury and standard vehicles for your next journey in Lagos</p>
+        
+        <!-- Search Bar -->
+        <div class="search-container">
+          <div class="search-input">
+            <i class="fas fa-search"></i>
+            <input type="text" placeholder="Search cars by make, model, or type..." id="search-input">
+            <button class="btn btn-primary" id="search-btn">Search</button>
+          </div>
+        </div>
       </div>
     </section>
 
+    <!-- Filters Section -->
+    <section class="filters-section section">
+      <div class="container">
+        <div class="filters-header">
+          <h2>Filter & Sort</h2>
+          <button class="btn btn-ghost btn-sm" id="clear-filters">Clear All</button>
+        </div>
+        
+        <div class="filters-grid">
+          <div class="filter-group">
+            <label for="price-filter">Price Range</label>
+            <select id="price-filter" title="Filter by price range">
+              <option value="">All Prices</option>
+              <option value="0-20000">Under ₦20,000</option>
+              <option value="20000-40000">₦20,000 - ₦40,000</option>
+              <option value="40000-60000">₦40,000 - ₦60,000</option>
+              <option value="60000+">Over ₦60,000</option>
+            </select>
+          </div>
+          
+          <div class="filter-group">
+            <label for="type-filter">Car Type</label>
+            <select id="type-filter" title="Filter by car type">
+              <option value="">All Types</option>
+              <option value="sedan">Sedan</option>
+              <option value="suv">SUV</option>
+              <option value="luxury">Luxury</option>
+              <option value="sports">Sports</option>
+            </select>
+          </div>
+          
+          <div class="filter-group">
+            <label for="sort-filter">Sort By</label>
+            <select id="sort-filter" title="Sort cars by">
+              <option value="price-asc">Price: Low to High</option>
+              <option value="price-desc">Price: High to Low</option>
+              <option value="year-desc">Newest First</option>
+              <option value="name-asc">Name: A-Z</option>
+            </select>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Cars Grid Section -->
     <section id="browse" class="section container" aria-labelledby="browse-heading">
-      <h2 id="browse-heading" style="margin-bottom:16px">Available Cars</h2>
-      <div id="car-count" style="color:var(--muted); margin-bottom:8px;">Loading...</div>
-      <div class="grid" id="cars-grid" aria-live="polite"></div>
+      <div class="section-header">
+        <h2 id="browse-heading">Available Cars</h2>
+        <div id="car-count" class="car-count">Loading available cars...</div>
+      </div>
+      
+      <div class="grid" id="cars-grid" aria-live="polite">
+        <!-- Skeleton loaders will be shown here initially -->
+        <div class="skeleton-card">
+          <div class="skeleton-media"></div>
+          <div class="skeleton" style="width: 70%; height: 20px;"></div>
+          <div class="skeleton" style="width: 50%; height: 16px;"></div>
+          <div class="skeleton" style="width: 60%; height: 24px;"></div>
+          <div class="skeleton" style="width: 100%; height: 40px;"></div>
+        </div>
+        <div class="skeleton-card">
+          <div class="skeleton-media"></div>
+          <div class="skeleton" style="width: 70%; height: 20px;"></div>
+          <div class="skeleton" style="width: 50%; height: 16px;"></div>
+          <div class="skeleton" style="width: 60%; height: 24px;"></div>
+          <div class="skeleton" style="width: 100%; height: 40px;"></div>
+        </div>
+        <div class="skeleton-card">
+          <div class="skeleton-media"></div>
+          <div class="skeleton" style="width: 70%; height: 20px;"></div>
+          <div class="skeleton" style="width: 50%; height: 16px;"></div>
+          <div class="skeleton" style="width: 60%; height: 24px;"></div>
+          <div class="skeleton" style="width: 100%; height: 40px;"></div>
+        </div>
+      </div>
+      
+      <!-- Load More Button -->
+      <div class="load-more-container">
+        <button class="btn btn-outline" id="load-more" style="display: none;">Load More Cars</button>
+      </div>
     </section>
   </main>
 
@@ -80,71 +168,42 @@
           <div class="contact-info">
             <div style="margin-bottom: 0.8rem;">
               <strong style="color: #03dac5;">📧 Email:</strong><br/>
-              <a href="mailto:silasonyekachi15@gmail.com" style="color: #ccc; text-decoration: none;">silasonyekachi15@gmail.com</a>
+              <a href="mailto:silasonyekachi15@mail.com" style="color: #ccc; text-decoration: none;">silasonyekachi15@mail.com</a>
             </div>
             <div style="margin-bottom: 0.8rem;">
               <strong style="color: #03dac5;">📞 Phone:</strong><br/>
               <a href="tel:+2348107586167" style="color: #ccc; text-decoration: none;">+234 810 758 6167</a>
             </div>
-            <div>
-              <strong style="color: #03dac5;">📍 Location:</strong><br/>
-              <span style="color: #ccc;">Lagos, Nigeria</span>
+            <div style="margin-bottom: 0.8rem;">
+              <strong style="color: #03dac5;">📍 Address:</strong><br/>
+              <span style="color: #ccc;">Ikeja, Lagos, Nigeria</span>
             </div>
           </div>
         </div>
         
-        <div class="footer-services">
-          <h4 style="color: #03dac5; margin-bottom: 1rem; font-size: 1.2rem;">Our Services</h4>
-          <ul style="list-style: none; padding: 0;">
-            <li style="margin-bottom: 0.6rem;"><a href="book.html" style="color: #ccc; text-decoration: none; transition: color 0.3s;">🚗 Car Rentals</a></li>
-            <li style="margin-bottom: 0.6rem;"><a href="book.html" style="color: #ccc; text-decoration: none; transition: color 0.3s;">👔 Corporate Services</a></li>
-            <li style="margin-bottom: 0.6rem;"><a href="book.html" style="color: #ccc; text-decoration: none; transition: color 0.3s;">✈️ Airport Transfers</a></li>
-            <li style="margin-bottom: 0.6rem;"><a href="book.html" style="color: #ccc; text-decoration: none; transition: color 0.3s;">🎯 Chauffeur Services</a></li>
-            <li style="margin-bottom: 0.6rem;"><a href="book.html" style="color: #ccc; text-decoration: none; transition: color 0.3s;">📅 Long-term Rentals</a></li>
-          </ul>
-        </div>
-        
-        <div class="footer-company">
-          <h4 style="color: #03dac5; margin-bottom: 1rem; font-size: 1.2rem;">Company</h4>
-          <ul style="list-style: none; padding: 0;">
-            <li style="margin-bottom: 0.6rem;"><a href="about.html" style="color: #ccc; text-decoration: none; transition: color 0.3s;">About Us</a></li>
-            <li style="margin-bottom: 0.6rem;"><a href="terms.html" style="color: #ccc; text-decoration: none; transition: color 0.3s;">Terms & Conditions</a></li>
-            <li style="margin-bottom: 0.6rem;"><a href="privacy.html" style="color: #ccc; text-decoration: none; transition: color 0.3s;">Privacy Policy</a></li>
-            <li style="margin-bottom: 0.6rem;"><a href="faq.html" style="color: #ccc; text-decoration: none; transition: color 0.3s;">FAQ</a></li>
-            <li style="margin-bottom: 0.6rem;"><a href="contact.html" style="color: #ccc; text-decoration: none; transition: color 0.3s;">Contact Support</a></li>
-          </ul>
-        </div>
-        
-        <div class="footer-newsletter">
-          <h4 style="color: #03dac5; margin-bottom: 1rem; font-size: 1.2rem;">Stay Updated</h4>
-          <p style="color: #ccc; margin-bottom: 1rem; font-size: 0.9rem;">Get exclusive deals and updates</p>
-          <form id="newsletter-form" style="display: flex; gap: 0.5rem; flex-direction: column;">
-            <div style="display: flex; gap: 0.5rem;">
-              <input type="email" name="email" placeholder="Enter your email" required style="flex: 1; padding: 0.5rem; border: 1px solid #333; background: #1a1a1a; color: #ccc; border-radius: 4px; font-size: 0.9rem;">
-              <button type="submit" style="padding: 0.5rem 1rem; background: #03dac5; color: #0b0e11; border: none; border-radius: 4px; cursor: pointer; font-weight: bold;">Subscribe</button>
-            </div>
-            <div id="newsletter-message" style="font-size: 0.8rem; margin-top: 0.5rem; min-height: 1rem;"></div>
-          </form>
+        <div class="footer-links">
+          <div class="footer-column">
+            <h4 style="color: #03dac5; margin-bottom: 1rem;">Quick Links</h4>
+            <a href="index.html" style="color: #ccc; text-decoration: none; display: block; margin-bottom: 0.5rem;">Home</a>
+            <a href="cars.html" style="color: #03dac5; text-decoration: none; display: block; margin-bottom: 0.5rem;">Browse Cars</a>
+            <a href="book.html" style="color: #ccc; text-decoration: none; display: block; margin-bottom: 0.5rem;">Book Now</a>
+            <a href="about.html" style="color: #ccc; text-decoration: none; display: block; margin-bottom: 0.5rem;">About Us</a>
+          </div>
+          
+          <div class="footer-column">
+            <h4 style="color: #03dac5; margin-bottom: 1rem;">Support</h4>
+            <a href="faq.html" style="color: #ccc; text-decoration: none; display: block; margin-bottom: 0.5rem;">FAQ</a>
+            <a href="contact.html" style="color: #ccc; text-decoration: none; display: block; margin-bottom: 0.5rem;">Contact</a>
+            <a href="terms.html" style="color: #ccc; text-decoration: none; display: block; margin-bottom: 0.5rem;">Terms of Service</a>
+            <a href="privacy.html" style="color: #ccc; text-decoration: none; display: block; margin-bottom: 0.5rem;">Privacy Policy</a>
+          </div>
         </div>
       </div>
       
-      <div class="footer-divider" style="margin: 2rem 0; border-top: 1px solid #333;"></div>
-      
-      <div class="footer-bottom-row">
-        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
-          <div>
-            <p style="color: #ccc; margin: 0; font-size: 0.9rem;">
-              © <span id="year"></span> Silas Car Rentals. All rights reserved.
-            </p>
-          </div>
-          
-          <div class="social-links" style="display: flex; gap: 1rem; align-items: center;">
-            <a href="#" style="color: #ccc; text-decoration: none; font-size: 1.2rem; transition: color 0.3s;" title="Facebook">📘</a>
-            <a href="#" style="color: #ccc; text-decoration: none; font-size: 1.2rem; transition: color 0.3s;" title="Twitter">🐦</a>
-            <a href="#" style="color: #ccc; text-decoration: none; font-size: 1.2rem; transition: color 0.3s;" title="Instagram">📷</a>
-            <a href="https://wa.link/c73sw8" style="color: #ccc; text-decoration: none; font-size: 1.2rem; transition: color 0.3s;" title="WhatsApp">📱</a>
-          </div>
-        </div>
+      <div class="footer-bottom">
+        <p style="color: #666; text-align: center; margin: 0; padding: 1.5rem 0; border-top: 1px solid #333;">
+          © 2025 Silas Car Rentals. All rights reserved.
+        </p>
       </div>
     </div>
   </footer>
@@ -160,20 +219,88 @@
 
   <script>
 const API_BASE = "https://techyjaunt-auth-go43.onrender.com";
-const BENZ_ID = "689479c630cf9351877939e6"; 
 const placeholderImage = "https://vehicle-images.dealerinspire.com/a1a7-11002896/W1KAF4GB4SR252999/00f2d6ad30e089cb5c02791d58c3af6a.jpg";
 
-const defaultCar = {
-  _id: BENZ_ID,
-  make: "Mercedes-Benz",
-  model: "C300",
-  year: 2025,
-  price: 40000,
-  color: "Black",
-  brand: "Mercedes-Benz",
-  description: "Brand new luxury sedan",
-  image: placeholderImage
-};
+// Sample car data for offline/fallback use
+const sampleCars = [
+  {
+    _id: "1",
+    make: "Mercedes-Benz",
+    model: "C300",
+    year: 2025,
+    price: 40000,
+    color: "Black",
+    brand: "Mercedes-Benz",
+    type: "luxury",
+    description: "Brand new luxury sedan with premium features",
+    image: placeholderImage
+  },
+  {
+    _id: "2",
+    make: "Toyota",
+    model: "Camry",
+    year: 2024,
+    price: 25000,
+    color: "White",
+    brand: "Toyota",
+    type: "sedan",
+    description: "Reliable and fuel-efficient sedan",
+    image: "https://images.unsplash.com/photo-1549399812-5e82e1517600?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+  },
+  {
+    _id: "3",
+    make: "Honda",
+    model: "CR-V",
+    year: 2024,
+    price: 35000,
+    color: "Blue",
+    brand: "Honda",
+    type: "suv",
+    description: "Spacious and versatile SUV for family trips",
+    image: "https://images.unsplash.com/photo-1544636331-e26879cd4d9b?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+  },
+  {
+    _id: "4",
+    make: "BMW",
+    model: "X5",
+    year: 2024,
+    price: 55000,
+    color: "Gray",
+    brand: "BMW",
+    type: "suv",
+    description: "Luxury SUV with advanced technology",
+    image: "https://images.unsplash.com/photo-1555215274-0766a9e744c5?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+  },
+  {
+    _id: "5",
+    make: "Audi",
+    model: "A4",
+    year: 2024,
+    price: 38000,
+    color: "Red",
+    brand: "Audi",
+    type: "sedan",
+    description: "Premium sedan with quattro all-wheel drive",
+    image: "https://images.unsplash.com/photo-1606664515524-ed2f786a0bd6?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+  },
+  {
+    _id: "6",
+    make: "Ford",
+    model: "Mustang",
+    year: 2024,
+    price: 45000,
+    color: "Yellow",
+    brand: "Ford",
+    type: "sports",
+    description: "Iconic American sports car",
+    image: "https://images.unsplash.com/photo-1542362567-b07e54358753?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+  }
+];
+
+let allCars = [];
+let filteredCars = [];
+let currentPage = 1;
+const carsPerPage = 6;
 
 function getStorage(key) {
   return JSON.parse(localStorage.getItem(key)) || [];
@@ -192,50 +319,175 @@ function showToast(msg, ms = 3000) {
   setTimeout(() => toast.classList.remove("show"), ms);
 }
 
-function renderCar(car) {
+function renderCars(cars) {
   const grid = document.getElementById("cars-grid");
   const count = document.getElementById("car-count");
+  
+  if (cars.length === 0) {
+    grid.innerHTML = `
+      <div class="no-cars" style="grid-column: 1 / -1; text-align: center; padding: 3rem;">
+        <i class="fas fa-car" style="font-size: 4rem; color: #666; margin-bottom: 1rem;"></i>
+        <h3 style="color: #ccc; margin-bottom: 1rem;">No cars found</h3>
+        <p style="color: #999;">Try adjusting your search or filter criteria.</p>
+      </div>
+    `;
+    count.textContent = "No cars available";
+    return;
+  }
 
-  count.textContent = "1 car available";
-  grid.innerHTML = `
-    <div class="car-card">
-      <img src="${car.image || placeholderImage}" alt="${car.make}" loading="lazy" style="width:100%; height:auto; border-radius:8px;">
-      <h3>${car.make} ${car.model}</h3>
+  count.textContent = `${cars.length} car${cars.length !== 1 ? 's' : ''} available`;
+  
+  grid.innerHTML = cars.map(car => `
+    <div class="car-card" data-id="${car._id}">
+      <img src="${car.image || placeholderImage}" alt="${car.make} ${car.model}" loading="lazy" 
+           style="width:100%; height:200px; object-fit: cover; border-radius:8px;">
+      <h3>${car.make} ${car.model} (${car.year})</h3>
+      <p style="color: #666; font-size: 0.9rem;">${car.color} • ${car.type}</p>
       <p><strong>₦${car.price.toLocaleString()}</strong> / day</p>
+      <p style="color: #999; font-size: 0.9rem; margin-bottom: 1rem;">${car.description}</p>
       <div style="display:flex; gap:8px; flex-wrap:wrap; margin-top:10px;">
-        <!-- Rent Now button removed -->
         <button class="btn btn-outline" data-action="add-cart" data-id="${car._id}">Add to Cart</button>
         <button class="btn btn-outline" data-action="add-wishlist" data-id="${car._id}">Wishlist</button>
         <button class="btn btn-outline" data-action="add-saved" data-id="${car._id}">Save</button>
       </div>
     </div>
-  `;
+  `).join('');
 }
 
-async function fetchCar() {
-  renderCar(defaultCar);
+function applyFilters() {
+  const searchTerm = document.getElementById("search-input").value.toLowerCase();
+  const priceFilter = document.getElementById("price-filter").value;
+  const typeFilter = document.getElementById("type-filter").value;
+  const sortFilter = document.getElementById("sort-filter").value;
+
+  filteredCars = allCars.filter(car => {
+    // Search filter
+    const matchesSearch = car.make.toLowerCase().includes(searchTerm) || 
+                         car.model.toLowerCase().includes(searchTerm) ||
+                         car.type.toLowerCase().includes(searchTerm);
+    
+    // Price filter
+    let matchesPrice = true;
+    if (priceFilter) {
+      if (priceFilter === "0-20000") {
+        matchesPrice = car.price <= 20000;
+      } else if (priceFilter === "20000-40000") {
+        matchesPrice = car.price > 20000 && car.price <= 40000;
+      } else if (priceFilter === "40000-60000") {
+        matchesPrice = car.price > 40000 && car.price <= 60000;
+      } else if (priceFilter === "60000+") {
+        matchesPrice = car.price > 60000;
+      }
+    }
+    
+    // Type filter
+    const matchesType = !typeFilter || car.type === typeFilter;
+    
+    return matchesSearch && matchesPrice && matchesType;
+  });
+
+  // Sort cars
+  filteredCars.sort((a, b) => {
+    switch (sortFilter) {
+      case "price-asc":
+        return a.price - b.price;
+      case "price-desc":
+        return b.price - a.price;
+      case "year-desc":
+        return b.year - a.year;
+      case "name-asc":
+        return a.make.localeCompare(b.make);
+      default:
+        return 0;
+    }
+  });
+
+  renderCars(filteredCars);
+  updateLoadMoreButton();
+}
+
+function updateLoadMoreButton() {
+  const loadMoreBtn = document.getElementById("load-more");
+  const totalPages = Math.ceil(filteredCars.length / carsPerPage);
+  
+  if (currentPage < totalPages) {
+    loadMoreBtn.style.display = "block";
+  } else {
+    loadMoreBtn.style.display = "none";
+  }
+}
+
+function loadMoreCars() {
+  currentPage++;
+  const startIndex = (currentPage - 1) * carsPerPage;
+  const endIndex = startIndex + carsPerPage;
+  const carsToShow = filteredCars.slice(0, endIndex);
+  
+  renderCars(carsToShow);
+  updateLoadMoreButton();
+}
+
+async function fetchCars() {
+  // Show skeleton loaders
+  document.getElementById("car-count").textContent = "Loading available cars...";
+  
   try {
     const res = await fetch(`${API_BASE}/api/cars/get-cars`);
     if (!res.ok) throw new Error();
     const cars = await res.json();
-    const car = cars.find(c => c._id === BENZ_ID);
-    if (car) {
-      car.image = car.image && car.image.trim() !== "" ? car.image : placeholderImage;
-      renderCar(car);
-    }
+    
+    // Process car images
+    allCars = cars.map(car => ({
+      ...car,
+      image: car.image && car.image.trim() !== "" ? car.image : placeholderImage
+    }));
+    
+    filteredCars = [...allCars];
+    applyFilters();
+    
   } catch (err) {
     console.warn("Using offline car data - backend unreachable", err);
+    // Use sample cars as fallback
+    allCars = sampleCars;
+    filteredCars = [...allCars];
+    applyFilters();
   }
+  
+    // Ensure buttons work with offline data
+    document.querySelectorAll('.btn-outline').forEach(button => {
+        button.addEventListener('click', (e) => {
+            const action = e.target.dataset.action;
+            const carId = e.target.dataset.id;
+            const car = allCars.find(c => c._id === carId);
+            if (car) {
+                console.log("Button clicked:", action, "Car ID:", carId); // Debug log
+                console.log("Attempting to add to cart:", car); // Debug log
+                switch (action) {
+                    case 'add-cart':
+                        addToCart(car);
+                        break;
+                    case 'add-wishlist':
+                        addToWishlist(car);
+                        break;
+                    case 'add-saved':
+                        addToSaved(car);
+                        break;
+                }
+            }
+        });
+    });
 }
 
 updateGlobalCounts();
-fetchCar();
+fetchCars();
 
 // Add event listeners for car action buttons
 document.addEventListener('click', async (e) => {
   const action = e.target.dataset.action;
   const carId = e.target.dataset.id;
   
+  console.log("Button clicked:", action, "Car ID:", carId); // Debug log
+
   if (!action || !carId) return;
   
   try {
@@ -253,6 +505,10 @@ document.addEventListener('click', async (e) => {
       }
     }
     
+    console.log("Car details fetched:", car); // Debug log
+    console.log("Action performed:", action); // Debug log
+    console.log("Action performed:", action); // Debug log
+
     switch (action) {
       case 'add-cart':
         addToCart(car);
@@ -274,39 +530,48 @@ document.addEventListener('click', async (e) => {
 
 // Helper functions for cart, wishlist, and saved cars
 function addToCart(car) {
+  console.log("Attempting to add to cart:", car); // Debug log
   const cart = getStorage("cart");
   if (cart.find((c) => c._id === car._id)) {
     showToast("Car already in cart", 3000, "#ff9800");
+    console.log("Car already in cart:", car); // Debug log
     return;
   }
   cart.push(car);
   localStorage.setItem("cart", JSON.stringify(cart));
   updateGlobalCounts();
   showToast("Added to cart");
+  console.log("Car added to cart:", car); // Debug log
 }
 
 function addToWishlist(car) {
+  console.log("Attempting to add to wishlist:", car); // Debug log
   const wishlist = getStorage("wishlist");
   if (wishlist.find((c) => c._id === car._id)) {
     showToast("Car already in wishlist", 3000, "#ff9800");
+    console.log("Car already in wishlist:", car); // Debug log
     return;
   }
   wishlist.push(car);
   localStorage.setItem("wishlist", JSON.stringify(wishlist));
   updateGlobalCounts();
   showToast("Added to wishlist");
+  console.log("Car added to wishlist:", car); // Debug log
 }
 
 function addToSaved(car) {
+  console.log("Attempting to save car:", car); // Debug log
   const savedCars = getStorage("savedCars");
   if (savedCars.find((c) => c._id === car._id)) {
     showToast("Car already saved", 3000, "#ff9800");
+    console.log("Car already saved:", car); // Debug log
     return;
   }
   savedCars.push(car);
   localStorage.setItem("savedCars", JSON.stringify(savedCars));
   updateGlobalCounts();
   showToast("Car saved");
+  console.log("Car saved:", car); // Debug log
 }
 
 // Scroll to top functionality
@@ -334,6 +599,30 @@ scrollToTopBtn.addEventListener('click', () => {
     top: 0,
     behavior: 'smooth'
   });
+});
+
+// Add event listeners for filter functionality
+document.addEventListener('DOMContentLoaded', function() {
+  // Filter event listeners
+  document.getElementById("search-input").addEventListener('input', applyFilters);
+  document.getElementById("price-filter").addEventListener('change', applyFilters);
+  document.getElementById("type-filter").addEventListener('change', applyFilters);
+  document.getElementById("sort-filter").addEventListener('change', applyFilters);
+  
+  // Search button
+  document.getElementById("search-btn").addEventListener('click', applyFilters);
+  
+  // Clear filters
+  document.getElementById("clear-filters").addEventListener('click', function() {
+    document.getElementById("search-input").value = "";
+    document.getElementById("price-filter").value = "";
+    document.getElementById("type-filter").value = "";
+    document.getElementById("sort-filter").value = "price-asc";
+    applyFilters();
+  });
+  
+  // Load more button
+  document.getElementById("load-more").addEventListener('click', loadMoreCars);
 });
 </script>
 </body>
