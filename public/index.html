@@ -4,10 +4,73 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Silas Car Rentals</title>
-  <meta name="description" content="Professional car rentals — browse, add to cart and checkout securely." />
+  <title>Silas Car Rentals - Premium Car Rental Service in Nigeria | Luxury & Economy Cars</title>
+  <meta name="description" content="Nigeria's trusted premium car rental service. Rent luxury sedans, SUVs, and economy cars in Lagos. Fast booking, secure payments, 5000+ satisfied customers." />
+  <meta name="keywords" content="car rental Nigeria, luxury car rental Lagos, rent car Nigeria, premium vehicles, SUV rental, Mercedes-Benz rental, car hire Lagos" />
+  <meta name="author" content="Silas Car Rentals" />
+  <meta name="robots" content="index, follow" />
+  <meta name="theme-color" content="#16a34a">
+  
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://silascarrentals.com/" />
+  <meta property="og:title" content="Silas Car Rentals - Premium Car Rental Service in Nigeria" />
+  <meta property="og:description" content="Nigeria's trusted premium car rental service. Rent luxury sedans, SUVs, and economy cars with fast booking and secure payments." />
+  <meta property="og:image" content="https://silascarrentals.com/images/og-image.jpg" />
+  
+  <!-- Twitter -->
+  <meta property="twitter:card" content="summary_large_image" />
+  <meta property="twitter:url" content="https://silascarrentals.com/" />
+  <meta property="twitter:title" content="Silas Car Rentals - Premium Car Rental Service in Nigeria" />
+  <meta property="twitter:description" content="Rent premium vehicles in Lagos with 5000+ satisfied customers and 98% satisfaction rate." />
+  <meta property="twitter:image" content="https://silascarrentals.com/images/twitter-image.jpg" />
+  
+  <!-- Structured Data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "CarRental",
+    "name": "Silas Car Rentals",
+    "description": "Premium car rental service offering luxury and standard vehicles for business and leisure travel across Nigeria.",
+    "url": "https://silascarrentals.com",
+    "telephone": "+234-810-758-6167",
+    "email": "silasonyekachi15@gmail.com",
+    "address": {
+      "@type": "PostalAddress",
+      "addressLocality": "Lagos",
+      "addressCountry": "Nigeria"
+    },
+    "geo": {
+      "@type": "GeoCoordinates",
+      "latitude": "6.5244",
+      "longitude": "3.3792"
+    },
+    "openingHours": "Mo-Su 08:00-20:00",
+    "priceRange": "₦15,000 - ₦100,000",
+    "aggregateRating": {
+      "@type": "AggregateRating",
+      "ratingValue": "4.9",
+      "reviewCount": "5000"
+    },
+    "sameAs": [
+      "https://facebook.com/silascarrentals",
+      "https://twitter.com/silascarrentals",
+      "https://instagram.com/silascarrentals"
+    ]
+  }
+  </script>
+  
   <link rel="stylesheet" href="style.css" />
-  <meta name="theme-color" content="#0b0e11">
+  <link rel="preload" href="style.css" as="style" />
+  <link rel="preconnect" href="https://techyjaunt-auth-go43.onrender.com" />
+  <link rel="dns-prefetch" href="https://techyjaunt-auth-go43.onrender.com" />
+  
+  <!-- Favicon and App Icons -->
+  <link rel="icon" href="favicon.ico" type="image/x-icon" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+  <link rel="manifest" href="/site.webmanifest">
   <style>
     /* Enhanced Professional Navigation Styles - Optimized for Fixed Positioning */
     .navbar {
@@ -592,7 +655,7 @@ function renderCar(car) {
   count.textContent = "1 car available";
   grid.innerHTML = `
     <div class="car-card">
-      <img src="${car.image || placeholderImage}" alt="${car.make}" style="width:100%; height:auto; border-radius:8px;">
+      <img src="${car.image || placeholderImage}" alt="${car.make}" loading="lazy" style="width:100%; height:auto; border-radius:8px;">
       <h3>${car.make} ${car.model}</h3>
       <p><strong>₦${car.price.toLocaleString()}</strong> / day</p>
       <div style="display:flex; gap:8px; flex-wrap:wrap; margin-top:10px;">

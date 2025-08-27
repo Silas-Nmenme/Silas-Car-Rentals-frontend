@@ -54,7 +54,7 @@ function renderWishlist() {
   if (!list.length) { container.innerHTML = "<p>Your wishlist is empty.</p>"; return; }
   container.innerHTML = list.map(car => `
     <div class="car-card">
-      <img src="${car.image || 'https://via.placeholder.com/300'}" alt="${car.make}" style="width:100%; border-radius:8px;">
+      <img src="${car.image || 'https://via.placeholder.com/300'}" alt="${car.make}" loading="lazy" style="width:100%; border-radius:8px;">
       <h3>${car.make} ${car.model}</h3>
       <p><strong>₦${car.price.toLocaleString()}</strong> / day</p>
       <div style="display:flex; gap:8px; flex-wrap:wrap; margin-top:10px;">

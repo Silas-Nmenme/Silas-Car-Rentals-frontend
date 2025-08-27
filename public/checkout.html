@@ -199,7 +199,7 @@ function renderBooking(booking) {
     // Multi-car booking
     carContent = booking.cars.map(car => `
       <div class="car-details" style="margin-bottom: 1.5rem;">
-        <img src="${car.image || placeholderImage}" alt="${car.make} ${car.model}" class="car-image">
+        <img src="${car.image || placeholderImage}" alt="${car.make} ${car.model}" loading="lazy" class="car-image">
         <div class="car-info">
           <h3>${car.make} ${car.model} (${car.year})</h3>
           <p style="color: #667eea; font-size: 1.1rem; font-weight: bold;">
@@ -215,7 +215,7 @@ function renderBooking(booking) {
     // Single car booking
     carContent = `
       <div class="car-details">
-        <img src="${booking.car.image || placeholderImage}" alt="${booking.car.make} ${booking.car.model}" class="car-image">
+        <img src="${booking.car.image || placeholderImage}" alt="${booking.car.make} ${booking.car.model}" loading="lazy" class="car-image">
         <div class="car-info">
           <h3>${booking.car.make} ${booking.car.model} (${booking.car.year})</h3>
           <p style="color: #667eea; font-size: 1.25rem; font-weight: bold;">
