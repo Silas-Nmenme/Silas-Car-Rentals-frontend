@@ -5,139 +5,378 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Payment Successful — Silas Car Rentals</title>
   <link rel="stylesheet" href="style.css" />
+  <script src="booking-fix-enhanced.js"></script>
   <style>
     .success-container {
       text-align: center;
-      padding: 50px 20px;
+      padding: 3rem 1rem;
+      max-width: 600px;
+      margin: 0 auto;
     }
+    
+    .success-icon {
+      font-size: 4rem;
+      margin-bottom: 1rem;
+      animation: bounce 1s ease infinite;
+    }
+    
     .success-container h1 {
-      color: #28a745;
-      margin-bottom: 10px;
+      color: var(--primary);
+      margin-bottom: 1rem;
+      font-size: 2.5rem;
     }
-    .success-details {
-      background: #fff;
-      display: inline-block;
-      padding: 20px;
-      border-radius: 12px;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-      margin-bottom: 20px;
+    
+    .success-message {
+      color: var(--muted);
+      margin-bottom: 2rem;
+      font-size: 1.1rem;
     }
-    .btn {
-      padding: 10px 20px;
-      border-radius: 6px;
-      margin: 5px;
+    
+    .booking-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 2rem;
+      margin-bottom: 2rem;
+      text-align: left;
+      box-shadow: var(--shadow);
+    }
+    
+    .booking-detail {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 0.75rem;
+      padding-bottom: 0.75rem;
+      border-bottom: 1px solid var(--border);
+    }
+    
+    .booking-detail:last-child {
+      border-bottom: none;
+      margin-bottom: 0;
+      padding-bottom: 0;
+    }
+    
+    .detail-label {
+      font-weight: 600;
+      color: var(--muted);
+    }
+    
+    .detail-value {
+      font-weight: 700;
+      color: var(--text);
+    }
+    
+    .total-amount {
+      font-size: 1.5rem;
+      color: var(--primary);
+      margin-top: 1rem;
+      padding-top: 1rem;
+      border-top: 2px solid var(--border);
+    }
+    
+    .action-buttons {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    
+    .btn-success {
+      background: var(--primary);
+      color: white;
+      padding: 1rem 2rem;
+      border-radius: var(--radius);
       text-decoration: none;
-      display: inline-block;
+      font-weight: 600;
+      transition: all 0.3s ease;
     }
-    .btn-primary {
-      background: #007bff;
-      color: white;
+    
+    .btn-success:hover {
+      background: var(--primary-700);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(22, 163, 74, 0.3);
     }
-    .btn-secondary {
-      background: #6c757d;
-      color: white;
+    
+    .btn-outline {
+      background: transparent;
+      border: 2px solid var(--border);
+      color: var(--text);
+      padding: 1rem 2rem;
+      border-radius: var(--radius);
+      text-decoration: none;
+      font-weight: 600;
+      transition: all 0.3s ease;
     }
+    
+    .btn-outline:hover {
+      background: var(--bg-soft);
+      border-color: var(--primary);
+    }
+    
     canvas {
       position: fixed;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
       pointer-events: none;
       z-index: 9999;
     }
+    
+    @keyframes bounce {
+      0%, 20%, 50%, 80%, 100% {
+        transform: translateY(0);
+      }
+      40% {
+        transform: translateY(-20px);
+      }
+      60% {
+        transform: translateY(-10px);
+      }
+    }
+    
+    @media (max-width: 768px) {
+      .success-container {
+        padding: 2rem 1rem;
+      }
+      
+      .success-icon {
+        font-size: 3rem;
+      }
+      
+      .success-container h1 {
+        font-size: 2rem;
+      }
+      
+      .booking-card {
+        padding: 1.5rem;
+      }
+      
+      .action-buttons {
+        flex-direction: column;
+      }
+      
+      .btn-success, .btn-outline {
+        width: 100%;
+        text-align: center;
+      }
+    }
   </style>
 </head>
-<body class="dashboard-body">
+<body>
 
   <canvas id="confetti"></canvas>
 
   <main class="container section success-container">
-    <h1>🎉 Payment Successful!</h1>
-    <p>Your rental has been confirmed.</p>
+    <div class="success-icon">🎉</div>
+    <h1>Payment Successful!</h1>
+    <p class="success-message">Your car rental has been confirmed. You'll receive a confirmation email shortly.</p>
 
-    <div class="success-details" id="booking-details">
-      <p><strong>Car:</strong> —</p>
-      <p><strong>Rental Period:</strong> —</p>
-      <p><strong>Total Price:</strong> —</p>
+    <div class="booking-card" id="booking-details">
+      <h3 style="margin: 0 0 1.5rem 0; color: var(--text); text-align: center;">Booking Details</h3>
+      <!-- Content will be populated by JavaScript -->
     </div>
 
-    <a href="dashboard.html" class="btn btn-primary">Go to Dashboard</a>
-    <a href="book.html" class="btn btn-secondary">Book Another Car</a>
+    <div class="action-buttons">
+      <a href="dashboard.html" class="btn-success">Go to Dashboard</a>
+      <a href="book.html" class="btn-outline">Book Another Car</a>
+    </div>
   </main>
 
   <script>
-    // Retrieve and display booking details before clearing
-    const currentRental = JSON.parse(localStorage.getItem('currentRental'));
-    if (currentRental) {
+    // Enhanced payment success handling with BookingManager integration
+    document.addEventListener('DOMContentLoaded', function() {
+      const booking = BookingManager.getBooking();
+      
+      if (booking) {
+        displayBookingDetails(booking);
+        startConfettiAnimation();
+        
+        // Clean up after successful payment
+        cleanupAfterPayment(booking);
+      } else {
+        // Fallback: try to get booking from URL parameters or show generic message
+        const urlParams = new URLSearchParams(window.location.search);
+        const bookingId = urlParams.get('bookingId');
+        
+        if (bookingId) {
+          displayFallbackDetails(bookingId);
+        } else {
+          document.getElementById('booking-details').innerHTML = `
+            <p style="text-align: center; color: var(--muted);">
+              Booking details not available. Please check your email for confirmation.
+            </p>
+          `;
+        }
+      }
+    });
+
+    function displayBookingDetails(booking) {
+      const detailsEl = document.getElementById('booking-details');
+      
+      let carDetails = '';
+      if (booking.isMultiCar && booking.cars && booking.cars.length > 0) {
+        carDetails = booking.cars.map(car => `
+          <div class="booking-detail">
+            <span class="detail-label">Car:</span>
+            <span class="detail-value">${car.make} ${car.model} (${car.year})</span>
+          </div>
+          <div class="booking-detail">
+            <span class="detail-label">Daily Rate:</span>
+            <span class="detail-value">₦${car.price.toLocaleString()}/day</span>
+          </div>
+        `).join('');
+      } else if (booking.car) {
+        carDetails = `
+          <div class="booking-detail">
+            <span class="detail-label">Car:</span>
+            <span class="detail-value">${booking.car.make} ${booking.car.model} (${booking.car.year})</span>
+          </div>
+          <div class="booking-detail">
+            <span class="detail-label">Daily Rate:</span>
+            <span class="detail-value">₦${booking.car.price.toLocaleString()}/day</span>
+          </div>
+        `;
+      }
+
+      const days = booking.days || 1;
+      const totalAmount = booking.totalAmount || 0;
+
+      detailsEl.innerHTML = `
+        ${carDetails}
+        <div class="booking-detail">
+          <span class="detail-label">Pickup Date:</span>
+          <span class="detail-value">${new Date(booking.pickupDate).toLocaleDateString()}</span>
+        </div>
+        <div class="booking-detail">
+          <span class="detail-label">Return Date:</span>
+          <span class="detail-value">${new Date(booking.returnDate).toLocaleDateString()}</span>
+        </div>
+        <div class="booking-detail">
+          <span class="detail-label">Duration:</span>
+          <span class="detail-value">${days} day${days > 1 ? 's' : ''}</span>
+        </div>
+        <div class="booking-detail">
+          <span class="detail-label">Booking ID:</span>
+          <span class="detail-value">${booking._id || 'N/A'}</span>
+        </div>
+        <div class="booking-detail">
+          <span class="detail-label">Payment Status:</span>
+          <span class="detail-value" style="color: var(--primary);">✅ Paid</span>
+        </div>
+        <div class="total-amount">
+          <span class="detail-label">Total Amount:</span>
+          <span class="detail-value">₦${totalAmount.toLocaleString()}</span>
+        </div>
+      `;
+    }
+
+    function cleanupAfterPayment(booking) {
+      // Remove booked cars from cart
+      const cart = JSON.parse(localStorage.getItem('cart') || '[]');
+      let updatedCart = cart;
+      
+      if (booking.isMultiCar && booking.cars) {
+        updatedCart = cart.filter(cartCar => 
+          !booking.cars.some(bookedCar => bookedCar._id === cartCar._id)
+        );
+      } else if (booking.car) {
+        updatedCart = cart.filter(cartCar => cartCar._id !== booking.car._id);
+      }
+      
+      localStorage.setItem('cart', JSON.stringify(updatedCart));
+      
+      // Update cart count display
+      if (typeof CartManager !== 'undefined') {
+        CartManager.updateDisplay();
+      }
+      
+      // Clear booking after display (with delay to ensure user sees it)
+      setTimeout(() => {
+        BookingManager.clearBooking();
+      }, 5000);
+    }
+
+    function displayFallbackDetails(bookingId) {
       const detailsEl = document.getElementById('booking-details');
       detailsEl.innerHTML = `
-        <p><strong>Car:</strong> ${currentRental.name}</p>
-        <p><strong>Rental Period:</strong> ${currentRental.startDate} to ${currentRental.endDate}</p>
-        <p><strong>Total Price:</strong> ₦${(currentRental.price * ((new Date(currentRental.endDate) - new Date(currentRental.startDate)) / (1000*60*60*24))).toLocaleString()}</p>
+        <p style="text-align: center; color: var(--muted);">
+          Booking #${bookingId} confirmed successfully.<br>
+          Please check your email for detailed confirmation.
+        </p>
       `;
-
-      // Remove from cart
-      let cart = JSON.parse(localStorage.getItem('cart')) || [];
-      cart = cart.filter(c => c.id !== currentRental.id);
-      localStorage.setItem('cart', JSON.stringify(cart));
-
-      // Clear current rental
-      localStorage.removeItem('currentRental');
     }
 
-    // Confetti Animation
-    const canvas = document.getElementById('confetti');
-    const ctx = canvas.getContext('2d');
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
+    function startConfettiAnimation() {
+      const canvas = document.getElementById('confetti');
+      const ctx = canvas.getContext('2d');
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
 
-    const confettiPieces = [];
-    const colors = ['#fce18a', '#ff726d', '#b48def', '#f4306d'];
+      const confettiPieces = [];
+      const colors = ['#fce18a', '#ff726d', '#b48def', '#f4306d', '#16a34a', '#3b82f6'];
 
-    function ConfettiPiece() {
-      this.x = Math.random() * canvas.width;
-      this.y = Math.random() * canvas.height - canvas.height;
-      this.size = Math.random() * 10 + 5;
-      this.color = colors[Math.floor(Math.random() * colors.length)];
-      this.speed = Math.random() * 3 + 2;
-      this.rotation = Math.random() * 360;
-    }
-
-    ConfettiPiece.prototype.update = function() {
-      this.y += this.speed;
-      if (this.y > canvas.height) {
-        this.y = -10;
+      function ConfettiPiece() {
         this.x = Math.random() * canvas.width;
+        this.y = Math.random() * canvas.height - canvas.height;
+        this.size = Math.random() * 12 + 8;
+        this.color = colors[Math.floor(Math.random() * colors.length)];
+        this.speed = Math.random() * 4 + 3;
+        this.rotation = Math.random() * 360;
+        this.rotationSpeed = Math.random() * 5 + 2;
+        this.shape = Math.random() > 0.5 ? 'circle' : 'square';
       }
-      this.rotation += this.speed;
-    }
 
-    ConfettiPiece.prototype.draw = function() {
-      ctx.save();
-      ctx.translate(this.x, this.y);
-      ctx.rotate(this.rotation * Math.PI / 180);
-      ctx.fillStyle = this.color;
-      ctx.fillRect(-this.size/2, -this.size/2, this.size, this.size);
-      ctx.restore();
-    }
-
-    function initConfetti() {
-      for (let i = 0; i < 150; i++) {
-        confettiPieces.push(new ConfettiPiece());
+      ConfettiPiece.prototype.update = function() {
+        this.y += this.speed;
+        this.rotation += this.rotationSpeed;
+        
+        if (this.y > canvas.height) {
+          this.y = -20;
+          this.x = Math.random() * canvas.width;
+        }
       }
-    }
 
-    function animateConfetti() {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      confettiPieces.forEach(p => {
-        p.update();
-        p.draw();
-      });
-      requestAnimationFrame(animateConfetti);
-    }
+      ConfettiPiece.prototype.draw = function() {
+        ctx.save();
+        ctx.translate(this.x, this.y);
+        ctx.rotate(this.rotation * Math.PI / 180);
+        ctx.fillStyle = this.color;
+        
+        if (this.shape === 'circle') {
+          ctx.beginPath();
+          ctx.arc(0, 0, this.size / 2, 0, Math.PI * 2);
+          ctx.fill();
+        } else {
+          ctx.fillRect(-this.size / 2, -this.size / 2, this.size, this.size);
+        }
+        
+        ctx.restore();
+      }
 
-    initConfetti();
-    animateConfetti();
+      function initConfetti() {
+        for (let i = 0; i < 200; i++) {
+          confettiPieces.push(new ConfettiPiece());
+        }
+      }
+
+      function animateConfetti() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        confettiPieces.forEach(p => {
+          p.update();
+          p.draw();
+        });
+        requestAnimationFrame(animateConfetti);
+      }
+
+      initConfetti();
+      animateConfetti();
+
+      // Stop confetti after 8 seconds
+      setTimeout(() => {
+        confettiPieces.length = 0;
+      }, 8000);
+    }
   </script>
-
 </body>
 </html>

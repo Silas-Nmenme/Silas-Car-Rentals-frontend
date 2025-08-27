@@ -5,71 +5,420 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Payment Failed — Silas Car Rentals</title>
   <link rel="stylesheet" href="style.css" />
+  <script src="booking-fix-enhanced.js"></script>
+  <script src="payment-fix-enhanced.js"></script>
   <style>
     .failed-container {
       text-align: center;
-      padding: 50px 20px;
+      padding: 3rem 1rem;
+      max-width: 600px;
+      margin: 0 auto;
     }
+    
+    .failed-icon {
+      font-size: 4rem;
+      margin-bottom: 1rem;
+      animation: shake 0.5s ease infinite;
+    }
+    
     .failed-container h1 {
-      color: #dc3545;
-      margin-bottom: 10px;
+      color: var(--danger);
+      margin-bottom: 1rem;
+      font-size: 2.5rem;
     }
-    .failed-details {
-      background: #fff;
-      display: inline-block;
-      padding: 20px;
-      border-radius: 12px;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-      margin-bottom: 20px;
+    
+    .failed-message {
+      color: var(--muted);
+      margin-bottom: 2rem;
+      font-size: 1.1rem;
     }
-    .btn {
-      padding: 10px 20px;
-      border-radius: 6px;
-      margin: 5px;
+    
+    .error-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 2rem;
+      margin-bottom: 2rem;
+      text-align: left;
+      box-shadow: var(--shadow);
+    }
+    
+    .booking-detail {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 0.75rem;
+      padding-bottom: 0.75rem;
+      border-bottom: 1px solid var(--border);
+    }
+    
+    .booking-detail:last-child {
+      border-bottom: none;
+      margin-bottom: 0;
+      padding-bottom: 0;
+    }
+    
+    .detail-label {
+      font-weight: 600;
+      color: var(--muted);
+    }
+    
+    .detail-value {
+      font-weight: 700;
+      color: var(--text);
+    }
+    
+    .error-section {
+      background: rgba(239, 68, 68, 0.1);
+      border: 1px solid rgba(239, 68, 68, 0.2);
+      border-radius: var(--radius);
+      padding: 1rem;
+      margin-top: 1.5rem;
+    }
+    
+    .error-title {
+      color: var(--danger);
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+    }
+    
+    .error-message {
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+    
+    .action-buttons {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    
+    .btn-retry {
+      background: var(--primary);
+      color: white;
+      padding: 1rem 2rem;
+      border-radius: var(--radius);
       text-decoration: none;
-      display: inline-block;
+      font-weight: 600;
+      transition: all 0.3s ease;
     }
-    .btn-primary {
-      background: #007bff;
-      color: white;
+    
+    .btn-retry:hover {
+      background: var(--primary-700);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(22, 163, 74, 0.3);
     }
-    .btn-secondary {
-      background: #6c757d;
-      color: white;
+    
+    .btn-alternative {
+      background: transparent;
+      border: 2px solid var(--border);
+      color: var(--text);
+      padding: 1rem 2rem;
+      border-radius: var(--radius);
+      text-decoration: none;
+      font-weight: 600;
+      transition: all 0.3s ease;
+    }
+    
+    .btn-alternative:hover {
+      background: var(--bg-soft);
+      border-color: var(--primary);
+    }
+    
+    .payment-options {
+      margin-top: 2rem;
+      padding: 1.5rem;
+      background: var(--bg-soft);
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+    }
+    
+    .payment-options h3 {
+      margin: 0 0 1rem 0;
+      color: var(--text);
+      text-align: center;
+    }
+    
+    .payment-methods {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    
+    .payment-method {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1rem;
+      text-align: center;
+      min-width: 120px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    
+    .payment-method:hover {
+      border-color: var(--primary);
+      transform: translateY(-2px);
+    }
+    
+    .payment-icon {
+      font-size: 2rem;
+      margin-bottom: 0.5rem;
+    }
+    
+    .payment-name {
+      font-weight: 600;
+      font-size: 0.9rem;
+    }
+    
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      25% { transform: translateX(-5px); }
+      75% { transform: translateX(5px); }
+    }
+    
+    @media (max-width: 768px) {
+      .failed-container {
+        padding: 2rem 1rem;
+      }
+      
+      .failed-icon {
+        font-size: 3rem;
+      }
+      
+      .failed-container h1 {
+        font-size: 2rem;
+      }
+      
+      .error-card {
+        padding: 1.5rem;
+      }
+      
+      .action-buttons {
+        flex-direction: column;
+      }
+      
+      .btn-retry, .btn-alternative {
+        width: 100%;
+        text-align: center;
+      }
+      
+      .payment-methods {
+        flex-direction: column;
+      }
+      
+      .payment-method {
+        width: 100%;
+      }
     }
   </style>
 </head>
-<body class="dashboard-body">
+<body>
 
   <main class="container section failed-container">
-    <h1>❌ Payment Failed</h1>
-    <p>We couldn’t process your rental payment.</p>
+    <div class="failed-icon">❌</div>
+    <h1>Payment Failed</h1>
+    <p class="failed-message">We couldn't process your payment. Please try again or choose a different payment method.</p>
 
-    <div class="failed-details" id="booking-details">
-      <p><strong>Car:</strong> —</p>
-      <p><strong>Rental Period:</strong> —</p>
-      <p><strong>Total Price:</strong> —</p>
+    <div class="error-card" id="booking-details">
+      <h3 style="margin: 0 0 1.5rem 0; color: var(--text); text-align: center;">Booking Details</h3>
+      <!-- Content will be populated by JavaScript -->
     </div>
 
-    <a href="checkout.html" class="btn btn-primary">Retry Payment</a>
-    <a href="book.html" class="btn btn-secondary">Choose Another Car</a>
+    <div id="error-info" class="error-section" style="display: none;">
+      <div class="error-title">Error Information</div>
+      <div class="error-message" id="error-message"></div>
+    </div>
+
+    <div class="action-buttons">
+      <button id="retry-btn" class="btn-retry">Retry Payment</button>
+      <a href="book.html" class="btn-alternative">Choose Another Car</a>
+    </div>
+
+    <div class="payment-options">
+      <h3>Try a Different Payment Method</h3>
+      <div class="payment-methods" id="payment-methods">
+        <!-- Payment methods will be populated by JavaScript -->
+      </div>
+    </div>
   </main>
 
   <script>
-    // Retrieve booking details so user can retry easily
-    const currentRental = JSON.parse(localStorage.getItem('currentRental'));
-    if (currentRental) {
+    // Enhanced payment failure handling with BookingManager integration
+    document.addEventListener('DOMContentLoaded', function() {
+      const booking = BookingManager.getBooking();
+      
+      if (booking) {
+        displayBookingDetails(booking);
+        displayPaymentMethods();
+        setupRetryHandler(booking);
+        
+        // Show error message if available
+        if (booking.paymentError) {
+          document.getElementById('error-info').style.display = 'block';
+          document.getElementById('error-message').textContent = booking.paymentError;
+        }
+      } else {
+        // Fallback for direct access or missing booking data
+        displayFallbackMessage();
+      }
+    });
+
+    function displayBookingDetails(booking) {
       const detailsEl = document.getElementById('booking-details');
+      
+      let carDetails = '';
+      if (booking.isMultiCar && booking.cars && booking.cars.length > 0) {
+        carDetails = booking.cars.map(car => `
+          <div class="booking-detail">
+            <span class="detail-label">Car:</span>
+            <span class="detail-value">${car.make} ${car.model} (${car.year})</span>
+          </div>
+        `).join('');
+      } else if (booking.car) {
+        carDetails = `
+          <div class="booking-detail">
+            <span class="detail-label">Car:</span>
+            <span class="detail-value">${booking.car.make} ${booking.car.model} (${booking.car.year})</span>
+          </div>
+        `;
+      }
+
+      const days = booking.days || 1;
+      const totalAmount = booking.totalAmount || 0;
+
       detailsEl.innerHTML = `
-        <p><strong>Car:</strong> ${currentRental.name}</p>
-        <p><strong>Rental Period:</strong> ${currentRental.startDate || 'N/A'} to ${currentRental.endDate || 'N/A'}</p>
-        <p><strong>Total Price:</strong> ₦${(currentRental.startDate && currentRental.endDate
-          ? (currentRental.price * ((new Date(currentRental.endDate) - new Date(currentRental.startDate)) / (1000*60*60*24)))
-          : currentRental.price
-        ).toLocaleString()}</p>
+        ${carDetails}
+        <div class="booking-detail">
+          <span class="detail-label">Pickup Date:</span>
+          <span class="detail-value">${new Date(booking.pickupDate).toLocaleDateString()}</span>
+        </div>
+        <div class="booking-detail">
+          <span class="detail-label">Return Date:</span>
+          <span class="detail-value">${new Date(booking.returnDate).toLocaleDateString()}</span>
+        </div>
+        <div class="booking-detail">
+          <span class="detail-label">Duration:</span>
+          <span class="detail-value">${days} day${days > 1 ? 's' : ''}</span>
+        </div>
+        <div class="booking-detail">
+          <span class="detail-label">Total Amount:</span>
+          <span class="detail-value">₦${totalAmount.toLocaleString()}</span>
+        </div>
+        <div class="booking-detail">
+          <span class="detail-label">Payment Status:</span>
+          <span class="detail-value" style="color: var(--danger);">❌ Failed</span>
+        </div>
       `;
     }
-  </script>
 
+    function displayPaymentMethods() {
+      const methodsContainer = document.getElementById('payment-methods');
+      
+      if (typeof PaymentManager !== 'undefined') {
+        const methods = PaymentManager.getAvailablePaymentMethods();
+        methodsContainer.innerHTML = methods.map(method => `
+          <div class="payment-method" data-method="${method.id}">
+            <div class="payment-icon">${method.icon}</div>
+            <div class="payment-name">${method.name}</div>
+          </div>
+        `).join('');
+        
+        // Add click handlers
+        document.querySelectorAll('.payment-method').forEach(el => {
+          el.addEventListener('click', function() {
+            const method = this.dataset.method;
+            retryPaymentWithMethod(method);
+          });
+        });
+      } else {
+        methodsContainer.innerHTML = `
+          <div style="text-align: center; color: var(--muted);">
+            Payment options loading...
+          </div>
+        `;
+      }
+    }
+
+    function setupRetryHandler(booking) {
+      const retryBtn = document.getElementById('retry-btn');
+      retryBtn.addEventListener('click', function() {
+        retryBtn.disabled = true;
+        retryBtn.textContent = 'Processing...';
+        retryPayment(booking);
+      });
+    }
+
+    async function retryPayment(booking) {
+      try {
+        if (typeof PaymentManager !== 'undefined') {
+          const result = await PaymentManager.processPayment(booking);
+          PaymentManager.handlePaymentSuccess(result);
+        } else {
+          // Fallback: redirect to checkout
+          window.location.href = 'checkout.html';
+        }
+      } catch (error) {
+        console.error('Retry payment failed:', error);
+        alert('Payment failed. Please try again or contact support.');
+        
+        const retryBtn = document.getElementById('retry-btn');
+        retryBtn.disabled = false;
+        retryBtn.textContent = 'Retry Payment';
+      }
+    }
+
+    async function retryPaymentWithMethod(method) {
+      const booking = BookingManager.getBooking();
+      if (!booking) return;
+      
+      try {
+        // Show loading state on the selected method
+        const methodEl = document.querySelector(`[data-method="${method}"]`);
+        const originalHtml = methodEl.innerHTML;
+        methodEl.innerHTML = '<div style="color: var(--primary);">Processing...</div>';
+        methodEl.style.opacity = '0.7';
+        
+        const result = await PaymentManager.processPayment(booking, method);
+        PaymentManager.handlePaymentSuccess(result);
+      } catch (error) {
+        console.error(`Payment with ${method} failed:`, error);
+        
+        // Restore method element
+        const methodEl = document.querySelector(`[data-method="${method}"]`);
+        methodEl.innerHTML = `
+          <div class="payment-icon">💳</div>
+          <div class="payment-name">Card</div>
+        `;
+        methodEl.style.opacity = '1';
+        
+        // Show error
+        document.getElementById('error-info').style.display = 'block';
+        document.getElementById('error-message').textContent = error.message || 'Payment failed. Please try again.';
+      }
+    }
+
+    function displayFallbackMessage() {
+      const detailsEl = document.getElementById('booking-details');
+      detailsEl.innerHTML = `
+        <p style="text-align: center; color: var(--muted);">
+          Unable to retrieve booking details.<br>
+          Please return to the booking page to try again.
+        </p>
+      `;
+      
+      // Hide payment options
+      document.querySelector('.payment-options').style.display = 'none';
+    }
+
+    // Handle browser back button
+    window.addEventListener('pageshow', function(event) {
+      if (event.persisted) {
+        // Page was restored from bfcache, refresh to get latest booking data
+        location.reload();
+      }
+    });
+  </script>
 </body>
 </html>

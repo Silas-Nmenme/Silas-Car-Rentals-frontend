@@ -164,6 +164,7 @@
 </main>
 
   <script src="booking-fix-enhanced.js"></script>
+  <script src="payment-fix-enhanced.js"></script>
   <script>
 const API_BASE = "https://techyjaunt-auth-go43.onrender.com";
 const placeholderImage = "https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80";
@@ -347,41 +348,56 @@ async function initiatePayment() {
       throw new Error(bookingResult.error || 'Failed to submit booking');
     }
 
-    // Then initiate payment
-    const carIds = booking.isMultiCar ? 
-      booking.cars.map(car => car._id).join(',') : 
-      booking.car._id;
+    // Update booking with backend ID
+    booking._id = bookingResult.data?._id;
+    BookingManager.setBooking(booking);
 
-    const res = await fetch(`${API_BASE}/api/payment/pay`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization": `Bearer ${token}`
-      },
-      body: JSON.stringify({
-        bookingId: bookingResult.data?._id,
-        carIds: carIds,
-        email: booking.email,
-        phoneNumber: booking.phoneNumber,
-        pickupDate: booking.pickupDate,
-        returnDate: booking.returnDate,
-        totalAmount: booking.totalAmount
-      })
-    });
-
-    if (!res.ok) {
-      const errorData = await res.json().catch(() => ({}));
-      throw new Error(errorData.message || `Payment initiation failed: ${res.status}`);
-    }
-
-    const data = await res.json();
-    
-    const paymentLink = data.redirectUrl || data.paymentLink || data.paymentUrl;
-    if (paymentLink) {
-      window.location.href = paymentLink;
+    // Use enhanced payment system if available
+    if (typeof PaymentManager !== 'undefined') {
+      try {
+        const paymentResult = await PaymentManager.processPayment(booking);
+        PaymentManager.handlePaymentSuccess(paymentResult);
+      } catch (paymentError) {
+        console.error('Payment processing error:', paymentError);
+        PaymentManager.handlePaymentFailure(paymentError);
+      }
     } else {
-      showToast("Payment processed successfully! Redirecting to dashboard...", 3000, "#03dac5");
-      setTimeout(() => window.location.href = "dashboard.html", 2000);
+      // Fallback to original payment method
+      const carIds = booking.isMultiCar ? 
+        booking.cars.map(car => car._id).join(',') : 
+        booking.car._id;
+
+      const res = await fetch(`${API_BASE}/api/payment/pay`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`
+        },
+        body: JSON.stringify({
+          bookingId: booking._id,
+          carIds: carIds,
+          email: booking.email,
+          phoneNumber: booking.phoneNumber,
+          pickupDate: booking.pickupDate,
+          returnDate: booking.returnDate,
+          totalAmount: booking.totalAmount
+        })
+      });
+
+      if (!res.ok) {
+        const errorData = await res.json().catch(() => ({}));
+        throw new Error(errorData.message || `Payment initiation failed: ${res.status}`);
+      }
+
+      const data = await res.json();
+      
+      const paymentLink = data.redirectUrl || data.paymentLink || data.paymentUrl;
+      if (paymentLink) {
+        window.location.href = paymentLink;
+      } else {
+        showToast("Payment processed successfully! Redirecting to dashboard...", 3000, "#03dac5");
+        setTimeout(() => window.location.href = "dashboard.html", 2000);
+      }
     }
   } catch (err) {
     console.error("Payment error:", err);
