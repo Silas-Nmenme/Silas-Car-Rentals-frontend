@@ -137,6 +137,15 @@
       box-shadow: 0 10px 15px rgba(0,0,0,0.1);
     }
     
+    .card-car {
+      transition: all 0.3s;
+    }
+    
+    .card-car:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 20px rgba(0,0,0,0.15) !important;
+    }
+    
     .footer {
       background: #1a1a1a;
       color: #fff;
@@ -194,16 +203,14 @@
         </ul>
         
         <div class="d-flex">
-          <button class="btn btn-sm btn-ghost me-2" onclick="window.location.href='cart.html'" style="position: relative;">
-            <i class="fas fa-shopping-cart me-1"></i>
-            <span class="d-none d-sm-inline">Cart</span>
-            <span class="visually-hidden">View Cart</span>
+          <button class="btn btn-sm btn-ghost me-2" onclick="window.location.href='cart.html'" style="position: relative;" aria-label="View Cart">
+            <i class="fas fa-shopping-cart me-1" aria-hidden="true"></i>
+            Cart
             <span id="cart-count" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">0</span>
           </button>
-          <button class="btn btn-sm btn-primary" onclick="window.location.href='dashboard.html'">
-            <i class="fas fa-user me-1"></i>
-            <span class="d-none d-sm-inline">My Account</span>
-            <span class="visually-hidden">Access My Account</span>
+          <button class="btn btn-sm btn-primary" onclick="window.location.href='dashboard.html'" aria-label="My Account">
+            <i class="fas fa-user me-1" aria-hidden="true"></i>
+            My Account
           </button>
         </div>
       </div>
@@ -213,8 +220,12 @@
   <!-- HERO SECTION -->
   <section class="booking-hero">
     <div class="container">
-      <h1>Book Your Perfect Car</h1>
-      <p>Simple and quick booking process</p>
+      <div class="row justify-content-center">
+        <div class="col-lg-8 text-center">
+          <h1 class="display-4 fw-bold mb-3">Book Your Perfect Car</h1>
+          <p class="lead">Simple and quick booking process</p>
+        </div>
+      </div>
     </div>
   </section>
 

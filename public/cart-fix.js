@@ -102,6 +102,7 @@
         
         updateDisplay: function() {
             // Update all cart count displays across the site
+            this.updateCartSummary(); // Ensure summary is updated when display is updated
             const cartCountElements = document.querySelectorAll('#cart-count');
             const count = this.getCount();
             
