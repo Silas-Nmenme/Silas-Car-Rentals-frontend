@@ -247,6 +247,23 @@
     </div>
   </div>
 
+  <!-- Booking Modal -->
+  <div class="modal fade" id="bookingModal" tabindex="-1" aria-labelledby="bookingModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="bookingModalLabel">Complete Your Booking</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div id="booking-modal-content">
+            <!-- Booking form will be loaded here -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- Bootstrap JS CDN -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
   <script src="cart-fix.js"></script>
@@ -279,7 +296,7 @@
 
     // Enhanced cart page functionality
     document.addEventListener('DOMContentLoaded', function() {
-      // Proceed directly to checkout.html (not book.html)
+      // Open booking modal instead of proceeding directly to checkout
       async function handleCartCheckout() {
         const user = getCurrentUser();
         if (!user || !user.token) {
@@ -292,22 +309,190 @@
           showToast('Your cart is empty.');
           return;
         }
+        
+        // Open the booking modal
+        openBookingModal();
+      }
+
+      // Function to open booking modal
+      function openBookingModal() {
+        const modal = new bootstrap.Modal(document.getElementById('bookingModal'));
+        modal.show();
+        
+        // Load booking form content
+        loadBookingForm();
+      }
+
+      // Function to load booking form into modal
+      function loadBookingForm() {
+        const modalContent = document.getElementById('booking-modal-content');
+        modalContent.innerHTML = `
+          <div class="container-fluid">
+            <form id="cart-booking-form">
+              <!-- Contact Information -->
+              <div class="mb-3">
+                <label for="cart-email" class="form-label">Email Address *</label>
+                <input type="email" id="cart-email" name="email" class="form-control" required placeholder="your.email@example.com" />
+                <div class="error-message" id="cart-email-error"></div>
+              </div>
+              
+              <div class="mb-3">
+                <label for="cart-phone" class="form-label">Phone Number *</label>
+                <input type="tel" id="cart-phone" name="phone_number" class="form-control" required placeholder="+2348012345678" />
+                <div class="error-message" id="cart-phone-error"></div>
+              </div>
+              
+              <!-- Booking Details -->
+              <div class="row">
+                <div class="col-md-6 mb-3">
+                  <label for="cart-pickup-date" class="form-label">Pickup Date *</label>
+                  <input type="date" id="cart-pickup-date" name="pickup_date" class="form-control" required />
+                  <div class="error-message" id="cart-pickup-date-error"></div>
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label for="cart-return-date" class="form-label">Return Date *</label>
+                  <input type="date" id="cart-return-date" name="return_date" class="form-control" required />
+                  <div class="error-message" id="cart-return-date-error"></div>
+                </div>
+              </div>
+              
+              <button type="submit" class="btn btn-primary btn-lg w-100" id="cart-submit-btn">
+                Proceed to Checkout
+              </button>
+            </form>
+          </div>
+        `;
+        
+        // Set minimum date to today
+        const today = new Date().toISOString().split('T')[0];
+        document.getElementById('cart-pickup-date').min = today;
+        document.getElementById('cart-return-date').min = today;
+        
+        // Auto-set return date to 1 day after pickup
+        document.getElementById('cart-pickup-date').addEventListener('change', function() {
+          const returnDate = document.getElementById('cart-return-date');
+          const pickup = new Date(this.value);
+          const nextDay = new Date(pickup);
+          nextDay.setDate(nextDay.getDate() + 1);
+          returnDate.min = this.value;
+          if (!returnDate.value || new Date(returnDate.value) <= pickup) {
+            returnDate.value = nextDay.toISOString().split('T')[0];
+          }
+        });
+        
+        // Pre-fill user info
+        const user = getCurrentUser();
+        if (user) {
+          document.getElementById('cart-email').value = user.email || '';
+          // Try to get phone from user data or localStorage
+          const phone = user.phone || localStorage.getItem('userPhone') || '';
+          if (phone) {
+            document.getElementById('cart-phone').value = phone;
+          }
+        }
+        
+        // Handle form submission
+        document.getElementById('cart-booking-form').addEventListener('submit', function(e) {
+          e.preventDefault();
+          handleBookingFormSubmit();
+        });
+      }
+
+      // Function to handle booking form submission
+      function handleBookingFormSubmit() {
+        // Clear previous errors
+        document.querySelectorAll('.error-message').forEach(el => el.textContent = '');
+        
+        // Get form values
+        const email = document.getElementById('cart-email').value.trim();
+        const phone = document.getElementById('cart-phone').value.trim();
+        const startDate = document.getElementById('cart-pickup-date').value;
+        const endDate = document.getElementById('cart-return-date').value;
+        const cart = CartManager.getItems();
+        const user = getCurrentUser();
+        
+        // Validate form
+        let isValid = true;
+        if (!email) {
+          document.getElementById('cart-email-error').textContent = 'Email is required';
+          isValid = false;
+        } else if (!isValidEmail(email)) {
+          document.getElementById('cart-email-error').textContent = 'Please enter a valid email address';
+          isValid = false;
+        }
+        if (!phone) {
+          document.getElementById('cart-phone-error').textContent = 'Phone number is required';
+          isValid = false;
+        }
+        if (!startDate) {
+          document.getElementById('cart-pickup-date-error').textContent = 'Pickup date is required';
+          isValid = false;
+        }
+        if (!endDate) {
+          document.getElementById('cart-return-date-error').textContent = 'Return date is required';
+          isValid = false;
+        }
+        if (startDate && endDate && new Date(endDate) <= new Date(startDate)) {
+          document.getElementById('cart-return-date-error').textContent = 'Return date must be after pickup date';
+          isValid = false;
+        }
+        if (!isValid) return;
+        
+        // Save phone to localStorage for future use
+        localStorage.setItem('userPhone', phone);
+        
+        // Create booking data
         try {
           const bookingData = {
+            userId: user.id,
             isMultiCar: cart.length > 1,
-            cars: cart,
+            cars: cart.length > 1 ? cart : undefined,
             car: cart.length === 1 ? cart[0] : undefined,
+            pickupDate: startDate,
+            returnDate: endDate,
+            phoneNumber: phone,
+            email: email,
             source: 'cart',
-            // let checkout collect/confirm dates & contact if not already set
+            // Calculate days and total amount
+            days: calculateDays(startDate, endDate),
+            totalAmount: calculateTotalAmount(cart, startDate, endDate)
           };
+          
+          // Set booking using BookingManager
           BookingManager.setBooking(bookingData);
-          // also drop a compatible fallback for pages that don't load BookingManager in time
+          
+          // Also save to sessionStorage as fallback
           sessionStorage.setItem('booking', JSON.stringify(bookingData));
+          
+          // Close modal and redirect to checkout
+          const modal = bootstrap.Modal.getInstance(document.getElementById('bookingModal'));
+          modal.hide();
           window.location.href = 'checkout.html';
         } catch (e) {
           console.error(e);
-          showToast('Could not proceed to checkout.');
+          showToast('Could not process booking. Please try again.');
         }
+      }
+      
+      // Function to validate email
+      function isValidEmail(email) {
+        const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return re.test(String(email).toLowerCase());
+      }
+      
+      // Function to calculate days between dates
+      function calculateDays(startDate, endDate) {
+        if (!startDate || !endDate) return 1;
+        const start = new Date(startDate);
+        const end = new Date(endDate);
+        const days = Math.ceil((end - start) / (1000 * 60 * 60 * 24));
+        return Math.max(1, days);
+      }
+      
+      // Function to calculate total amount
+      function calculateTotalAmount(cart, startDate, endDate) {
+        const days = calculateDays(startDate, endDate);
+        return cart.reduce((total, car) => total + (car.price || 0) * days, 0);
       }
 
       // Initialize cart display using CartManager
