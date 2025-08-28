@@ -124,32 +124,33 @@
             
             if (!cart.length) {
                 container.innerHTML = `
-                    <div style="text-align: center; padding: 2rem;">
+                    <div class="empty-cart">
+                        <i class="fas fa-shopping-cart"></i>
                         <h3>Your cart is empty</h3>
                         <p>Browse our cars and add some to your cart!</p>
-                        <button class="btn" onclick="window.location.href='cars.html'">Browse Cars</button>
+                        <button class="btn btn-primary" onclick="window.location.href='cars.html'">Browse Cars</button>
                     </div>
                 `;
                 return;
             }
             
             container.innerHTML = cart.map((car, index) => `
-                <div class="car-card" data-car-id="${car._id}">
-                    <img src="${car.image}" alt="${car.make} ${car.model}" style="width:100%; height:200px; object-fit:cover; border-radius:8px;">
-                    <div style="padding: 1rem;">
-                        <h3>${car.make} ${car.model}</h3>
-                        <p style="color: var(--muted);">${car.year} • ${car.color}</p>
-                        <p style="font-size: 1.2rem; font-weight: bold; color: var(--primary);">
-                            ₦${car.price.toLocaleString()}/day
-                        </p>
-                        <p style="font-size: 0.9rem; color: var(--muted); margin: 0.5rem 0;">
+                <div class="cart-item d-flex flex-column flex-md-row gap-4">
+                    <div class="cart-item-img-container" style="flex: 0 0 200px;">
+                        <img src="${car.image}" alt="${car.make} ${car.model}" class="cart-item-img">
+                    </div>
+                    <div class="cart-item-details flex-grow-1">
+                        <h3 class="cart-item-title">${car.make} ${car.model}</h3>
+                        <p class="text-muted">${car.year} • ${car.color}</p>
+                        <p class="cart-item-price">₦${car.price.toLocaleString()}/day</p>
+                        <p class="text-muted" style="margin: 0.5rem 0;">
                             ${car.description}
                         </p>
-                        <div style="display: flex; gap: 8px; flex-wrap: wrap; margin-top: 1rem;">
-                            <button class="btn" onclick="window.location.href='book.html?carId=${car._id}'">
+                        <div class="d-flex gap-2 flex-wrap mt-3">
+                            <button class="btn btn-primary" onclick="window.location.href='book.html?carId=${car._id}'" title="Book this car">
                                 Book Now
                             </button>
-                            <button class="btn btn-outline" onclick="CartManager.remove('${car._id}')">
+                            <button class="btn btn-outline" onclick="CartManager.remove('${car._id}')" title="Remove this car from cart">
                                 Remove
                             </button>
                         </div>

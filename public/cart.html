@@ -4,116 +4,317 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>My Cart - Silas Car Rentals</title>
-  <link rel="stylesheet" href="style.css" />
-  <script src="cart-fix.js"></script>
-  <script src="booking-fix-enhanced.js"></script>
-</head>
-<body>
-<header class="navbar">
-  <div class="container nav-inner">
-    <a href="index.html" class="brand">
-      <div class="brand-mark">SC</div>
-      <span class="brand-name">Silas Car Rentals</span>
-    </a>
-    <nav class="nav-links">
-      <a class="nav-link" href="index.html#browse">Browse</a>
-      <a class="nav-link" href="book.html">Book</a>
-    </nav>
-    <div class="nav-actions">
-      <button class="btn btn-ghost" onclick="location.href='cart.html'">🧾 Cart (<span id="cart-count">0</span>)</button>
-      <button class="btn btn-ghost" onclick="location.href='wishlist.html'">❤️ Wishlist (<span id="wishlist-count">0</span>)</button>
-      <button class="btn btn-ghost" onclick="location.href='saved.html'">💾 Saved (<span id="saved-count">0</span>)</button>
-    </div>
-  </div>
-</header>
-
-<main class="section container">
-  <h1>My Booking Cart</h1>
-  <div style="display: flex; gap: 1rem; margin-bottom: 1rem; flex-wrap: wrap;">
-    <button class="btn btn-outline" onclick="CartManager.clear()">Clear Cart</button>
-    <button class="btn" onclick="window.location.href='cars.html'">Continue Shopping</button>
-  </div>
-  <div id="cart-items" class="grid" style="gap:20px; margin-top:20px;"></div>
-  
-  <!-- Cart Summary -->
-    <div id="cart-summary" style="margin-top: 2rem; padding: 1.5rem; background: #1f1f1f; border-radius: 8px; display: block;">
-    <h3>Cart Summary</h3>
-    <div style="display: flex; justify-content: space-between; align-items: center; margin: 1rem 0;">
-      <span>Total Items:</span>
-      <span id="cart-total-items">0</span>
-    </div>
-    <div style="display: flex; justify-content: space-between; align-items: center; margin: 1rem 0;">
-      <span>Estimated Total:</span>
-      <span id="cart-total-price">₦0</span>
-    </div>
-    <button class="btn" style="width: 100%; margin-top: 1rem;" id="cart-checkout-btn">
-      Proceed to Checkout
-    </button>
-  </div>
-</main>
-
-<div class="toast" id="toast"></div>
-
-<script>
-// --- Auth helper (unifies everywhere) ---
-function getCurrentUser() {
-  // Preferred: a single 'user' JSON with { id, token, email, ... }
-  try {
-    const u = JSON.parse(localStorage.getItem('user') || 'null');
-    if (u && (u.token || u.id)) return u;
-  } catch {}
-  // Back-compat for older pages:
-  const legacyToken = localStorage.getItem('authToken') || localStorage.getItem('userToken') || localStorage.getItem('token');
-  if (legacyToken) return { token: legacyToken };
-  return null;
-}
-
-function showToast(msg, ms=2500) {
-  const t = document.getElementById('toast');
-  if (!t) return;
-  t.textContent = msg;
-  t.classList.add('show');
-  setTimeout(()=>t.classList.remove('show'), ms);
-}
-
-  // Enhanced cart page functionality
-  document.addEventListener('DOMContentLoaded', function() {
-    // Proceed directly to checkout.html (not book.html)
-    async function handleCartCheckout() {
-      const user = getCurrentUser();
-      if (!user || !user.token) {
-        showToast('Please login to continue');
-        setTimeout(()=>window.location.href='login.html', 900);
-        return;
+  <!-- Bootstrap CSS CDN -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Font Awesome CDN -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #0d6efd;
+      --secondary: #6c757d;
+      --success: #198754;
+      --danger: #dc3545;
+      --warning: #ffc107;
+      --info: #0dcaf0;
+      --light: #f8f9fa;
+      --dark: #212529;
+      --border-radius: 12px;
+      --box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+    }
+    
+    body {
+      font-family: 'Roboto', sans-serif;
+      background-color: #f8f9fa;
+      color: #212529;
+    }
+    
+    .navbar {
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
+    
+    .brand-mark {
+      font-weight: 700;
+      background: linear-gradient(135deg, #0d6efd, #6610f2);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    
+    .section {
+      padding: 2rem 0;
+    }
+    
+    .cart-container {
+      background: white;
+      border-radius: var(--border-radius);
+      box-shadow: var(--box-shadow);
+      padding: 2rem;
+      margin-bottom: 2rem;
+    }
+    
+    .cart-item {
+      border-bottom: 1px solid #e9ecef;
+      padding: 1.5rem 0;
+    }
+    
+    .cart-item:last-child {
+      border-bottom: none;
+    }
+    
+    .cart-item-img {
+      width: 100%;
+      height: 150px;
+      object-fit: cover;
+      border-radius: 8px;
+    }
+    
+    .cart-item-title {
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+    }
+    
+    .cart-item-price {
+      font-weight: 700;
+      color: var(--primary);
+    }
+    
+    .cart-summary {
+      background: #f8f9fa;
+      border-radius: var(--border-radius);
+      padding: 1.5rem;
+      box-shadow: var(--box-shadow);
+    }
+    
+    .btn-checkout {
+      background: linear-gradient(135deg, #0d6efd, #6610f2);
+      border: none;
+      color: white;
+      font-weight: 600;
+      padding: 0.75rem 1.5rem;
+      border-radius: 50px;
+      transition: all 0.3s ease;
+    }
+    
+    .btn-checkout:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 15px rgba(13, 110, 253, 0.4);
+    }
+    
+    .btn-outline {
+      border: 1px solid #dee2e6;
+      color: #6c757d;
+    }
+    
+    .btn-outline:hover {
+      background: #e9ecef;
+    }
+    
+    .toast {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      min-width: 250px;
+      z-index: 1050;
+    }
+    
+    .empty-cart {
+      text-align: center;
+      padding: 3rem 1rem;
+    }
+    
+    .empty-cart i {
+      font-size: 5rem;
+      color: #ced4da;
+      margin-bottom: 1rem;
+    }
+    
+    .empty-cart h3 {
+      color: #6c757d;
+      margin-bottom: 1rem;
+    }
+    
+    footer {
+      background: #212529;
+      color: #f8f9fa;
+    }
+    
+    @media (max-width: 768px) {
+      .cart-container {
+        padding: 1rem;
       }
-      const cart = CartManager.getItems();
-      if (!cart.length) {
-        showToast('Your cart is empty.');
-        return;
-      }
-      try {
-        const bookingData = {
-          isMultiCar: cart.length > 1,
-          cars: cart,
-          car: cart.length === 1 ? cart[0] : undefined,
-          source: 'cart',
-          // let checkout collect/confirm dates & contact if not already set
-        };
-        BookingManager.setBooking(bookingData);
-        // also drop a compatible fallback for pages that don't load BookingManager in time
-        sessionStorage.setItem('booking', JSON.stringify(bookingData));
-        window.location.href = 'checkout.html';
-      } catch (e) {
-        console.error(e);
-        showToast('Could not proceed to checkout.');
+      
+      .cart-item-img {
+        height: 100px;
       }
     }
+  </style>
+</head>
+<body>
+  <header class="navbar navbar-expand-lg navbar-light bg-white">
+    <div class="container">
+      <a href="index.html" class="navbar-brand d-flex align-items-center">
+        <div class="brand-mark">SC</div>
+        <span class="brand-name ms-2 fw-bold">Silas Car Rentals</span>
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="index.html#browse">Browse</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="book.html">Book</a>
+          </li>
+          <li class="nav-item">
+            <button class="btn btn-sm btn-outline-primary ms-2" onclick="location.href='cart.html'" title="View Cart">
+              <i class="fas fa-shopping-cart"></i> Cart (<span id="cart-count">0</span>)
+            </button>
+          </li>
+          <li class="nav-item">
+            <button class="btn btn-sm btn-outline-danger ms-2" onclick="location.href='wishlist.html'" title="View Wishlist">
+              <i class="fas fa-heart"></i> Wishlist (<span id="wishlist-count">0</span>)
+            </button>
+          </li>
+          <li class="nav-item">
+            <button class="btn btn-sm btn-outline-success ms-2" onclick="location.href='saved.html'" title="View Saved Cars">
+              <i class="fas fa-bookmark"></i> Saved (<span id="saved-count">0</span>)
+            </button>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </header>
 
-    // Initialize cart display using CartManager
-    CartManager.updateDisplay();
-    const checkoutBtn = document.getElementById('cart-checkout-btn');
-    if (checkoutBtn) checkoutBtn.onclick = handleCartCheckout;
-  });
-</script>
+  <main class="section">
+    <div class="container">
+      <h1 class="mb-4">My Booking Cart</h1>
+      
+      <div class="row">
+        <div class="col-lg-8">
+          <div class="cart-container">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+              <button class="btn btn-outline" onclick="CartManager.clear()" title="Clear all items from cart">
+                <i class="fas fa-trash"></i> Clear Cart
+              </button>
+              <button class="btn btn-primary" onclick="window.location.href='cars.html'" title="Continue shopping for cars">
+                <i class="fas fa-arrow-left"></i> Continue Shopping
+              </button>
+            </div>
+            
+            <div id="cart-items">
+              <!-- Cart items will be dynamically inserted here -->
+            </div>
+          </div>
+        </div>
+        
+        <div class="col-lg-4">
+          <div class="cart-summary">
+            <h3 class="mb-4">Cart Summary</h3>
+            <div class="d-flex justify-content-between align-items-center mb-2">
+              <span>Total Items:</span>
+              <span id="cart-total-items">0</span>
+            </div>
+            <div class="d-flex justify-content-between align-items-center mb-4">
+              <span>Estimated Total:</span>
+              <span id="cart-total-price" class="fw-bold">₦0</span>
+            </div>
+            <button class="btn btn-checkout w-100" id="cart-checkout-btn" title="Proceed to checkout">
+              Proceed to Checkout
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="py-4 mt-5">
+    <div class="container text-center">
+      <p class="mb-0">&copy; 2025 Silas Car Rentals. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <div class="toast" id="toast" role="alert" aria-live="assertive" aria-atomic="true">
+    <div class="toast-header">
+      <strong class="me-auto">Notification</strong>
+      <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+    </div>
+    <div class="toast-body" id="toast-message">
+      <!-- Toast message will be inserted here -->
+    </div>
+  </div>
+
+  <!-- Bootstrap JS CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="cart-fix.js"></script>
+  <script src="booking-fix-enhanced.js"></script>
+  
+  <script>
+    // --- Auth helper (unifies everywhere) ---
+    function getCurrentUser() {
+      // Preferred: a single 'user' JSON with { id, token, email, ... }
+      try {
+        const u = JSON.parse(localStorage.getItem('user') || 'null');
+        if (u && (u.token || u.id)) return u;
+      } catch {}
+      // Back-compat for older pages:
+      const legacyToken = localStorage.getItem('authToken') || localStorage.getItem('userToken') || localStorage.getItem('token');
+      if (legacyToken) return { token: legacyToken };
+      return null;
+    }
+
+    function showToast(msg, ms=2500) {
+      const toastEl = document.getElementById('toast');
+      const toastMessage = document.getElementById('toast-message');
+      
+      if (!toastEl || !toastMessage) return;
+      
+      toastMessage.textContent = msg;
+      const bsToast = new bootstrap.Toast(toastEl, { delay: ms });
+      bsToast.show();
+    }
+
+    // Enhanced cart page functionality
+    document.addEventListener('DOMContentLoaded', function() {
+      // Proceed directly to checkout.html (not book.html)
+      async function handleCartCheckout() {
+        const user = getCurrentUser();
+        if (!user || !user.token) {
+          showToast('Please login to continue');
+          setTimeout(()=>window.location.href='login.html', 900);
+          return;
+        }
+        const cart = CartManager.getItems();
+        if (!cart.length) {
+          showToast('Your cart is empty.');
+          return;
+        }
+        try {
+          const bookingData = {
+            isMultiCar: cart.length > 1,
+            cars: cart,
+            car: cart.length === 1 ? cart[0] : undefined,
+            source: 'cart',
+            // let checkout collect/confirm dates & contact if not already set
+          };
+          BookingManager.setBooking(bookingData);
+          // also drop a compatible fallback for pages that don't load BookingManager in time
+          sessionStorage.setItem('booking', JSON.stringify(bookingData));
+          window.location.href = 'checkout.html';
+        } catch (e) {
+          console.error(e);
+          showToast('Could not proceed to checkout.');
+        }
+      }
+
+      // Initialize cart display using CartManager
+      CartManager.updateDisplay();
+      const checkoutBtn = document.getElementById('cart-checkout-btn');
+      if (checkoutBtn) checkoutBtn.onclick = handleCartCheckout;
+    });
+  </script>
 </body>
 </html>
