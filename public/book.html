@@ -2,202 +2,104 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Book a Car - Silas Car Rentals</title>
-  <link rel="stylesheet" href="style.css" />
+  <!-- Bootstrap CSS CDN -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Font Awesome CDN -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
   <style>
-    /* Enhanced Header Styles */
+    body {
+      font-family: 'Poppins', sans-serif;
+      background-color: #f8f9fa;
+    }
+    
     .navbar {
-      background: rgba(13, 17, 22, 0.85);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
-    }
-    
-    .nav-inner {
-      height: 72px;
-      gap: 24px;
-    }
-    
-    .brand {
-      transition: transform 0.2s ease;
-    }
-    
-    .brand:hover {
-      transform: translateY(-1px);
+      background: linear-gradient(135deg, #16a34a, #15803d) !important;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     }
     
     .brand-mark {
       width: 40px;
       height: 40px;
-      background: linear-gradient(135deg, #16a34a, #15803d);
-      border-radius: 12px;
-      box-shadow: 0 4px 12px rgba(22, 163, 74, 0.3);
-      transition: all 0.3s ease;
-    }
-    
-    .brand:hover .brand-mark {
-      transform: rotate(5deg);
-      box-shadow: 0 6px 16px rgba(22, 163, 74, 0.4);
+      background: white;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
     
     .brand-name {
-      font-size: 1.25rem;
-      font-weight: 800;
-      background: linear-gradient(135deg, #e8edf2, #b9c2cc);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-    }
-    
-    .nav-links {
-      display: flex;
-      gap: 32px;
-      align-items: center;
+      color: white;
+      font-weight: 700;
+      font-size: 1.3rem;
     }
     
     .nav-link {
-      position: relative;
-      font-weight: 600;
-      font-size: 0.95rem;
-      color: var(--muted);
-      text-decoration: none;
-      transition: all 0.3s ease;
-      padding: 8px 0;
-    }
-    
-    .nav-link::after {
-      content: '';
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      width: 0;
-      height: 2px;
-      background: linear-gradient(90deg, #16a34a, #23c277);
-      transition: width 0.3s ease;
+      color: rgba(255, 255, 255, 0.85) !important;
+      font-weight: 500;
+      transition: all 0.3s;
     }
     
     .nav-link:hover {
-      color: var(--text);
+      color: white !important;
     }
     
-    .nav-link:hover::after,
-    .nav-link.active::after {
-      width: 100%;
+    .btn-ghost {
+      background: transparent;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      color: white;
     }
     
-    .nav-actions {
-      display: flex;
-      gap: 16px;
-      align-items: center;
-    }
-    
-    .nav-actions .btn-sm {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      font-weight: 600;
-      font-size: 0.875rem;
-      transition: all 0.3s ease;
-      border-radius: 8px;
-      padding: 8px 16px;
-    }
-    
-    .nav-actions .btn-ghost:hover {
-      background: rgba(255, 255, 255, 0.08);
-      border-color: rgba(255, 255, 255, 0.2);
-      transform: translateY(-1px);
-    }
-    
-    .nav-actions .btn-primary {
-      background: linear-gradient(135deg, #16a34a, #15803d);
-      border: none;
-      box-shadow: 0 4px 12px rgba(22, 163, 74, 0.3);
-    }
-    
-    .nav-actions .btn-primary:hover {
-      background: linear-gradient(135deg, #15803d, #16a34a);
-      transform: translateY(-1px);
-      box-shadow: 0 6px 16px rgba(22, 163, 74, 0.4);
-    }
-    
-    /* Responsive improvements */
-    @media (max-width: 768px) {
-      .nav-inner {
-        height: 64px;
-        gap: 16px;
-      }
-      
-      .brand-name {
-        font-size: 1.1rem;
-      }
-      
-      .nav-actions {
-        gap: 8px;
-      }
-      
-      .nav-actions .btn-sm {
-        padding: 6px 12px;
-        font-size: 0.8rem;
-      }
+    .btn-ghost:hover {
+      background: rgba(255, 255, 255, 0.1);
     }
     
     .booking-hero {
       background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
       color: white;
-      padding: 3rem 0;
+      padding: 4rem 0;
       text-align: center;
+      margin-bottom: 2rem;
     }
     
     .booking-form {
-      background: rgb(79, 188, 186);
+      background: white;
       border-radius: 15px;
       box-shadow: 0 10px 30px rgba(0,0,0,0.1);
       padding: 2rem;
       margin: 2rem 0;
-      max-width: 600px;
-      margin-left: auto;
-      margin-right: auto;
     }
     
-    .form-group {
-      margin-bottom: 1.5rem;
+    .form-control, .form-select {
+      border: 1px solid #e1e5eb;
+      border-radius: 10px;
+      padding: 0.75rem 1rem;
+      transition: all 0.3s;
     }
     
-    .form-group label {
-      display: block;
+    .form-control:focus, .form-select:focus {
+      border-color: #16a34a;
+      box-shadow: 0 0 0 0.25rem rgba(22, 163, 74, 0.25);
+    }
+    
+    .btn-primary {
+      background: linear-gradient(135deg, #16a34a, #15803d);
+      border: none;
+      border-radius: 10px;
+      padding: 0.75rem 1.5rem;
       font-weight: 600;
-      margin-bottom: 0.5rem;
-      color: #333;
+      transition: all 0.3s;
     }
     
-    .form-group input,
-    .form-group select {
-      width: 100%;
-      padding: 0.75rem;
-      border: 1px solid #ddd;
-      border-radius: 8px;
-      font-size: 1rem;
-    }
-    
-    .form-group input:focus,
-    .form-group select:focus {
-      outline: none;
-      border-color: #007bff;
-      box-shadow: 0 0 0 3px rgba(0,123,255,0.1);
-    }
-    
-    .form-row {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 1rem;
-    }
-    
-    .loading {
-      display: none;
-      text-align: center;
-      padding: 1rem;
+    .btn-primary:hover {
+      background: linear-gradient(135deg, #15803d, #16a34a);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(22, 163, 74, 0.3);
     }
     
     .error-message {
@@ -208,67 +110,61 @@
     
     .car-selector {
       margin-bottom: 2rem;
-      padding: 1rem;
+      padding: 1.5rem;
       background: #f8f9fa;
-      border-radius: 8px;
+      border-radius: 10px;
     }
     
-    .car-selector label {
-      display: block;
-      font-weight: 600;
-      margin-bottom: 0.5rem;
-      color: #333;
-    }
-
     .selected-cars-display {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-      gap: 1rem;
-      margin-top: 0.5rem;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 1.5rem;
+      margin-top: 1rem;
     }
-
+    
     .car-id-box {
-      background: #e8f5e8;
-      border: 2px solid #4caf50;
-      border-radius: 8px;
-      padding: 1rem;
+      background: white;
+      border: 1px solid #e1e5eb;
+      border-radius: 10px;
+      padding: 1.5rem;
       text-align: center;
-      font-weight: 600;
-      color: #2e7d32;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+      transition: all 0.3s;
     }
-
-    .car-id-box.single {
-      background: #e3f2fd;
-      border-color: #2196f3;
-      color: #1565c0;
+    
+    .car-id-box:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 15px rgba(0,0,0,0.1);
     }
-
-    .car-details-box {
-      background: #f8f9fa;
-      border: 1px solid #dee2e6;
-      border-radius: 8px;
-      padding: 1rem;
-      margin-top: 0.5rem;
+    
+    .footer {
+      background: #1a1a1a;
+      color: #fff;
+      padding: 2rem 0;
+      margin-top: 3rem;
     }
-
-    .car-details-box h4 {
-      margin: 0 0 0.5rem 0;
-      color: #333;
-    }
-
-    .car-details-box p {
-      margin: 0.25rem 0;
-      font-size: 0.9rem;
-      color: #666;
+    
+    @media (max-width: 768px) {
+      .booking-hero {
+        padding: 2rem 0;
+      }
+      
+      .booking-form {
+        padding: 1.5rem;
+      }
+      
+      .selected-cars-display {
+        grid-template-columns: 1fr;
+      }
     }
   </style>
 </head>
 <body>
   <!-- HEADER -->
-  <header class="navbar">
-    <div class="container nav-inner">
-      <a href="index.html" class="brand">
-        <div class="brand-mark">
+  <header class="navbar navbar-expand-lg">
+    <div class="container">
+      <a href="index.html" class="navbar-brand d-flex align-items-center">
+        <div class="brand-mark me-2">
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M19 17H21C21.5523 17 22 17.4477 22 18V20C22 20.5523 21.5523 21 21 21H19C19 19.3431 17.6569 18 16 18C14.3431 18 13 19.3431 13 21H11C11 19.3431 9.65685 18 8 18C6.34315 18 5 19.3431 5 21H3C2.44772 21 2 20.5523 2 20V18C2 17.4477 2.44772 17 3 17H5C5 15.3431 6.34315 14 8 14C9.65685 14 11 15.3431 11 17H13C13 15.3431 14.3431 14 16 14C17.6569 14 19 15.3431 19 17Z" fill="currentColor"/>
             <path d="M16 8C16 6.34315 14.6569 5 13 5H11C9.34315 5 8 6.34315 8 8H6C4.34315 8 3 9.34315 3 11V13C3 14.6569 4.34315 16 6 16H18C19.6569 16 21 14.6569 21 13V11C21 9.34315 19.6569 8 18 8H16Z" fill="currentColor"/>
@@ -277,27 +173,39 @@
         <span class="brand-name">Silas Car Rentals</span>
       </a>
       
-      <nav class="nav-links">
-        <a href="index.html" class="nav-link">Home</a>
-        <a href="cars.html" class="nav-link">Browse Cars</a>
-        <a href="about.html" class="nav-link">About</a>
-        <a href="contact.html" class="nav-link">Contact</a>
-      </nav>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
       
-      <div class="nav-actions">
-        <button class="btn-sm btn-ghost" onclick="window.location.href='cart.html'" style="position: relative;">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="margin-right: 4px;">
-            <path d="M9 2C7.89543 2 7 2.89543 7 4C7 5.10457 7.89543 6 9 6H11L13.5858 11.4142C14.3668 12.1953 14.3668 13.8047 13.5858 14.5858L12 16.1716L10.4142 14.5858C9.63317 13.8047 9.63317 12.1953 10.4142 11.4142L10.8284 11H7C5.89543 11 5 11.8954 5 13C5 14.1046 5.89543 15 7 15H12L14.5858 20.5858C15.3668 21.3668 16.1953 22 17 22H21C22.1046 22 23 21.1046 23 20C23 18.8954 22.1046 18 21 18H17.8284L16.4142 15H19C20.1046 15 21 14.1046 21 13C21 11.8954 20.1046 11 19 11H15.1716L14.7574 10.1716C14.5858 9.8047 14.5858 9.1953 14.7574 8.82843L15.1716 8H19C20.1046 8 21 7.10457 21 6C21 4.89543 20.1046 4 19 4H9Z" fill="currentColor"/>
-          </svg>
-          Cart
-          <span id="cart-count" style="position: absolute; top: -8px; right: -8px; background: var(--danger); color: white; border-radius: 50%; width: 18px; height: 18px; font-size: 11px; display: flex; align-items: center; justify-content: center; font-weight: bold;">0</span>
-        </button>
-        <button class="btn-sm btn-primary" onclick="window.location.href='dashboard.html'">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="margin-right: 4px;">
-            <path d="M12 2C6.48 2 2 6.48 2 12C2 17.52 6.48 22 12 22C17.52 22 22 17.52 22 12C22 6.48 17.52 2 12 2ZM12 5C13.66 5 15 6.34 15 8C15 9.66 13.66 11 12 11C10.34 11 9 9.66 9 8C9 6.34 10.34 5 12 5ZM12 19.2C9.5 19.2 7.29 17.92 6 15.98C6.03 13.99 10 12.9 12 12.9C13.99 12.9 17.97 13.99 18 15.98C16.71 17.92 14.5 19.2 12 19.2Z" fill="currentColor"/>
-          </svg>
-          My Account
-        </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav me-auto">
+          <li class="nav-item">
+            <a href="index.html" class="nav-link">Home</a>
+          </li>
+          <li class="nav-item">
+            <a href="cars.html" class="nav-link">Browse Cars</a>
+          </li>
+          <li class="nav-item">
+            <a href="about.html" class="nav-link">About</a>
+          </li>
+          <li class="nav-item">
+            <a href="contact.html" class="nav-link">Contact</a>
+          </li>
+        </ul>
+        
+        <div class="d-flex">
+          <button class="btn btn-sm btn-ghost me-2" onclick="window.location.href='cart.html'" style="position: relative;">
+            <i class="fas fa-shopping-cart me-1"></i>
+            <span class="d-none d-sm-inline">Cart</span>
+            <span class="visually-hidden">View Cart</span>
+            <span id="cart-count" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">0</span>
+          </button>
+          <button class="btn btn-sm btn-primary" onclick="window.location.href='dashboard.html'">
+            <i class="fas fa-user me-1"></i>
+            <span class="d-none d-sm-inline">My Account</span>
+            <span class="visually-hidden">Access My Account</span>
+          </button>
+        </div>
       </div>
     </div>
   </header>
@@ -313,50 +221,53 @@
   <!-- MAIN CONTENT -->
   <main class="container section">
     <form class="booking-form" id="bookingForm">
-      <h2>Booking Details</h2>
+      <h2 class="mb-4">Booking Details</h2>
       
       <!-- Hidden carId field -->
       <input type="hidden" id="carId" name="carId" />
       
       <!-- Car Selection -->
-      <div class="car-selector" id="car-selector">
-        <label>Selected Cars:</label>
-        <div id="selected-cars" class="selected-cars-display"></div>
+      <div class="car-selector mb-4" id="car-selector">
+        <label for="car-select" class="form-label">Select a Car:</label>
+        <select id="car-select" name="car-select" class="form-select" required>
+          <option value="">-- Select a car --</option>
+        </select>
+        <div id="selected-cars" class="selected-cars-display mt-3"></div>
       </div>
       
       <!-- Contact Information -->
-      <div class="form-group">
-        <label for="email">Email Address *</label>
-        <input type="email" id="email" name="email" required placeholder="your.email@example.com" />
+      <div class="mb-3">
+        <label for="email" class="form-label">Email Address *</label>
+        <input type="email" id="email" name="email" class="form-control" required placeholder="your.email@example.com" />
         <div class="error-message" id="email-error"></div>
       </div>
       
-      <div class="form-group">
-        <label for="phone">Phone Number *</label>
-        <input type="tel" id="phone" name="phone_number" required placeholder="+2348012345678" />
+      <div class="mb-3">
+        <label for="phone" class="form-label">Phone Number *</label>
+        <input type="tel" id="phone" name="phone_number" class="form-control" required placeholder="+2348012345678" />
         <div class="error-message" id="phone-error"></div>
       </div>
       
       <!-- Booking Details -->
-      <div class="form-row">
-        <div class="form-group">
-          <label for="pickup-date">Pickup Date *</label>
-          <input type="date" id="pickup-date" name="pickup_date" required />
+      <div class="row">
+        <div class="col-md-6 mb-3">
+          <label for="pickup-date" class="form-label">Pickup Date *</label>
+          <input type="date" id="pickup-date" name="pickup_date" class="form-control" required />
           <div class="error-message" id="pickup-date-error"></div>
         </div>
-        <div class="form-group">
-          <label for="return-date">Return Date *</label>
-          <input type="date" id="return-date" name="return_date" required />
+        <div class="col-md-6 mb-3">
+          <label for="return-date" class="form-label">Return Date *</label>
+          <input type="date" id="return-date" name="return_date" class="form-control" required />
           <div class="error-message" id="return-date-error"></div>
         </div>
       </div>
       
-      <button type="submit" class="btn btn-primary btn-lg" id="submitBtn">
+      <button type="submit" class="btn btn-primary btn-lg w-100" id="submitBtn">
         <span id="submit-text">Proceed to Payment</span>
         <span id="loading-text" style="display: none;">Processing...</span>
       </button>
       
-      <div class="loading" id="loading">
+      <div class="loading text-center mt-3" id="loading" style="display: none;">
         <p>Processing your booking...</p>
       </div>
     </form>
@@ -422,121 +333,113 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   });
 
-    // Form submission
-    document.getElementById('bookingForm').addEventListener('submit', function(e) {
-      e.preventDefault();
+  // Form submission
+  document.getElementById('bookingForm').addEventListener('submit', function(e) {
+    e.preventDefault();
 
-      // Clear previous errors
-      document.querySelectorAll('.error-message').forEach(el => el.textContent = '');
+    // Clear previous errors
+    document.querySelectorAll('.error-message').forEach(el => el.textContent = '');
 
-      // Validate form
-      let isValid = true;
+    // Validate form
+    let isValid = true;
 
-      const email = document.getElementById('email').value.trim();
-      const phone = document.getElementById('phone').value.trim();
-      const startDate = document.getElementById('pickup-date').value;
-      const endDate = document.getElementById('return-date').value;
-      const carId = document.getElementById('carId').value;
+    const email = document.getElementById('email').value.trim();
+    const phone = document.getElementById('phone').value.trim();
+    const startDate = document.getElementById('pickup-date').value;
+    const endDate = document.getElementById('return-date').value;
+    const carId = document.getElementById('carId').value;
 
-      if (!carId) {
-        BookingManager.showError('Please select a car from your cart or choose one from the available options.');
-        isValid = false;
-      }
-      if (!email) {
-        document.getElementById('email-error').textContent = 'Email is required';
-        isValid = false;
-      } else if (!BookingManager.isValidEmail(email)) {
-        document.getElementById('email-error').textContent = 'Please enter a valid email address';
-        isValid = false;
-      }
-      if (!phone) {
-        document.getElementById('phone-error').textContent = 'Phone number is required';
-        isValid = false;
-      }
-      if (!startDate) {
-        document.getElementById('pickup-date-error').textContent = 'Pickup date is required';
-        isValid = false;
-      }
-      if (!endDate) {
-        document.getElementById('return-date-error').textContent = 'Return date is required';
-        isValid = false;
-      }
-      if (startDate && endDate && new Date(endDate) <= new Date(startDate)) {
-        document.getElementById('return-date-error').textContent = 'Return date must be after pickup date';
-        isValid = false;
-      }
-      if (!isValid) return;
+    if (!carId) {
+      alert('Please select a car from your cart or choose one from the available options.');
+      isValid = false;
+    }
+    if (!email) {
+      document.getElementById('email-error').textContent = 'Email is required';
+      isValid = false;
+    } else if (!isValidEmail(email)) {
+      document.getElementById('email-error').textContent = 'Please enter a valid email address';
+      isValid = false;
+    }
+    if (!phone) {
+      document.getElementById('phone-error').textContent = 'Phone number is required';
+      isValid = false;
+    }
+    if (!startDate) {
+      document.getElementById('pickup-date-error').textContent = 'Pickup date is required';
+      isValid = false;
+    }
+    if (!endDate) {
+      document.getElementById('return-date-error').textContent = 'Return date is required';
+      isValid = false;
+    }
+    if (startDate && endDate && new Date(endDate) <= new Date(startDate)) {
+      document.getElementById('return-date-error').textContent = 'Return date must be after pickup date';
+      isValid = false;
+    }
+    if (!isValid) return;
 
-      // Show loading state
-      const submitBtn = document.getElementById('submitBtn');
-      const originalText = submitBtn.querySelector('#submit-text').textContent;
-      submitBtn.disabled = true;
-      submitBtn.querySelector('#submit-text').textContent = 'Processing...';
+    // Show loading state
+    const submitBtn = document.getElementById('submitBtn');
+    const originalText = submitBtn.querySelector('#submit-text').textContent;
+    submitBtn.disabled = true;
+    submitBtn.querySelector('#submit-text').textContent = 'Processing...';
 
-      try {
-        // Get car details from cart or selected option
-        let carDetails;
-        const cartItems = JSON.parse(localStorage.getItem('cart') || '[]');
-        const cartCar = cartItems.find(c => c._id === carId);
-        
-        if (cartCar) {
-          carDetails = cartCar;
-          console.log("Car from cart:", carDetails);
-        } else {
-          // Get from selected dropdown
-          const carSelect = document.getElementById('car-select');
-          const selectedOption = carSelect.options[carSelect.selectedIndex];
-          carDetails = {
-            _id: carId,
-            make: selectedOption.dataset.make,
-            model: selectedOption.dataset.model,
-            year: selectedOption.dataset.year,
-            price: parseInt(selectedOption.dataset.price),
-            image: selectedOption.dataset.image
-          };
-          console.log("Car from dropdown:", carDetails);
-        }
-
-        const bookingData = {
-          userId: user.id,
-          car: carDetails,
-          pickupDate: startDate,
-          returnDate: endDate,
-          phoneNumber: phone,
-          email: email,
-          source: 'book'
+    try {
+      // Get car details from cart or selected option
+      let carDetails;
+      const cartItems = JSON.parse(localStorage.getItem('cart') || '[]');
+      const cartCar = cartItems.find(c => c._id === carId);
+      
+      if (cartCar) {
+        carDetails = cartCar;
+      } else {
+        // Get from selected dropdown
+        const carSelect = document.getElementById('car-select');
+        const selectedOption = carSelect.options[carSelect.selectedIndex];
+        carDetails = {
+          _id: carId,
+          make: selectedOption.dataset.make,
+          model: selectedOption.dataset.model,
+          year: selectedOption.dataset.year,
+          price: parseInt(selectedOption.dataset.price),
+          image: selectedOption.dataset.image
         };
-
-        console.log("Booking Data:", bookingData);
-        const booking = BookingManager.setBooking(bookingData);
-        
-        if (booking) {
-          console.log("Booking set successfully:", booking);
-          
-          // Verify booking is stored correctly
-          const storedBooking = BookingManager.getBooking();
-          console.log("Stored booking:", storedBooking);
-          
-          // Additional validation to ensure car data is complete
-          if (!storedBooking || !storedBooking.car || !storedBooking.car._id) {
-            throw new Error('Booking data is incomplete. Please try again.');
-          }
-          
-          // Redirect to checkout page
-          window.location.href = 'checkout.html';
-        } else {
-          throw new Error('Failed to create booking. Please try again.');
-        }
-      } catch (error) {
-        console.error('Booking error:', error);
-        BookingManager.showError(error.message || 'Failed to create booking. Please try again.');
-      } finally {
-        // Reset button state
-        submitBtn.disabled = false;
-        submitBtn.querySelector('#submit-text').textContent = originalText;
       }
-    });
+
+      const bookingData = {
+        userId: user.id,
+        car: carDetails,
+        pickupDate: startDate,
+        returnDate: endDate,
+        phoneNumber: phone,
+        email: email,
+        source: 'book'
+      };
+
+      const booking = setBooking(bookingData);
+      
+      if (booking) {
+        // Redirect to checkout page
+        window.location.href = 'checkout.html';
+      } else {
+        throw new Error('Failed to create booking. Please try again.');
+      }
+    } catch (error) {
+      console.error('Booking error:', error);
+      alert(error.message || 'Failed to create booking. Please try again.');
+    } finally {
+      // Reset button state
+      submitBtn.disabled = false;
+      submitBtn.querySelector('#submit-text').textContent = originalText;
+    }
+  });
 });
+
+// Function to validate email
+function isValidEmail(email) {
+  const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  return re.test(String(email).toLowerCase());
+}
 
 // Enhanced function: load cars from cart and API
 async function loadCarsFromCartAndAPI() {
@@ -553,27 +456,8 @@ async function loadCarsFromCartAndAPI() {
     const apiCars = await res.json();
     
     // Create combined list: prioritize cart items
-    let allCars = [];
-    
-    // Add cart items first
-    if (cartItems.length > 0) {
-      cartItems.forEach(car => {
-        const enhancedCar = {
-          _id: car._id,
-          make: car.make || 'Unknown',
-          model: car.model || 'Unknown',
-          year: car.year || new Date().getFullYear(),
-          price: car.price || 0,
-          image: car.image || 'https://via.placeholder.com/300',
-          color: car.color || 'Black',
-          description: car.description || 'No description available',
-          brand: car.brand || car.make || 'Unknown',
-          fromCart: true
-        };
-        allCars.push(enhancedCar);
-      });
-    }
-    
+    let allCars = [...cartItems];
+
     // Add API cars, excluding duplicates
     apiCars.forEach(car => {
       if (!allCars.some(item => item._id === car._id)) {
@@ -585,19 +469,12 @@ async function loadCarsFromCartAndAPI() {
     allCars.forEach(car => {
       const opt = document.createElement('option');
       opt.value = car._id;
-      
-      let label = `${car.make} ${car.model} (${car.year}) - ₦${car.price.toLocaleString()}/day`;
-      if (car.fromCart) {
-        label += ' [From Cart]';
-      }
-      
-      opt.textContent = label;
+      opt.textContent = `${car.make} ${car.model} (${car.year}) - ₦${car.price.toLocaleString()}/day`;
       opt.dataset.make = car.make;
       opt.dataset.model = car.model;
       opt.dataset.year = car.year;
       opt.dataset.price = car.price;
       opt.dataset.image = car.image || '';
-      
       carSelect.appendChild(opt);
     });
     
@@ -607,21 +484,6 @@ async function loadCarsFromCartAndAPI() {
       if (firstCartCar) {
         firstCartCar.selected = true;
         document.getElementById('carId').value = cartItems[0]._id;
-      }
-    }
-    
-    // Show cart integration message
-    if (cartItems.length > 0) {
-      const cartMessage = document.createElement('div');
-      cartMessage.style.cssText = 'background: #e8f5e8; border: 1px solid #4caf50; padding: 1rem; border-radius: 8px; margin: 1rem 0;';
-      cartMessage.innerHTML = `
-        <strong>📦 Cart Integration:</strong> ${cartItems.length} car${cartItems.length > 1 ? 's' : ''} from your cart are ready for booking.
-        ${cartItems.length > 1 ? '<br><small>Select any car from the dropdown above to proceed.</small>' : ''}
-      `;
-      
-      const carSelector = document.querySelector('.car-selector');
-      if (carSelector) {
-        carSelector.insertBefore(cartMessage, carSelector.firstChild);
       }
     }
     
