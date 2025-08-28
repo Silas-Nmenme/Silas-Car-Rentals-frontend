@@ -162,21 +162,13 @@
         
         updateCartSummary: function() {
             const cart = this.getItems();
-            const summary = document.getElementById('cart-summary');
             const totalItems = document.getElementById('cart-total-items');
             const totalPrice = document.getElementById('cart-total-price');
             
-            if (summary && totalItems && totalPrice) {
-                if (cart.length > 0) {
-                    summary.style.display = 'block';
-                    totalItems.textContent = cart.length;
-                    const total = cart.reduce((sum, car) => sum + (car.price || 0), 0);
-                    totalPrice.textContent = `₦${total.toLocaleString()}`;
-                } else {
-                    summary.style.display = 'none';
-                    totalItems.textContent = '0';
-                    totalPrice.textContent = '₦0';
-                }
+            if (totalItems && totalPrice) {
+                totalItems.textContent = cart.length;
+                const total = cart.reduce((sum, car) => sum + (car.price || 0), 0);
+                totalPrice.textContent = `₦${total.toLocaleString()}`;
             }
         }
     };
