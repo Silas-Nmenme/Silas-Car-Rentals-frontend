@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Booking Summary - Silas Car Rentals</title>
   <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
   <style>
     .checkout-container{max-width:800px;margin:0 auto;padding:2rem 0}
     .summary-card{background:white;border-radius:15px;box-shadow:0 10px 30px rgba(0,0,0,.1);overflow:hidden;margin-bottom:2rem}
@@ -36,13 +37,13 @@
 <header class="navbar">
   <div class="container nav-inner">
     <a href="index.html" class="brand"><div class="brand-mark">SC</div><span>Silas Car Rentals</span></a>
-    <button onclick="window.history.back()" class="btn btn-outline">← Back</button>
+    <button onclick="window.history.back()" class="btn btn-outline-secondary">← Back</button>
   </div>
 </header>
 
 <main class="section">
   <div class="checkout-container">
-    <h1>Booking Summary</h1>
+    <h1 class="text-center">Booking Summary</h1>
     <div id="checkout-content"></div>
     <div class="toast" id="toast"></div>
   </div>
@@ -180,9 +181,9 @@ function renderBooking(booking){
           <div class="price-row total"><span>Total Amount:</span><span>₦${Number(booking.totalAmount||0).toLocaleString()}</span></div>
         </div>
         <div class="btn-group">
-          <button onclick="window.history.back()" class="btn btn-secondary">← Back to Booking</button>
+          <button onclick="window.history.back()" class="btn btn-outline-secondary">← Back to Booking</button>
           <button id="pay-btn" class="btn btn-primary">Proceed to Payment</button>
-          <button id="submit-booking-btn" class="btn btn-outline">Submit Booking Only</button>
+          <button id="submit-booking-btn" class="btn btn-outline-secondary">Submit Booking Only</button>
         </div>
       </div>
     </div>
