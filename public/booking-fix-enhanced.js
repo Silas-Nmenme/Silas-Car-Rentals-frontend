@@ -224,62 +224,64 @@
             }
         },
         
-        // Submit booking to backend
-        async submitBooking() {
-            const booking = this.getBooking();
-            const validation = this.validateBooking(booking);
-            
-            if (!validation.isValid) {
-                this.showError(validation.errors[0]);
-                return { success: false, error: validation.errors[0] };
-            }
-            
-            const token = localStorage.getItem('token');
-            if (!token) {
-                this.showError('Please login first');
-                return { success: false, error: 'Authentication required' };
-            }
-            
-            try {
-                // Prepare booking data for backend
-                const bookingData = {
-                    userId: booking.userId,
-                    cars: booking.isMultiCar ? booking.cars : [booking.car],
-                    pickupDate: booking.pickupDate,
-                    returnDate: booking.returnDate,
-                    email: booking.email,
-                    phoneNumber: booking.phoneNumber,
-                    totalAmount: booking.totalAmount,
-                    days: booking.days,
-                    status: 'pending'
-                };
-                
-                const response = await fetch(`${API_BASE}/api/payment/pay`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${token}`
-                    },
-                    body: JSON.stringify(bookingData)
-                });
-                
-                if (!response.ok) {
-                    const errorData = await response.json().catch(() => ({}));
-                    throw new Error(errorData.message || `Server error: ${response.status}`);
-                }
-                
-                const result = await response.json();
-                this.showSuccess('Booking submitted successfully!');
-                this.clearBooking();
-                
-                return { success: true, data: result };
-                
-            } catch (error) {
-                console.error('Booking submission error:', error);
-                this.showError(error.message || 'Failed to submit booking. Please try again.');
-                return { success: false, error: error.message };
-            }
-        },
+// Submit booking to backend
+async submitBooking() {
+    const booking = this.getBooking();
+    const validation = this.validateBooking(booking);
+
+    if (!validation.isValid) {
+        this.showError(validation.errors[0]);
+        return { success: false, error: validation.errors[0] };
+    }
+
+    const token = localStorage.getItem('token');
+    if (!token) {
+        this.showError('Please login first');
+        return { success: false, error: 'Authentication required' };
+    }
+
+    try {
+        // Prepare booking data for backend
+        const bookingData = {
+            userId: booking.userId,
+            cars: booking.isMultiCar ? booking.cars : [booking.car],
+            pickupDate: booking.pickupDate,
+            returnDate: booking.returnDate,
+            email: booking.email,
+            phoneNumber: booking.phoneNumber,
+            totalAmount: booking.totalAmount,
+            days: booking.days,
+            status: 'pending'
+        };
+
+        // --- FIX: Use correct endpoint with carId ---
+        const carId = booking.isMultiCar ? booking.cars[0]._id : booking.car._id;
+        const response = await fetch(`${API_BASE}/api/payment/pay/${encodeURIComponent(carId)}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            },
+            body: JSON.stringify(bookingData)
+        });
+
+        if (!response.ok) {
+            const errorData = await response.json().catch(() => ({}));
+            throw new Error(errorData.message || `Server error: ${response.status}`);
+        }
+
+        const result = await response.json();
+        this.showSuccess('Booking submitted successfully!');
+        this.clearBooking();
+
+        return { success: true, data: result };
+
+    } catch (error) {
+        console.error('Booking submission error:', error);
+        this.showError(error.message || 'Failed to submit booking. Please try again.');
+        return { success: false, error: error.message };
+    }
+},
         
         // Initialize booking from URL parameters
         initFromUrl: function() {
