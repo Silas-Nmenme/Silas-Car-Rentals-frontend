@@ -233,8 +233,8 @@ async function initiatePayment(){
     const carId = booking.isMultiCar ? booking.cars?.[0]?._id : booking.car?._id;
     if (!carId) throw new Error("Missing carId for payment");
 
-    // 3) POST /api/payments/pay/:carId  (Authorization: Bearer <token>)
-    const res = await fetch(`${API_BASE}/api/payments/pay/${encodeURIComponent(carId)}`, {
+    // 3) POST /api/payment/pay/:carid  (Authorization: Bearer <token>)
+    const res = await fetch(`${API_BASE}/api/payment/pay/${encodeURIComponent(carId)}`, {
       method: "POST",
       headers: {
         "Content-Type":"application/json",
