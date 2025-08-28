@@ -254,7 +254,7 @@
                     status: 'pending'
                 };
                 
-                const response = await fetch(`${API_BASE}/api/bookings`, {
+                const response = await fetch(`${API_BASE}/api/payment/pay`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
