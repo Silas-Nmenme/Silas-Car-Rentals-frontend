@@ -268,22 +268,25 @@
             document.getElementById('car-id-input').value = carId; // adjust input ID
         }
         
-        document.getElementById('booking-form').addEventListener('submit', function(e) {
-            e.preventDefault();
-    
-            // Gather form data
-            const formData = new FormData(this);
-            const summary = {};
-            formData.forEach((value, key) => {
-                summary[key] = value;
+        const bookingForm = document.getElementById('booking-form');
+        if (bookingForm) {
+            bookingForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+        
+                // Gather form data
+                const formData = new FormData(this);
+                const summary = {};
+                formData.forEach((value, key) => {
+                    summary[key] = value;
+                });
+        
+                // Save summary to sessionStorage (or localStorage)
+                sessionStorage.setItem('bookingSummary', JSON.stringify(summary));
+        
+                // Redirect to checkout.html
+                window.location.href = 'checkout.html';
             });
-    
-            // Save summary to sessionStorage (or localStorage)
-            sessionStorage.setItem('bookingSummary', JSON.stringify(summary));
-    
-            // Redirect to checkout.html
-            window.location.href = 'checkout.html';
-        });
+        }
     });
     
     console.log('Booking system initialized successfully');
