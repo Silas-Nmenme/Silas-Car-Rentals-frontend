@@ -4,31 +4,27 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Contact Us - Silas Car Rentals</title>
+  <!-- Bootstrap CSS CDN -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Custom CSS -->
   <style>
     body {
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       background: #121212;
       color: #e0e0e0;
-      margin: 0; padding: 0;
       line-height: 1.6;
     }
     header {
       background: #1f1f1f;
-      padding: 1rem 2rem;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
       box-shadow: 0 2px 5px rgba(0,0,0,0.4);
     }
     header h1 {
       color: #03dac5;
-      margin: 0;
       font-size: 1.4rem;
     }
     header nav a {
       color: #e0e0e0;
       text-decoration: none;
-      margin-left: 1.5rem;
       font-weight: 500;
     }
     header nav a:hover {
@@ -38,8 +34,6 @@
       background: #03dac5;
       color: #121212;
       border: none;
-      padding: 0.5rem 1rem;
-      border-radius: 4px;
       cursor: pointer;
       font-weight: bold;
       transition: background 0.3s;
@@ -66,9 +60,6 @@
       margin-bottom: 0.8rem;
       color: #ccc;
     }
-    ul {
-      padding-left: 1.5rem;
-    }
     .section {
       background: #1f1f1f;
       padding: 1.5rem;
@@ -76,17 +67,12 @@
       margin-bottom: 1.5rem;
       box-shadow: 0 2px 5px rgba(0,0,0,0.3);
     }
-    .contact-info {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 2rem;
-      margin: 2rem 0;
-    }
     .contact-card {
       background: #1f1f1f;
       padding: 1.5rem;
       border-radius: 8px;
       box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+      height: 100%;
     }
     .contact-form {
       background: #1f1f1f;
@@ -119,8 +105,6 @@
       background: #03dac5;
       color: #121212;
       border: none;
-      padding: 0.75rem 1.5rem;
-      border-radius: 4px;
       cursor: pointer;
       font-weight: bold;
       transition: background 0.3s;
@@ -141,70 +125,88 @@
     .social-links a:hover {
       color: #03dac5;
     }
+    .alert {
+      display: none;
+    }
   </style>
 </head>
 <body>
 
-  <header>
-    <h1>Silas Car Rentals</h1>
-    <nav>
-      <a href="index.html">Home</a>
-      <a href="terms.html">Terms & Conditions</a>
-      <a href="contact.html">Contact</a>
-    </nav>
-    <button class="back-btn" onclick="history.back()">← Back</button>
+  <header class="py-3">
+    <div class="container">
+      <div class="d-flex flex-column flex-md-row justify-content-between align-items-center">
+        <h1 class="mb-3 mb-md-0">Silas Car Rentals</h1>
+        <nav class="d-flex flex-wrap justify-content-center">
+          <a href="index.html" class="mx-2 my-1">Home</a>
+          <a href="terms.html" class="mx-2 my-1">Terms & Conditions</a>
+          <a href="contact.html" class="mx-2 my-1">Contact</a>
+        </nav>
+        <button class="back-btn btn btn-sm mt-3 mt-md-0" onclick="history.back()">← Back</button>
+      </div>
+    </div>
   </header>
 
   <main>
-    <h1>Contact Us</h1>
-    <p>Get in touch with Silas Car Rentals for any questions, support, or booking inquiries.</p>
+    <h1 class="text-center">Contact Us</h1>
+    <p class="text-center">Get in touch with Silas Car Rentals for any questions, support, or booking inquiries.</p>
 
-    <div class="contact-info">
-      <div class="contact-card">
-        <h3>📞 Phone</h3>
-        <p>+234 810 758 6167</p>
-        <p><small>Available Mon-Fri 8AM-6PM, Sat-Sun 9AM-4PM</small></p>
+    <div class="row g-4 my-4">
+      <div class="col-md-6 col-lg-3">
+        <div class="contact-card">
+          <h3>📞 Phone</h3>
+          <p>+234 810 758 6167</p>
+          <p><small>Available Mon-Fri 8AM-6PM, Sat-Sun 9AM-4PM</small></p>
+        </div>
       </div>
 
-      <div class="contact-card">
-        <h3>📧 Email</h3>
-        <p>silasonyekachi15@gmail.com</p>
-        <p><small>Response within 24 hours</small></p>
+      <div class="col-md-6 col-lg-3">
+        <div class="contact-card">
+          <h3>📧 Email</h3>
+          <p>silasonyekachi15@gmail.com</p>
+          <p><small>Response within 24 hours</small></p>
+        </div>
       </div>
 
-      <div class="contact-card">
-        <h3>📍 Address</h3>
-        <p>Ikeja, Lagos State<br>Nigeria</p>
+      <div class="col-md-6 col-lg-3">
+        <div class="contact-card">
+          <h3>📍 Address</h3>
+          <p>Ikeja, Lagos State<br>Nigeria</p>
+        </div>
       </div>
 
-      <div class="contact-card">
-        <h3>🕒 Business Hours</h3>
-        <p><strong>Monday - Friday:</strong> 8:00 AM - 6:00 PM</p>
-        <p><strong>Saturday - Sunday:</strong> 9:00 AM - 4:00 PM</p>
+      <div class="col-md-6 col-lg-3">
+        <div class="contact-card">
+          <h3>🕒 Business Hours</h3>
+          <p><strong>Monday - Friday:</strong> 8:00 AM - 6:00 PM</p>
+          <p><strong>Saturday - Sunday:</strong> 9:00 AM - 4:00 PM</p>
+        </div>
       </div>
     </div>
 
     <div class="contact-form">
-      <h3>Send Us a Message</h3>
-      <form id="contactForm" onsubmit="handleSubmit(event)">
+      <h3 class="text-center">Send Us a Message</h3>
+      <div id="alertMessage" class="alert alert-success" role="alert">
+        Thank you for your message! We will get back to you within 24 hours.
+      </div>
+      <form id="contactForm">
         <div class="form-group">
           <label for="name">Full Name *</label>
-          <input type="text" id="name" name="name" required>
+          <input type="text" id="name" name="name" class="form-control" required>
         </div>
 
         <div class="form-group">
           <label for="email">Email Address *</label>
-          <input type="email" id="email" name="email" required>
+          <input type="email" id="email" name="email" class="form-control" required>
         </div>
 
         <div class="form-group">
           <label for="phone">Phone Number</label>
-          <input type="tel" id="phone" name="phone">
+          <input type="tel" id="phone" name="phone" class="form-control">
         </div>
 
         <div class="form-group">
           <label for="subject">Subject *</label>
-          <select id="subject" name="subject" required>
+          <select id="subject" name="subject" class="form-select" required>
             <option value="">Select a subject</option>
             <option value="booking">Booking Inquiry</option>
             <option value="support">Customer Support</option>
@@ -216,16 +218,18 @@
 
         <div class="form-group">
           <label for="message">Message *</label>
-          <textarea id="message" name="message" rows="5" required></textarea>
+          <textarea id="message" name="message" rows="5" class="form-control" required></textarea>
         </div>
 
-        <button type="submit" class="btn">Send Message</button>
+        <div class="text-center">
+          <button type="submit" class="btn btn-lg">Send Message</button>
+        </div>
       </form>
     </div>
 
     <div class="section">
-      <h3>Follow Us</h3>
-      <div class="social-links">
+      <h3 class="text-center">Follow Us</h3>
+      <div class="social-links justify-content-center">
         <a href="#" title="Facebook">📘 Facebook</a>
         <a href="#" title="Instagram">📷 Instagram</a>
         <a href="#" title="Twitter">🐦 Twitter</a>
@@ -234,20 +238,26 @@
     </div>
   </main>
 
+  <!-- jQuery and Bootstrap JS CDN -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
   <script>
-    function handleSubmit(event) {
-      event.preventDefault();
-      
-      // Get form data
-      const formData = new FormData(event.target);
-      const data = Object.fromEntries(formData);
-      
-      // Simulate form submission
-      alert('Thank you for your message! We will get back to you within 24 hours.');
-      
-      // Reset form
-      event.target.reset();
-    }
+    $(document).ready(function() {
+      $('#contactForm').on('submit', function(e) {
+        e.preventDefault();
+        
+        // Simulate form submission
+        $('#alertMessage').show();
+        
+        // Reset form
+        this.reset();
+        
+        // Hide alert after 5 seconds
+        setTimeout(function() {
+          $('#alertMessage').hide();
+        }, 5000);
+      });
+    });
   </script>
 </body>
 </html>
