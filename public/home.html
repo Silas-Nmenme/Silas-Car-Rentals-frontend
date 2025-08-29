@@ -942,42 +942,66 @@ function isUserLoggedIn() {
          !!sessionStorage.getItem('userToken');
 }
 
-// Modal functionality
+// Modal functionality (improved)
 function openModal(modalId, url) {
-  const modal = new bootstrap.Modal(document.getElementById(modalId));
-  const iframe = document.getElementById(modalId.replace('Modal', 'Iframe'));
-  const loading = iframe.previousElementSibling;
-  
+  const modalEl = document.getElementById(modalId);
+  if (!modalEl) return;
+  const modal = bootstrap.Modal.getOrCreateInstance(modalEl);
+  const iframe = modalEl.querySelector('iframe');
+  const loading = modalEl.querySelector('.modal-loading');
+
   // Show loading, hide iframe
-  loading.style.display = 'flex';
-  iframe.style.display = 'none';
-  
-  // Set iframe source
-  iframe.src = url;
-  
+  if (loading) loading.style.display = 'flex';
+  if (iframe) {
+    iframe.style.display = 'none';
+    iframe.src = url;
+    iframe.onload = function () {
+      if (loading) loading.style.display = 'none';
+      iframe.style.display = 'block';
+    };
+  }
+
   // Show modal
   modal.show();
-  
-  // Handle iframe load
-  iframe.onload = function() {
-    loading.style.display = 'none';
-    iframe.style.display = 'block';
-  };
-  
-  // Handle modal hidden event to reset iframe
-  document.getElementById(modalId).addEventListener('hidden.bs.modal', function() {
-    iframe.src = 'about:blank';
-    loading.style.display = 'flex';
-    iframe.style.display = 'none';
+
+  // Reset iframe on close
+  modalEl.addEventListener('hidden.bs.modal', function handler() {
+    if (iframe) {
+      iframe.src = 'about:blank';
+      iframe.style.display = 'none';
+    }
+    if (loading) loading.style.display = 'flex';
+    modalEl.removeEventListener('hidden.bs.modal', handler);
   });
 }
 
-function proceedToCheckout() {
-  // Close cart modal and redirect to checkout
-  const cartModal = bootstrap.Modal.getInstance(document.getElementById('cartModal'));
-  cartModal.hide();
-  window.location.href = 'checkout.html';
-}
+// Attach modal triggers directly for main navigation and buttons
+document.addEventListener('DOMContentLoaded', function () {
+  // Cars modal
+  document.querySelectorAll('a[href="cars.html"], .btn[href="cars.html"], [data-href="cars.html"]').forEach(el => {
+    el.addEventListener('click', function (e) {
+      e.preventDefault();
+      openModal('carsModal', 'cars.html');
+      showToast('Opening car browsing in modal', 2000);
+    });
+  });
+  // Book modal
+  document.querySelectorAll('a[href="book.html"], .btn[href="book.html"], [data-href="book.html"]').forEach(el => {
+    el.addEventListener('click', function (e) {
+      e.preventDefault();
+      openModal('bookModal', 'book.html');
+      showToast('Opening booking form in modal', 2000);
+    });
+  });
+  // Cart modal
+  document.querySelectorAll('a[href="cart.html"], .btn[href="cart.html"], [data-href="cart.html"], #open-cart').forEach(el => {
+    el.addEventListener('click', function (e) {
+      e.preventDefault();
+      openModal('cartModal', 'cart.html');
+      showToast('Opening cart in modal', 2000);
+    });
+  });
+});
 
 // Enhanced function to handle internal navigation within home page
 function handleInternalNavigation(event) {
