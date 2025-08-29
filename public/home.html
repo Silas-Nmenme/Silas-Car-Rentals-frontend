@@ -7,351 +7,30 @@
   <meta name="description" content="Nigeria's premier car rental service offering luxury sedans, SUVs, and economy vehicles. Experience seamless booking, 24/7 support, and premium service across Lagos and beyond." />
   <meta name="keywords" content="car rental Nigeria, luxury car rental Lagos, rent car Nigeria, premium vehicles, business car rental, SUV rental Nigeria" />
   <meta name="theme-color" content="#16a34a">
+  
+  <!-- Bootstrap CSS -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="style.css" />
+  
+  <!-- Font Awesome -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-  <style>
-    :root {
-      --gradient-primary: linear-gradient(135deg, #16a34a 0%, #0d9488 100%);
-      --gradient-secondary: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
-      --gradient-hero: linear-gradient(135deg, rgba(22, 163, 74, 0.1) 0%, rgba(13, 148, 136, 0.1) 100%);
-    }
-    
-    html { scroll-behavior: smooth; }
-    body {
-      font-family: 'Inter', ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
-      -webkit-font-smoothing: antialiased;
-      -moz-osx-font-smoothing: grayscale;
-    }
-    
-    /* Enhanced Hero Section */
-    .hero-section {
-      background: 
-        var(--gradient-hero),
-        radial-gradient(ellipse at 80% 50%, rgba(22, 163, 74, 0.15) 0%, transparent 50%),
-        radial-gradient(ellipse at 20% 50%, rgba(59, 130, 246, 0.1) 0%, transparent 50%);
-      position: relative;
-      overflow: hidden;
-    }
-    
-    .hero-section::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%2316a34a' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
-      opacity: 0.3;
-    }
-    
-    .hero-title {
-      font-weight: 800;
-      line-height: 1.1;
-      background: var(--gradient-primary);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-    }
-    
-    .hero-subtitle {
-      font-size: 1.25rem;
-      color: var(--muted);
-      font-weight: 400;
-    }
-    
-    /* Enhanced Cards */
-    .car-showcase {
-      border: none;
-      border-radius: 16px;
-      overflow: hidden;
-      transition: all 0.3s ease;
-      background: linear-gradient(145deg, var(--card) 0%, var(--bg-soft) 100%);
-      box-shadow: var(--shadow);
-    }
-    
-    .car-showcase:hover {
-      transform: translateY(-8px);
-      box-shadow: 0 20px 40px rgba(0,0,0,0.4);
-    }
-    
-    .car-showcase .card-img-top {
-      height: 220px;
-      object-fit: cover;
-      transition: transform 0.3s ease;
-    }
-    
-    .car-showcase:hover .card-img-top {
-      transform: scale(1.05);
-    }
-    
-    /* Professional Stats */
-    .stat-item {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      padding: 16px;
-      background: rgba(255,255,255,0.03);
-      border-radius: 12px;
-      border: 1px solid var(--border);
-      transition: all 0.3s ease;
-    }
-    
-    .stat-item:hover {
-      background: rgba(255,255,255,0.06);
-      transform: translateY(-2px);
-    }
-    
-    .stat-icon {
-      width: 48px;
-      height: 48px;
-      border-radius: 12px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.5rem;
-      background: var(--gradient-primary);
-    }
-    
-    /* Enhanced Testimonials */
-    .testimonial-card {
-      background: linear-gradient(145deg, var(--card) 0%, var(--bg-soft) 100%);
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      padding: 2rem;
-      transition: all 0.3s ease;
-    }
-    
-    .testimonial-card:hover {
-      transform: translateY(-4px);
-      box-shadow: var(--shadow);
-    }
-    
-    .testimonial-avatar {
-      width: 56px;
-      height: 56px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-weight: 600;
-      font-size: 1.25rem;
-      background: var(--gradient-primary);
-    }
-    
-    /* Professional Footer */
-    .professional-footer {
-      background: linear-gradient(135deg, #0b0e11 0%, #1a1d21 100%);
-      border-top: 1px solid var(--border);
-      position: relative;
-    }
-    
-    .professional-footer::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 200px;
-      height: 2px;
-      background: var(--gradient-primary);
-    }
-    
-    /* Enhanced Buttons */
-    .btn-premium {
-      background: var(--gradient-primary);
-      border: none;
-      padding: 12px 28px;
-      border-radius: 12px;
-      font-weight: 600;
-      transition: all 0.3s ease;
-      box-shadow: 0 8px 25px rgba(22, 163, 74, 0.3);
-    }
-    
-    .btn-premium:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 12px 35px rgba(22, 163, 74, 0.4);
-    }
-    
-    .btn-outline-premium {
-      background: transparent;
-      border: 2px solid #16a34a;
-      color: #16a34a;
-      padding: 12px 28px;
-      border-radius: 12px;
-      font-weight: 600;
-      transition: all 0.3s ease;
-    }
-    
-    .btn-outline-premium:hover {
-      background: #16a34a;
-      color: white;
-      transform: translateY(-2px);
-    }
-    
-    /* Professional Modal Enhancements */
-    .modal-content {
-      border: none;
-      border-radius: 20px;
-      background: linear-gradient(145deg, var(--card) 0%, var(--bg-soft) 100%);
-      box-shadow: 0 25px 50px rgba(0,0,0,0.5);
-    }
-    
-    .modal-header {
-      border-bottom: 1px solid var(--border);
-      padding: 1.5rem 2rem;
-    }
-    
-    .modal-footer {
-      border-top: 1px solid var(--border);
-      padding: 1.5rem 2rem;
-    }
-    
-    /* Trust Badges */
-    .trust-badges {
-      display: flex;
-      justify-content: center;
-      gap: 2rem;
-      flex-wrap: wrap;
-      margin: 2rem 0;
-    }
-    
-    .trust-badge {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      padding: 0.75rem 1.5rem;
-      background: rgba(255,255,255,0.03);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      font-size: 0.9rem;
-      font-weight: 500;
-    }
-    
-    /* Responsive Design */
-    @media (max-width: 768px) {
-      .hero-title {
-        font-size: 2.5rem;
-      }
-      
-      .hero-subtitle {
-        font-size: 1.1rem;
-      }
-      
-      .stat-item {
-        padding: 12px;
-      }
-      
-      .stat-icon {
-        width: 40px;
-        height: 40px;
-        font-size: 1.25rem;
-      }
-      
-      .trust-badges {
-        gap: 1rem;
-      }
-      
-      .trust-badge {
-        padding: 0.5rem 1rem;
-        font-size: 0.8rem;
-      }
-    }
-    
-    /* Animation Keyframes */
-    @keyframes fadeInUp {
-      from {
-        opacity: 0;
-        transform: translateY(30px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-    
-    .animate-fade-in-up {
-      animation: fadeInUp 0.6s ease-out;
-    }
-    
-    /* Loading enhancements */
-    .modal-loading {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      min-height: 300px;
-      background: rgba(255,255,255,0.02);
-      border-radius: 16px;
-    }
-    
-    .modal iframe { 
-      width: 100%; 
-      border: none; 
-      display: none; 
-      border-radius: 16px;
-    }
-    
-    .modal .modal-body { 
-      padding: 0; 
-    }
-    
-    .toast { 
-      position: fixed; 
-      bottom: 1.5rem; 
-      left: 50%; 
-      transform: translateX(-50%); 
-      background: #222; 
-      color: #fff; 
-      padding: 1em 2em; 
-      border-radius: 12px; 
-      z-index: 2000; 
-      opacity: 0; 
-      pointer-events: none; 
-      transition: opacity 0.3s; 
-      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-    }
-    
-    .toast.show { 
-      opacity: 1; 
-      pointer-events: auto; 
-    }
-    
-    .scroll-to-top { 
-      position: fixed; 
-      bottom: 2rem; 
-      right: 2rem; 
-      z-index: 999; 
-      opacity: 0; 
-      visibility: hidden; 
-      transition: opacity 0.3s; 
-      width: 56px;
-      height: 56px;
-      border-radius: 50%;
-      background: var(--gradient-primary);
-      border: none;
-      box-shadow: 0 8px 25px rgba(22, 163, 74, 0.3);
-    }
-    
-    .scroll-to-top.show { 
-      opacity: 1; 
-      visibility: visible; 
-    }
-    
-    .scroll-to-top:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 12px 35px rgba(22, 163, 74, 0.4);
-    }
-  </style>
+  
+  <!-- AOS Animation Library -->
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+  
+  <!-- Custom Styles -->
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
   <!-- Enhanced Navbar -->
   <header class="navbar navbar-expand-lg navbar-light bg-white shadow-sm sticky-top">
     <div class="container-fluid">
       <a href="#" class="navbar-brand d-flex align-items-center">
-        <div class="brand-mark me-2" style="background: var(--gradient-primary); width: 40px; height: 40px; border-radius: 12px; display: flex; align-items: center; justify-content: center; color: white; font-weight: 800; font-size: 1.2rem;">SC</div>
+        <div class="brand-mark me-2" style="background: linear-gradient(135deg, #16a34a 0%, #0d9488 100%); width: 40px; height: 40px; border-radius: 12px; display: flex; align-items: center; justify-content: center; color: white; font-weight: 800; font-size: 1.2rem;">SC</div>
         <span class="brand-name fw-bold fs-4">Silas Car Rentals</span>
       </a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav" aria-controls="mainNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -360,21 +39,21 @@
       <nav class="collapse navbar-collapse" id="mainNav">
         <ul class="navbar-nav ms-auto mb-2 mb-lg-0 nav-links">
           <li class="nav-item"><a class="nav-link active fw-600" href="#">Home</a></li>
-          <li class="nav-item"><a class="nav-link fw-600" href="#" data-modal="carsModal" data-url="cars.html">Browse Cars</a></li>
-          <li class="nav-item"><a class="nav-link fw-600" href="#" data-modal="bookModal" data-url="book.html">Book Now</a></li>
+          <li class="nav-item"><a class="nav-link fw-600" href="cars.html">Browse Cars</a></li>
+          <li class="nav-item"><a class="nav-link fw-600" href="book.html">Book Now</a></li>
           <li class="nav-item"><a class="nav-link fw-600" href="#how">How it Works</a></li>
           <li class="nav-item"><a class="nav-link fw-600" href="#testimonials">Testimonials</a></li>
           <li class="nav-item"><a class="nav-link fw-600" href="#contact">Contact</a></li>
         </ul>
         <div class="d-flex align-items-center ms-lg-3 gap-2">
-          <button id="open-cart" class="btn btn-outline-primary position-relative" data-modal="cartModal" data-url="cart.html">
+          <a href="cart.html" class="btn btn-outline-primary position-relative">
             <i class="fas fa-shopping-cart"></i>
             <span id="cart-count" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-success" style="font-size:0.8em;">0</span>
-          </button>
-          <button class="btn btn-outline-danger position-relative" data-modal="savedModal" data-url="saved.html">
+          </a>
+          <a href="saved.html" class="btn btn-outline-danger position-relative">
             <i class="fas fa-heart"></i>
             <span id="saved-count" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style="font-size:0.8em;">0</span>
-          </button>
+          </a>
           <button class="btn btn-outline-secondary" id="theme-toggle" aria-label="Toggle dark/light mode">🌙</button>
         </div>
       </nav>
@@ -383,10 +62,10 @@
 
   <main>
     <!-- Enhanced Hero Section -->
-    <section class="hero-section py-6">
+    <section class="hero-section py-6" data-aos="fade-up">
       <div class="container">
         <div class="row align-items-center min-vh-80">
-          <div class="col-lg-8 mx-auto text-center animate-fade-in-up">
+          <div class="col-lg-8 mx-auto text-center">
             <div class="mb-4">
               <span class="badge bg-success bg-opacity-20 text-success border border-success border-opacity-25 px-4 py-2 rounded-pill fw-semibold">
                 <i class="fas fa-star me-2"></i>Nigeria's Premium Car Rental Service
@@ -400,10 +79,10 @@
               luxury travelers, and discerning clients who demand excellence in every journey.
             </p>
             <div class="d-flex justify-content-center gap-3 flex-wrap mb-5">
-              <a href="#" class="btn btn-premium" data-modal="carsModal" data-url="cars.html">
+              <a href="cars.html" class="btn btn-success btn-lg">
                 <i class="fas fa-car me-2"></i> Explore Premium Fleet
               </a>
-              <a href="#" class="btn btn-outline-premium" data-modal="bookModal" data-url="book.html">
+              <a href="book.html" class="btn btn-outline-success btn-lg">
                 <i class="fas fa-calendar-check me-2"></i> Instant Booking
               </a>
             </div>
@@ -433,7 +112,7 @@
     </section>
 
     <!-- Stats Section -->
-    <section class="py-5 bg-dark">
+    <section class="py-5 bg-dark" data-aos="fade-up">
       <div class="container">
         <div class="row g-4">
           <div class="col-md-3 col-6">
@@ -485,7 +164,7 @@
     </section>
 
     <!-- Featured Vehicles -->
-    <section class="py-6 bg-white">
+    <section class="py-6 bg-white" data-aos="fade-up">
       <div class="container">
         <div class="text-center mb-6">
           <h2 class="display-5 fw-bold mb-3">Our Premium Collection</h2>
@@ -493,7 +172,7 @@
         </div>
         <div class="row g-4">
           <div class="col-md-4">
-            <div class="card car-showcase h-100">
+            <div class="card car-showcase h-100" data-aos="zoom-in">
               <div class="position-relative">
                 <img src="https://vehicle-images.dealerinspire.com/a1a7-11002896/W1KAF4GB4SR252999/00f2d6ad30e089cb5c02791d58c3af6a.jpg" class="card-img-top" alt="Mercedes-Benz C300 Luxury Sedan">
                 <div class="position-absolute top-0 end-0 m-3">
@@ -510,14 +189,14 @@
                   <span class="badge bg-info bg-opacity-10 text-info me-2">Premium</span>
                   <span class="badge bg-secondary bg-opacity-10 text-secondary">4 Seats</span>
                 </div>
-                <a href="#" class="btn btn-premium w-100" data-modal="bookModal" data-url="book.html?car=mercedes-c300">
+                <a href="book.html?car=mercedes-c300" class="btn btn-success w-100">
                   <i class="fas fa-calendar-plus me-2"></i> Reserve Now
                 </a>
               </div>
             </div>
           </div>
           <div class="col-md-4">
-            <div class="card car-showcase h-100">
+            <div class="card car-showcase h-100" data-aos="zoom-in" data-aos-delay="100">
               <div class="position-relative">
                 <img src="https://images.unsplash.com/photo-1549399542-7e3f8b79c341?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" class="card-img-top" alt="Toyota Camry Executive Sedan">
                 <div class="position-absolute top-0 end-0 m-3">
@@ -534,14 +213,14 @@
                   <span class="badge bg-info bg-opacity-10 text-info me-2">Executive</span>
                   <span class="badge bg-secondary bg-opacity-10 text-secondary">5 Seats</span>
                 </div>
-                <a href="#" class="btn btn-premium w-100" data-modal="bookModal" data-url="book.html?car=toyota-camry">
+                <a href="book.html?car=toyota-camry" class="btn btn-success w-100">
                   <i class="fas fa-calendar-plus me-2"></i> Reserve Now
                 </a>
               </div>
             </div>
           </div>
           <div class="col-md-4">
-            <div class="card car-showcase h-100">
+            <div class="card car-showcase h-100" data-aos="zoom-in" data-aos-delay="200">
               <div class="position-relative">
                 <img src="https://images.unsplash.com/photo-1544636331-e26879cd4d9b?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" class="card-img-top" alt="BMW X5 Luxury SUV">
                 <div class="position-absolute top-0 end-0 m-3">
@@ -558,7 +237,7 @@
                   <span class="badge bg-info bg-opacity-10 text-info me-2">Luxury</span>
                   <span class="badge bg-secondary bg-opacity-10 text-secondary">7 Seats</span>
                 </div>
-                <a href="#" class="btn btn-premium w-100" data-modal="bookModal" data-url="book.html?car=bmw-x5">
+                <a href="book.html?car=bmw-x5" class="btn btn-success w-100">
                   <i class="fas fa-calendar-plus me-2"></i> Reserve Now
                 </a>
               </div>
@@ -566,7 +245,7 @@
           </div>
         </div>
         <div class="text-center mt-5">
-          <a href="#" class="btn btn-outline-premium btn-lg" data-modal="carsModal" data-url="cars.html">
+          <a href="cars.html" class="btn btn-outline-success btn-lg">
             <i class="fas fa-eye me-2"></i> View Complete Collection
           </a>
         </div>
@@ -574,29 +253,29 @@
     </section>
 
     <!-- How It Works -->
-    <section id="how" class="py-6 bg-light">
+    <section id="how" class="py-6 bg-light" data-aos="fade-up">
       <div class="container">
         <div class="text-center mb-6">
           <h2 class="display-5 fw-bold mb-3">Seamless Rental Experience</h2>
           <p class="lead text-muted">Three simple steps to your perfect vehicle</p>
         </div>
         <div class="row g-5">
-          <div class="col-md-4 text-center">
-            <div class="feature-icon mx-auto mb-4" style="width: 80px; height: 80px; background: var(--gradient-primary); border-radius: 20px; display: flex; align-items: center; justify-content: center; font-size: 2rem; color: white;">
+          <div class="col-md-4 text-center" data-aos="fade-up" data-aos-delay="100">
+            <div class="feature-icon mx-auto mb-4" style="width: 80px; height: 80px; background: linear-gradient(135deg, #16a34a 0%, #0d9488 100%); border-radius: 20px; display: flex; align-items: center; justify-content: center; font-size: 2rem; color: white;">
               <i class="fas fa-search"></i>
             </div>
             <h4 class="fw-bold mb-3">1. Browse & Select</h4>
             <p class="text-muted">Explore our diverse fleet with advanced filters. Find your perfect vehicle by brand, features, or budget requirements.</p>
           </div>
-          <div class="col-md-4 text-center">
-            <div class="feature-icon mx-auto mb-4" style="width: 80px; height: 80px; background: var(--gradient-primary); border-radius: 20px; display: flex; align-items: center; justify-content: center; font-size: 2rem; color: white;">
+          <div class="col-md-4 text-center" data-aos="fade-up" data-aos-delay="200">
+            <div class="feature-icon mx-auto mb-4" style="width: 80px; height: 80px; background: linear-gradient(135deg, #16a34a 0%, #0d9488 100%); border-radius: 20px; display: flex; align-items: center; justify-content: center; font-size: 2rem; color: white;">
               <i class="fas fa-calendar-check"></i>
             </div>
             <h4 class="fw-bold mb-3">2. Secure Booking</h4>
             <p class="text-muted">Choose your rental dates, add premium options, and complete your booking through our encrypted, secure checkout process.</p>
           </div>
-          <div class="col-md-4 text-center">
-            <div class="feature-icon mx-auto mb-4" style="width: 80px; height: 80px; background: var(--gradient-primary); border-radius: 20px; display: flex; align-items: center; justify-content: center; font-size: 2rem; color: white;">
+          <div class="col-md-4 text-center" data-aos="fade-up" data-aos-delay="300">
+            <div class="feature-icon mx-auto mb-4" style="width: 80px; height: 80px; background: linear-gradient(135deg, #16a34a 0%, #0d9488 100%); border-radius: 20px; display: flex; align-items: center; justify-content: center; font-size: 2rem; color: white;">
               <i class="fas fa-car"></i>
             </div>
             <h4 class="fw-bold mb-3">3. Drive Away</h4>
@@ -607,14 +286,14 @@
     </section>
 
     <!-- Testimonials -->
-    <section id="testimonials" class="py-6 bg-white">
+    <section id="testimonials" class="py-6 bg-white" data-aos="fade-up">
       <div class="container">
         <div class="text-center mb-6">
           <h2 class="display-5 fw-bold mb-3">Client Testimonials</h2>
           <p class="lead text-muted">Hear from our satisfied customers</p>
         </div>
         <div class="row g-4">
-          <div class="col-md-4">
+          <div class="col-md-4" data-aos="fade-up" data-aos-delay="100">
             <div class="testimonial-card p-4 h-100">
               <div class="rating-stars mb-3">
                 <i class="fas fa-star text-warning"></i>
@@ -633,7 +312,7 @@
               </div>
             </div>
           </div>
-          <div class="col-md-4">
+          <div class="col-md-4" data-aos="fade-up" data-aos-delay="200">
             <div class="testimonial-card p-4 h-100">
               <div class="rating-stars mb-3">
                 <i class="fas fa-star text-warning"></i>
@@ -652,7 +331,7 @@
               </div>
             </div>
           </div>
-          <div class="col-md-4">
+          <div class="col-md-4" data-aos="fade-up" data-aos-delay="300">
             <div class="testimonial-card p-4 h-100">
               <div class="rating-stars mb-3">
                 <i class="fas fa-star text-warning"></i>
@@ -681,7 +360,7 @@
         <div class="row g-5">
           <div class="col-lg-4">
             <div class="mb-4">
-              <div class="brand-mark bg-success text-white d-inline-flex align-items-center justify-content-center rounded-circle" style="width:60px;height:60px;font-size:1.8rem; background: var(--gradient-primary);">SC</div>
+              <div class="brand-mark bg-success text-white d-inline-flex align-items-center justify-content-center rounded-circle" style="width:60px;height:60px;font-size:1.8rem; background: linear-gradient(135deg, #16a34a 0%, #0d9488 100%);">SC</div>
               <h4 class="mt-3 text-success fw-bold">Silas Car Rentals</h4>
               <p class="text-muted">Nigeria's premier car rental service offering luxury and executive vehicles for business and leisure travel across major cities.</p>
             </div>
@@ -703,21 +382,21 @@
           <div class="col-lg-2 col-md-4">
             <h6 class="text-success fw-bold mb-4">Our Services</h6>
             <ul class="list-unstyled">
-              <li class="mb-2"><a href="#" data-modal="bookModal" data-url="book.html" class="text-light text-decoration-none"><i class="fas fa-car me-2 text-success"></i> Luxury Rentals</a></li>
-              <li class="mb-2"><a href="#" data-modal="bookModal" data-url="book.html" class="text-light text-decoration-none"><i class="fas fa-building me-2 text-success"></i> Corporate Services</a></li>
-              <li class="mb-2"><a href="#" data-modal="bookModal" data-url="book.html" class="text-light text-decoration-none"><i class="fas fa-plane me-2 text-success"></i> Airport Transfers</a></li>
-              <li class="mb-2"><a href="#" data-modal="bookModal" data-url="book.html" class="text-light text-decoration-none"><i class="fas fa-user-tie me-2 text-success"></i> Chauffeur Services</a></li>
-              <li><a href="#" data-modal="bookModal" data-url="book.html" class="text-light text-decoration-none"><i class="fas fa-calendar-alt me-2 text-success"></i> Long-term Leasing</a></li>
+              <li class="mb-2"><a href="book.html" class="text-light text-decoration-none"><i class="fas fa-car me-2 text-success"></i> Luxury Rentals</a></li>
+              <li class="mb-2"><a href="book.html" class="text-light text-decoration-none"><i class="fas fa-building me-2 text-success"></i> Corporate Services</a></li>
+              <li class="mb-2"><a href="book.html" class="text-light text-decoration-none"><i class="fas fa-plane me-2 text-success"></i> Airport Transfers</a></li>
+              <li class="mb-2"><a href="book.html" class="text-light text-decoration-none"><i class="fas fa-user-tie me-2 text-success"></i> Chauffeur Services</a></li>
+              <li><a href="book.html" class="text-light text-decoration-none"><i class="fas fa-calendar-alt me-2 text-success"></i> Long-term Leasing</a></li>
             </ul>
           </div>
           <div class="col-lg-2 col-md-4">
             <h6 class="text-success fw-bold mb-4">Company</h6>
             <ul class="list-unstyled">
-              <li><a href="#" data-modal="infoModal" data-url="about.html" data-title="About Us" class="text-light text-decoration-none">About Us</a></li>
-              <li><a href="#" data-modal="infoModal" data-url="terms.html" data-title="Terms & Conditions" class="text-light text-decoration-none">Terms & Conditions</a></li>
-              <li><a href="#" data-modal="infoModal" data-url="privacy.html" data-title="Privacy Policy" class="text-light text-decoration-none">Privacy Policy</a></li>
-              <li><a href="#" data-modal="infoModal" data-url="faq.html" data-title="FAQ" class="text-light text-decoration-none">FAQ</a></li>
-              <li><a href="#" data-modal="infoModal" data-url="contact.html" data-title="Contact Support" class="text-light text-decoration-none">Contact Support</a></li>
+              <li><a href="about.html" class="text-light text-decoration-none">About Us</a></li>
+              <li><a href="terms.html" class="text-light text-decoration-none">Terms & Conditions</a></li>
+              <li><a href="privacy.html" class="text-light text-decoration-none">Privacy Policy</a></li>
+              <li><a href="faq.html" class="text-light text-decoration-none">FAQ</a></li>
+              <li><a href="contact.html" class="text-light text-decoration-none">Contact Support</a></li>
             </ul>
           </div>
           <div class="col-lg-4 col-md-8">
@@ -728,4 +407,112 @@
             </form>
             <div id="newsletter-message" class="small"></div>
             <div class="social-links d-flex gap-3">
-              <a
+              <a href="#" class="text-light text-decoration-none">
+                <i class="fab fa-facebook-f"></i>
+              </a>
+              <a href="#" class="text-light text-decoration-none">
+                <i class="fab fa-twitter"></i>
+              </a>
+              <a href="#" class="text-light text-decoration-none">
+                <i class="fab fa-instagram"></i>
+              </a>
+              <a href="#" class="text-light text-decoration-none">
+                <i class="fab fa-linkedin-in"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </footer>
+  </main>
+
+  <!-- Scroll to top button -->
+  <button class="scroll-to-top" id="scroll-to-top" aria-label="Scroll to top">
+    <i class="fas fa-chevron-up"></i>
+  </button>
+
+  <!-- Toast notification -->
+  <div class="toast" id="toast" role="alert" aria-live="assertive" aria-atomic="true">
+    <div class="toast-body"></div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+  <script src="js/config.js"></script>
+  <script src="app.js"></script>
+  <script>
+    // Initialize AOS animations
+    AOS.init({
+      duration: 800,
+      easing: 'ease-in-out',
+      once: true,
+      offset: 100
+    });
+
+    // Scroll to top functionality
+    const scrollToTopBtn = document.getElementById('scroll-to-top');
+    window.addEventListener('scroll', () => {
+      if (window.pageYOffset > 300) {
+        scrollToTopBtn.classList.add('show');
+      } else {
+        scrollToTopBtn.classList.remove('show');
+      }
+    });
+
+    scrollToTopBtn.addEventListener('click', () => {
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      });
+    });
+
+    // Smooth scrolling for anchor links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+          target.scrollIntoView({
+            behavior: 'smooth',
+            block: 'start'
+          });
+        }
+      });
+    });
+
+    // Newsletter form handling
+    const newsletterForm = document.getElementById('newsletter-form');
+    if (newsletterForm) {
+      newsletterForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        const email = this.querySelector('input[type="email"]').value;
+        const messageDiv = document.getElementById('newsletter-message');
+        
+        // Simple validation
+        if (!email || !email.includes('@')) {
+          messageDiv.textContent = 'Please enter a valid email address.';
+          messageDiv.style.color = '#dc3545';
+          return;
+        }
+
+        // Simulate subscription (replace with actual API call)
+        messageDiv.textContent = 'Thank you for subscribing to our newsletter!';
+        messageDiv.style.color = '#198754';
+        this.reset();
+        
+        // Clear message after 5 seconds
+        setTimeout(() => {
+          messageDiv.textContent = '';
+        }, 5000);
+      });
+    }
+
+    // Initialize theme toggle
+    document.addEventListener('DOMContentLoaded', function() {
+      // This will be handled by app.js
+      updateGlobalCounts();
+    });
+  </script>
+</body>
+</html>
