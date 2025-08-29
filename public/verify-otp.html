@@ -4,6 +4,12 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Verify OTP - Silas Car Rental</title>
+  <!-- Bootstrap CSS CDN -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Font Awesome CDN -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <style>
     * {
       margin: 0;
@@ -12,124 +18,235 @@
     }
 
     body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
-      color: #e0e0e0;
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+      color: #ffffff;
       overflow-x: hidden;
       min-height: 100vh;
+    }
+
+    header {
+      background: rgba(255, 255, 255, 0.15);
+      padding: 1rem 2rem;
       display: flex;
       align-items: center;
       justify-content: center;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      position: fixed;
+      width: 100%;
+      top: 0;
+      z-index: 1000;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    header h1 {
+      color: #ffffff;
+      margin: 0;
+      font-size: 1.8rem;
+      font-weight: 700;
+      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    }
+
+    .back-btn {
+      background: linear-gradient(45deg, #00b09b, #96c93d);
+      color: white;
+      border: none;
+      padding: 0.6rem 1.2rem;
+      border-radius: 30px;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 0.95rem;
+      transition: all 0.3s;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    .back-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
+    }
+
+    .container {
+      display: flex;
+      min-height: 100vh;
+      padding-top: 80px;
+    }
+
+    .welcome-section {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 2rem;
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border-right: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .welcome-content {
+      text-align: center;
+      max-width: 500px;
+      padding: 2rem;
+    }
+
+    .welcome-content h2 {
+      font-size: 2.5rem;
+      color: #ffffff;
+      margin-bottom: 1.5rem;
+      font-weight: 700;
+      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    }
+
+    .welcome-content p {
+      font-size: 1.1rem;
+      color: rgba(255, 255, 255, 0.9);
+      margin-bottom: 2rem;
+      line-height: 1.6;
+    }
+
+    .car-icon {
+      font-size: 5rem;
+      margin-bottom: 1.5rem;
+      color: #ffffff;
+      text-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    }
+
+    .form-section {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
       padding: 2rem;
     }
 
     .form-container {
-      background: rgba(31, 31, 31, 0.9);
-      border-radius: 16px;
+      background: rgba(255, 255, 255, 0.9);
+      border-radius: 20px;
       padding: 2.5rem 3rem;
       max-width: 450px;
       width: 100%;
-      box-shadow: 0 8px 32px rgba(0,0,0,0.3);
-      -webkit-backdrop-filter: blur(10px);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
       backdrop-filter: blur(10px);
-      border: 1px solid rgba(255, 255, 255, 0.1);
+      -webkit-backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.3);
     }
 
     h2 {
       margin-bottom: 1.5rem;
       text-align: center;
-      color: #03dac5;
+      color: #333;
       font-size: 2rem;
+      font-weight: 700;
     }
 
     label {
       font-weight: 600;
-      font-size: 0.9rem;
-      margin-bottom: 0.3rem;
+      margin-bottom: 0.5rem;
       display: block;
-      color: #bbb;
+      color: #555;
     }
 
-    input {
-      padding: 0.75rem 1rem;
-      border-radius: 8px;
-      border: 1px solid rgba(255, 255, 255, 0.1);
+    .form-control {
+      padding: 0.9rem 1.2rem;
+      border-radius: 12px;
+      border: 2px solid #e1e1e1;
       font-size: 1rem;
-      background: rgba(42, 42, 42, 0.8);
-      color: #eee;
+      background: #f8f9fa;
+      color: #333;
       margin-bottom: 1.2rem;
       width: 100%;
       transition: all 0.3s;
-      text-align: center;
+    }
+
+    .otp-input {
       letter-spacing: 0.5rem;
       font-size: 1.2rem;
+      text-align: center;
     }
 
-    input:focus {
+    .form-control:focus {
       outline: none;
-      border-color: #03dac5;
-      background: rgba(34, 34, 34, 0.9);
-      box-shadow: 0 0 0 2px rgba(3, 218, 197, 0.2);
+      border-color: #6a11cb;
+      background: #ffffff;
+      box-shadow: 0 0 0 4px rgba(106, 17, 203, 0.1);
     }
 
-    button {
-      padding: 0.75rem 1rem;
-      border-radius: 8px;
+    .btn-primary {
+      padding: 0.9rem 1.2rem;
+      border-radius: 12px;
       border: none;
-      font-weight: 700;
+      font-weight: 600;
       font-size: 1.1rem;
-      background: #03dac5;
-      color: #121212;
+      background: linear-gradient(45deg, #6a11cb, #2575fc);
+      color: white;
       cursor: pointer;
       transition: all 0.3s;
       width: 100%;
+      box-shadow: 0 4px 15px rgba(106, 17, 203, 0.3);
     }
 
-    button:hover {
-      background: #00b2a9;
-      transform: translateY(-2px);
-      box-shadow: 0 4px 12px rgba(3, 218, 197, 0.3);
+    .btn-primary:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 6px 20px rgba(106, 17, 203, 0.4);
     }
 
-    .back-link {
-      display: inline-block;
-      margin-top: 1rem;
-      color: #03dac5;
+    .footer-text {
+      margin-top: 1.5rem;
+      font-size: 0.95rem;
+      text-align: center;
+      color: #666;
+    }
+
+    .footer-text a {
+      color: #6a11cb;
       text-decoration: none;
       font-weight: 600;
+      transition: all 0.3s;
     }
 
-    .back-link:hover {
+    .footer-text a:hover {
       text-decoration: underline;
+      color: #2575fc;
     }
 
-    .message {
+    #toast {
+      position: fixed;
+      bottom: 1.5rem;
+      left: 50%;
+      transform: translateX(-50%);
+      background: linear-gradient(45deg, #6a11cb, #2575fc);
+      color: white;
+      padding: 1rem 1.5rem;
+      border-radius: 12px;
+      font-weight: 600;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+      z-index: 9999;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
       text-align: center;
-      margin: 1rem 0;
-      padding: 1rem;
-      border-radius: 8px;
-      display: none;
+      min-width: 300px;
     }
 
-    .message.success {
-      background: rgba(3, 218, 197, 0.2);
-      color: #03dac5;
-      border: 1px solid #03dac5;
+    #toast.show {
+      opacity: 1;
+      pointer-events: auto;
     }
 
-    .message.error {
-      background: rgba(255, 59, 48, 0.2);
-      color: #ff3b30;
-      border: 1px solid #ff3b30;
-    }
-
-    .resend-section {
-      text-align: center;
-      margin-top: 1rem;
+    .resend-timer {
+      color: #777;
+      font-size: 0.9rem;
+      margin-bottom: 0.5rem;
     }
 
     .resend-link {
-      color: #03dac5;
+      color: #6a11cb;
       text-decoration: none;
       font-weight: 600;
       cursor: pointer;
@@ -137,39 +254,100 @@
 
     .resend-link:hover {
       text-decoration: underline;
+      color: #2575fc;
     }
 
-    .resend-timer {
-      color: #777;
-      font-size: 0.9rem;
+    @media (max-width: 768px) {
+      .container {
+        flex-direction: column;
+      }
+      
+      .welcome-section {
+        padding: 1.5rem;
+        border-right: none;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+      }
+      
+      .welcome-content h2 {
+        font-size: 2rem;
+      }
+      
+      .form-container {
+        margin: 1rem;
+        padding: 2rem;
+      }
+      
+      header {
+        padding: 0.75rem 1rem;
+      }
+      
+      header h1 {
+        font-size: 1.5rem;
+      }
+      
+      .back-btn {
+        padding: 0.5rem 1rem;
+        font-size: 0.85rem;
+      }
     }
   </style>
 </head>
 <body>
-  <div class="form-container">
-    <h2>Verify OTP</h2>
-    <p style="text-align: center; margin-bottom: 1.5rem; color: #bbb;">
-      Please enter the 6-digit OTP sent to your email address.
-    </p>
-    
-    <form id="verify-otp-form">
-      <label for="otp">One-Time Password (OTP)</label>
-      <input type="text" id="otp" name="otp" required placeholder="123456" maxlength="6" pattern="[0-9]{6}">
-      
-      <button type="submit">Verify OTP</button>
-    </form>
-    
-    <div id="message" class="message"></div>
-    
-    <div class="resend-section">
-      <p class="resend-timer" id="resend-timer">Didn't receive the code? <span id="timer">60</span>s</p>
-      <a href="#" class="resend-link" id="resend-link" style="display: none;">Resend OTP</a>
+
+  <!-- Header -->
+  <header>
+    <h1><i class="fas fa-car"></i> Silas Car Rental</h1>
+    <button class="back-btn" onclick="goBack()"><i class="fas fa-arrow-left"></i> Back</button>
+    <script>
+      function goBack() {
+        if (document.referrer) {
+          history.back();
+        } else {
+          window.location.href = 'index.html';
+        }
+      }
+    </script>
+  </header>
+
+  <div class="container">
+    <!-- Welcome Section -->
+    <div class="welcome-section">
+      <div class="welcome-content">
+        <div class="car-icon">🔐</div>
+        <h2>Secure Verification</h2>
+        <p>We've sent a 6-digit verification code to your email. Please enter it below to continue.</p>
+      </div>
     </div>
-    
-    <div style="text-align: center; margin-top: 1.5rem;">
-      <a href="login.html" class="back-link">← Back to Login</a>
+
+    <!-- Form Section -->
+    <div class="form-section">
+      <div class="form-container">
+        <h2>Verify OTP</h2>
+        <form id="verify-otp-form">
+          <label for="otp">One-Time Password (OTP)</label>
+          <input type="text" class="form-control otp-input" id="otp" name="otp" required 
+                 placeholder="123456" maxlength="6" pattern="[0-9]{6}">
+          
+          <button type="submit" class="btn-primary">Verify OTP</button>
+        </form>
+        
+        <div id="message" class="alert d-none mt-3" role="alert"></div>
+        
+        <div class="text-center mt-3">
+          <p class="resend-timer" id="resend-timer">
+            Didn't receive the code? <span id="timer">60</span>s
+          </p>
+          <a href="#" class="resend-link d-none" id="resend-link">Resend OTP</a>
+        </div>
+        
+        <div class="footer-text">
+          <a href="login.html"><i class="fas fa-arrow-left"></i> Back to Login</a>
+        </div>
+      </div>
     </div>
   </div>
+
+  <div id="toast"></div>
 
   <script>
     const BASE_URL = "https://techyjaunt-auth-go43.onrender.com";
@@ -177,23 +355,29 @@
     let countdown = 60;
     let timerInterval;
 
+    function showToast(msg, ms = 3000) {
+      const toast = document.getElementById('toast');
+      toast.textContent = msg;
+      toast.classList.add('show');
+      setTimeout(() => toast.classList.remove('show'), ms);
+    }
+
     document.getElementById('verify-otp-form').addEventListener('submit', async (e) => {
       e.preventDefault();
       
       const otp = document.getElementById('otp').value.trim();
-      const messageDiv = document.getElementById('message');
       
       // Get email from URL parameters
       const urlParams = new URLSearchParams(window.location.search);
       const email = urlParams.get('email');
       
       if (!otp || otp.length !== 6) {
-        showMessage('Please enter a valid 6-digit OTP', 'error');
+        showToast("Please enter a valid 6-digit OTP");
         return;
       }
 
       if (!email) {
-        showMessage('Email not found. Please restart the process.', 'error');
+        showToast("Email not found. Please restart the process.");
         return;
       }
 
@@ -209,30 +393,18 @@
         const data = await response.json();
 
         if (response.ok) {
-          showMessage('OTP verified successfully! Redirecting...', 'success');
+          showToast("OTP verified successfully! Redirecting...");
           setTimeout(() => {
-            // Redirect to reset password page with userId
-            const userId = data.userId || data.id || email; // Use userId from response if available
+            const userId = data.userId || data.id || email;
             window.location.href = `reset-password.html?userId=${encodeURIComponent(userId)}`;
           }, 1500);
         } else {
-          showMessage(data.message || 'Invalid OTP', 'error');
+          showToast(data.message || 'Invalid OTP');
         }
       } catch (error) {
-        showMessage('Network error. Please try again later.', 'error');
+        showToast("Network error. Please try again later.");
       }
     });
-
-    function showMessage(text, type) {
-      const messageDiv = document.getElementById('message');
-      messageDiv.textContent = text;
-      messageDiv.className = `message ${type}`;
-      messageDiv.style.display = 'block';
-      
-      setTimeout(() => {
-        messageDiv.style.display = 'none';
-      }, 5000);
-    }
 
     // Timer functionality
     function startTimer() {
@@ -247,7 +419,7 @@
         if (countdown <= 0) {
           clearInterval(timerInterval);
           resendTimer.style.display = 'none';
-          resendLink.style.display = 'inline';
+          resendLink.classList.remove('d-none');
         }
       }, 1000);
     }
@@ -265,16 +437,16 @@
         });
 
         if (response.ok) {
-          showMessage('New OTP sent to your email!', 'success');
+          showToast("New OTP sent to your email!");
           countdown = 60;
           document.getElementById('resend-timer').style.display = 'block';
-          document.getElementById('resend-link').style.display = 'none';
+          document.getElementById('resend-link').classList.add('d-none');
           startTimer();
         } else {
-          showMessage('Failed to resend OTP', 'error');
+          showToast("Failed to resend OTP");
         }
       } catch (error) {
-        showMessage('Network error. Please try again later.', 'error');
+        showToast("Network error. Please try again later.");
       }
     });
 
