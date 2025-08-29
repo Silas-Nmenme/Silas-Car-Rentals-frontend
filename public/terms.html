@@ -4,107 +4,473 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Terms and Conditions - Silas Car Rental</title>
+  
+  <!-- Bootstrap 5 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+  
+  <!-- Font Awesome for icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  
+  <!-- Animate.css for additional animations -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+  
+  <!-- Main Stylesheet -->
+  <link href="style.css" rel="stylesheet" />
+  
+  <!-- Custom Styles for Terms Page -->
   <style>
-    body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: #121212;
-      color: #e0e0e0;
-      margin: 0; padding: 0;
-      line-height: 1.6;
+    :root {
+      /* Light Theme Variables */
+      --light-primary: #0d9488;
+      --light-primary-700: #0f766e;
+      --light-text: #374151;
+      --light-muted: #6b7280;
+      --light-border: #e5e7eb;
+      --light-shadow: 0 4px 20px rgba(0,0,0,0.08);
+      --light-bg: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+      --light-card-bg: #ffffff;
+      --light-warn: #f59e0b;
+      
+      /* Dark Theme Variables */
+      --dark-primary: #14b8a6;
+      --dark-primary-700: #0d9488;
+      --dark-text: #e5e7eb;
+      --dark-muted: #9ca3af;
+      --dark-border: #374151;
+      --dark-shadow: 0 4px 20px rgba(0,0,0,0.3);
+      --dark-bg: linear-gradient(135deg, #111827 0%, #1f2937 100%);
+      --dark-card-bg: #1f2937;
+      
+      /* Common Variables */
+      --transition: all 0.3s ease;
     }
-    header {
-      background: #1f1f1f;
-      padding: 1rem 2rem;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.4);
+    
+    /* Light theme */
+    body[data-theme="light"] {
+      background: var(--light-bg);
+      min-height: 100vh;
+      transition: var(--transition);
+      color: var(--light-text);
     }
-    header h1 {
-      color: #03dac5;
+    
+    /* Dark theme */
+    body[data-theme="dark"] {
+      background: var(--dark-bg);
+      min-height: 100vh;
+      transition: var(--transition);
+      color: var(--dark-text);
+    }
+    
+    /* Static Header */
+    .terms-header {
+      background: linear-gradient(135deg, var(--light-primary) 0%, var(--light-primary-700) 100%);
+      padding: 1.5rem 2rem;
+      box-shadow: var(--light-shadow);
+      border-bottom: 3px solid rgba(13, 148, 136, 0.2);
+      position: static;
+      z-index: 1000;
+      transition: var(--transition);
+    }
+    
+    body[data-theme="dark"] .terms-header {
+      background: linear-gradient(135deg, var(--dark-primary) 0%, var(--dark-primary-700) 100%);
+      box-shadow: var(--dark-shadow);
+      border-bottom: 3px solid rgba(20, 184, 166, 0.3);
+    }
+    
+    .terms-header.scrolled {
+      box-shadow: 0 4px 30px rgba(0,0,0,0.15);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+    }
+    
+    body[data-theme="dark"] .terms-header.scrolled {
+      box-shadow: 0 4px 30px rgba(0,0,0,0.4);
+    }
+    
+    .terms-header h1 {
+      color: white;
       margin: 0;
-      font-size: 1.4rem;
+      font-size: 1.8rem;
+      font-weight: 700;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.1);
     }
-    header nav a {
-      color: #e0e0e0;
+    
+    .terms-header nav a {
+      color: rgba(255,255,255,0.9);
       text-decoration: none;
       margin-left: 1.5rem;
-      font-weight: 500;
-    }
-    header nav a:hover {
-      color: #03dac5;
-    }
-    .back-btn {
-      background: #03dac5;
-      color: #121212;
-      border: none;
+      font-weight: 600;
+      transition: var(--transition);
       padding: 0.5rem 1rem;
-      border-radius: 4px;
+      border-radius: 6px;
+    }
+    
+    .terms-header nav a:hover {
+      color: white;
+      background: rgba(255,255,255,0.1);
+      transform: translateY(-2px);
+    }
+    
+    /* Theme Toggle */
+    .theme-toggle {
+      background: rgba(255,255,255,0.1);
+      border: 2px solid rgba(255,255,255,0.2);
+      color: white;
+      padding: 0.5rem;
+      border-radius: 50%;
       cursor: pointer;
-      font-weight: bold;
-      transition: background 0.3s;
+      transition: var(--transition);
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-left: 1rem;
     }
-    .back-btn:hover {
-      background: #00b2a9;
+    
+    .theme-toggle:hover {
+      background: rgba(255,255,255,0.2);
+      transform: scale(1.1);
     }
-    main {
-      max-width: 800px;
-      margin: 2rem auto;
-      padding: 2rem;
-    }
-    h2 {
-      color: #03dac5;
-      margin-top: 2rem;
-      margin-bottom: 1rem;
-    }
-    h3 {
-      color: #bbb;
-      margin-top: 1.5rem;
-      margin-bottom: 0.5rem;
-    }
-    p, li {
-      margin-bottom: 0.8rem;
-      color: #ccc;
-    }
-    ul {
-      padding-left: 1.5rem;
-    }
-    .last-updated {
-      font-style: italic;
-      color: #777;
-      margin-bottom: 2rem;
-    }
-    .section {
-      background: #1f1f1f;
-      padding: 1.5rem;
+    
+    .back-btn {
+      background: white;
+      color: var(--light-primary);
+      border: none;
+      padding: 0.6rem 1.2rem;
       border-radius: 8px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: var(--transition);
+      box-shadow: 0 4px 12px rgba(13, 148, 136, 0.2);
+    }
+    
+    .back-btn:hover {
+      background: var(--light-primary-700);
+      color: white;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(13, 148, 136, 0.3);
+    }
+    
+    body[data-theme="dark"] .back-btn {
+      background: var(--dark-card-bg);
+      color: var(--dark-primary);
+      box-shadow: var(--dark-shadow);
+    }
+    
+    body[data-theme="dark"] .back-btn:hover {
+      background: var(--dark-primary);
+      color: white;
+    }
+    
+    /* Main content styling */
+    .terms-main {
+      max-width: 900px;
+      margin: 3rem auto;
+      padding: 0 2rem;
+    }
+    
+    /* Typewriter animation for title */
+    .terms-title {
+      color: var(--light-text);
+      font-size: 2.5rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      background: linear-gradient(135deg, var(--light-primary) 0%, var(--light-primary-700) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    
+    body[data-theme="dark"] .terms-title {
+      background: linear-gradient(135deg, var(--dark-primary) 0%, var(--dark-primary-700) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    
+    .last-updated {
+      color: var(--light-muted);
+      font-style: italic;
+      margin-bottom: 3rem;
+      font-size: 0.95rem;
+      opacity: 0;
+      animation: fadeIn 1s ease 0.5s forwards;
+    }
+    
+    body[data-theme="dark"] .last-updated {
+      color: var(--dark-muted);
+    }
+    
+    /* Section animations */
+    .terms-section {
+      background: var(--light-card-bg);
+      padding: 2rem;
+      border-radius: 16px;
+      margin-bottom: 2rem;
+      box-shadow: var(--light-shadow);
+      border: 1px solid var(--light-border);
+      transition: var(--transition);
+      opacity: 0;
+      transform: translateY(30px);
+      animation: fadeInUp 0.8s ease forwards;
+    }
+    
+    body[data-theme="dark"] .terms-section {
+      background: var(--dark-card-bg);
+      box-shadow: var(--dark-shadow);
+      border: 1px solid var(--dark-border);
+    }
+    
+    .terms-section:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 12px 40px rgba(0,0,0,0.15);
+    }
+    
+    body[data-theme="dark"] .terms-section:hover {
+      box-shadow: 0 12px 40px rgba(0,0,0,0.4);
+    }
+    
+    .terms-section:nth-child(2) { animation-delay: 0.1s; }
+    .terms-section:nth-child(3) { animation-delay: 0.2s; }
+    .terms-section:nth-child(4) { animation-delay: 0.3s; }
+    .terms-section:nth-child(5) { animation-delay: 0.4s; }
+    .terms-section:nth-child(6) { animation-delay: 0.5s; }
+    .terms-section:nth-child(7) { animation-delay: 0.6s; }
+    .terms-section:nth-child(8) { animation-delay: 0.7s; }
+    .terms-section:nth-child(9) { animation-delay: 0.8s; }
+    .terms-section:nth-child(10) { animation-delay: 0.9s; }
+    .terms-section:nth-child(11) { animation-delay: 1.0s; }
+    .terms-section:nth-child(12) { animation-delay: 1.1s; }
+    .terms-section:nth-child(13) { animation-delay: 1.2s; }
+    
+    @keyframes fadeInUp {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    
+    @keyframes fadeIn {
+      to {
+        opacity: 1;
+      }
+    }
+    
+    h2 {
+      color: var(--light-primary);
+      margin-top: 0;
       margin-bottom: 1.5rem;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+      font-size: 1.5rem;
+      font-weight: 600;
+      border-bottom: 2px solid var(--light-border);
+      padding-bottom: 0.5rem;
+      animation: slideInLeft 0.6s ease;
+    }
+    
+    body[data-theme="dark"] h2 {
+      color: var(--dark-primary);
+      border-bottom: 2px solid var(--dark-border);
+    }
+    
+    h3 {
+      color: var(--light-text);
+      margin-top: 1.5rem;
+      margin-bottom: 0.8rem;
+      font-size: 1.2rem;
+      font-weight: 600;
+      animation: fadeIn 0.8s ease;
+    }
+    
+    body[data-theme="dark"] h3 {
+      color: var(--dark-text);
+    }
+    
+    p, li {
+      color: var(--light-text);
+      margin-bottom: 1rem;
+      line-height: 1.7;
+      animation: fadeIn 1s ease;
+    }
+    
+    body[data-theme="dark"] p,
+    body[data-theme="dark"] li {
+      color: var(--dark-text);
+    }
+    
+    ul {
+      padding-left: 1.8rem;
+    }
+    
+    li {
+      margin-bottom: 0.5rem;
+      position: relative;
+    }
+    
+    li::before {
+      content: "•";
+      color: var(--light-primary);
+      font-weight: bold;
+      display: inline-block;
+      width: 1em;
+      margin-left: -1em;
+    }
+    
+    body[data-theme="dark"] li::before {
+      color: var(--dark-primary);
+    }
+    
+    .commission-note {
+      background: linear-gradient(135deg, #fff3cd 0%, #ffeaa7 100%);
+      padding: 1rem;
+      border-radius: 8px;
+      border-left: 4px solid var(--light-warn);
+      margin-top: 1.5rem;
+      font-weight: 600;
+      color: var(--light-text);
+      animation: pulse 2s infinite;
+    }
+    
+    body[data-theme="dark"] .commission-note {
+      background: linear-gradient(135deg, #78350f 0%, #92400e 100%);
+      border-left: 4px solid #f59e0b;
+      color: #fef3c7;
+    }
+    
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.02); }
+    }
+    
+    /* Final acceptance note */
+    .acceptance-note {
+      background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);
+      padding: 1.5rem;
+      border-radius: 12px;
+      border-left: 4px solid var(--light-primary);
+      margin-top: 2rem;
+      text-align: center;
+      font-weight: 600;
+      animation: bounceIn 1s ease;
+    }
+    
+    body[data-theme="dark"] .acceptance-note {
+      background: linear-gradient(135deg, #065f46 0%, #047857 100%);
+      border-left: 4px solid var(--dark-primary);
+      color: #d1fae5;
+    }
+    
+    /* Additional animations */
+    @keyframes slideInLeft {
+      from {
+        transform: translateX(-30px);
+        opacity: 0;
+      }
+      to {
+        transform: translateX(0);
+        opacity: 1;
+      }
+    }
+    
+    @keyframes bounceIn {
+      0% {
+        transform: scale(0.8);
+        opacity: 0;
+      }
+      50% {
+        transform: scale(1.05);
+      }
+      100% {
+        transform: scale(1);
+        opacity: 1;
+      }
+    }
+    
+    /* Text highlight animation */
+    .highlight-text {
+      background: linear-gradient(120deg, var(--light-primary) 0%, var(--light-primary-700) 100%);
+      background-size: 200% 100%;
+      background-position: 100% 0;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      animation: highlight 3s ease-in-out infinite;
+    }
+    
+    @keyframes highlight {
+      0%, 100% {
+        background-position: 100% 0;
+      }
+      50% {
+        background-position: 0 0;
+      }
+    }
+    
+    /* Responsive design */
+    @media (max-width: 768px) {
+      .terms-header {
+        padding: 1rem;
+        flex-direction: column;
+        gap: 1rem;
+      }
+      
+      .terms-header nav {
+        margin-top: 1rem;
+      }
+      
+      .terms-header nav a {
+        margin-left: 0;
+        margin-right: 1rem;
+      }
+      
+      .terms-main {
+        padding: 0 1rem;
+        margin: 2rem auto;
+      }
+      
+      .terms-title {
+        font-size: 2rem;
+      }
+      
+      .terms-section {
+        padding: 1.5rem;
+      }
+      
+      .theme-toggle {
+        margin-left: 0;
+        margin-top: 1rem;
+      }
     }
   </style>
 </head>
-<body>
+<body data-theme="light">
 
-  <header>
+  <header class="terms-header d-flex flex-wrap align-items-center justify-content-between">
     <h1>Silas Car Rental</h1>
     <nav>
-      <a href="index.html">Home</a>
-      <a href="cars.html">Cars</a>
+      <a href="index.html" class="me-3">Home</a>
+      <a href="cars.html" class="me-3">Cars</a>
       <a href="contact.html">Contact</a>
     </nav>
-    <button class="back-btn" onclick="history.back()">← Back</button>
+    <div class="d-flex align-items-center">
+      <button class="theme-toggle" id="themeToggle">
+        <i class="fas fa-moon"></i>
+      </button>
+      <button class="back-btn ms-3" onclick="history.back()">← Back</button>
+    </div>
   </header>
 
-  <main>
-    <h1>Terms and Conditions</h1>
+  <main class="terms-main">
+    <h1 class="terms-title animate__animated animate__fadeInDown">Terms and Conditions</h1>
     <p class="last-updated">Last updated: August 2025</p>
 
-    <div class="section">
+    <div class="terms-section">
       <h2>1. Acceptance of Terms</h2>
       <p>By accessing and using Silas Car Rental services, you agree to be bound by these Terms and Conditions. If you do not agree with any part of these terms, you may not use our services.</p>
     </div>
 
-    <div class="section">
+    <div class="terms-section">
       <h2>2. Eligibility Requirements</h2>
       <h3>2.1 Age Requirements</h3>
       <ul>
@@ -121,7 +487,7 @@
       </ul>
     </div>
 
-    <div class="section">
+    <div class="terms-section">
       <h2>3. Booking and Payment</h2>
       <h3>3.1 Reservation</h3>
       <ul>
@@ -129,6 +495,10 @@
         <li>Full payment required at time of booking for advance reservations</li>
         <li>24-hour advance notice required for cancellations to receive full refund</li>
       </ul>
+
+      <div class="commission-note animate__animated animate__flash animate__infinite">
+        Non-negotiable 10% commission attached to each vehicle rental.
+      </div>
 
       <h3>3.2 Payment Methods</h3>
       <ul>
@@ -145,7 +515,7 @@
       </ul>
     </div>
 
-    <div class="section">
+    <div class="terms-section">
       <h2>4. Insurance Coverage</h2>
       <h3>4.1 Basic Coverage</h3>
       <p>All rentals include basic third-party liability insurance as required by law.</p>
@@ -167,7 +537,7 @@
       </ul>
     </div>
 
-    <div class="section">
+    <div class="terms-section">
       <h2>5. Vehicle Use and Restrictions</h2>
       <h3>5.1 Permitted Use</h3>
       <ul>
@@ -185,7 +555,7 @@
       </ul>
     </div>
 
-    <div class="section">
+    <div class="terms-section">
       <h2>6. Fuel Policy</h2>
       <ul>
         <li>Vehicle must be returned with same fuel level as received</li>
@@ -194,7 +564,7 @@
       </ul>
     </div>
 
-    <div class="section">
+    <div class="terms-section">
       <h2>7. Late Returns and Extensions</h2>
       <ul>
         <li>Grace period: 29 minutes</li>
@@ -204,7 +574,7 @@
       </ul>
     </div>
 
-    <div class="section">
+    <div class="terms-section">
       <h2>8. Damage and Cleaning</h2>
       <ul>
         <li>Pre-existing damage must be reported before departure</li>
@@ -214,7 +584,7 @@
       </ul>
     </div>
 
-    <div class="section">
+    <div class="terms-section">
       <h2>9. Cancellation Policy</h2>
       <ul>
         <li>24+ hours before pickup: Full refund</li>
@@ -224,17 +594,17 @@
       </ul>
     </div>
 
-    <div class="section">
+    <div class="terms-section">
       <h2>10. Privacy and Data Protection</h2>
       <p>We collect and process personal data in accordance with applicable privacy laws. Your information is used solely for rental processing and will not be shared with third parties without consent.</p>
     </div>
 
-    <div class="section">
+    <div class="terms-section">
       <h2>11. Limitation of Liability</h2>
       <p>Silas Car Rental's liability is limited to the rental amount paid. We are not responsible for indirect, incidental, or consequential damages arising from vehicle use.</p>
     </div>
 
-    <div class="section">
+    <div class="terms-section">
       <h2>12. Contact Information</h2>
       <p>For questions regarding these terms, please contact us:</p>
       <ul>
@@ -247,5 +617,67 @@
     <p><strong>By creating an account or making a reservation, you acknowledge that you have read, understood, and agree to these Terms and Conditions.</strong></p>
   </main>
 
+  <!-- Bootstrap JS Bundle -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  
+  <script>
+    // Theme toggle functionality
+    const themeToggle = document.getElementById('themeToggle');
+    const themeIcon = themeToggle.querySelector('i');
+    const body = document.body;
+    
+    // Check for saved theme preference or respect OS preference
+    const savedTheme = localStorage.getItem('theme');
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    
+    // Set initial theme
+    if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
+      body.setAttribute('data-theme', 'dark');
+      themeIcon.className = 'fas fa-sun';
+    } else {
+      body.setAttribute('data-theme', 'light');
+      themeIcon.className = 'fas fa-moon';
+    }
+    
+    // Theme toggle event
+    themeToggle.addEventListener('click', () => {
+      const currentTheme = body.getAttribute('data-theme');
+      const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+      
+      body.setAttribute('data-theme', newTheme);
+      themeIcon.className = newTheme === 'light' ? 'fas fa-moon' : 'fas fa-sun';
+      localStorage.setItem('theme', newTheme);
+    });
+    
+    // Sticky header scroll effect
+    const header = document.querySelector('.terms-header');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 50) {
+        header.classList.add('scrolled');
+      } else {
+        header.classList.remove('scrolled');
+      }
+    });
+    
+    // Intersection Observer for animations
+    const observerOptions = {
+      threshold: 0.1,
+      rootMargin: '0px 0px -50px 0px'
+    };
+    
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.style.animationPlayState = 'running';
+          observer.unobserve(entry.target);
+        }
+      });
+    }, observerOptions);
+    
+    // Observe all animated elements
+    document.querySelectorAll('.terms-section, h2, h3, p, li').forEach(el => {
+      observer.observe(el);
+    });
+  </script>
 </body>
 </html>
