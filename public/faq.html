@@ -4,263 +4,624 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>FAQ - Silas Car Rentals</title>
-  <!-- Bootstrap CSS CDN -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
-  <!-- Custom CSS -->
+  
+  <!-- Bootstrap 5 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+  
+  <!-- Font Awesome for icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  
+  <!-- Animate.css for additional animations -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+  
+  <!-- Main Stylesheet -->
+  <link href="style.css" rel="stylesheet" />
+  
+  <!-- Custom Styles for FAQ Page -->
   <style>
     :root {
-      --dark-bg: #121212;
-      --darker-bg: #1f1f1f;
-      --teal-accent: #03dac5;
-      --teal-hover: #00b2a9;
-      --text-light: #e0e0e0;
-      --text-muted: #ccc;
-      --border-color: #333;
+      /* Light Theme Variables */
+      --light-primary: #0d9488;
+      --light-primary-700: #0f766e;
+      --light-text: #374151;
+      --light-muted: #6b7280;
+      --light-border: #e5e7eb;
+      --light-shadow: 0 4px 20px rgba(0,0,0,0.08);
+      --light-bg: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+      --light-card-bg: #ffffff;
+      --light-warn: #f59e0b;
+      
+      /* Dark Theme Variables */
+      --dark-primary: #14b8a6;
+      --dark-primary-700: #0d9488;
+      --dark-text: #e5e7eb;
+      --dark-muted: #9ca3af;
+      --dark-border: #374151;
+      --dark-shadow: 0 4px 20px rgba(0,0,0,0.3);
+      --dark-bg: linear-gradient(135deg, #111827 0%, #1f2937 100%);
+      --dark-card-bg: #1f2937;
+      
+      /* Common Variables */
+      --transition: all 0.3s ease;
     }
     
-    body {
-      background-color: var(--dark-bg);
-      color: var(--text-light);
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    /* Light theme */
+    body[data-theme="light"] {
+      background: var(--light-bg);
+      min-height: 100vh;
+      transition: var(--transition);
+      color: var(--light-text);
     }
     
-    .header {
-      background-color: var(--darker-bg);
-      box-shadow: 0 2px 5px rgba(0,0,0,0.4);
+    /* Dark theme */
+    body[data-theme="dark"] {
+      background: var(--dark-bg);
+      min-height: 100vh;
+      transition: var(--transition);
+      color: var(--dark-text);
     }
     
-    .header h1 {
-      color: var(--teal-accent);
+    /* Static Header */
+    .faq-header {
+      background: linear-gradient(135deg, var(--light-primary) 0%, var(--light-primary-700) 100%);
+      padding: 1.5rem 2rem;
+      box-shadow: var(--light-shadow);
+      border-bottom: 3px solid rgba(13, 148, 136, 0.2);
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 1000;
+      transition: var(--transition);
     }
     
-    .nav-link {
-      color: var(--text-light);
-      font-weight: 500;
-      transition: color 0.3s;
+    body[data-theme="dark"] .faq-header {
+      background: linear-gradient(135deg, var(--dark-primary) 0%, var(--dark-primary-700) 100%);
+      box-shadow: var(--dark-shadow);
+      border-bottom: 3px solid rgba(20, 184, 166, 0.3);
     }
     
-    .nav-link:hover {
-      color: var(--teal-accent);
+    .faq-header.scrolled {
+      box-shadow: 0 4px 30px rgba(0,0,0,0.15);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+    }
+    
+    body[data-theme="dark"] .faq-header.scrolled {
+      box-shadow: 0 4px 30px rgba(0,0,0,0.4);
+    }
+    
+    .faq-header h1 {
+      color: white;
+      margin: 0;
+      font-size: 1.8rem;
+      font-weight: 700;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    
+    .faq-header nav a {
+      color: rgba(255,255,255,0.9);
+      text-decoration: none;
+      margin-left: 1.5rem;
+      font-weight: 600;
+      transition: var(--transition);
+      padding: 0.5rem 1rem;
+      border-radius: 6px;
+    }
+    
+    .faq-header nav a:hover {
+      color: white;
+      background: rgba(255,255,255,0.1);
+      transform: translateY(-2px);
+    }
+    
+    /* Theme Toggle */
+    .theme-toggle {
+      background: rgba(255,255,255,0.1);
+      border: 2px solid rgba(255,255,255,0.2);
+      color: white;
+      padding: 0.5rem;
+      border-radius: 50%;
+      cursor: pointer;
+      transition: var(--transition);
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-left: 1rem;
+    }
+    
+    .theme-toggle:hover {
+      background: rgba(255,255,255,0.2);
+      transform: scale(1.1);
     }
     
     .back-btn {
-      background: var(--teal-accent);
-      color: var(--dark-bg);
+      background: white;
+      color: var(--light-primary);
       border: none;
-      font-weight: bold;
-      transition: background 0.3s;
+      padding: 0.6rem 1.2rem;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: var(--transition);
+      box-shadow: 0 4px 12px rgba(13, 148, 136, 0.2);
     }
     
     .back-btn:hover {
-      background: var(--teal-hover);
-      color: var(--dark-bg);
+      background: var(--light-primary-700);
+      color: white;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(13, 148, 136, 0.3);
     }
     
+    body[data-theme="dark"] .back-btn {
+      background: var(--dark-card-bg);
+      color: var(--dark-primary);
+      box-shadow: var(--dark-shadow);
+    }
+    
+    body[data-theme="dark"] .back-btn:hover {
+      background: var(--dark-primary);
+      color: white;
+    }
+    
+    /* Main content styling */
+    .faq-main {
+      max-width: 900px;
+      margin: 3rem auto;
+      padding: 0 2rem;
+    }
+    
+    /* Typewriter animation for title */
+    .faq-title {
+      color: var(--light-text);
+      font-size: 2.5rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      background: linear-gradient(135deg, var(--light-primary) 0%, var(--light-primary-700) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    
+    body[data-theme="dark"] .faq-title {
+      background: linear-gradient(135deg, var(--dark-primary) 0%, var(--dark-primary-700) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    
+    .faq-intro {
+      color: var(--light-muted);
+      margin-bottom: 3rem;
+      font-size: 1.1rem;
+      opacity: 0;
+      animation: fadeIn 1s ease 0.5s forwards;
+    }
+    
+    body[data-theme="dark"] .faq-intro {
+      color: var(--dark-muted);
+    }
+    
+    /* Section animations */
     .faq-section {
-      background-color: var(--darker-bg);
-      border-radius: 8px;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.3);
-    }
-    
-    .faq-item {
-      border-bottom: 1px solid var(--border-color);
-      padding-bottom: 1rem;
+      background: var(--light-card-bg);
+      padding: 2rem;
+      border-radius: 16px;
       margin-bottom: 1.5rem;
+      box-shadow: var(--light-shadow);
+      border: 1px solid var(--light-border);
+      transition: var(--transition);
+      opacity: 0;
+      transform: translateY(30px);
+      animation: fadeInUp 0.8s ease forwards;
     }
     
-    .faq-item:last-child {
-      border-bottom: none;
-      margin-bottom: 0;
+    body[data-theme="dark"] .faq-section {
+      background: var(--dark-card-bg);
+      box-shadow: var(--dark-shadow);
+      border: 1px solid var(--dark-border);
+    }
+    
+    .faq-section:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 12px 40px rgba(0,0,0,0.15);
+    }
+    
+    body[data-theme="dark"] .faq-section:hover {
+      box-shadow: 0 12px 40px rgba(0,0,0,0.4);
+    }
+    
+    .faq-section:nth-child(2) { animation-delay: 0.1s; }
+    .faq-section:nth-child(3) { animation-delay: 0.2s; }
+    .faq-section:nth-child(4) { animation-delay: 0.3s; }
+    .faq-section:nth-child(5) { animation-delay: 0.4s; }
+    .faq-section:nth-child(6) { animation-delay: 0.5s; }
+    .faq-section:nth-child(7) { animation-delay: 0.6s; }
+    .faq-section:nth-child(8) { animation-delay: 0.7s; }
+    .faq-section:nth-child(9) { animation-delay: 0.8s; }
+    .faq-section:nth-child(10) { animation-delay: 0.9s; }
+    .faq-section:nth-child(11) { animation-delay: 1.0s; }
+    .faq-section:nth-child(12) { animation-delay: 1.1s; }
+    .faq-section:nth-child(13) { animation-delay: 1.2s; }
+    .faq-section:nth-child(14) { animation-delay: 1.3s; }
+    
+    @keyframes fadeInUp {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    
+    @keyframes fadeIn {
+      to {
+        opacity: 1;
+      }
     }
     
     .faq-question {
-      font-weight: bold;
-      color: var(--teal-accent);
-      margin-bottom: 0.5rem;
+      color: var(--light-primary);
+      margin-top: 0;
+      margin-bottom: 1rem;
+      font-size: 1.3rem;
+      font-weight: 600;
+      border-bottom: 2px solid var(--light-border);
+      padding-bottom: 0.5rem;
+      animation: slideInLeft 0.6s ease;
+    }
+    
+    body[data-theme="dark"] .faq-question {
+      color: var(--dark-primary);
+      border-bottom: 2px solid var(--dark-border);
     }
     
     .faq-answer {
-      color: var(--text-muted);
+      color: var(--light-text);
+      margin-bottom: 1rem;
+      line-height: 1.7;
+      animation: fadeIn 1s ease;
     }
     
-    h1, h2, h3, h4, h5, h6 {
-      color: var(--teal-accent);
+    body[data-theme="dark"] .faq-answer {
+      color: var(--dark-text);
     }
     
-    .text-muted {
-      color: #bbb !important;
+    ul, ol {
+      padding-left: 1.8rem;
+    }
+    
+    li {
+      margin-bottom: 0.5rem;
+      position: relative;
+      color: var(--light-text);
+      animation: fadeIn 1s ease;
+    }
+    
+    body[data-theme="dark"] li {
+      color: var(--dark-text);
+    }
+    
+    li::before {
+      content: "•";
+      color: var(--light-primary);
+      font-weight: bold;
+      display: inline-block;
+      width: 1em;
+      margin-left: -1em;
+    }
+    
+    body[data-theme="dark"] li::before {
+      color: var(--dark-primary);
+    }
+    
+    /* Additional animations */
+    @keyframes slideInLeft {
+      from {
+        transform: translateX(-30px);
+        opacity: 0;
+      }
+      to {
+        transform: translateX(0);
+        opacity: 1;
+      }
+    }
+    
+    @keyframes bounceIn {
+      0% {
+        transform: scale(0.8);
+        opacity: 0;
+      }
+      50% {
+        transform: scale(1.05);
+      }
+      100% {
+        transform: scale(1);
+        opacity: 1;
+      }
+    }
+    
+    /* Text highlight animation */
+    .highlight-text {
+      background: linear-gradient(120deg, var(--light-primary) 0%, var(--light-primary-700) 100%);
+      background-size: 200% 100%;
+      background-position: 100% 0;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      animation: highlight 3s ease-in-out infinite;
+    }
+    
+    @keyframes highlight {
+      0%, 100% {
+        background-position: 100% 0;
+      }
+      50% {
+        background-position: 0 0;
+      }
+    }
+    
+    /* Responsive design */
+    @media (max-width: 768px) {
+      .faq-header {
+        padding: 1rem;
+        flex-direction: column;
+        gap: 1rem;
+      }
+      
+      .faq-header nav {
+        margin-top: 1rem;
+      }
+      
+      .faq-header nav a {
+        margin-left: 0;
+        margin-right: 1rem;
+      }
+      
+      .faq-main {
+        padding: 0 1rem;
+        margin: 2rem auto;
+      }
+      
+      .faq-title {
+        font-size: 2rem;
+      }
+      
+      .faq-section {
+        padding: 1.5rem;
+      }
+      
+      .theme-toggle {
+        margin-left: 0;
+        margin-top: 1rem;
+      }
     }
   </style>
 </head>
-<body>
+<body data-theme="light">
 
-  <header class="header py-3">
-    <div class="container">
-      <div class="d-flex flex-column flex-md-row justify-content-between align-items-center">
-        <h1 class="mb-3 mb-md-0">Silas Car Rentals</h1>
-        <nav class="d-flex flex-wrap justify-content-center mb-3 mb-md-0">
-          <a href="index.html" class="nav-link mx-2 my-1">Home</a>
-          <a href="terms.html" class="nav-link mx-2 my-1">Terms & Conditions</a>
-          <a href="contact.html" class="nav-link mx-2 my-1">Contact</a>
-          <a href="faq.html" class="nav-link mx-2 my-1">FAQ</a>
-        </nav>
-        <button class="back-btn btn px-4 py-2 rounded-pill" onclick="history.back()">← Back</button>
-      </div>
+  <header class="faq-header d-flex flex-wrap align-items-center justify-content-between">
+    <h1>Silas Car Rentals</h1>
+    <nav>
+      <a href="index.html" class="me-3">Home</a>
+      <a href="cars.html" class="me-3">Cars</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+    <div class="d-flex align-items-center">
+      <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme" title="Toggle light/dark theme">
+        <i class="fas fa-moon"></i>
+      </button>
+      <button class="back-btn ms-3" onclick="history.back()">← Back</button>
     </div>
   </header>
 
-  <main class="container my-5">
-    <div class="row justify-content-center">
-      <div class="col-lg-10">
-        <h1 class="mb-4">Frequently Asked Questions</h1>
-        <p class="lead mb-5">Find answers to common questions about Silas Car Rentals services, bookings, and policies.</p>
+  <main class="faq-main" style="padding-top: 90px;">
+    <h1 class="faq-title animate__animated animate__fadeInDown">Frequently Asked Questions</h1>
+    <p class="faq-intro">Find answers to common questions about Silas Car Rentals services, bookings, and policies.</p>
 
-        <div class="faq-section p-4 p-md-5">
-          <div class="faq-item">
-            <div class="faq-question h4">How do I book a car?</div>
-            <div class="faq-answer">
-              <p>Booking a car is simple:</p>
-              <ol>
-                <li>Browse our available cars on the website</li>
-                <li>Select your preferred vehicle and rental dates</li>
-                <li>Add to cart and proceed to checkout</li>
-                <li>Sign up or log in to complete your booking</li>
-                <li>Confirm your booking and make payment</li>
-              </ol>
-            </div>
-          </div>
+    <div class="faq-section">
+      <div class="faq-question">How do I book a car?</div>
+      <div class="faq-answer">
+        <p>Booking a car is simple:</p>
+        <ol>
+          <li>Browse our available cars on the website</li>
+          <li>Select your preferred vehicle and rental dates</li>
+          <li>Add to cart and proceed to checkout</li>
+          <li>Sign up or log in to complete your booking</li>
+          <li>Confirm your booking and make payment</li>
+        </ol>
+      </div>
+    </div>
 
-          <div class="faq-item">
-            <div class="faq-question h4">What documents do I need to rent a car?</div>
-            <div class="faq-answer">
-              <p>You need:</p>
-              <ul>
-                <li>Valid driver's license (minimum 2 years)</li>
-                <li>Government-issued ID or passport</li>
-                <li>Credit card for payment and security deposit</li>
-                <li>Minimum age: 21 for standard vehicles, 25 for luxury cars</li>
-              </ul>
-            </div>
-          </div>
+    <div class="faq-section">
+      <div class="faq-question">What documents do I need to rent a car?</div>
+      <div class="faq-answer">
+        <p>You need:</p>
+        <ul>
+          <li>Valid driver's license (minimum 2 years)</li>
+          <li>Government-issued ID or passport</li>
+          <li>Credit card for payment and security deposit</li>
+          <li>Minimum age: 21 for standard vehicles, 25 for luxury cars</li>
+        </ul>
+      </div>
+    </div>
 
-          <div class="faq-item">
-            <div class="faq-question h4">What is the cancellation policy?</div>
-            <div class="faq-answer">
-              <p>Our cancellation policy is as follows:</p>
-              <ul>
-                <li>24+ hours before pickup: Full refund</li>
-                <li>Less than 24 hours: 50% cancellation fee</li>
-                <li>No-show: Full rental charge applies</li>
-                <li>Early return: No refund for unused days</li>
-              </ul>
-            </div>
-          </div>
+    <div class="faq-section">
+      <div class="faq-question">What is the cancellation policy?</div>
+      <div class="faq-answer">
+        <p>Our cancellation policy is as follows:</p>
+        <ul>
+          <li>24+ hours before pickup: Full refund</li>
+          <li>Less than 24 hours: 50% cancellation fee</li>
+          <li>No-show: Full rental charge applies</li>
+          <li>Early return: No refund for unused days</li>
+        </ul>
+      </div>
+    </div>
 
-          <div class="faq-item">
-            <div class="faq-question h4">What payment methods do you accept?</div>
-            <div class="faq-answer">
-              <p>We accept:</p>
-              <ul>
-                <li>Credit cards (Visa, Mastercard, American Express)</li>
-                <li>Debit cards with Visa/Mastercard logo</li>
-                <li>Bank transfers (for corporate bookings)</li>
-                <li>Cash payments at our office</li>
-              </ul>
-            </div>
-          </div>
+    <div class="faq-section">
+      <div class="faq-question">What payment methods do you accept?</div>
+      <div class="faq-answer">
+        <p>We accept:</p>
+        <ul>
+          <li>Credit cards (Visa, Mastercard, American Express)</li>
+          <li>Debit cards with Visa/Mastercard logo</li>
+          <li>Bank transfers (for corporate bookings)</li>
+          <li>Cash payments at our office</li>
+        </ul>
+      </div>
+    </div>
 
-          <div class="faq-item">
-            <div class="faq-question h4">Is insurance included in the rental?</div>
-            <div class="faq-answer">
-              <p>All rentals include basic third-party liability insurance. Additional coverage options are available:</p>
-              <ul>
-                <li>Collision Damage Waiver (CDW)</li>
-                <li>Theft Protection (TP)</li>
-                <li>Personal Accident Insurance (PAI)</li>
-                <li>Super Collision Damage Waiver (SCDW)</li>
-              </ul>
-            </div>
-          </div>
+    <div class="faq-section">
+      <div class="faq-question">Is insurance included in the rental?</div>
+      <div class="faq-answer">
+        <p>All rentals include basic third-party liability insurance. Additional coverage options are available:</p>
+        <ul>
+          <li>Collision Damage Waiver (CDW)</li>
+          <li>Theft Protection (TP)</li>
+          <li>Personal Accident Insurance (PAI)</li>
+          <li>Super Collision Damage Waiver (SCDW)</li>
+        </ul>
+      </div>
+    </div>
 
-          <div class="faq-item">
-            <div class="faq-question h4">Can I extend my rental period?</div>
-            <div class="faq-answer">
-              <p>Yes, extensions are possible subject to availability. Contact us at least 2 hours before your scheduled return time. Additional charges may apply.</p>
-            </div>
-          </div>
+    <div class="faq-section">
+      <div class="faq-question">Can I extend my rental period?</div>
+      <div class="faq-answer">
+        <p>Yes, extensions are possible subject to availability. Contact us at least 2 hours before your scheduled return time. Additional charges may apply.</p>
+      </div>
+    </div>
 
-          <div class="faq-item">
-            <div class="faq-question h4">What happens if I return the car late?</div>
-            <div class="faq-answer">
-              <p>Late returns are subject to charges:</p>
-              <ul>
-                <li>Grace period: 29 minutes</li>
-                <li>After grace period: Full daily rate applies</li>
-                <li>Extensions must be requested in advance</li>
-              </ul>
-            </div>
-          </div>
+    <div class="faq-section">
+      <div class="faq-question">What happens if I return the car late?</div>
+      <div class="faq-answer">
+        <p>Late returns are subject to charges:</p>
+        <ul>
+          <li>Grace period: 29 minutes</li>
+          <li>After grace period: Full daily rate applies</li>
+          <li>Extensions must be requested in advance</li>
+        </ul>
+      </div>
+    </div>
 
-          <div class="faq-item">
-            <div class="faq-question h4">Do you offer delivery services?</div>
-            <div class="faq-answer">
-              <p>Yes, we offer delivery and pickup services within Lagos State. Additional charges apply based on distance.</p>
-            </div>
-          </div>
+    <div class="faq-section">
+      <div class="faq-question">Do you offer delivery services?</div>
+      <div class="faq-answer">
+        <p>Yes, we offer delivery and pickup services within Lagos State. Additional charges apply based on distance.</p>
+      </div>
+    </div>
 
-          <div class="faq-item">
-            <div class="faq-question h4">What is your fuel policy?</div>
-            <div class="faq-answer">
-              <p>Cars must be returned with the same fuel level as received. Refueling service is available at additional cost.</p>
-            </div>
-          </div>
+    <div class="faq-section">
+      <div class="faq-question">What is your fuel policy?</div>
+      <div class="faq-answer">
+        <p>Cars must be returned with the same fuel level as received. Refueling service is available at additional cost.</p>
+      </div>
+    </div>
 
-          <div class="faq-item">
-            <div class="faq-question h4">Can I drive outside Lagos?</div>
-            <div class="faq-answer">
-              <p>Yes, you can drive within Nigeria. For international travel, special arrangements and additional insurance may be required.</p>
-            </div>
-          </div>
+    <div class="faq-section">
+      <div class="faq-question">Can I drive outside Lagos?</div>
+      <div class="faq-answer">
+        <p>Yes, you can drive within Nigeria. For international travel, special arrangements and additional insurance may be required.</p>
+      </div>
+    </div>
 
-          <div class="faq-item">
-            <div class="faq-question h4">What should I do in case of an accident?</div>
-            <div class="faq-answer">
-              <p>In case of an accident:</p>
-              <ol>
-                <li>Ensure everyone's safety first</li>
-                <li>Contact our 24/7 support line immediately</li>
-                <li>Take photos of the damage</li>
-                <li>File a police report if required</li>
-                <li>Follow our accident procedures</li>
-              </ol>
-            </div>
-          </div>
+    <div class="faq-section">
+      <div class="faq-question">What should I do in case of an accident?</div>
+      <div class="faq-answer">
+        <p>In case of an accident:</p>
+        <ol>
+          <li>Ensure everyone's safety first</li>
+          <li>Contact our 24/7 support line immediately</li>
+          <li>Take photos of the damage</li>
+          <li>File a police report if required</li>
+          <li>Follow our accident procedures</li>
+        </ol>
+      </div>
+    </div>
 
-          <div class="faq-item">
-            <div class="faq-question h4">Do you offer discounts?</div>
-            <div class="faq-answer">
-              <p>We offer various discounts:</p>
-              <ul>
-                <li>Long-term rental discounts</li>
-                <li>Corporate rates for businesses</li>
-                <li>Seasonal promotions</li>
-                <li>Loyalty program benefits</li>
-              </ul>
-            </div>
-          </div>
+    <div class="faq-section">
+      <div class="faq-question">Do you offer discounts?</div>
+      <div class="faq-answer">
+        <p>We offer various discounts:</p>
+        <ul>
+          <li>Long-term rental discounts</li>
+          <li>Corporate rates for businesses</li>
+          <li>Seasonal promotions</li>
+          <li>Loyalty program benefits</li>
+        </ul>
+      </div>
+    </div>
 
-          <div class="faq-item">
-            <div class="faq-question h4">How do I report a problem with my rental?</div>
-            <div class="faq-answer">
-              <p>Contact us immediately via phone, email, or our website. Our 24/7 support team will assist you promptly.</p>
-            </div>
-          </div>
-        </div>
+    <div class="faq-section">
+      <div class="faq-question">How do I report a problem with my rental?</div>
+      <div class="faq-answer">
+        <p>Contact us immediately via phone, email, or our website. Our 24/7 support team will assist you promptly.</p>
       </div>
     </div>
   </main>
 
-  <!-- Bootstrap JS CDN -->
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- Bootstrap JS Bundle -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  
+  <script>
+    // Theme toggle functionality
+    const themeToggle = document.getElementById('themeToggle');
+    const themeIcon = themeToggle.querySelector('i');
+    const body = document.body;
+    
+    // Check for saved theme preference or respect OS preference
+    const savedTheme = localStorage.getItem('theme');
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    
+    // Set initial theme
+    if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
+      body.setAttribute('data-theme', 'dark');
+      themeIcon.className = 'fas fa-sun';
+    } else {
+      body.setAttribute('data-theme', 'light');
+      themeIcon.className = 'fas fa-moon';
+    }
+    
+    // Theme toggle event
+    themeToggle.addEventListener('click', () => {
+      const currentTheme = body.getAttribute('data-theme');
+      const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+      
+      body.setAttribute('data-theme', newTheme);
+      themeIcon.className = newTheme === 'light' ? 'fas fa-moon' : 'fas fa-sun';
+      localStorage.setItem('theme', newTheme);
+    });
+    
+    // Sticky header scroll effect
+    const header = document.querySelector('.faq-header');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 50) {
+        header.classList.add('scrolled');
+      } else {
+        header.classList.remove('scrolled');
+      }
+    });
+    
+    // Intersection Observer for animations
+    const observerOptions = {
+      threshold: 0.1,
+      rootMargin: '0px 0px -50px 0px'
+    };
+    
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.style.animationPlayState = 'running';
+          observer.unobserve(entry.target);
+        }
+      });
+    }, observerOptions);
+    
+    // Observe all animated elements
+    document.querySelectorAll('.faq-section, .faq-question, .faq-answer, p, li').forEach(el => {
+      observer.observe(el);
+    });
+  </script>
 </body>
 </html>

@@ -67,7 +67,10 @@
       padding: 1.5rem 2rem;
       box-shadow: var(--light-shadow);
       border-bottom: 3px solid rgba(13, 148, 136, 0.2);
-      position: static;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
       z-index: 1000;
       transition: var(--transition);
     }
@@ -422,7 +425,7 @@
     </div>
   </header>
 
-  <main class="privacy-main">
+  <main class="privacy-main" style="padding-top: 90px;">
     <h1 class="privacy-title animate__animated animate__fadeInDown">Privacy Policy</h1>
     <p class="last-updated">Last updated: August 2025</p>
 
