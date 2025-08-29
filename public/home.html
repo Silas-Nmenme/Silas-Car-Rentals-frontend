@@ -73,10 +73,10 @@
   
   <!-- Favicon and App Icons -->
   <link rel="icon" href="favicon.ico" type="image/x-icon" />
-  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
-  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
-  <link rel="manifest" href="/site.webmanifest">
+  <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
+  <link rel="manifest" href="site.webmanifest">
   
   <!-- Additional CSS for enhanced features -->
   <style>
@@ -1059,81 +1059,79 @@ function handleInternalNavigation(event) {
   }
 }
 
-// Enhanced function to attach event listeners to all navigation elements
 function attachNavigationHandlers() {
-  if (isUserLoggedIn()) {
-    // Comprehensive selector list to capture all navigation elements
-    const selectors = [
-      'a[href*=".html"]', // All HTML links
-      'button[data-href]', // Buttons with data-href
-      '.nav-link', // Navigation links
-      '.btn[href]', // Button links
-      '.hero-actions a', // Hero section buttons
-      '.car-showcase .btn', // Car showcase buttons
-      '.professional-cta a', // CTA section buttons
-      '.footer-services a', // Footer service links
-      '.footer-company a', // Footer company links
-      'a[href="#how"]', // How it works links
-      'a[href="#testimonials"]', // Testimonials links
-      'a[href="#contact"]' // Contact links
-    ];
+  // Attach event listeners regardless of login status to ensure modals open
+  // Comprehensive selector list to capture all navigation elements
+  const selectors = [
+    'a[href*=".html"]', // All HTML links
+    'button[data-href]', // Buttons with data-href
+    '.nav-link', // Navigation links
+    '.btn[href]', // Button links
+    '.hero-actions a', // Hero section buttons
+    '.car-showcase .btn', // Car showcase buttons
+    '.professional-cta a', // CTA section buttons
+    '.footer-services a', // Footer service links
+    '.footer-company a', // Footer company links
+    'a[href="#how"]', // How it works links
+    'a[href="#testimonials"]', // Testimonials links
+    'a[href="#contact"]' // Contact links
+  ];
 
-    // Also target specific button texts
-    const textSelectors = [
-      'a:contains("Explore Our Fleet")',
-      'a:contains("Book Instantly")',
-      'a:contains("Browse Cars")',
-      'a:contains("View All Vehicles")',
-      'a:contains("Book Now")',
-      'a:contains("About Us")',
-      'a:contains("Terms & Conditions")',
-      'a:contains("Privacy Policy")',
-      'a:contains("FAQ")',
-      'a:contains("Contact Support")',
-      'a:contains("Car Rentals")',
-      'a:contains("Corporate Services")',
-      'a:contains("Airport Transfers")',
-      'a:contains("Chauffeur Services")',
-      'a:contains("Long-term Rentals")'
-    ];
+  // Also target specific button texts
+  const textSelectors = [
+    'a:contains("Explore Our Fleet")',
+    'a:contains("Book Instantly")',
+    'a:contains("Browse Cars")',
+    'a:contains("View All Vehicles")',
+    'a:contains("Book Now")',
+    'a:contains("About Us")',
+    'a:contains("Terms & Conditions")',
+    'a:contains("Privacy Policy")',
+    'a:contains("FAQ")',
+    'a:contains("Contact Support")',
+    'a:contains("Car Rentals")',
+    'a:contains("Corporate Services")',
+    'a:contains("Airport Transfers")',
+    'a:contains("Chauffeur Services")',
+    'a:contains("Long-term Rentals")'
+  ];
 
-    // Attach handlers to CSS selectors
-    selectors.forEach(selector => {
-      try {
-        document.querySelectorAll(selector).forEach(el => {
-          if (!el.hasAttribute('data-navigation-handled')) {
-            el.addEventListener('click', handleInternalNavigation);
-            el.setAttribute('data-navigation-handled', 'true');
-          }
-        });
-      } catch (e) {
-        console.log('Error attaching handler to selector:', selector, e);
-      }
-    });
+  // Attach handlers to CSS selectors
+  selectors.forEach(selector => {
+    try {
+      document.querySelectorAll(selector).forEach(el => {
+        if (!el.hasAttribute('data-navigation-handled')) {
+          el.addEventListener('click', handleInternalNavigation);
+          el.setAttribute('data-navigation-handled', 'true');
+        }
+      });
+    } catch (e) {
+      console.log('Error attaching handler to selector:', selector, e);
+    }
+  });
 
-    // Fallback for text content selectors (since :contains is not standard)
-    document.querySelectorAll('a, button').forEach(el => {
-      const text = el.textContent.toLowerCase();
-      if ((text.includes('explore') || 
-           text.includes('book') || 
-           text.includes('browse') || 
-           text.includes('view all') ||
-           text.includes('about') ||
-           text.includes('terms') ||
-           text.includes('privacy') ||
-           text.includes('faq') ||
-           text.includes('contact') ||
-           text.includes('cart') ||
-           text.includes('saved') ||
-           text.includes('wishlist')) && 
-          !el.hasAttribute('data-navigation-handled')) {
-        el.addEventListener('click', handleInternalNavigation);
-        el.setAttribute('data-navigation-handled', 'true');
-      }
-    });
+  // Fallback for text content selectors (since :contains is not standard)
+  document.querySelectorAll('a, button').forEach(el => {
+    const text = el.textContent.toLowerCase();
+    if ((text.includes('explore') || 
+         text.includes('book') || 
+         text.includes('browse') || 
+         text.includes('view all') ||
+         text.includes('about') ||
+         text.includes('terms') ||
+         text.includes('privacy') ||
+         text.includes('faq') ||
+         text.includes('contact') ||
+         text.includes('cart') ||
+         text.includes('saved') ||
+         text.includes('wishlist')) && 
+        !el.hasAttribute('data-navigation-handled')) {
+      el.addEventListener('click', handleInternalNavigation);
+      el.setAttribute('data-navigation-handled', 'true');
+    }
+  });
 
-    console.log('Navigation handlers attached for logged-in user');
-  }
+  console.log('Navigation handlers attached');
 }
 
 // Initialize navigation handling when DOM is loaded
