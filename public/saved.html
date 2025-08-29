@@ -4,129 +4,363 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Saved Cars - Silas Car Rentals</title>
-  <link rel="stylesheet" href="style.css" />
+  
+  <!-- Bootstrap 5 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <!-- Animate.css for animations -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+  
+  <!-- AOS (Animate On Scroll) -->
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+  
+  <!-- Custom Styles -->
+  <style>
+    :root {
+      --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      --secondary-gradient: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+      --success-gradient: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+      --warning-gradient: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+      --dark-bg: #0f1318;
+      --light-text: #ffffff;
+      --muted-text: #b8c2cc;
+    }
+    
+    body {
+      background: linear-gradient(135deg, #0b0e11 0%, #1a1f29 100%);
+      color: var(--light-text);
+      min-height: 100vh;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    }
+    
+    .navbar {
+      background: rgba(15, 23, 42, 0.95) !important;
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    .brand-mark {
+      background: var(--primary-gradient);
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      color: white;
+    }
+    
+    .btn-primary-custom {
+      background: var(--primary-gradient);
+      border: none;
+      color: white;
+      transition: all 0.3s ease;
+    }
+    
+    .btn-primary-custom:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
+    }
+    
+    .btn-outline-custom {
+      background: transparent;
+      border: 2px solid;
+      border-image: var(--primary-gradient) 1;
+      color: var(--light-text);
+      transition: all 0.3s ease;
+    }
+    
+    .btn-outline-custom:hover {
+      background: var(--primary-gradient);
+      color: white;
+      transform: translateY(-2px);
+    }
+    
+    .car-card {
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 15px;
+      overflow: hidden;
+      transition: all 0.3s ease;
+    }
+    
+    .car-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+      border-color: rgba(102, 126, 234, 0.3);
+    }
+    
+    .car-image {
+      height: 200px;
+      object-fit: cover;
+      width: 100%;
+    }
+    
+    .toast-custom {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--primary-gradient);
+      color: white;
+      padding: 12px 24px;
+      border-radius: 25px;
+      font-weight: 600;
+      opacity: 0;
+      transition: all 0.3s ease;
+      z-index: 9999;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    }
+    
+    .toast-custom.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(-20px);
+    }
+    
+    .empty-state {
+      text-align: center;
+      padding: 60px 20px;
+    }
+    
+    .empty-state i {
+      font-size: 4rem;
+      margin-bottom: 20px;
+      opacity: 0.5;
+    }
+    
+    .action-buttons {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    
+    @media (max-width: 768px) {
+      .action-buttons {
+        flex-direction: column;
+      }
+      
+      .action-buttons .btn {
+        width: 100%;
+      }
+    }
+  </style>
 </head>
 <body>
-<header class="navbar">
-  <div class="container nav-inner">
-    <a href="index.html" class="brand">
-      <div class="brand-mark">SC</div>
-      <span class="brand-name">Silas Car Rentals</span>
-    </a>
-    <nav class="nav-links">
-      <a class="nav-link" href="index.html#browse">Browse</a>
-      <a class="nav-link" href="book.html">Book</a>
-    </nav>
-    <div class="nav-actions">
-      <button class="btn btn-ghost" onclick="location.href='cart.html'">🧾 Cart (<span id="cart-count">0</span>)</button>
-      <button class="btn btn-ghost" onclick="location.href='wishlist.html'">❤️ Wishlist (<span id="wishlist-count">0</span>)</button>
-      <button class="btn btn-ghost" onclick="location.href='saved.html'">💾 Saved (<span id="saved-count">0</span>)</button>
-    </div>
-  </div>
-</header>
-
-<main class="section container">
-  <h1>My Saved Cars</h1>
-  <button class="btn btn-outline" style="margin-bottom:15px" onclick="clearSaved()">Clear All</button>
-  <div id="saved-items" class="grid" style="gap:20px; margin-top:20px;"></div>
-</main>
-
-<div class="toast" id="toast"></div>
-
-<script src="booking-fix.js"></script>
-<script>
-function getStorage(key) { return JSON.parse(localStorage.getItem(key)) || []; }
-function setStorage(key, value) { localStorage.setItem(key, JSON.stringify(value)); }
-function updateCounts() {
-  document.getElementById("cart-count").textContent = getStorage("cart").length;
-  document.getElementById("wishlist-count").textContent = getStorage("wishlist").length;
-  document.getElementById("saved-count").textContent = getStorage("savedCars").length;
-}
-function showToast(msg, ms=3000) {
-  const toast = document.getElementById("toast");
-  toast.textContent = msg;
-  toast.classList.add("show");
-  setTimeout(() => toast.classList.remove("show"), ms);
-}
-function renderSaved() {
-  const list = getStorage("savedCars");
-  const container = document.getElementById("saved-items");
-  if (!list.length) { container.innerHTML = "<p>You haven't saved any cars.</p>"; return; }
-  container.innerHTML = list.map(car => `
-    <div class="car-card">
-      <img src="${car.image || 'https://via.placeholder.com/300'}" alt="${car.make}" loading="lazy" style="width:100%; border-radius:8px;">
-      <h3>${car.make} ${car.model}</h3>
-      <p><strong>₦${car.price.toLocaleString()}</strong> / day</p>
-      <div style="display:flex; gap:8px; flex-wrap:wrap; margin-top:10px;">
-        <button class="btn" onclick='checkoutCar(${JSON.stringify(car).replace(/"/g, "&quot;")})'>Book Now</button>
-        <button class="btn btn-outline" onclick='moveToCart("${car._id}")'>Move to Cart</button>
-        <button class="btn btn-outline" onclick='moveToWishlist("${car._id}")'>Move to Wishlist</button>
-        <button class="btn btn-outline" onclick='removeFromSaved("${car._id}")'>Remove</button>
+  <!-- Navigation -->
+  <nav class="navbar navbar-expand-lg navbar-dark sticky-top">
+    <div class="container">
+      <a href="index.html" class="navbar-brand d-flex align-items-center">
+        <div class="brand-mark me-2">SC</div>
+        <span class="brand-name fw-bold">Silas Car Rentals</span>
+      </a>
+      
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav me-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="index.html#browse">Browse</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="book.html">Book</a>
+          </li>
+        </ul>
+        
+        <div class="d-flex gap-2">
+          <button class="btn btn-outline-light btn-sm" onclick="location.href='cart.html'">
+            <i class="fas fa-receipt me-1"></i> Cart (<span id="cart-count">0</span>)
+          </button>
+          <button class="btn btn-outline-light btn-sm" onclick="location.href='wishlist.html'">
+            <i class="fas fa-heart me-1"></i> Wishlist (<span id="wishlist-count">0</span>)
+          </button>
+          <button class="btn btn-primary btn-sm" onclick="location.href='saved.html'">
+            <i class="fas fa-save me-1"></i> Saved (<span id="saved-count">0</span>)
+          </button>
+        </div>
       </div>
     </div>
-  `).join("");
-}
-function checkoutCar(car) {
-  // Use BookingManager to set booking data
-  if (typeof BookingManager !== 'undefined') {
-    BookingManager.setBooking({
-      car: car,
-      source: 'saved'
-    });
-    window.location.href = "book.html?carId=" + car._id;
-  } else {
-    // Fallback to old method if BookingManager not available
-    localStorage.setItem("currentCar", JSON.stringify(car));
-    window.location.href = "book.html";
-  }
-}
-function moveToCart(id) {
-  let cart = getStorage("cart");
-  let saved = getStorage("savedCars");
-  const car = saved.find(c => c._id === id);
-  if (car && !cart.find(c => c._id === id)) {
-    cart.push(car);
-    setStorage("cart", cart);
-    removeFromSaved(id);
-    showToast("Moved to cart");
-  } else showToast("Already in cart");
-}
-function moveToWishlist(id) {
-  let wishlist = getStorage("wishlist");
-  let saved = getStorage("savedCars");
-  const car = saved.find(c => c._id === id);
-  if (car && !wishlist.find(c => c._id === id)) {
-    wishlist.push(car);
-    setStorage("wishlist", wishlist);
-    removeFromSaved(id);
-    showToast("Moved to wishlist");
-  } else showToast("Already in wishlist");
-}
-function removeFromSaved(id) {
-  let list = getStorage("savedCars").filter(c => c._id !== id);
-  setStorage("savedCars", list);
-  updateCounts();
-  renderSaved();
-  showToast("Removed from saved cars");
-}
-function clearSaved() {
-  setStorage("savedCars", []);
-  updateCounts();
-  renderSaved();
-  showToast("Saved cars cleared");
-}
-updateCounts();
-renderSaved();
-</script>
+  </nav>
 
-<style>
-.toast { position: fixed; bottom: 1.5rem; left: 50%; transform: translateX(-50%); background: #03dac5; color: #121212; padding: 0.7rem 1.2rem; border-radius: 4px; font-weight: 600; opacity: 0; pointer-events: none; transition: opacity 0.3s ease; z-index: 9999; }
-.toast.show { opacity: 1; }
-.car-card { border: 1px solid #333; border-radius: 8px; padding: 1rem; background: #1f1f1f; color: #fff; }
-.btn { background: #03dac5; border: none; color: #121212; padding: 0.6rem 1rem; border-radius: 6px; cursor: pointer; font-weight: bold; }
-.btn-outline { background: transparent; border: 2px solid #03dac5; color: #03dac5; }
-.btn:hover { background: #00b2a9; }
-.btn-outline:hover { background: #03dac5; color: #121212; }
-</style>
+  <!-- Main Content -->
+  <main class="container py-5">
+    <div class="row">
+      <div class="col-12">
+        <div class="d-flex justify-content-between align-items-center mb-4" data-aos="fade-up">
+          <h1 class="display-5 fw-bold">
+            <i class="fas fa-save me-2"></i>My Saved Cars
+          </h1>
+          <button class="btn btn-outline-custom" onclick="clearSaved()">
+            <i class="fas fa-trash me-1"></i> Clear All
+          </button>
+        </div>
+        
+        <div id="saved-items" class="row g-4" data-aos="fade-up" data-aos-delay="100"></div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Toast Notification -->
+  <div class="toast-custom" id="toast"></div>
+
+  <!-- Scripts -->
+  <script src="booking-fix.js"></script>
+  
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  
+  <!-- AOS (Animate On Scroll) -->
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+  
+  <script>
+    // Initialize AOS
+    AOS.init({
+      duration: 800,
+      easing: 'ease-out-cubic',
+      once: true,
+      offset: 50
+    });
+
+    function getStorage(key) { return JSON.parse(localStorage.getItem(key)) || []; }
+    function setStorage(key, value) { localStorage.setItem(key, JSON.stringify(value)); }
+    
+    function updateCounts() {
+      document.getElementById("cart-count").textContent = getStorage("cart").length;
+      document.getElementById("wishlist-count").textContent = getStorage("wishlist").length;
+      document.getElementById("saved-count").textContent = getStorage("savedCars").length;
+    }
+    
+    function showToast(msg, ms=3000) {
+      const toast = document.getElementById("toast");
+      toast.textContent = msg;
+      toast.classList.add("show");
+      setTimeout(() => toast.classList.remove("show"), ms);
+    }
+    
+    function renderSaved() {
+      const list = getStorage("savedCars");
+      const container = document.getElementById("saved-items");
+      
+      if (!list.length) {
+        container.innerHTML = '<div class="col-12">' +
+          '<div class="empty-state text-center animate__animated animate__fadeIn">' +
+          '<i class="fas fa-folder-open"></i>' +
+          '<h3 class="text-muted">No Saved Cars Yet</h3>' +
+          '<p class="text-muted">Start browsing and save your favorite cars for later!</p>' +
+          '<a href="index.html#browse" class="btn btn-primary-custom mt-3">' +
+          '<i class="fas fa-search me-2"></i>Browse Cars' +
+          '</a>' +
+          '</div>' +
+          '</div>';
+        return;
+      }
+      
+      container.innerHTML = list.map(function(car, index) {
+        const carJson = JSON.stringify(car).replace(/"/g, '"');
+        return '<div class="col-md-6 col-lg-4">' +
+          '<div class="car-card p-3 h-100 animate__animated animate__fadeInUp" style="animation-delay: ' + (index * 0.1) + 's">' +
+          '<img src="' + (car.image || 'https://via.placeholder.com/300') + '" ' +
+          'alt="' + car.make + ' ' + car.model + '" ' +
+          'class="car-image rounded-3 mb-3" ' +
+          'loading="lazy">' +
+          '<h5 class="fw-bold">' + car.make + ' ' + car.model + '</h5>' +
+          '<p class="text-success fw-bold mb-2">₦' + car.price.toLocaleString() + ' / day</p>' +
+          '<div class="action-buttons">' +
+          '<button class="btn btn-primary-custom btn-sm" ' +
+          'onclick="checkoutCar(' + carJson + ')">' +
+          '<i class="fas fa-calendar-check me-1"></i>Book Now' +
+          '</button>' +
+          '<button class="btn btn-outline-custom btn-sm" ' +
+          'onclick="moveToCart(\'' + car._id + '\')">' +
+          '<i class="fas fa-cart-plus me-1"></i>Move to Cart' +
+          '</button>' +
+          '<button class="btn btn-outline-custom btn-sm" ' +
+          'onclick="moveToWishlist(\'' + car._id + '\')">' +
+          '<i class="fas fa-heart me-1"></i>Wishlist' +
+          '</button>' +
+          '<button class="btn btn-outline-danger btn-sm" ' +
+          'onclick="removeFromSaved(\'' + car._id + '\')">' +
+          '<i class="fas fa-trash me-1"></i>Remove' +
+          '</button>' +
+          '</div>' +
+          '</div>' +
+          '</div>';
+      }).join('');
+    }
+    
+    function checkoutCar(car) {
+      if (typeof BookingManager !== 'undefined') {
+        BookingManager.setBooking({
+          car: car,
+          source: 'saved'
+        });
+        window.location.href = "book.html?carId=" + car._id;
+      } else {
+        localStorage.setItem("currentCar", JSON.stringify(car));
+        window.location.href = "book.html";
+      }
+    }
+    
+    function moveToCart(id) {
+      let cart = getStorage("cart");
+      let saved = getStorage("savedCars");
+      const car = saved.find(c => c._id === id);
+      
+      if (car && !cart.find(c => c._id === id)) {
+        cart.push(car);
+        setStorage("cart", cart);
+        removeFromSaved(id);
+        showToast("🚗 Moved to cart successfully!");
+      } else {
+        showToast("⚠️ Car is already in your cart");
+      }
+    }
+    
+    function moveToWishlist(id) {
+      let wishlist = getStorage("wishlist");
+      let saved = getStorage("savedCars");
+      const car = saved.find(c => c._id === id);
+      
+      if (car && !wishlist.find(c => c._id === id)) {
+        wishlist.push(car);
+        setStorage("wishlist", wishlist);
+        removeFromSaved(id);
+        showToast("❤️ Moved to wishlist!");
+      } else {
+        showToast("⚠️ Car is already in your wishlist");
+      }
+    }
+    
+    function removeFromSaved(id) {
+      let list = getStorage("savedCars").filter(c => c._id !== id);
+      setStorage("savedCars", list);
+      updateCounts();
+      renderSaved();
+      showToast("🗑️ Removed from saved cars");
+    }
+    
+    function clearSaved() {
+      if (confirm("Are you sure you want to clear all saved cars?")) {
+        setStorage("savedCars", []);
+        updateCounts();
+        renderSaved();
+        showToast("🧹 All saved cars cleared");
+      }
+    }
+    
+    // Initialize
+    document.addEventListener('DOMContentLoaded', function() {
+      updateCounts();
+      renderSaved();
+    });
+  </script>
 </body>
 </html>
