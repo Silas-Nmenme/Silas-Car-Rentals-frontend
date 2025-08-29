@@ -75,112 +75,972 @@
   <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
   <link rel="manifest" href="/site.webmanifest">
   
+  <!-- Additional CSS for enhanced features -->
   <style>
-    :root {
-      --primary: #03dac5;
-      --primary-dark: #018786;
-      --secondary: #6a11cb;
-      --accent: #2575fc;
-      --background: #0b0e11;
-      --surface: #1a1a1a;
-      --text-primary: #ffffff;
-      --text-secondary: #ccc;
-      --text-muted: #999;
-      --border: rgba(255, 255, 255, 0.1);
+    /* Enhanced Professional Styles */
+    .professional-hero {
+      position: relative;
+      overflow: hidden;
+      background: linear-gradient(135deg, 
+        rgba(22, 163, 74, 0.1) 0%, 
+        rgba(3, 218, 197, 0.08) 50%, 
+        rgba(1, 135, 134, 0.06) 100%);
     }
-
-    body {
-      font-family: 'Poppins', sans-serif;
-      background: linear-gradient(135deg, var(--secondary) 0%, var(--accent) 100%);
-      color: var(--text-primary);
-      overflow-x: hidden;
-      min-height: 100vh;
-      margin: 0;
-      padding: 0;
+    
+    .hero-background-pattern {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-image: 
+        radial-gradient(circle at 20% 80%, rgba(22, 163, 74, 0.05) 0%, transparent 50%),
+        radial-gradient(circle at 80% 20%, rgba(3, 218, 197, 0.04) 0%, transparent 50%);
+      z-index: 1;
     }
-
-    * {
-      box-sizing: border-box;
+    
+    .hero-content {
+      position: relative;
+      z-index: 2;
     }
-
-    .container {
-      width: 100%;
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 0 1rem;
-    }
-
-    .section {
-      padding: 4rem 0;
-    }
-
-    .max-600 {
-      max-width: 600px;
-      margin: 0 auto;
-    }
-
-    .section-subtitle {
-      color: var(--text-secondary);
-      font-size: 1.1rem;
-      margin-top: 0.5rem;
-      text-align: center;
-    }
-
-    .btn {
-      display: inline-flex;
+    
+    .feature-icon {
+      width: 60px;
+      height: 60px;
+      background: linear-gradient(135deg, var(--primary), var(--primary-700));
+      border-radius: 16px;
+      display: flex;
       align-items: center;
       justify-content: center;
-      padding: 0.75rem 1.5rem;
-      border-radius: 8px;
-      font-weight: 500;
-      font-size: 1rem;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      border: none;
-      text-decoration: none;
-    }
-
-    .btn-primary {
-      background: linear-gradient(45deg, var(--secondary), var(--accent));
+      font-size: 24px;
       color: white;
-      border: none;
-      padding: 1rem 2rem;
-      border-radius: 12px;
-      font-size: 1.1rem;
-      font-weight: 600;
-      transition: all 0.3s ease;
-    }
-
-    .btn-primary:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
-    }
-
-    .btn-outline {
-      background: transparent;
-      border: 1px solid var(--border);
-      color: var(--text-primary);
-    }
-
-    .btn-outline:hover {
-      background: rgba(255, 255, 255, 0.05);
-    }
-
-    .btn-lg {
-      padding: 1rem 2rem;
-      font-size: 1.1rem;
-    }
-
-    .process-list {
-      list-style: none;
-      padding: 0;
-      counter-reset: process-counter;
-      margin-top: 2rem;
-    }
-
-    .process-list li {
-      counter-increment: process-counter;
-      padding: 1.5rem;
       margin-bottom: 1rem;
-      background: rgba(255, 255, 255, 0.05);
+      box-shadow: 0 8px 25px rgba(22, 163, 74, 0.2);
+    }
+    
+    .testimonial-card {
+      background: linear-gradient(135deg, var(--card), var(--bg-soft));
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 2rem;
+      position: relative;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    
+    .testimonial-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+    }
+    
+    .testimonial-avatar {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin-bottom: 1rem;
+      border: 3px solid var(--primary);
+    }
+    
+    .rating-stars {
+      color: #ffd700;
+      margin-bottom: 0.5rem;
+    }
+    
+    .trust-badge {
+      background: linear-gradient(135deg, var(--bg-soft), var(--card));
+      border: 1px solid var(--border);
       border-radius: 12px;
+      padding: 1.5rem;
+      text-align: center;
+      transition: transform 0.3s ease;
+    }
+    
+    .trust-badge:hover {
+      transform: scale(1.05);
+    }
+    
+    .car-showcase {
+      background: linear-gradient(135deg, var(--bg), var(--bg-soft));
+      border-radius: 20px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      transition: transform 0.3s ease;
+    }
+    
+    .car-showcase:hover {
+      transform: translateY(-5px);
+    }
+    
+    .stats-counter {
+      font-size: 3rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, var(--primary), var(--primary-700));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    
+    .professional-cta {
+      background: linear-gradient(135deg, var(--primary), var(--primary-700));
+      border-radius: 20px;
+      padding: 3rem 2rem;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .professional-cta::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+      animation: rotate 10s linear infinite;
+    }
+    
+    @keyframes rotate {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+    
+    /* Enhanced mobile responsiveness */
+    @media (max-width: 768px) {
+      .feature-icon {
+        width: 50px;
+        height: 50px;
+        font-size: 20px;
+      }
+      
+      .stats-counter {
+        font-size: 2.5rem;
+      }
+      
+      .testimonial-card {
+        padding: 1.5rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Enhanced Professional Header -->
+  <header class="navbar" role="banner">
+    <div class="container nav-inner">
+      <a href="home.html" class="brand" aria-label="Silas Car Rentals home">
+        <div class="brand-mark">SC</div>
+        <span class="brand-name">Silas Car Rentals</span>
+      </a>
+
+      <nav class="nav-links" aria-label="Main navigation">
+        <a class="nav-link active" href="home.html">Home</a>
+        <a class="nav-link" href="cars.html">Browse Cars</a>
+        <a class="nav-link" href="book.html">Book Now</a>
+        <a class="nav-link" href="#how">How it Works</a>
+        <a class="nav-link" href="#testimonials">Testimonials</a>
+        <a class="nav-link" href="#contact">Contact</a>
+      </nav>
+
+      <div class="nav-actions" role="region" aria-label="User actions">
+        <div class="action-group">
+          <button id="open-cart" class="btn btn-ghost counter-badge" aria-label="Open booking cart" title="Cart" data-count="0" data-href="cart.html">
+            <i class="fas fa-shopping-cart"></i> Cart <span id="cart-count" style="display:inline;"></span>
+          </button>
+          <button class="btn btn-ghost counter-badge" title="Saved Cars" data-count="0" data-href="saved.html">
+            <i class="fas fa-heart"></i> Saved <span id="saved-count" style="display:inline;"></span>
+          </button>
+        </div>
+
+        <button class="theme-toggle" id="theme-toggle" aria-label="Toggle dark/light mode">
+          🌙
+        </button>
+
+        <button class="mobile-menu-btn" id="mobile-menu-btn" aria-label="Open menu">☰</button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- Enhanced Professional Hero Section -->
+    <section class="hero professional-hero section" id="hero">
+      <div class="hero-background-pattern"></div>
+      <div class="container hero-content">
+        <span class="pill"><i class="fas fa-shield-alt"></i> Trusted • <i class="fas fa-bolt"></i> Fast • <i class="fas fa-lock"></i> Secure</span>
+        <h1 class="hero-title">Experience Premium Car Rental in Nigeria</h1>
+        <p class="hero-subtitle">Discover our curated fleet of luxury and economy vehicles. From business trips to weekend getaways, we've got the perfect ride for every journey.</p>
+        <div class="hero-actions">
+          <a href="cars.html" class="btn btn-primary btn-lg">
+            <i class="fas fa-car"></i> Explore Our Fleet
+          </a>
+          <a href="book.html" class="btn btn-outline btn-lg">
+            <i class="fas fa-calendar-check"></i> Book Instantly
+          </a>
+        </div>
+        
+        <!-- Trust Indicators -->
+        <div class="trust-indicators" style="display: flex; justify-content: center; gap: 2rem; margin-top: 3rem; flex-wrap: wrap;">
+          <div style="text-align: center;">
+            <i class="fas fa-users" style="font-size: 2rem; color: var(--primary); margin-bottom: 0.5rem;"></i>
+            <div style="font-weight: 700; color: var(--text);">5,000+</div>
+            <div style="color: var(--muted); font-size: 0.9rem;">Happy Customers</div>
+          </div>
+          <div style="text-align: center;">
+            <i class="fas fa-car" style="font-size: 2rem; color: var(--primary); margin-bottom: 0.5rem;"></i>
+            <div style="font-weight: 700; color: var(--text);">200+</div>
+            <div style="color: var(--muted); font-size: 0.9rem;">Premium Vehicles</div>
+          </div>
+          <div style="text-align: center;">
+            <i class="fas fa-star" style="font-size: 2rem; color: var(--primary); margin-bottom: 0.5rem;"></i>
+            <div style="font-weight: 700; color: var(--text);">4.9/5</div>
+            <div style="color: var(--muted); font-size: 0.9rem;">Customer Rating</div>
+          </div>
+          <div style="text-align: center;">
+            <i class="fas fa-map-marker-alt" style="font-size: 2rem; color: var(--primary); margin-bottom: 0.5rem;"></i>
+            <div style="font-weight: 700; color: var(--text);">24/7</div>
+            <div style="color: var(--muted); font-size: 0.9rem;">Support</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Featured Vehicles Section -->
+    <section class="section" style="background: var(--bg-soft);">
+      <div class="container">
+        <div style="text-align: center; margin-bottom: 3rem;">
+          <span class="pill">Featured Fleet</span>
+          <h2 style="margin: 1rem 0 0.5rem; color: var(--text);">Our Most Popular Vehicles</h2>
+          <p style="color: var(--muted); max-width: 600px; margin: 0 auto;">Experience the best of our premium collection with these customer favorites</p>
+        </div>
+        
+        <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem;">
+          <div class="car-showcase">
+            <div class="car-media">
+              <img src="https://vehicle-images.dealerinspire.com/a1a7-11002896/W1KAF4GB4SR252999/00f2d6ad30e089cb5c02791d58c3af6a.jpg" alt="Mercedes-Benz C300" loading="lazy">
+              <div class="car-badges">
+                <span class="badge ok">Available</span>
+                <span class="badge" style="background: rgba(59, 130, 246, 0.12); border-color: rgba(59, 130, 246, 0.25);">Luxury</span>
+              </div>
+            </div>
+            <div class="card-content">
+              <div class="car-title">
+                <h3 style="margin: 0; color: var(--text);">Mercedes-Benz C300</h3>
+                <div class="price" style="color: var(--primary);">₦45,000/day</div>
+              </div>
+              <div class="meta">
+                <div><i class="fas fa-gas-pump"></i> Premium Fuel • <i class="fas fa-user"></i> 5 Seats</div>
+                <div><i class="fas fa-cog"></i> Automatic • <i class="fas fa-snowflake"></i> A/C</div>
+              </div>
+              <div style="margin-top: 1rem;">
+                <a href="book.html?car=mercedes-c300" class="btn btn-primary" style="width: 100%;">
+                  <i class="fas fa-calendar-plus"></i> Book Now
+                </a>
+              </div>
+            </div>
+          </div>
+          
+          <div class="car-showcase">
+            <div class="car-media">
+              <img src="https://images.unsplash.com/photo-1549399542-7e3f8b79c341?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Toyota Camry" loading="lazy">
+              <div class="car-badges">
+                <span class="badge ok">Available</span>
+                <span class="badge" style="background: rgba(34, 197, 94, 0.12); border-color: rgba(34, 197, 94, 0.25);">Economy</span>
+              </div>
+            </div>
+            <div class="card-content">
+              <div class="car-title">
+                <h3 style="margin: 0; color: var(--text);">Toyota Camry 2023</h3>
+                <div class="price" style="color: var(--primary);">₦25,000/day</div>
+              </div>
+              <div class="meta">
+                <div><i class="fas fa-gas-pump"></i> Regular Fuel • <i class="fas fa-user"></i> 5 Seats</div>
+                <div><i class="fas fa-cog"></i> Automatic • <i class="fas fa-snowflake"></i> A/C</div>
+              </div>
+              <div style="margin-top: 1rem;">
+                <a href="book.html?car=toyota-camry" class="btn btn-primary" style="width: 100%;">
+                  <i class="fas fa-calendar-plus"></i> Book Now
+                </a>
+              </div>
+            </div>
+          </div>
+          
+          <div class="car-showcase">
+            <div class="car-media">
+              <img src="https://images.unsplash.com/photo-1544636331-e26879cd4d9b?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="BMW X5" loading="lazy">
+              <div class="car-badges">
+                <span class="badge ok">Available</span>
+                <span class="badge" style="background: rgba(168, 85, 247, 0.12); border-color: rgba(168, 85, 247, 0.25);">Premium SUV</span>
+              </div>
+            </div>
+            <div class="card-content">
+              <div class="car-title">
+                <h3 style="margin: 0; color: var(--text);">BMW X5 Luxury</h3>
+                <div class="price" style="color: var(--primary);">₦65,000/day</div>
+              </div>
+              <div class="meta">
+                <div><i class="fas fa-gas-pump"></i> Premium Fuel • <i class="fas fa-user"></i> 7 Seats</div>
+                <div><i class="fas fa-cog"></i> Automatic • <i class="fas fa-snowflake"></i> Dual A/C</div>
+              </div>
+              <div style="margin-top: 1rem;">
+                <a href="book.html?car=bmw-x5" class="btn btn-primary" style="width: 100%;">
+                  <i class="fas fa-calendar-plus"></i> Book Now
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div style="text-align: center; margin-top: 3rem;">
+          <a href="cars.html" class="btn btn-outline btn-lg">
+            <i class="fas fa-eye"></i> View All Vehicles
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Enhanced How It Works Section -->
+    <section id="how" class="section" style="background: linear-gradient(135deg, rgba(3, 218, 197, 0.05), rgba(1, 135, 134, 0.03));">
+      <div class="container">
+        <div style="text-align: center; margin-bottom: 3rem;">
+          <span class="pill">Simple Process</span>
+          <h2 style="margin: 1rem 0 0.5rem; color: var(--text);">How It Works</h2>
+          <p style="color: var(--muted); max-width: 600px; margin: 0 auto;">Renting a premium vehicle has never been easier with our streamlined process</p>
+        </div>
+        
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2rem; margin-top: 3rem;">
+          <div style="text-align: center;">
+            <div class="feature-icon" style="margin: 0 auto 1.5rem;">
+              <i class="fas fa-search"></i>
+            </div>
+            <h3 style="color: var(--text); margin-bottom: 1rem;">1. Browse & Select</h3>
+            <p style="color: var(--muted); line-height: 1.6;">
+              Explore our diverse fleet of premium vehicles. Filter by brand, price range, or specific features to find your perfect match.
+            </p>
+          </div>
+          
+          <div style="text-align: center;">
+            <div class="feature-icon" style="margin: 0 auto 1.5rem;">
+              <i class="fas fa-calendar-check"></i>
+            </div>
+            <h3 style="color: var(--text); margin-bottom: 1rem;">2. Book Securely</h3>
+            <p style="color: var(--muted); line-height: 1.6;">
+              Choose your rental dates, add optional services, and proceed through our encrypted checkout process. New users can create accounts seamlessly.
+            </p>
+          </div>
+          
+          <div style="text-align: center;">
+            <div class="feature-icon" style="margin: 0 auto 1.5rem;">
+              <i class="fas fa-car"></i>
+            </div>
+            <h3 style="color: var(--text); margin-bottom: 1rem;">3. Drive Away</h3>
+            <p style="color: var(--muted); line-height: 1.6;">
+              Complete your payment, receive instant confirmation, and collect your vehicle at the scheduled time. Enjoy your journey with peace of mind.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Enhanced Testimonials Section -->
+    <section id="testimonials" class="section">
+      <div class="container">
+        <div style="text-align: center; margin-bottom: 3rem;">
+          <span class="pill">Customer Love</span>
+          <h2 style="margin: 1rem 0 0.5rem; color: var(--text);">What Our Customers Say</h2>
+          <p style="color: var(--muted); max-width: 600px; margin: 0 auto;">Join thousands of satisfied customers who trust Silas Car Rentals for their transportation needs</p>
+        </div>
+        
+        <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 2rem;">
+          <div class="testimonial-card">
+            <div class="rating-stars">
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+            </div>
+            <p style="color: var(--text); line-height: 1.6; margin-bottom: 1.5rem;">
+              "Exceptional service! The Mercedes-Benz was in pristine condition and the booking process was incredibly smooth. Will definitely use Silas Car Rentals again for my business trips."
+            </p>
+            <div style="display: flex; align-items: center; gap: 1rem;">
+              <div style="width: 50px; height: 50px; background: linear-gradient(135deg, var(--primary), var(--primary-700)); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold;">AO</div>
+              <div>
+                <div style="font-weight: 700; color: var(--text);">Ada Okonkwo</div>
+                <div style="color: var(--muted); font-size: 0.9rem;">Business Executive</div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="testimonial-card">
+            <div class="rating-stars">
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+            </div>
+            <p style="color: var(--text); line-height: 1.6; margin-bottom: 1.5rem;">
+              "The BMW X5 was perfect for our family vacation. Clean, comfortable, and the staff was incredibly helpful. The online booking system made everything so easy!"
+            </p>
+            <div style="display: flex; align-items: center; gap: 1rem;">
+              <div style="width: 50px; height: 50px; background: linear-gradient(135deg, #3b82f6, #1d4ed8); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold;">EC</div>
+              <div>
+                <div style="font-weight: 700; color: var(--text);">Emeka Chukwu</div>
+                <div style="color: var(--muted); font-size: 0.9rem;">Family Vacation</div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="testimonial-card">
+            <div class="rating-stars">
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star-half-alt"></i>
+            </div>
+            <p style="color: var(--text); line-height: 1.6; margin-bottom: 1.5rem;">
+              "As a frequent traveler, I appreciate reliability. Silas Car Rentals never disappoints. Their vehicles are well-maintained and their customer support is top-notch."
+            </p>
+            <div style="display: flex; align-items: center; gap: 1rem;">
+              <div style="width: 50px; height: 50px; background: linear-gradient(135deg, #8b5cf6, #7c3aed); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold;">CA</div>
+              <div>
+                <div style="font-weight: 700; color: var(--text);">Chinedu Adeyemi</div>
+                <div style="color: var(--muted); font-size: 0.9rem;">Frequent Traveler</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Trust & Security Section -->
+    <section class="section" style="background: var(--bg-soft);">
+      <div class="container">
+        <div style="text-align: center; margin-bottom: 3rem;">
+          <span class="pill">Peace of Mind</span>
+          <h2 style="margin: 1rem 0 0.5rem; color: var(--text);">Why Choose Silas Car Rentals</h2>
+          <p style="color: var(--muted); max-width: 600px; margin: 0 auto;">We prioritize your safety, comfort, and satisfaction above all else</p>
+        </div>
+        
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem;">
+          <div class="trust-badge">
+            <i class="fas fa-shield-alt" style="font-size: 2.5rem; color: var(--primary); margin-bottom: 1rem;"></i>
+            <h3 style="color: var(--text); margin-bottom: 0.5rem;">Fully Insured</h3>
+            <p style="color: var(--muted); margin: 0;">Comprehensive insurance coverage for all rentals</p>
+          </div>
+          
+          <div class="trust-badge">
+            <i class="fas fa-tools" style="font-size: 2.5rem; color: var(--primary); margin-bottom: 1rem;"></i>
+            <h3 style="color: var(--text); margin-bottom: 0.5rem;">Well-Maintained</h3>
+            <p style="color: var(--muted); margin: 0;">Regular maintenance and quality checks</p>
+          </div>
+          
+          <div class="trust-badge">
+            <i class="fas fa-lock" style="font-size: 2.5rem; color: var(--primary); margin-bottom: 1rem;"></i>
+            <h3 style="color: var(--text); margin-bottom: 0.5rem;">Secure Payments</h3>
+            <p style="color: var(--muted); margin: 0;">Encrypted payment processing</p>
+          </div>
+          
+          <div class="trust-badge">
+            <i class="fas fa-headset" style="font-size: 2.5rem; color: var(--primary); margin-bottom: 1rem;"></i>
+            <h3 style="color: var(--text); margin-bottom: 0.5rem;">24/7 Support</h3>
+            <p style="color: var(--muted); margin: 0;">Round-the-clock customer assistance</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Professional CTA Section -->
+    <section class="section">
+      <div class="container">
+        <div class="professional-cta">
+          <div style="position: relative; z-index: 2;">
+            <h2 style="color: white; margin-bottom: 1rem; font-size: 2.5rem;">Ready to Drive?</h2>
+            <p style="color: rgba(255,255,255,0.9); margin-bottom: 2rem; font-size: 1.1rem;">
+              Join thousands of satisfied customers and experience premium car rental service today
+            </p>
+            <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+              <a href="cars.html" class="btn" style="background: white; color: var(--primary); border: none; padding: 1rem 2rem;">
+                <i class="fas fa-car"></i> Browse Vehicles
+              </a>
+              <a href="book.html" class="btn btn-outline" style="background: transparent; border: 2px solid white; color: white; padding: 1rem 2rem;">
+                <i class="fas fa-calendar-check"></i> Book Now
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Enhanced Footer -->
+    <footer id="contact" class="footer section">
+      <div class="container footer-inner">
+        <div class="footer-main">
+          <div class="footer-brand">
+            <div class="brand-footer">
+              <div class="brand-mark" style="width: 50px; height: 50px; background: linear-gradient(135deg, #03dac5, #018786); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 1.5rem; color: #0b0e11; margin-bottom: 1rem;">SC</div>
+              <h3 style="color: #03dac5; margin-bottom: 0.5rem;">Silas Car Rentals</h3>
+              <p style="color: #ccc; font-size: 0.9rem; line-height: 1.6; margin-bottom: 1rem;">
+                Premium car rental service offering luxury and standard vehicles for business and leisure travel across Nigeria.
+              </p>
+            </div>
+            <div class="contact-info">
+              <div style="margin-bottom: 0.8rem;">
+                <strong style="color: #03dac5;">📧 Email:</strong><br/>
+                <a href="mailto:silasonyekachi15@gmail.com" style="color: #ccc; text-decoration: none;">silasonyekachi15@gmail.com</a>
+              </div>
+              <div style="margin-bottom: 0.8rem;">
+                <strong style="color: #03dac5;">📞 Phone:</strong><br/>
+                <a href="tel:+2348107586167" style="color: #ccc; text-decoration: none;">+234 810 758 6167</a>
+              </div>
+              <div>
+                <strong style="color: #03dac5;">📍 Location:</strong><br/>
+                <span style="color: #ccc;">Lagos, Nigeria</span>
+              </div>
+            </div>
+          </div>
+          
+          <div class="footer-services">
+            <h4 style="color: #03dac5; margin-bottom: 1rem; font-size: 1.2rem;">Our Services</h4>
+            <ul style="list-style: none; padding: 0;">
+              <li style="margin-bottom: 0.6rem;"><a href="book.html" style="color: #ccc; text-decoration: none; transition: color 0.3s;">🚗 Car Rentals</a></li>
+              <li style="margin-bottom: 0.6rem;"><a href="book.html" style="color: #ccc; text-decoration: none; transition: color 0.3s;">👔 Corporate Services</a></li>
+              <li style="margin-bottom: 0.6rem;"><a href="book.html" style="color: #ccc; text-decoration: none; transition: color 0.3s;">✈️ Airport Transfers</a></li>
+              <li style="margin-bottom: 0.6rem;"><a href="book.html" style="color: #ccc; text-decoration: none; transition: color 0.3s;">🎯 Chauffeur Services</a></li>
+              <li style="margin-bottom: 0.6rem;"><a href="book.html" style="color: #ccc; text-decoration: none; transition: color 0.3s;">📅 Long-term Rentals</a></li>
+            </ul>
+          </div>
+          
+          <div class="footer-company">
+              <h4 style="color: #03dac5; margin-bottom: 1rem; font-size: 1.2rem;">Company</h4>
+            <ul style="list-style: none; padding: 0;">
+              <li style="margin-bottom: 0.6rem;"><a href="about.html" style="color: #ccc; text-decoration: none; transition: color 0.3s;">About Us</a></li>
+              <li style="margin-bottom: 0.6rem;"><a href="terms.html" style="color: #ccc; text-decoration: none; transition: color 0.3s;">Terms & Conditions</a></li>
+              <li style="margin-bottom: 0.6rem;"><a href="privacy.html" style="color: #ccc; text-decoration: none; transition: color 0.3s;">Privacy Policy</a></li>
+              <li style="margin-bottom: 0.6rem;"><a href="faq.html" style="color: #ccc; text-decoration: none; transition: color 0.3s;">FAQ</a></li>
+              <li style="margin-bottom: 0.6rem;"><a href="contact.html" style="color: #ccc; text-decoration: none; transition: color 0.3s;">Contact Support</a></li>
+            </ul>
+          </div>
+          
+          <div class="footer-newsletter">
+            <h4 style="color: #03dac5; margin-bottom: 1rem; font-size: 1.2rem;">Stay Updated</h4>
+            <p style="color: #ccc; margin-bottom: 1rem; font-size: 0.9rem;">Get exclusive deals and updates</p>
+            <form id="newsletter-form" style="display: flex; gap: 0.5rem; flex-direction: column;">
+              <div style="display: flex; gap: 0.5rem;">
+                <input type="email" name="email" placeholder="Enter your email" required style="flex: 1; padding: 0.5rem; border: 1px solid #333; background: #1a1a1a; color: #ccc; border-radius: 4px; font-size: 0.9rem;">
+                <button type="submit" style="padding: 0.5rem 1rem; background: #03dac5; color: #0b0e11; border: none; border-radius: 4px; cursor: pointer; font-weight: bold;">Subscribe</button>
+              </div>
+              <div id="newsletter-message" style="font-size: 0.8rem; margin-top: 0.5rem; min-height: 1rem;"></div>
+            </form>
+          </div>
+        </div>
+        
+        <div class="footer-divider" style="margin: 2rem 0; border-top: 1px solid #333;"></div>
+        
+        <div class="footer-bottom-row">
+          <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
+            <div>
+              <p style="color: #ccc; margin: 0; font-size: 0.9rem;">
+                © <span id="year"></span> Silas Car Rentals. All rights reserved.
+              </p>
+            </div>
+            
+            <div class="social-links" style="display: flex; gap: 1rem; align-items: center;">
+              <a href="#" style="color: #ccc; text-decoration: none; font-size: 1.2rem; transition: color 0.3s;" title="Facebook">📘</a>
+              <a href="#" style="color: #ccc; text-decoration: none; font-size: 1.2rem; transition: color 0.3s;" title="Twitter">🐦</a>
+              <a href="#" style="color: #ccc; text-decoration: none; font-size: 1.2rem; transition: color 0.3s;" title="Instagram">📷</a>
+              <a href="https://wa.link/c73sw8" style="color: #ccc; text-decoration: none; font-size: 1.2rem; transition: color 0.3s;" title="WhatsApp">📱</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </footer>
+  </main>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <!-- Scroll to top button -->
+  <button id="scroll-to-top" class="scroll-to-top" aria-label="Scroll to top">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <path d="M12 19V5M5 12l7-7 7 7"/>
+    </svg>
+  </button>
+
+  <script>
+const API_BASE = "https://techyjaunt-auth-go43.onrender.com";
+const BENZ_ID = "689479c630cf9351877939e6"; 
+const placeholderImage = "https://vehicle-images.dealerinspire.com/a1a7-11002896/W1KAF4GB4SR252999/00f2d6ad30e089cb5c02791d58c3af6a.jpg";
+
+function getStorage(key) {
+  return JSON.parse(localStorage.getItem(key)) || [];
+}
+
+function updateGlobalCounts() {
+  const cartCountElement = document.getElementById("cart-count");
+  const savedCountElement = document.getElementById("saved-count");
+
+  if (cartCountElement) {
+    cartCountElement.textContent = getStorage("cart").length;
+  }
+  if (savedCountElement) {
+    savedCountElement.textContent = getStorage("savedCars").length;
+  }
+}
+
+function showToast(msg, ms = 3000) {
+  const toast = document.getElementById("toast");
+  toast.textContent = msg;
+  toast.classList.add("show");
+  setTimeout(() => toast.classList.remove("show"), ms);
+}
+
+// Theme toggle functionality
+function initThemeToggle() {
+  const themeToggle = document.getElementById('theme-toggle');
+  const html = document.documentElement;
+  
+  // Get saved theme or default to dark
+  const savedTheme = localStorage.getItem('theme') || 'dark';
+  html.setAttribute('data-theme', savedTheme);
+  updateThemeIcon(savedTheme);
+  
+  // Toggle theme on button click
+  themeToggle.addEventListener('click', () => {
+    const currentTheme = html.getAttribute('data-theme') || 'dark';
+    const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+    
+    html.setAttribute('data-theme', newTheme);
+    localStorage.setItem('theme', newTheme);
+    updateThemeIcon(newTheme);
+    
+    showToast(`Switched to ${newTheme} mode`);
+  });
+}
+
+function updateThemeIcon(theme) {
+  const themeToggle = document.getElementById('theme-toggle');
+  themeToggle.textContent = theme === 'dark' ? '☀️' : '🌙';
+}
+
+// Initialize theme toggle
+initThemeToggle();
+
+document.addEventListener('DOMContentLoaded', function() {
+    updateGlobalCounts();
+    
+    // Set current year in footer
+    document.getElementById('year').textContent = new Date().getFullYear();
+    
+    // Newsletter form handling
+    const newsletterForm = document.getElementById('newsletter-form');
+    if (newsletterForm) {
+      newsletterForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        const email = this.email.value;
+        const messageDiv = document.getElementById('newsletter-message');
+        
+        // Simple validation
+        if (email && email.includes('@')) {
+          messageDiv.textContent = 'Thank you for subscribing!';
+          messageDiv.style.color = '#03dac5';
+          this.reset();
+          
+          // Simulate API call
+          setTimeout(() => {
+            messageDiv.textContent = '';
+          }, 3000);
+        } else {
+          messageDiv.textContent = 'Please enter a valid email address';
+          messageDiv.style.color = '#ef4444';
+        }
+      });
+    }
+    
+    // Smooth scrolling for anchor links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+          target.scrollIntoView({
+            behavior: 'smooth',
+            block: 'start'
+          });
+        }
+      });
+    });
+    
+    // Scroll to top button
+    const scrollToTopBtn = document.getElementById('scroll-to-top');
+    if (scrollToTopBtn) {
+      window.addEventListener('scroll', () => {
+        if (window.scrollY > 300) {
+          scrollToTopBtn.style.opacity = '1';
+          scrollToTopBtn.style.visibility = 'visible';
+        } else {
+          scrollToTopBtn.style.opacity = '0';
+          scrollToTopBtn.style.visibility = 'hidden';
+        }
+      });
+      
+      scrollToTopBtn.addEventListener('click', () => {
+        window.scrollTo({
+          top: 0,
+          behavior: 'smooth'
+        });
+      });
+    }
+});
+
+// Header scroll effect
+const navbar = document.querySelector('.navbar');
+window.addEventListener('scroll', () => {
+  if (window.scrollY > 50) {
+    navbar.classList.add('scrolled');
+  } else {
+    navbar.classList.remove('scrolled');
+  }
+});
+
+// Update counter badges
+function updateCounterBadges() {
+  const cartCount = getStorage("cart").length;
+  const savedCount = getStorage("savedCars").length;
+  
+  const cartButton = document.querySelector('#open-cart');
+  const savedButton = document.querySelector('[title="Saved Cars"]');
+
+  if (cartButton) {
+    cartButton.setAttribute('data-count', cartCount);
+  }
+  if (savedButton) {
+    savedButton.setAttribute('data-count', savedCount);
+  }
+}
+
+// Enhanced animations
+function initAnimations() {
+  const observerOptions = {
+    threshold: 0.1,
+    rootMargin: '0px 0px -50px 0px'
+  };
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.style.opacity = '1';
+        entry.target.style.transform = 'translateY(0)';
+      }
+    });
+  }, observerOptions);
+
+  // Observe elements for animation
+  document.querySelectorAll('.feature-icon, .testimonial-card, .trust-badge, .car-showcase').forEach(el => {
+    el.style.opacity = '0';
+    el.style.transform = 'translateY(20px)';
+    el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+    observer.observe(el);
+  });
+}
+
+// Initialize animations when DOM is loaded
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initAnimations);
+} else {
+  initAnimations();
+}
+</script>
+<script>
+// Enhanced function to check if user is logged in
+function isUserLoggedIn() {
+  // Check for user authentication tokens or user data
+  return !!localStorage.getItem('userToken') || 
+         !!localStorage.getItem('user') || 
+         !!localStorage.getItem('authToken') ||
+         !!sessionStorage.getItem('userToken');
+}
+
+// Enhanced function to handle internal navigation within home page
+function handleInternalNavigation(event) {
+  event.preventDefault();
+  const target = event.currentTarget;
+  const href = target.getAttribute('href') || target.dataset.href || '';
+  const textContent = target.textContent.toLowerCase();
+  const classList = target.classList.toString().toLowerCase();
+  
+  // Add visual feedback
+  target.style.opacity = '0.8';
+  setTimeout(() => { target.style.opacity = '1'; }, 200);
+
+  // Comprehensive navigation mapping
+  if (href.includes('cars.html') || 
+      textContent.includes('explore') || 
+      textContent.includes('browse') || 
+      textContent.includes('view all') ||
+      classList.includes('nav-link') && textContent.includes('cars')) {
+    // Scroll to Featured Vehicles section
+    const featuredSection = document.querySelector('.section:nth-of-type(2)'); // Second section is Featured Vehicles
+    if (featuredSection) {
+      const headerHeight = document.querySelector('.navbar').offsetHeight || 80;
+      const elementPosition = featuredSection.getBoundingClientRect().top + window.pageYOffset;
+      const offsetPosition = elementPosition - headerHeight - 20;
+      
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: 'smooth'
+      });
+      showToast('Browsing available vehicles within home page', 3000);
+    }
+  } 
+  else if (href.includes('book.html') || 
+           textContent.includes('book') || 
+           textContent.includes('reserve') ||
+           classList.includes('nav-link') && textContent.includes('book')) {
+    // Scroll to How It Works section
+    const howItWorksSection = document.getElementById('how');
+    if (howItWorksSection) {
+      const headerHeight = document.querySelector('.navbar').offsetHeight || 80;
+      const elementPosition = howItWorksSection.getBoundingClientRect().top + window.pageYOffset;
+      const offsetPosition = elementPosition - headerHeight - 20;
+      
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: 'smooth'
+      });
+      showToast('Booking process explained in How It Works section', 3000);
+    }
+  }
+  else if (href.includes('about.html') || textContent.includes('about us')) {
+    showToast('About Us information is available within the home page. Scroll to footer for company details.', 4000);
+  }
+  else if (href.includes('terms.html') || textContent.includes('terms')) {
+    showToast('Terms & Conditions are accessible within the home page environment.', 4000);
+  }
+  else if (href.includes('privacy.html') || textContent.includes('privacy')) {
+    showToast('Privacy Policy details are available in the home page footer.', 4000);
+  }
+  else if (href.includes('faq.html') || textContent.includes('faq')) {
+    showToast('Frequently Asked Questions can be accessed within the home page.', 4000);
+  }
+  else if (href.includes('contact.html') || textContent.includes('contact')) {
+    // Scroll to Contact section in footer
+    const contactSection = document.getElementById('contact');
+    if (contactSection) {
+      const headerHeight = document.querySelector('.navbar').offsetHeight || 80;
+      const elementPosition = contactSection.getBoundingClientRect().top + window.pageYOffset;
+      const offsetPosition = elementPosition - headerHeight - 20;
+      
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: 'smooth'
+      });
+      showToast('Contact information available in footer section', 3000);
+    }
+  }
+  else if (href.includes('cart.html') || textContent.includes('cart')) {
+    showToast('Your cart is accessible within the home page interface. Cart items: ' + getStorage("cart").length, 4000);
+  }
+  else if (href.includes('saved.html') || textContent.includes('saved') || textContent.includes('wishlist')) {
+    showToast('Saved vehicles are available within the home page. Saved items: ' + getStorage("savedCars").length, 4000);
+  }
+  else {
+    // Default fallback for any other navigation
+    showToast('Action handled within the home page environment.', 3000);
+  }
+}
+
+// Enhanced function to attach event listeners to all navigation elements
+function attachNavigationHandlers() {
+  if (isUserLoggedIn()) {
+    // Comprehensive selector list to capture all navigation elements
+    const selectors = [
+      'a[href*=".html"]', // All HTML links
+      'button[data-href]', // Buttons with data-href
+      '.nav-link', // Navigation links
+      '.btn[href]', // Button links
+      '.hero-actions a', // Hero section buttons
+      '.car-showcase .btn', // Car showcase buttons
+      '.professional-cta a', // CTA section buttons
+      '.footer-services a', // Footer service links
+      '.footer-company a', // Footer company links
+      'a[href="#how"]', // How it works links
+      'a[href="#testimonials"]', // Testimonials links
+      'a[href="#contact"]' // Contact links
+    ];
+
+    // Also target specific button texts
+    const textSelectors = [
+      'a:contains("Explore Our Fleet")',
+      'a:contains("Book Instantly")',
+      'a:contains("Browse Cars")',
+      'a:contains("View All Vehicles")',
+      'a:contains("Book Now")',
+      'a:contains("About Us")',
+      'a:contains("Terms & Conditions")',
+      'a:contains("Privacy Policy")',
+      'a:contains("FAQ")',
+      'a:contains("Contact Support")',
+      'a:contains("Car Rentals")',
+      'a:contains("Corporate Services")',
+      'a:contains("Airport Transfers")',
+      'a:contains("Chauffeur Services")',
+      'a:contains("Long-term Rentals")'
+    ];
+
+    // Attach handlers to CSS selectors
+    selectors.forEach(selector => {
+      try {
+        document.querySelectorAll(selector).forEach(el => {
+          if (!el.hasAttribute('data-navigation-handled')) {
+            el.addEventListener('click', handleInternalNavigation);
+            el.setAttribute('data-navigation-handled', 'true');
+          }
+        });
+      } catch (e) {
+        console.log('Error attaching handler to selector:', selector, e);
+      }
+    });
+
+    // Fallback for text content selectors (since :contains is not standard)
+    document.querySelectorAll('a, button').forEach(el => {
+      const text = el.textContent.toLowerCase();
+      if ((text.includes('explore') || 
+           text.includes('book') || 
+           text.includes('browse') || 
+           text.includes('view all') ||
+           text.includes('about') ||
+           text.includes('terms') ||
+           text.includes('privacy') ||
+           text.includes('faq') ||
+           text.includes('contact') ||
+           text.includes('cart') ||
+           text.includes('saved') ||
+           text.includes('wishlist')) && 
+          !el.hasAttribute('data-navigation-handled')) {
+        el.addEventListener('click', handleInternalNavigation);
+        el.setAttribute('data-navigation-handled', 'true');
+      }
+    });
+
+    console.log('Navigation handlers attached for logged-in user');
+  }
+}
+
+// Initialize navigation handling when DOM is loaded
+document.addEventListener('DOMContentLoaded', () => {
+  // Initial attachment
+  attachNavigationHandlers();
+  
+  // Re-attach periodically to catch dynamically added elements
+  setInterval(attachNavigationHandlers, 1000);
+  
+  // Also attach when user logs in dynamically
+  const originalSetItem = localStorage.setItem;
+  localStorage.setItem = function(key, value) {
+    originalSetItem.apply(this, arguments);
+    if (key.includes('user') || key.includes('token') || key.includes('auth')) {
+      setTimeout(attachNavigationHandlers, 100);
+    }
+  };
+});
+</script>
