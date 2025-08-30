@@ -6,8 +6,9 @@ const qs = (s) => document.querySelector(s);
 const qsa = (s) => Array.from(document.querySelectorAll(s));
 
 // --- THEME TOGGLE FUNCTIONALITY ---
+// Changed 'theme-toggle' to 'themeToggle' to match about.html button id
 function initThemeToggle() {
-  const themeToggle = document.getElementById('theme-toggle');
+  const themeToggle = document.getElementById('themeToggle');
   if (!themeToggle) return;
 
   // Check for saved theme preference or use system preference
@@ -39,7 +40,7 @@ function initThemeToggle() {
 }
 
 function updateThemeIcon(theme) {
-  const themeToggle = document.getElementById('theme-toggle');
+  const themeToggle = document.getElementById('themeToggle');
   if (!themeToggle) return;
   
   themeToggle.innerHTML = theme === 'dark' ? '☀️' : '🌙';
@@ -330,13 +331,17 @@ function renderCars(cars) {
   });
 }
 
-// Single DOMContentLoaded event listener for newsletter
+// Single DOMContentLoaded event listener for all initialization
 document.addEventListener('DOMContentLoaded', () => {
+  // Initialize newsletter form
   const newsletterForm = document.getElementById('newsletter-form');
   if (newsletterForm) {
     newsletterForm.addEventListener('submit', subscribeNewsletter);
   }
+  
+  // Initialize theme toggle functionality
+  initThemeToggle();
+  
+  // Fetch cars on page load
+  fetchCars();
 });
-
-// Fetch cars on page load
-fetchCars();
