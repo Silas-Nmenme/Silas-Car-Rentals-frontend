@@ -210,9 +210,147 @@
         left: 0%;
       }
     }
+
+    /* Light theme styles */
+    body[data-theme="light"] {
+      --primary: #0d9488;
+      --text-primary: #212529;
+      --text-secondary: #495057;
+      --background: #ffffff;
+      --card-background: #f8f9fa;
+      --border-color: #dee2e6;
+    }
+
+    body[data-theme="light"] {
+      background-color: var(--background);
+      color: var(--text-primary);
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+    body[data-theme="light"] .privacy-header {
+      background: linear-gradient(135deg, #0d9488 0%, #0f766e 100%);
+      box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+      border-bottom: 3px solid rgba(13, 148, 136, 0.2);
+      color: var(--text-primary);
+    }
+
+    body[data-theme="light"] .privacy-header a,
+    body[data-theme="light"] .privacy-header .brand-name {
+      color: var(--text-primary);
+    }
+
+    body[data-theme="light"] .theme-toggle {
+      background: rgba(0,0,0,0.1);
+      border: 2px solid rgba(0,0,0,0.2);
+      color: var(--text-primary);
+    }
+
+    body[data-theme="light"] .theme-toggle:hover {
+      background: rgba(0,0,0,0.2);
+    }
+
+    body[data-theme="light"] .card {
+      background-color: var(--card-background);
+      border: 1px solid var(--border-color);
+      color: var(--text-primary);
+      box-shadow: none;
+    }
+
+    body[data-theme="light"] h2,
+    body[data-theme="light"] h3,
+    body[data-theme="light"] h1 {
+      color: var(--primary);
+    }
+
+    body[data-theme="light"] p,
+    body[data-theme="light"] span,
+    body[data-theme="light"] li {
+      color: var(--text-secondary);
+    }
+
+    body[data-theme="light"] .value-card {
+      background: var(--card-background);
+      border: 1px solid var(--border-color);
+      color: var(--text-primary);
+    }
+
+    body[data-theme="light"] .cert-badge {
+      background: rgba(13, 148, 136, 0.1);
+      border: 1px solid rgba(13, 148, 136, 0.2);
+      color: var(--primary);
+    }
+
+    body[data-theme="light"] .stat-card {
+      background: var(--card-background);
+      color: var(--text-primary);
+      border: 1px solid var(--border-color);
+    }
+
+    /* Adjust text alignment for professional balance */
+    body[data-theme="light"] .about-hero div {
+      max-width: 600px;
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    body[data-theme="light"] .timeline {
+      max-width: 700px;
+      margin: 3rem auto;
+    }
+
+    body[data-theme="light"] .timeline-item {
+      padding: 15px 30px;
+      width: 50%;
+    }
+
+    body[data-theme="light"] .timeline-item:nth-child(even) {
+      left: 50%;
+    }
+
+    body[data-theme="light"] .values-grid {
+      gap: 2rem;
+      margin: 3rem 0;
+    }
+
+    body[data-theme="light"] .value-card {
+      padding: 2rem;
+      border-radius: 12px;
+      transition: transform 0.3s ease;
+    }
+
+    body[data-theme="light"] .value-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 25px rgba(13, 148, 136, 0.1);
+    }
+
+    body[data-theme="light"] .certifications {
+      margin: 3rem 0;
+    }
+
+    body[data-theme="light"] .stats-grid {
+      gap: 2rem;
+      margin: 3rem 0;
+    }
+
+    body[data-theme="light"] .stat-card {
+      padding: 2rem;
+      border-radius: 12px;
+    }
+
+    body[data-theme="light"] .footer {
+      background-color: var(--card-background);
+      color: var(--text-primary);
+      border-top: 1px solid var(--border-color);
+      padding: 2rem 0;
+    }
+
+    body[data-theme="light"] .footer a {
+      color: var(--primary);
+      text-decoration: none;
+    }
   </style>
 </head>
-<body>
+<body data-theme="dark">
   <header class="privacy-header d-flex flex-wrap align-items-center justify-content-between px-4 py-3" role="banner">
     <a href="index.html" class="d-flex align-items-center text-decoration-none">
       <div class="brand-mark me-2">SC</div>
@@ -444,6 +582,35 @@
     </div>
   </footer>
 
+  <script>
+    // Theme toggle script
+    const themeToggleBtn = document.getElementById('themeToggle');
+    const body = document.body;
+
+    function setTheme(theme) {
+      if (theme === 'light') {
+        body.setAttribute('data-theme', 'light');
+        themeToggleBtn.innerHTML = '<i class="fas fa-sun"></i>';
+      } else {
+        body.setAttribute('data-theme', 'dark');
+        themeToggleBtn.innerHTML = '<i class="fas fa-moon"></i>';
+      }
+      localStorage.setItem('theme', theme);
+    }
+
+    // Load saved theme from localStorage or default to dark
+    const savedTheme = localStorage.getItem('theme') || 'dark';
+    setTheme(savedTheme);
+
+    themeToggleBtn.addEventListener('click', () => {
+      const currentTheme = body.getAttribute('data-theme');
+      if (currentTheme === 'dark') {
+        setTheme('light');
+      } else {
+        setTheme('dark');
+      }
+    });
+  </script>
   <script src="app.js"></script>
 </body>
 </html>

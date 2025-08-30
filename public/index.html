@@ -9,21 +9,21 @@
   <meta name="author" content="Silas Car Rentals" />
   <meta name="robots" content="index, follow" />
   <meta name="theme-color" content="#16a34a">
-  
+
   <!-- Open Graph / Facebook -->
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://silascarrentals.com/" />
   <meta property="og:title" content="Silas Car Rentals - Premium Car Rental Service in Nigeria" />
   <meta property="og:description" content="Nigeria's trusted premium car rental service. Rent luxury sedans, SUVs, and economy cars with fast booking and secure payments." />
   <meta property="og:image" content="https://silascarrentals.com/images/og-image.jpg" />
-  
+
   <!-- Twitter -->
   <meta property="twitter:card" content="summary_large_image" />
   <meta property="twitter:url" content="https://silascarrentals.com/" />
   <meta property="twitter:title" content="Silas Car Rentals - Premium Car Rental Service in Nigeria" />
   <meta property="twitter:description" content="Rent premium vehicles in Lagos with 5000+ satisfied customers and 98% satisfaction rate." />
   <meta property="twitter:image" content="https://silascarrentals.com/images/twitter-image.jpg" />
-  
+
   <!-- Structured Data -->
   <script type="application/ld+json">
   {
@@ -58,58 +58,58 @@
     ]
   }
   </script>
-  
+
   <!-- Bootstrap CSS CDN -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
-  
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <!-- FontAwesome CDN -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" />
+
   <link rel="stylesheet" href="style.css" />
   <link rel="preload" href="style.css" as="style" />
   <link rel="preconnect" href="https://techyjaunt-auth-go43.onrender.com" />
   <link rel="dns-prefetch" href="https://techyjaunt-auth-go43.onrender.com" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  
+
   <!-- Favicon and App Icons -->
   <link rel="icon" href="favicon.ico" type="image/x-icon" />
-  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
-  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
-  <link rel="manifest" href="/site.webmanifest">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+  <link rel="manifest" href="/site.webmanifest" />
 </head>
 <body>
-  <header class="navbar" role="banner">
-    <div class="container nav-inner">
-      <a href="index.html" class="brand" aria-label="Silas Car Rentals home">
-        <div class="brand-mark">SC</div>
-        <span class="brand-name">Silas Car Rentals</span>
+  <header class="navbar navbar-expand-lg navbar-dark bg-primary" role="banner">
+    <div class="container">
+      <a href="index.html" class="navbar-brand d-flex align-items-center" aria-label="Silas Car Rentals home">
+        <div class="brand-mark me-2">SC</div>
+        <span class="brand-name fs-4 fw-bold">Silas Car Rentals</span>
       </a>
 
-      <nav class="nav-links" aria-label="Main navigation">
-        <a class="nav-link active" href="index.html">Home</a>
-        <a class="nav-link" href="cars.html">Browse Cars</a>
-        <a class="nav-link" href="book.html">Book</a>
-        <a class="nav-link" href="#how">How it Works</a>
-        <a class="nav-link" href="#testimonials">Testimonials</a>
-        <a class="nav-link" href="#contact">Contact</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <nav class="collapse navbar-collapse" id="navbarNav" aria-label="Main navigation">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item">
+            <a class="nav-link active" href="index.html">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="cars.html">Browse Cars</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="book.html">Book</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#how">How it Works</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#testimonials">Testimonials</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#contact">Contact</a>
+          </li>
+        </ul>
       </nav>
-
-      <div class="nav-actions" role="region" aria-label="User actions">
-        <div class="action-group">
-          <div class="auth-actions" id="guest-actions">
-            <button class="btn btn-sm btn-login" onclick="location.href='login.html'">Login</button>
-            <button class="btn btn-outline btn-sm btn-signup" onclick="location.href='signup.html'">Sign up</button>
-          </div>
-
-          <div class="user-menu hidden" id="user-actions" aria-hidden="true">
-            <span class="user-name" id="user-name">User</span>
-            <button class="btn-sm btn-ghost" id="open-history" title="My rentals">My Rentals</button>
-            <button onclick="window.location.href='wishlist.html'" class="btn-sm btn-ghost counter-badge" id="open-wishlist" data-count="0">❤️ Wishlist <span id="wishlist-count" style="display:none;"></span></button>
-            <button class="btn btn-sm" id="logout-btn" title="Sign out">Logout</button>
-          </div>
-        </div>
-
-        <div class="action-group">
-            <button id="open-cart" onclick="window.location.href='cart.html'" class="btn btn-ghost counter-badge" aria-label="Open booking cart" title="Cart" data-count="0">
-                🧾 Cart <span id="cart-count" style="display:inline;"></span>
             </button>
             <button onclick="window.location.href='saved.html'" class="btn btn-ghost counter-badge" title="Saved Cars" data-count="0">
                 💾 Saved <span id="saved-count" style="display:inline;"></span>
