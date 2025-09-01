@@ -1243,14 +1243,14 @@
         </p>
 
         <div class="hero-buttons">
-          <a href="cars.html" class="btn-primary-custom" title="Explore Fleet">
+          <button type="button" class="btn-primary-custom" id="explore-fleet-btn" title="Explore Fleet">
             <i class="fas fa-car me-2"></i>
             Explore Fleet
-          </a>
-          <a href="book.html" class="btn-outline-custom" title="Book Now">
+          </button>
+          <button type="button" class="btn-outline-custom" id="book-now-btn" title="Book Now">
             <i class="fas fa-phone me-2"></i>
             Book Now
-          </a>
+          </button>
         </div>
       </div>
     </div>
@@ -1677,23 +1677,45 @@
       initContactForm();
       setCurrentYear();
 
-      // Handle hero buttons
-      const exploreFleetBtn = document.querySelector('a[href="cars.html"]');
-      const bookNowBtn = document.querySelector('a[href="book.html"]');
+      // Ensure hero buttons are always clickable and accessible
+      const exploreFleetBtn = document.getElementById('explore-fleet-btn');
+      const bookNowBtn = document.getElementById('book-now-btn');
 
       if (exploreFleetBtn) {
+        exploreFleetBtn.style.pointerEvents = 'auto';
+        exploreFleetBtn.disabled = false;
+        exploreFleetBtn.tabIndex = 0;
         exploreFleetBtn.addEventListener('click', function(e) {
           e.preventDefault();
           window.location.href = 'cars.html';
         });
+        exploreFleetBtn.addEventListener('keydown', function(e) {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            window.location.href = 'cars.html';
+          }
+        });
       }
 
       if (bookNowBtn) {
+        bookNowBtn.style.pointerEvents = 'auto';
+        bookNowBtn.disabled = false;
+        bookNowBtn.tabIndex = 0;
         bookNowBtn.addEventListener('click', function(e) {
           e.preventDefault();
           window.location.href = 'book.html';
         });
+        bookNowBtn.addEventListener('keydown', function(e) {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            window.location.href = 'book.html';
+          }
+        });
       }
+    });
+
+    window.addEventListener('load', () => {
+      document.body.classList.add('loaded');
     });
 
     // Add loading animation to page
