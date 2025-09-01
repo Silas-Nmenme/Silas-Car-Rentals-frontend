@@ -1197,7 +1197,7 @@
             </li>
           </ul>
 
-          <button class="theme-toggle ms-3" id="theme-toggle" aria-label="Toggle theme">
+          <button class="theme-toggle ms-3" id="theme-toggle" aria-label="Toggle theme" title="Toggle theme">
             <i class="fas fa-moon"></i>
           </button>
         </div>
@@ -1223,11 +1223,11 @@
         </p>
 
         <div class="hero-buttons">
-          <a href="#services" class="btn-primary-custom">
+          <a href="cars.html" class="btn-primary-custom">
             <i class="fas fa-car me-2"></i>
             Explore Fleet
           </a>
-          <a href="#contact" class="btn-outline-custom">
+          <a href="book.html" class="btn-outline-custom">
             <i class="fas fa-phone me-2"></i>
             Book Now
           </a>
@@ -1431,7 +1431,7 @@
           <textarea id="message" name="message" rows="5" required></textarea>
         </div>
 
-        <button type="submit" class="btn-submit">
+        <button type="submit" class="btn-submit" title="Send your message">
           <i class="fas fa-paper-plane me-2"></i>
           Send Message
         </button>
@@ -1489,7 +1489,7 @@
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
   <!-- Scroll to Top Button -->
-  <button class="scroll-to-top" id="scroll-to-top" aria-label="Scroll to top">
+  <button class="scroll-to-top" id="scroll-to-top" aria-label="Scroll to top" title="Scroll to top">
     <i class="fas fa-arrow-up"></i>
   </button>
 
@@ -1509,19 +1509,19 @@
     // Theme toggle functionality
     function initThemeToggle() {
       const themeToggle = document.getElementById('theme-toggle');
-      const html = document.documentElement;
+      const body = document.body;
 
       // Get saved theme or default to dark
       const savedTheme = localStorage.getItem('theme') || 'dark';
-      html.setAttribute('data-theme', savedTheme);
+      body.setAttribute('data-theme', savedTheme);
       updateThemeIcon(savedTheme);
 
       // Toggle theme on button click
       themeToggle.addEventListener('click', () => {
-        const currentTheme = html.getAttribute('data-theme') || 'dark';
+        const currentTheme = body.getAttribute('data-theme') || 'dark';
         const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
 
-        html.setAttribute('data-theme', newTheme);
+        body.setAttribute('data-theme', newTheme);
         localStorage.setItem('theme', newTheme);
         updateThemeIcon(newTheme);
 

@@ -182,7 +182,7 @@
         <span class="brand-name">Silas Car Rentals</span>
       </a>
       
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" title="Toggle navigation menu">
         <span class="navbar-toggler-icon"></span>
       </button>
       
@@ -208,7 +208,7 @@
             Cart
             <span id="cart-count" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">0</span>
           </button>
-          <button class="btn btn-sm btn-primary" onclick="window.location.href='dashboard.html'" aria-label="My Account">
+          <button class="btn btn-sm btn-primary" onclick="window.location.href='dashboard.html'" aria-label="My Account" title="Go to your account dashboard">
             <i class="fas fa-user me-1" aria-hidden="true"></i>
             My Account
           </button>
@@ -522,7 +522,7 @@ function loadCarsFromCart() {
       noItemsMessage.innerHTML = `
         <strong>🛒 Your cart is empty!</strong>
         <p>No cars found in your cart. Please add cars to your cart first.</p>
-        <button onclick="window.location.href='cars.html'" class="btn btn-primary" style="margin-top: 0.5rem;">
+        <button onclick="window.location.href='cars.html'" class="btn btn-primary" style="margin-top: 0.5rem;" title="Browse available cars for rental">
           Browse Cars
         </button>
       `;
@@ -542,7 +542,7 @@ function loadCarsFromCart() {
       carBox.innerHTML = `
         <h4>${car.make} ${car.model}</h4>
         <p>${car.year} • ₦${car.price.toLocaleString()}/day</p>
-        <button onclick="selectCarFromCart('${car._id}')" class="btn btn-primary btn-sm" style="margin-top: 0.5rem;">
+        <button onclick="selectCarFromCart('${car._id}')" class="btn btn-primary btn-sm" style="margin-top: 0.5rem;" title="Select this car for booking">
           Select This Car
         </button>
       `;
