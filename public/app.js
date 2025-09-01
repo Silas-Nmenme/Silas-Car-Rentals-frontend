@@ -6,9 +6,8 @@ const qs = (s) => document.querySelector(s);
 const qsa = (s) => Array.from(document.querySelectorAll(s));
 
 // --- THEME TOGGLE FUNCTIONALITY ---
-// Changed 'theme-toggle' to 'themeToggle' to match about.html button id
 function initThemeToggle() {
-  const themeToggle = document.getElementById('themeToggle');
+  const themeToggle = document.getElementById('theme-toggle');
   if (!themeToggle) return;
 
   // Check for saved theme preference or use system preference
@@ -40,11 +39,47 @@ function initThemeToggle() {
 }
 
 function updateThemeIcon(theme) {
-  const themeToggle = document.getElementById('themeToggle');
+  const themeToggle = document.getElementById('theme-toggle');
   if (!themeToggle) return;
-  
+
   themeToggle.innerHTML = theme === 'dark' ? '☀️' : '🌙';
   themeToggle.setAttribute('aria-label', `Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`);
+}
+
+// --- MOBILE MENU FUNCTIONALITY ---
+function initMobileMenu() {
+  const navbarToggler = document.querySelector('.navbar-toggler');
+  const navbarCollapse = document.getElementById('mainNav');
+
+  if (!navbarToggler || !navbarCollapse) return;
+
+  navbarToggler.addEventListener('click', () => {
+    const isExpanded = navbarCollapse.classList.contains('show');
+    if (isExpanded) {
+      navbarCollapse.classList.remove('show');
+      navbarToggler.setAttribute('aria-expanded', 'false');
+    } else {
+      navbarCollapse.classList.add('show');
+      navbarToggler.setAttribute('aria-expanded', 'true');
+    }
+  });
+
+  // Close mobile menu when clicking on a link
+  const navLinks = navbarCollapse.querySelectorAll('.nav-link');
+  navLinks.forEach(link => {
+    link.addEventListener('click', () => {
+      navbarCollapse.classList.remove('show');
+      navbarToggler.setAttribute('aria-expanded', 'false');
+    });
+  });
+
+  // Close mobile menu when clicking outside
+  document.addEventListener('click', (e) => {
+    if (!navbarToggler.contains(e.target) && !navbarCollapse.contains(e.target)) {
+      navbarCollapse.classList.remove('show');
+      navbarToggler.setAttribute('aria-expanded', 'false');
+    }
+  });
 }
 
 // Listen for system theme changes
@@ -338,10 +373,13 @@ document.addEventListener('DOMContentLoaded', () => {
   if (newsletterForm) {
     newsletterForm.addEventListener('submit', subscribeNewsletter);
   }
-  
+
   // Initialize theme toggle functionality
   initThemeToggle();
-  
+
+  // Initialize mobile menu functionality
+  initMobileMenu();
+
   // Fetch cars on page load
   fetchCars();
 });
