@@ -1133,6 +1133,19 @@
       border-left-color: var(--dark-primary);
     }
 
+    /* Screen reader only text */
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+
     /* Responsive Design */
     @media (max-width: 768px) {
       .hero-title {
@@ -1195,10 +1208,17 @@
             <li class="nav-item">
               <a class="nav-link" href="#contact">Contact</a>
             </li>
+            <li class="nav-item">
+              <a class="nav-link" href="login.html">Login</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="signup.html">Signup</a>
+            </li>
           </ul>
 
           <button class="theme-toggle ms-3" id="theme-toggle" aria-label="Toggle theme" title="Toggle theme">
-            <i class="fas fa-moon"></i>
+            <i class="fas fa-moon" aria-hidden="true"></i>
+            <span class="sr-only">Toggle theme</span>
           </button>
         </div>
       </div>
@@ -1490,7 +1510,8 @@
 
   <!-- Scroll to Top Button -->
   <button class="scroll-to-top" id="scroll-to-top" aria-label="Scroll to top" title="Scroll to top">
-    <i class="fas fa-arrow-up"></i>
+    <i class="fas fa-arrow-up" aria-hidden="true"></i>
+    <span class="sr-only">Scroll to top</span>
   </button>
 
   <!-- Scripts -->
