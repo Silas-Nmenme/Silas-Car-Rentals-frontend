@@ -839,6 +839,7 @@
       transition: var(--transition);
       position: relative;
       overflow: hidden;
+      text-shadow: 0 1px 3px rgba(0,0,0,0.7);
     }
 
     body[data-theme="dark"] .stat-item {
@@ -874,11 +875,13 @@
       font-weight: 700;
       margin-bottom: 0.5rem;
       display: block;
+      color: #ffffffcc;
     }
 
     .stat-label {
       font-size: 0.9rem;
-      opacity: 0.9;
+      opacity: 1;
+      color: #ffffffcc;
     }
 
     /* Contact Section */
@@ -1146,6 +1149,293 @@
       border: 0;
     }
 
+    /* Car Collection Specific Styles */
+    .car-card {
+      padding: 0;
+      overflow: visible;
+      max-width: 400px;
+      margin: 0 auto;
+    }
+
+    .car-image-container {
+      position: relative;
+      width: 100%;
+      height: 200px;
+      overflow: hidden;
+      border-radius: 16px 16px 0 0;
+    }
+
+    .car-image-container img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: var(--transition);
+    }
+
+    .car-card:hover .car-image-container img {
+      transform: scale(1.05);
+    }
+
+    .car-badge {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      background: linear-gradient(135deg, var(--light-primary), var(--light-primary-700));
+      color: white;
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    }
+
+    body[data-theme="dark"] .car-badge {
+      background: linear-gradient(135deg, var(--dark-primary), var(--dark-primary-700));
+    }
+
+    .car-details {
+      padding: 1.5rem;
+    }
+
+    .car-specs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      margin: 1rem 0;
+    }
+
+    .spec-item {
+      display: flex;
+      align-items: center;
+      gap: 0.25rem;
+      font-size: 0.85rem;
+      color: var(--light-muted);
+      background: rgba(13, 148, 136, 0.1);
+      padding: 0.25rem 0.5rem;
+      border-radius: 6px;
+      border: 1px solid rgba(13, 148, 136, 0.2);
+    }
+
+    body[data-theme="dark"] .spec-item {
+      color: var(--dark-muted);
+      background: rgba(20, 184, 166, 0.1);
+      border-color: rgba(20, 184, 166, 0.2);
+    }
+
+    .spec-item i {
+      color: var(--light-primary);
+      font-size: 0.8rem;
+    }
+
+    body[data-theme="dark"] .spec-item i {
+      color: var(--dark-primary);
+    }
+
+    .pricing-section {
+      margin: 1.5rem 0;
+      text-align: center;
+    }
+
+    .price-main {
+      display: flex;
+      align-items: baseline;
+      justify-content: center;
+      gap: 0.25rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .price-amount {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--light-primary);
+    }
+
+    body[data-theme="dark"] .price-amount {
+      color: var(--dark-primary);
+    }
+
+    .price-period {
+      font-size: 1rem;
+      color: var(--light-muted);
+      font-weight: 500;
+    }
+
+    body[data-theme="dark"] .price-period {
+      color: var(--dark-muted);
+    }
+
+    .price-secondary {
+      color: var(--light-muted);
+      font-size: 0.85rem;
+    }
+
+    body[data-theme="dark"] .price-secondary {
+      color: var(--dark-muted);
+    }
+
+    .car-actions {
+      display: flex;
+      gap: 0.75rem;
+      margin-top: 1.5rem;
+    }
+
+    .btn-book-now,
+    .btn-details {
+      flex: 1;
+      padding: 0.75rem 1rem;
+      border: none;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: var(--transition);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      text-decoration: none;
+    }
+
+    .btn-book-now {
+      background: linear-gradient(135deg, var(--light-primary), var(--light-primary-700));
+      color: white;
+      box-shadow: 0 4px 12px rgba(13, 148, 136, 0.3);
+    }
+
+    .btn-book-now:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(13, 148, 136, 0.4);
+    }
+
+    body[data-theme="dark"] .btn-book-now {
+      background: linear-gradient(135deg, var(--dark-primary), var(--dark-primary-700));
+      box-shadow: 0 4px 12px rgba(20, 184, 166, 0.3);
+    }
+
+    body[data-theme="dark"] .btn-book-now:hover {
+      box-shadow: 0 6px 16px rgba(20, 184, 166, 0.4);
+    }
+
+    .btn-details {
+      background: transparent;
+      color: var(--light-primary);
+      border: 2px solid var(--light-primary);
+    }
+
+    .btn-details:hover {
+      background: var(--light-primary);
+      color: white;
+      transform: translateY(-2px);
+    }
+
+    body[data-theme="dark"] .btn-details {
+      color: var(--dark-primary);
+      border-color: var(--dark-primary);
+    }
+
+    body[data-theme="dark"] .btn-details:hover {
+      background: var(--dark-primary);
+      color: white;
+    }
+
+    .view-more-section {
+      margin-top: 3rem;
+      padding: 2rem;
+      background: linear-gradient(135deg, rgba(13, 148, 136, 0.05), rgba(15, 118, 110, 0.05));
+      border-radius: 16px;
+      text-align: center;
+      border: 1px solid rgba(13, 148, 136, 0.1);
+    }
+
+    body[data-theme="dark"] .view-more-section {
+      background: linear-gradient(135deg, rgba(20, 184, 166, 0.05), rgba(13, 148, 136, 0.05));
+      border-color: rgba(20, 184, 166, 0.1);
+    }
+
+    .view-more-content h3 {
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+      color: var(--light-text);
+    }
+
+    body[data-theme="dark"] .view-more-content h3 {
+      color: var(--dark-text);
+    }
+
+    .view-more-content p {
+      color: var(--light-muted);
+      margin-bottom: 2rem;
+      font-size: 1.1rem;
+    }
+
+    body[data-theme="dark"] .view-more-content p {
+      color: var(--dark-muted);
+    }
+
+    .view-more-stats {
+      display: flex;
+      justify-content: center;
+      gap: 2rem;
+      margin-bottom: 2rem;
+      flex-wrap: wrap;
+    }
+
+    .stat {
+      text-align: center;
+    }
+
+     .stat-number {
+      font-size: 2rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      display: block;
+    }
+   .stat-label {
+      font-size: 0.9rem;
+      opacity: 0.9;
+    }
+    .btn-view-more-enhanced {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.75rem;
+      background: linear-gradient(135deg, var(--light-primary), var(--light-primary-700));
+      color: white;
+      padding: 1rem 2rem;
+      border-radius: 50px;
+      text-decoration: none;
+      font-weight: 600;
+      transition: var(--transition);
+      box-shadow: 0 4px 15px rgba(13, 148, 136, 0.3);
+      border: none;
+      cursor: pointer;
+      font-size: 1rem;
+    }
+
+    .btn-view-more-enhanced:hover {
+      transform: translateY(-3px) scale(1.05);
+      box-shadow: 0 8px 25px rgba(13, 148, 136, 0.4);
+    }
+
+    body[data-theme="dark"] .btn-view-more-enhanced {
+      background: linear-gradient(135deg, var(--dark-primary), var(--dark-primary-700));
+      box-shadow: 0 4px 15px rgba(20, 184, 166, 0.3);
+    }
+
+    body[data-theme="dark"] .btn-view-more-enhanced:hover {
+      box-shadow: 0 8px 25px rgba(20, 184, 166, 0.4);
+    }
+
+    .text-center {
+      text-align: center;
+    }
+
+    .mb-5 {
+      margin-bottom: 3rem;
+    }
+
     /* Responsive Design */
     @media (max-width: 768px) {
       .hero-title {
@@ -1177,6 +1467,28 @@
       .footer-content {
         grid-template-columns: 1fr;
       }
+
+      .car-specs {
+        gap: 0.5rem;
+      }
+
+      .spec-item {
+        font-size: 0.8rem;
+        padding: 0.2rem 0.4rem;
+      }
+
+      .car-actions {
+        flex-direction: column;
+        gap: 0.5rem;
+      }
+
+      .view-more-stats {
+        gap: 1rem;
+      }
+
+      .stat-number {
+        font-size: 1.25rem;
+      }
     }
   </style>
 </head>
@@ -1190,7 +1502,7 @@
           Silas Car Rentals
         </a>
 
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" title="Toggle navigation" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
 
@@ -1234,24 +1546,16 @@
       <div class="floating-shape"></div>
     </div>
 
-    <div class="container">
-      <div class="hero-content">
+      <div class="container d-flex justify-content-center">
+        <div class="hero-content text-center">
         <h1 class="hero-title">Premium Car Rental Service in Nigeria</h1>
         <p class="hero-subtitle">
           Experience luxury and comfort with our extensive fleet of premium vehicles.
           From business travel to leisure adventures, we have the perfect car for every journey.
         </p>
-
-        <div class="hero-buttons">
-          <a href="cars.html" class="btn-primary-custom" role="button" title="Check Our Rides" aria-label="Check Our Rides">
-            <i class="fas fa-car me-2" aria-hidden="true"></i>
-            Check Our Rides
-          </a>
         </div>
       </div>
-    </div>
   </section>
-
   <!-- Services Section -->
   <section class="services-section" id="services">
     <div class="container">
@@ -1322,6 +1626,199 @@
             Tailored solutions for businesses with fleet management and dedicated account managers.
             Cost-effective and reliable.
           </p>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <!-- Cars Collection Section -->
+  <section class="services-section" id="cars-collection">
+    <div class="container">
+      <h2 class="section-title">Our Premium Car Collection</h2>
+      <p class="text-center mb-5" style="color: var(--light-muted); font-size: 1.1rem; max-width: 600px; margin: 0 auto;">
+        Choose from our carefully curated fleet of luxury and standard vehicles, all professionally maintained and ready for your journey.
+      </p>
+      <div class="services-grid">
+        <div class="service-card car-card">
+          <div class="car-image-container">
+            <img src="https://images.unsplash.com/photo-1621007947382-bb3c3994e3fb?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Toyota Camry 2023 - Premium Sedan" loading="lazy" />
+            <div class="car-badge">Most Popular</div>
+          </div>
+          <div class="car-details">
+            <h3 class="service-title">Toyota Camry 2023</h3>
+            <div class="car-specs">
+              <span class="spec-item"><i class="fas fa-users"></i> 5 Seats</span>
+              <span class="spec-item"><i class="fas fa-gas-pump"></i> Petrol</span>
+              <span class="spec-item"><i class="fas fa-cog"></i> Automatic</span>
+              <span class="spec-item"><i class="fas fa-suitcase"></i> 2 Bags</span>
+            </div>
+            <p class="service-description">Premium sedan with excellent fuel efficiency, advanced safety features, and comfortable interior perfect for business travel.</p>
+            <div class="pricing-section">
+              <div class="price-main">
+                <span class="price-amount">₦25,000</span>
+                <span class="price-period">/ day</span>
+              </div>
+              <div class="price-secondary">
+                <small>₦150,000 / week (Save 20%)</small>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="service-card car-card">
+          <div class="car-image-container">
+            <img src="https://images.unsplash.com/photo-1609521263047-f8f205293f24?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Honda CR-V 2023 - Family SUV" loading="lazy" />
+            <div class="car-badge">Family Favorite</div>
+          </div>
+          <div class="car-details">
+            <h3 class="service-title">Honda CR-V 2023</h3>
+            <div class="car-specs">
+              <span class="spec-item"><i class="fas fa-users"></i> 7 Seats</span>
+              <span class="spec-item"><i class="fas fa-gas-pump"></i> Petrol</span>
+              <span class="spec-item"><i class="fas fa-cog"></i> CVT</span>
+              <span class="spec-item"><i class="fas fa-suitcase"></i> 4 Bags</span>
+            </div>
+            <p class="service-description">Spacious SUV with advanced all-wheel drive, perfect for family trips, outdoor adventures, and city driving.</p>
+            <div class="pricing-section">
+              <div class="price-main">
+                <span class="price-amount">₦35,000</span>
+                <span class="price-period">/ day</span>
+              </div>
+              <div class="price-secondary">
+                <small>₦210,000 / week (Save 20%)</small>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="service-card car-card">
+          <div class="car-image-container">
+            <img src="https://images.unsplash.com/photo-1555215695-3004980ad54e?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="BMW X5 2023 - Luxury SUV" loading="lazy" />
+            <div class="car-badge">Luxury</div>
+          </div>
+          <div class="car-details">
+            <h3 class="service-title">BMW X5 2023</h3>
+            <div class="car-specs">
+              <span class="spec-item"><i class="fas fa-users"></i> 5 Seats</span>
+              <span class="spec-item"><i class="fas fa-gas-pump"></i> Diesel</span>
+              <span class="spec-item"><i class="fas fa-cog"></i> Automatic</span>
+              <span class="spec-item"><i class="fas fa-suitcase"></i> 3 Bags</span>
+            </div>
+            <p class="service-description">Ultimate luxury SUV with premium leather interior, advanced driver assistance systems, and powerful performance.</p>
+            <div class="pricing-section">
+              <div class="price-main">
+                <span class="price-amount">₦55,000</span>
+                <span class="price-period">/ day</span>
+              </div>
+              <div class="price-secondary">
+                <small>₦330,000 / week (Save 20%)</small>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="service-card car-card">
+          <div class="car-image-container">
+            <img src="https://images.unsplash.com/photo-1606664515524-ed2f786a0bd6?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Mercedes-Benz C-Class 2023 - Executive Sedan" loading="lazy" />
+            <div class="car-badge">Executive</div>
+          </div>
+          <div class="car-details">
+            <h3 class="service-title">Mercedes-Benz C-Class 2023</h3>
+            <div class="car-specs">
+              <span class="spec-item"><i class="fas fa-users"></i> 5 Seats</span>
+              <span class="spec-item"><i class="fas fa-gas-pump"></i> Petrol</span>
+              <span class="spec-item"><i class="fas fa-cog"></i> Automatic</span>
+              <span class="spec-item"><i class="fas fa-suitcase"></i> 2 Bags</span>
+            </div>
+            <p class="service-description">Executive sedan with world-class comfort, cutting-edge technology, and prestigious Mercedes-Benz quality.</p>
+            <div class="pricing-section">
+              <div class="price-main">
+                <span class="price-amount">₦45,000</span>
+                <span class="price-period">/ day</span>
+              </div>
+              <div class="price-secondary">
+                <small>₦270,000 / week (Save 20%)</small>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="service-card car-card">
+          <div class="car-image-container">
+            <img src="https://images.unsplash.com/photo-1549399735-cef2e2c3f638?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Range Rover Sport 2023 - Premium SUV" loading="lazy" />
+            <div class="car-badge">Adventure</div>
+          </div>
+          <div class="car-details">
+            <h3 class="service-title">Range Rover Sport 2023</h3>
+            <div class="car-specs">
+              <span class="spec-item"><i class="fas fa-users"></i> 5 Seats</span>
+              <span class="spec-item"><i class="fas fa-gas-pump"></i> Diesel</span>
+              <span class="spec-item"><i class="fas fa-cog"></i> Automatic</span>
+              <span class="spec-item"><i class="fas fa-suitcase"></i> 3 Bags</span>
+            </div>
+            <p class="service-description">Iconic British luxury SUV combining off-road capability with sophisticated on-road performance and premium comfort.</p>
+            <div class="pricing-section">
+              <div class="price-main">
+                <span class="price-amount">₦65,000</span>
+                <span class="price-period">/ day</span>
+              </div>
+              <div class="price-secondary">
+                <small>₦390,000 / week (Save 20%)</small>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="service-card car-card">
+          <div class="car-image-container">
+            <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Tesla Model 3 2023 - Electric Sedan" loading="lazy" />
+            <div class="car-badge">Electric</div>
+          </div>
+          <div class="car-details">
+            <h3 class="service-title">Tesla Model 3 2023</h3>
+            <div class="car-specs">
+              <span class="spec-item"><i class="fas fa-users"></i> 5 Seats</span>
+              <span class="spec-item"><i class="fas fa-bolt"></i> Electric</span>
+              <span class="spec-item"><i class="fas fa-cog"></i> Automatic</span>
+              <span class="spec-item"><i class="fas fa-suitcase"></i> 2 Bags</span>
+            </div>
+            <p class="service-description">Revolutionary electric sedan with autopilot capabilities, instant torque, and zero-emission driving experience.</p>
+            <div class="pricing-section">
+              <div class="price-main">
+                <span class="price-amount">₦40,000</span>
+                <span class="price-period">/ day</span>
+              </div>
+              <div class="price-secondary">
+                <small>₦240,000 / week (Save 20%)</small>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="view-more-section">
+        <div class="view-more-content">
+          <h3>Explore Our Complete Fleet</h3>
+          <p>Discover more premium vehicles including vans, trucks, and specialty vehicles for all your transportation needs.</p>
+          <div class="view-more-stats">
+            <div class="stat">
+              <span class="stat-number">50+</span>
+              <span class="stat-label">Vehicle Models</span>
+            </div>
+            <div class="stat">
+              <span class="stat-number">100%</span>
+              <span class="stat-label">Well Maintained</span>
+            </div>
+            <div class="stat">
+              <span class="stat-number">24/7</span>
+              <span class="stat-label">Support</span>
+            </div>
+          </div>
+          <a href="cars.html" class="btn-view-more-enhanced" role="button" title="View Complete Car Collection" aria-label="View Complete Car Collection">
+            <i class="fas fa-arrow-right"></i>
+            <span>View All Cars</span>
+            <i class="fas fa-car"></i>
+          </a>
         </div>
       </div>
     </div>
