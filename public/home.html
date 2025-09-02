@@ -27,16 +27,15 @@
   <link rel="preconnect" href="https://techyjaunt-auth-go43.onrender.com" />
   <link rel="dns-prefetch" href="https://techyjaunt-auth-go43.onrender.com" />
 
-  <!-- Custom Styles -->
-  <link rel="stylesheet" href="style.css" />
+
 </head>
-<body style="padding-top: 70px;">
+  <body class="pt-5" data-bs-theme="light">
   <!-- Enhanced Navbar -->
-  <header class="navbar navbar-expand-lg navbar-light bg-white shadow fixed-top" style="border-bottom: 1px solid #e9ecef;">
+  <header class="navbar navbar-expand-lg navbar-light bg-body shadow fixed-top border-bottom">
     <div class="container-fluid">
       <a href="#" class="navbar-brand d-flex align-items-center">
         <div class="brand-mark me-2 rounded-3 d-flex align-items-center justify-content-center text-white fw-bold fs-5" style="width: 40px; height: 40px; background: linear-gradient(135deg, #16a34a 0%, #0d9488 100%);">SC</div>
-        <span class="brand-name fw-bold fs-4 text-dark">Silas Car Rentals</span>
+        <span class="brand-name fw-bold fs-4 text-body">Silas Car Rentals</span>
       </a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav" aria-controls="mainNav" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -537,6 +536,27 @@
       localStorage.removeItem('token');
       history.replaceState(null, null, 'login.html');
       window.location.href = 'login.html';
+    });
+
+    // Theme toggle functionality
+    const themeToggle = document.getElementById('theme-toggle');
+    const body = document.body;
+
+    // Load saved theme
+    const savedTheme = localStorage.getItem('theme') || 'light';
+    body.setAttribute('data-bs-theme', savedTheme);
+    themeToggle.textContent = savedTheme === 'dark' ? '☀️' : '🌙';
+
+    // Toggle theme
+    themeToggle.addEventListener('click', function() {
+      const currentTheme = body.getAttribute('data-bs-theme');
+      const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+
+      body.setAttribute('data-bs-theme', newTheme);
+      themeToggle.textContent = newTheme === 'dark' ? '☀️' : '🌙';
+
+      // Save theme preference
+      localStorage.setItem('theme', newTheme);
     });
   </script>
 </body>
