@@ -25,36 +25,39 @@
   <!-- Custom Styles -->
   <link rel="stylesheet" href="style.css" />
 </head>
-<body>
+<body style="padding-top: 70px;">
   <!-- Enhanced Navbar -->
-  <header class="navbar navbar-expand-lg navbar-light bg-white shadow-sm sticky-top">
+  <header class="navbar navbar-expand-lg navbar-light bg-white shadow fixed-top" style="border-bottom: 1px solid #e9ecef;">
     <div class="container-fluid">
       <a href="#" class="navbar-brand d-flex align-items-center">
-        <div class="brand-mark me-2" style="background: linear-gradient(135deg, #16a34a 0%, #0d9488 100%); width: 40px; height: 40px; border-radius: 12px; display: flex; align-items: center; justify-content: center; color: white; font-weight: 800; font-size: 1.2rem;">SC</div>
-        <span class="brand-name fw-bold fs-4">Silas Car Rentals</span>
+        <div class="brand-mark me-2 rounded-3 d-flex align-items-center justify-content-center text-white fw-bold fs-5" style="width: 40px; height: 40px; background: linear-gradient(135deg, #16a34a 0%, #0d9488 100%);">SC</div>
+        <span class="brand-name fw-bold fs-4 text-dark">Silas Car Rentals</span>
       </a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav" aria-controls="mainNav" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
       <nav class="collapse navbar-collapse" id="mainNav">
         <ul class="navbar-nav ms-auto mb-2 mb-lg-0 nav-links">
-          <li class="nav-item"><a class="nav-link active fw-600" href="#">Home</a></li>
-          <li class="nav-item"><a class="nav-link fw-600" href="cars.html">Browse Cars</a></li>
-          <li class="nav-item"><a class="nav-link fw-600" href="book.html">Book Now</a></li>
-          <li class="nav-item"><a class="nav-link fw-600" href="#how">How it Works</a></li>
-          <li class="nav-item"><a class="nav-link fw-600" href="#testimonials">Testimonials</a></li>
-          <li class="nav-item"><a class="nav-link fw-600" href="#contact">Contact</a></li>
+          <li class="nav-item"><a class="nav-link active fw-semibold" href="#">Home</a></li>
+          <li class="nav-item"><a class="nav-link fw-semibold" href="cars.html">Browse Cars</a></li>
+          <li class="nav-item"><a class="nav-link fw-semibold" href="book.html">Book Now</a></li>
+          <li class="nav-item"><a class="nav-link fw-semibold" href="#how">How it Works</a></li>
+          <li class="nav-item"><a class="nav-link fw-semibold" href="#testimonials">Testimonials</a></li>
+          <li class="nav-item"><a class="nav-link fw-semibold" href="#contact">Contact</a></li>
         </ul>
         <div class="d-flex align-items-center ms-lg-3 gap-2">
-          <a href="cart.html" class="btn btn-outline-primary position-relative">
+          <a href="cart.html" class="btn btn-outline-primary position-relative" aria-label="Cart">
             <i class="fas fa-shopping-cart"></i>
             <span id="cart-count" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-success" style="font-size:0.8em;">0</span>
           </a>
-          <a href="saved.html" class="btn btn-outline-danger position-relative">
+          <a href="saved.html" class="btn btn-outline-danger position-relative" aria-label="Saved Items">
             <i class="fas fa-heart"></i>
             <span id="saved-count" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style="font-size:0.8em;">0</span>
           </a>
           <button class="btn btn-outline-secondary" id="theme-toggle" aria-label="Toggle dark/light mode">🌙</button>
+          <button class="btn btn-outline-danger" id="logout-button" aria-label="Logout">
+            <i class="fas fa-sign-out-alt me-1"></i> Logout
+          </button>
         </div>
       </nav>
     </div>
@@ -512,6 +515,23 @@
     document.addEventListener('DOMContentLoaded', function() {
       // This will be handled by app.js
       updateGlobalCounts();
+    });
+  </script>
+  <script>
+    // Authentication check
+    document.addEventListener('DOMContentLoaded', function() {
+      const user = localStorage.getItem('user');
+      if (!user) {
+        window.location.href = 'login.html';
+      }
+    });
+
+    // Add logout button click handler to redirect to login page
+    document.getElementById('logout-button').addEventListener('click', function() {
+      localStorage.removeItem('user');
+      localStorage.removeItem('token');
+      history.replaceState(null, null, 'login.html');
+      window.location.href = 'login.html';
     });
   </script>
 </body>

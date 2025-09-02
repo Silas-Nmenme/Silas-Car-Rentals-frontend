@@ -105,7 +105,8 @@ body{
 .max-600{max-width:600px;margin:0 auto}
 
 /* --- Navbar --- */
-.navbar{
+/* Removed custom navbar styles to rely on Bootstrap CDN styles */
+/* .navbar{
   position:sticky;top:0;z-index:1000;
   background: rgba(13,17,22,0.65);
   backdrop-filter: blur(6px);
@@ -126,7 +127,7 @@ body{
 .nav-actions{display:flex;align-items:center;gap:12px}
 .auth-actions,.user-menu{display:flex;align-items:center;gap:10px}
 .user-name{font-weight:700}
-.mobile-menu-btn{display:inline-grid;place-items:center;width:36px;height:36px;border-radius:8px;background:transparent;border:1px solid var(--border);color:var(--text)}
+.mobile-menu-btn{display:inline-grid;place-items:center;width:36px;height:36px;border-radius:8px;background:transparent;border:1px solid var(--border);color:var(--text)} */
 
 /* --- Mobile menu --- */
 .mobile-menu{border-top:1px solid var(--border);background:#0f1318;padding:10px;box-shadow:var(--shadow)}
