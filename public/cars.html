@@ -21,6 +21,7 @@
       --light-shadow: 0 4px 20px rgba(0,0,0,0.08);
       --light-bg: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
       --light-card-bg: #ffffff;
+      --light-accent: #f59e0b;
 
       /* Dark Theme Variables */
       --dark-primary: #14b8a6;
@@ -31,6 +32,7 @@
       --dark-shadow: 0 4px 20px rgba(0,0,0,0.3);
       --dark-bg: linear-gradient(135deg, #111827 0%, #1f2937 100%);
       --dark-card-bg: #1f2937;
+      --dark-accent: #fbbf24;
 
       /* Common Variables */
       --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -187,6 +189,16 @@
       font-size: 0.85rem;
       padding: 0.4rem 0.8rem;
       white-space: nowrap;
+      color: var(--light-btn-text);
+      background-color: var(--light-btn-bg);
+      border: 1px solid var(--light-btn-bg);
+      transition: var(--transition);
+    }
+
+    body[data-theme="dark"] .user-actions .btn {
+      color: var(--dark-btn-text);
+      background-color: var(--dark-btn-bg);
+      border: 1px solid var(--dark-btn-bg);
     }
 
     /* Responsive adjustments */
@@ -233,9 +245,226 @@
         margin-right: 0;
       }
     }
+
+    /* Hero Section */
+    .hero {
+      background-color: var(--light-bg-alt);
+      color: var(--light-text);
+      transition: var(--transition);
+    }
+
+    body[data-theme="dark"] .hero {
+      background-color: var(--dark-bg-alt);
+      color: var(--dark-text);
+    }
+
+    /* Filters Section */
+    .filters-section {
+      background-color: var(--light-card-bg);
+      border: 1px solid var(--light-border);
+      border-radius: 8px;
+      padding: 1rem;
+      margin-bottom: 2rem;
+      transition: var(--transition);
+    }
+
+    body[data-theme="dark"] .filters-section {
+      background-color: var(--dark-card-bg);
+      border: 1px solid var(--dark-border);
+    }
+
+    /* Cars Grid Section */
+    .car-card {
+      background-color: var(--light-card-bg);
+      border: 1px solid var(--light-border);
+      border-radius: 8px;
+      padding: 1rem;
+      box-shadow: var(--light-shadow);
+      transition: var(--transition);
+      color: var(--light-text);
+    }
+
+    body[data-theme="dark"] .car-card {
+      background-color: var(--dark-card-bg);
+      border: 1px solid var(--dark-border);
+      box-shadow: var(--dark-shadow);
+      color: var(--dark-text);
+    }
+
+    /* Footer Section */
+    .footer {
+      background-color: var(--light-footer-bg);
+      color: var(--light-muted);
+      transition: var(--transition);
+    }
+
+    body[data-theme="dark"] .footer {
+      background-color: var(--dark-footer-bg);
+      color: var(--dark-muted);
+    }
+
+    /* Buttons */
+    .btn-outline {
+      color: var(--light-primary);
+      border-color: var(--light-primary);
+      transition: var(--transition);
+    }
+
+    .btn-outline:hover {
+      background-color: var(--light-primary);
+      color: var(--light-btn-text);
+    }
+
+    body[data-theme="dark"] .btn-outline {
+      color: var(--dark-primary);
+      border-color: var(--dark-primary);
+    }
+
+    body[data-theme="dark"] .btn-outline:hover {
+      background-color: var(--dark-primary);
+      color: var(--dark-btn-text);
+    }
+
+    /* Inputs and selects */
+    input, select {
+      background-color: var(--light-input-bg);
+      border: 1px solid var(--light-input-border);
+      color: var(--light-text);
+      padding: 0.375rem 0.75rem;
+      border-radius: 4px;
+      transition: var(--transition);
+    }
+
+    input::placeholder {
+      color: var(--light-muted);
+    }
+
+    body[data-theme="dark"] input, body[data-theme="dark"] select {
+      background-color: var(--dark-input-bg);
+      border: 1px solid var(--dark-input-border);
+      color: var(--dark-text);
+    }
+
+    body[data-theme="dark"] input::placeholder {
+      color: var(--dark-muted);
+    }
+
+    /* Hero Section Theme */
+    .hero {
+      background: linear-gradient(135deg, var(--light-hero-gradient)), url('https://images.unsplash.com/photo-1449965408869-eaa3f722e40d?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80') center/cover;
+    }
+
+    body[data-theme="dark"] .hero {
+      background: linear-gradient(135deg, var(--dark-hero-gradient)), url('https://images.unsplash.com/photo-1449965408869-eaa3f722e40d?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80') center/cover;
+    }
+
+    /* Footer Theme Styles */
+    .footer .brand-mark {
+      background: linear-gradient(135deg, var(--light-footer-accent), var(--light-primary));
+      color: var(--light-btn-text);
+    }
+
+    body[data-theme="dark"] .footer .brand-mark {
+      background: linear-gradient(135deg, var(--dark-footer-accent), var(--dark-primary));
+      color: var(--dark-btn-text);
+    }
+
+    .footer h3, .footer h4, .footer strong {
+      color: var(--light-footer-accent);
+    }
+
+    body[data-theme="dark"] .footer h3, body[data-theme="dark"] .footer h4, body[data-theme="dark"] .footer strong {
+      color: var(--dark-footer-accent);
+    }
+
+    .footer p, .footer a {
+      color: var(--light-footer-text);
+    }
+
+    body[data-theme="dark"] .footer p, body[data-theme="dark"] .footer a {
+      color: var(--dark-footer-text);
+    }
+
+    .footer .footer-bottom p {
+      color: var(--light-muted);
+      border-top: 1px solid var(--light-footer-border);
+    }
+
+    body[data-theme="dark"] .footer .footer-bottom p {
+      color: var(--dark-muted);
+      border-top: 1px solid var(--dark-footer-border);
+    }
+
+    /* No Cars Message */
+    .no-cars i {
+      color: var(--light-muted);
+    }
+
+    body[data-theme="dark"] .no-cars i {
+      color: var(--dark-muted);
+    }
+
+    .no-cars h3 {
+      color: var(--light-text);
+    }
+
+    body[data-theme="dark"] .no-cars h3 {
+      color: var(--dark-text);
+    }
+
+    .no-cars p {
+      color: var(--light-muted);
+    }
+
+    body[data-theme="dark"] .no-cars p {
+      color: var(--dark-muted);
+    }
+
+    /* Scroll to Top Button */
+    .scroll-to-top {
+      position: fixed;
+      bottom: 2rem;
+      right: 2rem;
+      width: 50px;
+      height: 50px;
+      background: var(--light-card-bg);
+      border: 2px solid var(--light-border);
+      border-radius: 50%;
+      color: var(--light-text);
+      cursor: pointer;
+      opacity: 0;
+      visibility: hidden;
+      transition: var(--transition);
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: var(--light-shadow);
+    }
+
+    .scroll-to-top.show {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .scroll-to-top:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+    }
+
+    body[data-theme="dark"] .scroll-to-top {
+      background: var(--dark-card-bg);
+      border: 2px solid var(--dark-border);
+      color: var(--dark-text);
+      box-shadow: var(--dark-shadow);
+    }
+
+    body[data-theme="dark"] .scroll-to-top:hover {
+      box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+    }
   </style>
 </head>
-<body>
+<body data-theme="dark">
   <!-- Header -->
   <header class="main-header">
     <nav class="navbar navbar-expand-lg">
@@ -253,9 +482,6 @@
           <ul class="navbar-nav ms-auto">
             <li class="nav-item">
               <a class="nav-link" href="index.html">Home</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link active" href="cars.html">Browse Cars</a>
             </li>
             <li class="nav-item">
               <a class="nav-link" href="book.html">Book</a>
@@ -298,159 +524,162 @@
     </nav>
   </header>
 
-  <main>
-    <!-- Enhanced Hero Section -->
-    <section class="hero section" style="background: linear-gradient(135deg, rgba(3, 218, 197, 0.15), rgba(1, 135, 134, 0.15)), url('https://images.unsplash.com/photo-1449965408869-eaa3f722e40d?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80') center/cover;">
-      <div class="hero-overlay"></div>
-      <div class="container hero-inner">
+  <!-- Hero Section -->
+  <section class="hero-section" id="home">
+    <div class="hero-bg">
+      <div class="floating-shape"></div>
+      <div class="floating-shape"></div>
+      <div class="floating-shape"></div>
+      <div class="floating-shape"></div>
+    </div>
+
+    <div class="container d-flex justify-content-center">
+      <div class="hero-content text-center">
         <span class="pill">Premium Fleet</span>
         <h1 class="hero-title">Discover Your Perfect Ride</h1>
-        <p class="hero-subtitle">Explore our curated collection of luxury and standard vehicles for your next journey in Lagos</p>
-        
-        <!-- Search Bar -->
-        <div class="search-container">
-          <div class="search-input">
-            <i class="fas fa-search"></i>
-            <input type="text" placeholder="Search cars by make, model, or type..." id="search-input">
-            <button class="btn btn-primary" id="search-btn">Search</button>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Filters Section -->
-    <section class="filters-section section">
-      <div class="container">
-        <div class="filters-header">
-          <h2>Filter & Sort</h2>
-          <button class="btn btn-ghost btn-sm" id="clear-filters">Clear All</button>
-        </div>
-        
-        <div class="filters-grid">
-          <div class="filter-group">
-            <label for="price-filter">Price Range</label>
-            <select id="price-filter" title="Filter by price range">
-              <option value="">All Prices</option>
-              <option value="0-20000">Under ₦20,000</option>
-              <option value="20000-40000">₦20,000 - ₦40,000</option>
-              <option value="40000-60000">₦40,000 - ₦60,000</option>
-              <option value="60000+">Over ₦60,000</option>
-            </select>
-          </div>
-          
-          <div class="filter-group">
-            <label for="type-filter">Car Type</label>
-            <select id="type-filter" title="Filter by car type">
-              <option value="">All Types</option>
-              <option value="sedan">Sedan</option>
-              <option value="suv">SUV</option>
-              <option value="luxury">Luxury</option>
-              <option value="sports">Sports</option>
-            </select>
-          </div>
-          
-          <div class="filter-group">
-            <label for="sort-filter">Sort By</label>
-            <select id="sort-filter" title="Sort cars by">
-              <option value="price-asc">Price: Low to High</option>
-              <option value="price-desc">Price: High to Low</option>
-              <option value="year-desc">Newest First</option>
-              <option value="name-asc">Name: A-Z</option>
-            </select>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Cars Grid Section -->
-    <section id="browse" class="section container" aria-labelledby="browse-heading">
-      <div class="section-header">
-        <h2 id="browse-heading">Available Cars</h2>
-        <div id="car-count" class="car-count">Loading available cars...</div>
-      </div>
-      
-      <div class="grid" id="cars-grid" aria-live="polite">
-        <!-- Skeleton loaders will be shown here initially -->
-        <div class="skeleton-card">
-          <div class="skeleton-media"></div>
-          <div class="skeleton" style="width: 70%; height: 20px;"></div>
-          <div class="skeleton" style="width: 50%; height: 16px;"></div>
-          <div class="skeleton" style="width: 60%; height: 24px;"></div>
-          <div class="skeleton" style="width: 100%; height: 40px;"></div>
-        </div>
-        <div class="skeleton-card">
-          <div class="skeleton-media"></div>
-          <div class="skeleton" style="width: 70%; height: 20px;"></div>
-          <div class="skeleton" style="width: 50%; height: 16px;"></div>
-          <div class="skeleton" style="width: 60%; height: 24px;"></div>
-          <div class="skeleton" style="width: 100%; height: 40px;"></div>
-        </div>
-        <div class="skeleton-card">
-          <div class="skeleton-media"></div>
-          <div class="skeleton" style="width: 70%; height: 20px;"></div>
-          <div class="skeleton" style="width: 50%; height: 16px;"></div>
-          <div class="skeleton" style="width: 60%; height: 24px;"></div>
-          <div class="skeleton" style="width: 100%; height: 40px;"></div>
-        </div>
-      </div>
-      
-      <!-- Load More Button -->
-      <div class="load-more-container">
-        <button class="btn btn-outline" id="load-more" style="display: none;">Load More Cars</button>
-      </div>
-    </section>
-  </main>
-
-  <footer id="contact" class="footer section">
-    <div class="container footer-inner">
-      <div class="footer-main">
-        <div class="footer-brand">
-          <div class="brand-footer">
-            <div class="brand-mark" style="width: 50px; height: 50px; background: linear-gradient(135deg, #03dac5, #018786); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 1.5rem; color: #0b0e11; margin-bottom: 1rem;">SC</div>
-            <h3 style="color: #03dac5; margin-bottom: 0.5rem;">Silas Car Rentals</h3>
-            <p style="color: #ccc; font-size: 0.9rem; line-height: 1.6; margin-bottom: 1rem;">
-              Premium car rental service offering luxury and standard vehicles for business and leisure travel across Nigeria.
-            </p>
-          </div>
-          <div class="contact-info">
-            <div style="margin-bottom: 0.8rem;">
-              <strong style="color: #03dac5;">📧 Email:</strong><br/>
-              <a href="mailto:silasonyekachi15@mail.com" style="color: #ccc; text-decoration: none;">silasonyekachi15@mail.com</a>
-            </div>
-            <div style="margin-bottom: 0.8rem;">
-              <strong style="color: #03dac5;">📞 Phone:</strong><br/>
-              <a href="tel:+2348107586167" style="color: #ccc; text-decoration: none;">+234 810 758 6167</a>
-            </div>
-            <div style="margin-bottom: 0.8rem;">
-              <strong style="color: #03dac5;">📍 Address:</strong><br/>
-              <span style="color: #ccc;">Ikeja, Lagos, Nigeria</span>
-            </div>
-          </div>
-        </div>
-        
-        <div class="footer-links">
-          <div class="footer-column">
-            <h4 style="color: #03dac5; margin-bottom: 1rem;">Quick Links</h4>
-            <a href="index.html" style="color: #ccc; text-decoration: none; display: block; margin-bottom: 0.5rem;">Home</a>
-            <a href="cars.html" style="color: #03dac5; text-decoration: none; display: block; margin-bottom: 0.5rem;">Browse Cars</a>
-            <a href="book.html" style="color: #ccc; text-decoration: none; display: block; margin-bottom: 0.5rem;">Book Now</a>
-            <a href="about.html" style="color: #ccc; text-decoration: none; display: block; margin-bottom: 0.5rem;">About Us</a>
-          </div>
-          
-          <div class="footer-column">
-            <h4 style="color: #03dac5; margin-bottom: 1rem;">Support</h4>
-            <a href="faq.html" style="color: #ccc; text-decoration: none; display: block; margin-bottom: 0.5rem;">FAQ</a>
-            <a href="contact.html" style="color: #ccc; text-decoration: none; display: block; margin-bottom: 0.5rem;">Contact</a>
-            <a href="terms.html" style="color: #ccc; text-decoration: none; display: block; margin-bottom: 0.5rem;">Terms of Service</a>
-            <a href="privacy.html" style="color: #ccc; text-decoration: none; display: block; margin-bottom: 0.5rem;">Privacy Policy</a>
-          </div>
-        </div>
-      </div>
-      
-      <div class="footer-bottom">
-        <p style="color: #666; text-align: center; margin: 0; padding: 1.5rem 0; border-top: 1px solid #333;">
-          © 2025 Silas Car Rentals. All rights reserved.
+        <p class="hero-subtitle">
+          Explore our curated collection of luxury and standard vehicles for your next journey in Lagos
         </p>
+
+        <!-- Search Bar -->
+        <div class="search-container" style="margin-top: 2rem;">
+          <div class="search-input" style="max-width: 500px; margin: 0 auto; background: rgba(255,255,255,0.95); border-radius: 50px; padding: 0.5rem 1rem; display: flex; align-items: center; gap: 0.5rem; box-shadow: 0 4px 20px rgba(0,0,0,0.1);">
+            <i class="fas fa-search" style="color: var(--light-primary);"></i>
+            <input type="text" placeholder="Search cars by make, model, or type..." id="search-input" style="border: none; background: transparent; flex: 1; outline: none; color: var(--light-text);">
+            <button class="btn btn-primary" id="search-btn" style="border-radius: 25px; padding: 0.5rem 1.5rem; background: var(--light-primary); border: none;">Search</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Filters Section -->
+  <section class="services-section" id="filters">
+    <div class="container">
+      <div class="filters-header" style="text-align: center; margin-bottom: 2rem;">
+        <h2 style="color: var(--light-text); margin-bottom: 1rem;">Filter & Sort</h2>
+        <button class="btn btn-outline" id="clear-filters" style="border-color: var(--light-primary); color: var(--light-primary);">Clear All</button>
+      </div>
+
+      <div class="filters-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem; margin-bottom: 2rem;">
+        <div class="filter-group" style="background: var(--light-card-bg); padding: 1.5rem; border-radius: 12px; box-shadow: var(--light-shadow);">
+          <label for="price-filter" style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: var(--light-text);">Price Range</label>
+          <select id="price-filter" title="Filter by price range" style="width: 100%; padding: 0.75rem; border: 2px solid var(--light-border); border-radius: 8px; background: var(--light-card-bg); color: var(--light-text);">
+            <option value="">All Prices</option>
+            <option value="0-20000">Under ₦20,000</option>
+            <option value="20000-40000">₦20,000 - ₦40,000</option>
+            <option value="40000-60000">₦40,000 - ₦60,000</option>
+            <option value="60000+">Over ₦60,000</option>
+          </select>
+        </div>
+
+        <div class="filter-group" style="background: var(--light-card-bg); padding: 1.5rem; border-radius: 12px; box-shadow: var(--light-shadow);">
+          <label for="type-filter" style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: var(--light-text);">Car Type</label>
+          <select id="type-filter" title="Filter by car type" style="width: 100%; padding: 0.75rem; border: 2px solid var(--light-border); border-radius: 8px; background: var(--light-card-bg); color: var(--light-text);">
+            <option value="">All Types</option>
+            <option value="sedan">Sedan</option>
+            <option value="suv">SUV</option>
+            <option value="luxury">Luxury</option>
+            <option value="sports">Sports</option>
+          </select>
+        </div>
+
+        <div class="filter-group" style="background: var(--light-card-bg); padding: 1.5rem; border-radius: 12px; box-shadow: var(--light-shadow);">
+          <label for="sort-filter" style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: var(--light-text);">Sort By</label>
+          <select id="sort-filter" title="Sort cars by" style="width: 100%; padding: 0.75rem; border: 2px solid var(--light-border); border-radius: 8px; background: var(--light-card-bg); color: var(--light-text);">
+            <option value="price-asc">Price: Low to High</option>
+            <option value="price-desc">Price: High to Low</option>
+            <option value="year-desc">Newest First</option>
+            <option value="name-asc">Name: A-Z</option>
+          </select>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Cars Collection Section -->
+  <section class="services-section" id="cars-collection">
+    <div class="container">
+      <h2 class="section-title">Available Cars</h2>
+      <p class="text-center mb-5" style="color: var(--light-muted); font-size: 1.1rem; max-width: 600px; margin: 0 auto;">
+        Choose from our carefully curated fleet of luxury and standard vehicles, all professionally maintained and ready for your journey.
+      </p>
+      <div id="car-count" class="car-count" style="text-align: center; margin-bottom: 2rem; color: var(--light-text); font-size: 1.1rem;">Loading available cars...</div>
+
+      <div class="services-grid" id="cars-grid" aria-live="polite">
+        <!-- Skeleton loaders will be shown here initially -->
+        <div class="skeleton-card" style="background: var(--light-card-bg); border-radius: 16px; padding: 2rem; box-shadow: var(--light-shadow);">
+          <div class="skeleton-media" style="height: 200px; background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%); background-size: 200% 100%; animation: loading 1.5s infinite; border-radius: 8px; margin-bottom: 1rem;"></div>
+          <div class="skeleton" style="width: 70%; height: 20px; background: #e0e0e0; border-radius: 4px; margin-bottom: 0.5rem;"></div>
+          <div class="skeleton" style="width: 50%; height: 16px; background: #e0e0e0; border-radius: 4px; margin-bottom: 0.5rem;"></div>
+          <div class="skeleton" style="width: 60%; height: 24px; background: #e0e0e0; border-radius: 4px; margin-bottom: 1rem;"></div>
+          <div class="skeleton" style="width: 100%; height: 40px; background: #e0e0e0; border-radius: 8px;"></div>
+        </div>
+        <div class="skeleton-card" style="background: var(--light-card-bg); border-radius: 16px; padding: 2rem; box-shadow: var(--light-shadow);">
+          <div class="skeleton-media" style="height: 200px; background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%); background-size: 200% 100%; animation: loading 1.5s infinite; border-radius: 8px; margin-bottom: 1rem;"></div>
+          <div class="skeleton" style="width: 70%; height: 20px; background: #e0e0e0; border-radius: 4px; margin-bottom: 0.5rem;"></div>
+          <div class="skeleton" style="width: 50%; height: 16px; background: #e0e0e0; border-radius: 4px; margin-bottom: 0.5rem;"></div>
+          <div class="skeleton" style="width: 60%; height: 24px; background: #e0e0e0; border-radius: 4px; margin-bottom: 1rem;"></div>
+          <div class="skeleton" style="width: 100%; height: 40px; background: #e0e0e0; border-radius: 8px;"></div>
+        </div>
+        <div class="skeleton-card" style="background: var(--light-card-bg); border-radius: 16px; padding: 2rem; box-shadow: var(--light-shadow);">
+          <div class="skeleton-media" style="height: 200px; background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%); background-size: 200% 100%; animation: loading 1.5s infinite; border-radius: 8px; margin-bottom: 1rem;"></div>
+          <div class="skeleton" style="width: 70%; height: 20px; background: #e0e0e0; border-radius: 4px; margin-bottom: 0.5rem;"></div>
+          <div class="skeleton" style="width: 50%; height: 16px; background: #e0e0e0; border-radius: 4px; margin-bottom: 0.5rem;"></div>
+          <div class="skeleton" style="width: 60%; height: 24px; background: #e0e0e0; border-radius: 4px; margin-bottom: 1rem;"></div>
+          <div class="skeleton" style="width: 100%; height: 40px; background: #e0e0e0; border-radius: 8px;"></div>
+        </div>
+      </div>
+
+      <!-- Load More Button -->
+      <div class="load-more-container" style="text-align: center; margin-top: 3rem;">
+        <button class="btn btn-outline" id="load-more" style="display: none; padding: 1rem 2rem; border-radius: 50px; border-color: var(--light-primary); color: var(--light-primary);">Load More Cars</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="main-footer">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-section">
+          <h3><i class="fas fa-car me-2"></i>Silas Car Rentals</h3>
+          <p>
+            Nigeria's premier car rental service offering luxury vehicles for business and leisure travel.
+            Experience comfort, reliability, and exceptional service.
+          </p>
+        </div>
+
+        <div class="footer-section">
+          <h3>Quick Links</h3>
+          <ul style="list-style: none; padding: 0;">
+            <li style="margin-bottom: 0.5rem;"><a href="index.html">Home</a></li>
+            <li style="margin-bottom: 0.5rem;"><a href="cars.html">Browse Cars</a></li>
+            <li style="margin-bottom: 0.5rem;"><a href="book.html">Book Now</a></li>
+            <li style="margin-bottom: 0.5rem;"><a href="about.html">About Us</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-section">
+          <h3>Contact Info</h3>
+          <p><i class="fas fa-phone me-2"></i>+234 810 758 6167</p>
+          <p><i class="fas fa-envelope me-2"></i>silasonyekachi15@gmail.com</p>
+          <p><i class="fas fa-map-marker-alt me-2"></i>Lagos, Nigeria</p>
+        </div>
+
+        <div class="footer-section">
+          <h3>Support</h3>
+          <ul style="list-style: none; padding: 0;">
+            <li style="margin-bottom: 0.5rem;"><a href="faq.html">FAQ</a></li>
+            <li style="margin-bottom: 0.5rem;"><a href="contact.html">Contact</a></li>
+            <li style="margin-bottom: 0.5rem;"><a href="terms.html">Terms of Service</a></li>
+            <li style="margin-bottom: 0.5rem;"><a href="privacy.html">Privacy Policy</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div style="text-align: center; padding-top: 2rem; border-top: 1px solid rgba(255,255,255,0.1);">
+        <p>&copy; <span id="year"></span> 2025 Silas Car Rentals. All rights reserved.</p>
       </div>
     </div>
   </footer>
@@ -469,8 +698,8 @@
     const themeToggle = document.getElementById('theme-toggle');
     const body = document.body;
 
-    // Check for saved theme preference or default to light mode
-    const currentTheme = localStorage.getItem('theme') || 'light';
+    // Check for saved theme preference or default to dark mode
+    const currentTheme = localStorage.getItem('theme') || 'dark';
     body.setAttribute('data-theme', currentTheme);
 
     // Update theme toggle icon based on current theme
@@ -643,13 +872,13 @@ function showToast(msg, ms = 3000) {
 function renderCars(cars) {
   const grid = document.getElementById("cars-grid");
   const count = document.getElementById("car-count");
-  
+
   if (cars.length === 0) {
     grid.innerHTML = `
-      <div class="no-cars" style="grid-column: 1 / -1; text-align: center; padding: 3rem;">
-        <i class="fas fa-car" style="font-size: 4rem; color: #666; margin-bottom: 1rem;"></i>
-        <h3 style="color: #ccc; margin-bottom: 1rem;">No cars found</h3>
-        <p style="color: #999;">Try adjusting your search or filter criteria.</p>
+      <div class="no-cars">
+        <i class="fas fa-car"></i>
+        <h3>No cars found</h3>
+        <p>Try adjusting your search or filter criteria.</p>
       </div>
     `;
     count.textContent = "No cars available";
@@ -657,16 +886,16 @@ function renderCars(cars) {
   }
 
   count.textContent = `${cars.length} car${cars.length !== 1 ? 's' : ''} available`;
-  
+
   grid.innerHTML = cars.map(car => `
     <div class="car-card" data-id="${car._id}">
-      <img src="${car.image || placeholderImage}" alt="${car.make} ${car.model}" loading="lazy" 
+      <img src="${car.image || placeholderImage}" alt="${car.make} ${car.model}" loading="lazy"
            style="width:100%; height:200px; object-fit: cover; border-radius:8px;">
       <h3>${car.make} ${car.model} (${car.year})</h3>
-      <p style="color: #666; font-size: 0.9rem;">${car.color} • ${car.type}</p>
+      <p class="car-meta">${car.color} • ${car.type}</p>
       <p><strong>₦${car.price.toLocaleString()}</strong> / day</p>
-      <p style="color: #999; font-size: 0.9rem; margin-bottom: 1rem;">${car.description}</p>
-      <div style="display:flex; gap:8px; flex-wrap:wrap; margin-top:10px;">
+      <p class="car-description">${car.description}</p>
+      <div class="car-actions">
         <button class="btn btn-outline" data-action="add-cart" data-id="${car._id}">Add to Cart</button>
         <button class="btn btn-outline" data-action="add-wishlist" data-id="${car._id}">Wishlist</button>
         <button class="btn btn-outline" data-action="add-saved" data-id="${car._id}">Save</button>
