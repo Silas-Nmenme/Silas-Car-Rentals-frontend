@@ -405,7 +405,7 @@ function addToCart(carName){
   updateCounts();
   addRecentRental(carName);
   pulseBadge("cart-count");
-  showToast(`${carName} added to cart ✅`);
+  showToast(`${carName} added to cart`);
 }
 
 // Toggle wishlist
@@ -414,11 +414,11 @@ function toggleWishlist(carName, btn){
   if(wishlist.includes(carName)){
     wishlist=wishlist.filter(c=>c!==carName);
     btn.classList.replace("text-danger","text-muted");
-    showToast(`${carName} removed from wishlist ❌`);
+    showToast(`${carName} removed from wishlist`);
   } else {
     wishlist.push(carName);
     btn.classList.replace("text-muted","text-danger");
-    showToast(`${carName} added to wishlist ❤️`);
+    showToast(`${carName} added to wishlist`);
     pulseBadge("wishlist-count");
   }
   localStorage.setItem("wishlist",JSON.stringify(wishlist));
@@ -431,11 +431,11 @@ function toggleSaved(carName, btn){
   if(saved.includes(carName)){
     saved=saved.filter(c=>c!==carName);
     btn.classList.replace("text-warning","text-muted");
-    showToast(`${carName} removed from saved ❌`);
+    showToast(`${carName} removed from saved`);
   } else {
     saved.push(carName);
     btn.classList.replace("text-muted","text-warning");
-    showToast(`${carName} saved 🔖`);
+    showToast(`${carName} saved`);
     pulseBadge("saved-count");
   }
   localStorage.setItem("savedCars",JSON.stringify(saved));
