@@ -1,0 +1,249 @@
+<!doctype html>
+<html lang="en" data-bs-theme="light">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Silas Car Rentals - Profile</title>
+
+  <!-- Bootstrap 5.3.2 -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Font Awesome -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"/>
+  <!-- Animate.css -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" rel="stylesheet"/>
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet"/>
+</head>
+<body style="font-family:'Inter',sans-serif;">
+
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm sticky-top">
+  <div class="container-fluid">
+    <a href="home.html" class="navbar-brand fw-bold text-success d-flex align-items-center">
+      <i class="fas fa-car me-2"></i>Silas Car Rentals
+    </a>
+    <button class="btn btn-outline-danger ms-auto" id="logout-button">
+      <i class="fas fa-sign-out-alt me-1"></i> Logout
+    </button>
+  </div>
+</nav>
+
+<div class="container py-5">
+  <div class="row justify-content-center">
+    <div class="col-lg-8">
+      <!-- Profile Card -->
+      <div class="card shadow-sm border-0">
+        <div class="card-body p-4">
+          <div class="d-flex align-items-center mb-4">
+            <div id="profile-avatar" class="rounded-circle d-flex align-items-center justify-content-center bg-success text-white fw-bold me-3"
+                 style="width:90px; height:90px; font-size:1.5rem; overflow:hidden; position:relative;">
+              <!-- Avatar or initials -->
+            </div>
+            <div>
+              <h4 id="profile-name" class="fw-bold mb-0">User</h4>
+              <p id="profile-email" class="text-muted mb-1">email@example.com</p>
+              <small id="profile-status" class="badge bg-success">Verified</small>
+            </div>
+          </div>
+
+          <!-- Upload Profile Picture -->
+          <form id="upload-form" class="mb-4">
+            <label class="form-label fw-bold">Profile Picture</label>
+            <input type="file" class="form-control mb-2" id="profilePicture" name="profilePicture" accept="image/*">
+            <div class="d-flex gap-2">
+              <button type="submit" class="btn btn-success btn-sm">
+                <i class="fas fa-upload me-1"></i> Upload
+              </button>
+              <button type="button" id="delete-picture" class="btn btn-outline-danger btn-sm">
+                <i class="fas fa-trash me-1"></i> Delete
+              </button>
+            </div>
+          </form>
+
+          <!-- Update Profile -->
+          <form id="update-form">
+            <div class="mb-3">
+              <label class="form-label fw-bold">Full Name</label>
+              <input type="text" class="form-control" id="name" placeholder="Enter your full name">
+            </div>
+            <div class="mb-3">
+              <label class="form-label fw-bold">Email</label>
+              <input type="email" class="form-control" id="email" placeholder="Enter your email address">
+            </div>
+            <button type="submit" class="btn btn-success w-100">
+              <i class="fas fa-save me-1"></i> Update Profile
+            </button>
+          </form>
+        </div>
+      </div>
+
+      <!-- Toast -->
+      <div class="toast position-fixed bottom-0 end-0 m-3" id="toast">
+        <div class="toast-body"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Footer -->
+<footer class="bg-dark text-light text-center py-3">&copy; 2025 Silas Car Rentals. All Rights Reserved.</footer>
+
+<!-- JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+const API_BASE = "https://techyjaunt-auth-go43.onrender.com/api/users";
+const token = localStorage.getItem("token"); // JWT stored after login
+
+function showToast(msg, type="success") {
+  const toast = document.getElementById("toast");
+  toast.querySelector(".toast-body").textContent = msg;
+  toast.className = "toast position-fixed bottom-0 end-0 m-3"; // reset classes
+  toast.classList.add(type==="error"?"bg-danger":"bg-success","text-white");
+  new bootstrap.Toast(toast).show();
+}
+
+// Load Profile
+async function loadProfile() {
+  if (!token) {
+    showToast("Please log in to access your profile", "error");
+    setTimeout(() => window.location.href = "login.html", 1500);
+    return;
+  }
+
+  try {
+    const res = await fetch(`${API_BASE}/profile`, {
+      headers: { Authorization: `Bearer ${token}` },
+      credentials: "include"
+    });
+
+    if (res.status === 401) {
+      localStorage.clear();
+      showToast("Session expired. Please log in again.", "error");
+      setTimeout(() => window.location.href = "login.html", 1500);
+      return;
+    }
+
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.message || "Failed to fetch profile");
+
+    const user = data.user;
+    localStorage.setItem("user", JSON.stringify(user));
+
+    document.getElementById("profile-name").textContent = user.name;
+    document.getElementById("profile-email").textContent = user.email;
+    document.getElementById("profile-status").textContent = user.isVerified ? "Verified" : "Unverified";
+    document.getElementById("profile-status").className = user.isVerified ? "badge bg-success" : "badge bg-warning";
+
+    document.getElementById("name").value = user.name;
+    document.getElementById("email").value = user.email;
+
+    renderAvatar(user);
+  } catch (err) {
+    showToast(err.message, "error");
+  }
+}
+
+// Render avatar
+function renderAvatar(user) {
+  const avatarDiv = document.getElementById("profile-avatar");
+  avatarDiv.innerHTML = "";
+  if (user.profilePicture?.url) {
+    avatarDiv.innerHTML = `<img src="${user.profilePicture.url}" style="width:100%;height:100%;object-fit:cover;">`;
+  } else {
+    const initials = user.name.split(" ").map(n=>n[0]).join("").substring(0,2).toUpperCase();
+    avatarDiv.textContent = initials;
+  }
+}
+
+// Update Profile
+document.getElementById("update-form").addEventListener("submit", async e=>{
+  e.preventDefault();
+  const name = document.getElementById("name").value.trim();
+  const email = document.getElementById("email").value.trim();
+
+  try {
+    const res = await fetch(`${API_BASE}/profile`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`
+      },
+      body: JSON.stringify({ name, email }),
+      credentials: "include"
+    });
+
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.message || "Update failed");
+    showToast(data.message);
+    loadProfile();
+  } catch (err) {
+    showToast(err.message, "error");
+  }
+});
+
+// Upload Picture
+document.getElementById("upload-form").addEventListener("submit", async e=>{
+  e.preventDefault();
+  const file = document.getElementById("profilePicture").files[0];
+  if (!file) return showToast("Please select a file","error");
+
+  const formData = new FormData();
+  formData.append("profilePicture", file);
+
+  try {
+    const res = await fetch(`${API_BASE}/profile/picture`, {
+      method: "POST",
+      headers: { Authorization: `Bearer ${token}` },
+      body: formData,
+      credentials: "include"
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.message || "Upload failed");
+    showToast(data.message);
+    loadProfile();
+  } catch (err) {
+    showToast(err.message,"error");
+  }
+});
+
+// Live preview before upload
+document.getElementById("profilePicture").addEventListener("change", e=>{
+  const file = e.target.files[0];
+  if (file) {
+    const reader = new FileReader();
+    reader.onload = ev=>{
+      document.getElementById("profile-avatar").innerHTML =
+        `<img src="${ev.target.result}" style="width:100%;height:100%;object-fit:cover;">`;
+    };
+    reader.readAsDataURL(file);
+  }
+});
+
+// Delete Picture
+document.getElementById("delete-picture").addEventListener("click", async ()=>{
+  try {
+    const res = await fetch(`${API_BASE}/profile/picture`, {
+      method: "DELETE",
+      headers: { Authorization: `Bearer ${token}` },
+      credentials: "include"
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.message || "Delete failed");
+    showToast(data.message);
+    loadProfile();
+  } catch (err) {
+    showToast(err.message,"error");
+  }
+});
+
+// Logout
+document.getElementById("logout-button").addEventListener("click", ()=>{
+  localStorage.clear();
+  window.location="login.html";
+});
+
+// Init
+loadProfile();
+</script>
+</body>
+</html>

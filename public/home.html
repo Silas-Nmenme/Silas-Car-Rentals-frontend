@@ -101,7 +101,7 @@
       <div class="mb-4 animate__animated animate__fadeIn d-flex align-items-center gap-3">
         <div id="welcome-avatar" class="rounded-circle border d-flex align-items-center justify-content-center bg-success text-white fw-bold" style="width:60px; height:60px; font-size:1.2rem;"></div>
         <div>
-          <h2 class="fw-bold mb-1"> Hello <span id="welcome-user"> Hello ${name}</span> 👋</h2>
+          <h2 class="fw-bold mb-1"> Hello <span id="welcome-user"></span> 👋</h2>
           <p class="text-muted">Welcome to your professional dashboard. Manage your rentals and discover new cars.</p>
         </div>
       </div>
@@ -139,6 +139,8 @@
 <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 <script>
 AOS.init();
+
+const API_BASE = "https://techyjaunt-auth-go43.onrender.com/api/users";
 
 const get=(k)=>JSON.parse(localStorage.getItem(k))||[];
 
@@ -304,11 +306,27 @@ function updateCounts(){
 }
 
   // Personalized welcome with avatar + initials
-  document.addEventListener("DOMContentLoaded", () => {
-    const userJson = localStorage.getItem("user");
-    if (!userJson) return window.location = "login.html";
+ document.addEventListener("DOMContentLoaded", async () => {
+  let userJson = localStorage.getItem("user");
+  if (!token || !userJson) {
+    window.location = "login.html";
+    return;
+    }
 
     let user = JSON.parse(userJson);
+
+    // Fetch latest profile
+    try {
+      const res = await fetch(`${API_BASE}/profile`, {credentials: "include"});
+      if (res.ok) {
+        const data = await res.json();
+        user = data.user;
+        localStorage.setItem("user", JSON.stringify(user));
+      }
+    } catch (err) {
+      console.error("Failed to fetch profile:", err);
+    }
+
     let fullName = user?.name?.trim() || user?.email?.split("@")[0] || "User";
     let firstName = fullName.split(" ")[0]; // First word only
     let initials = fullName.split(" ")
@@ -324,15 +342,16 @@ function updateCounts(){
     document.getElementById("welcome-user").textContent = firstName;
 
     // Avatar handling (image or initials fallback)
-    if (user?.avatar) {
-      document.getElementById("nav-avatar").innerHTML =
-        `<img src="${user.avatar}" class="rounded-circle" style="width:32px;height:32px;object-fit:cover;">`;
-      document.getElementById("welcome-avatar").innerHTML =
-        `<img src="${user.avatar}" class="rounded-circle border" style="width:60px;height:60px;object-fit:cover;">`;
-    } else {
-      document.getElementById("nav-avatar").textContent = initials;
-      document.getElementById("welcome-avatar").textContent = initials;
-    }
+   const avatarUrl = user?.profilePicture?.url || user?.avatar || null;
+  if (avatarUrl) {
+    document.getElementById("nav-avatar").innerHTML =
+      `<img src="${avatarUrl}" class="rounded-circle" style="width:32px;height:32px;object-fit:cover;">`;
+    document.getElementById("welcome-avatar").innerHTML =
+      `<img src="${avatarUrl}" class="rounded-circle border" style="width:60px;height:60px;object-fit:cover;">`;
+  } else {
+    document.getElementById("nav-avatar").textContent = initials;
+    document.getElementById("welcome-avatar").textContent = initials;
+  }
 
     renderSidebar();
     renderRecommendedCars();
