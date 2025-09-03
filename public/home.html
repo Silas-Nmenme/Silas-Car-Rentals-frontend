@@ -166,6 +166,24 @@
         min-width: 2rem;
       }
     }
+
+    /* Search bar filters layout */
+    .search-bar-filters {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    @media (max-width: 768px) {
+      .search-bar-filters {
+        flex-direction: column;
+        align-items: stretch;
+      }
+      .search-bar-filters input,
+      .search-bar-filters select {
+        flex: 1;
+      }
+    }
   </style>
 </head>
 <body style="font-family:'Inter',sans-serif;">
@@ -704,18 +722,18 @@ const cars = [
 ];
 
 // Render Recommended Cars
-function renderRecommendedCars() {
+function renderRecommendedCars(filteredCars = cars) {
   const container=document.getElementById("recommended-cars");
   container.innerHTML="";
-  if(!cars.length){
-    container.innerHTML="<p class='text-muted'>No cars available right now.</p>";
+  if(!filteredCars.length){
+    container.innerHTML="<p class='text-muted'>No cars match your search criteria.</p>";
     return;
   }
 
   let wishlist=get("wishlist");
   let savedCars=get("savedCars");
 
-  cars.forEach((car,i)=>{
+  filteredCars.forEach((car,i)=>{
     const badge=car.available?`<span class="badge bg-success">Available</span>`:`<span class="badge bg-warning">Limited</span>`;
     const tags=car.tags.map(t=>`<span class="badge bg-light text-dark me-1">${t}</span>`).join("");
     const wishActive=wishlist.includes(car.name)?"text-danger":"text-muted";
@@ -747,6 +765,43 @@ function renderRecommendedCars() {
         </div>
       </div>`;
   });
+}
+
+// Search and Filter Cars
+function searchCars() {
+  const searchInput = document.getElementById("search-input").value.toLowerCase().trim();
+  const priceFilter = document.getElementById("price-filter").value;
+  const typeFilter = document.getElementById("type-filter").value;
+  const locationFilter = document.getElementById("location-filter").value;
+
+  let filteredCars = cars.filter(car => {
+    // Search by name or tags
+    const matchesSearch = !searchInput ||
+      car.name.toLowerCase().includes(searchInput) ||
+      car.tags.some(tag => tag.toLowerCase().includes(searchInput));
+
+    // Price filter
+    let matchesPrice = true;
+    if (priceFilter) {
+      const [min, max] = priceFilter.split('-').map(p => parseInt(p));
+      if (max) {
+        matchesPrice = car.price >= min && car.price <= max;
+      } else {
+        matchesPrice = car.price >= min;
+      }
+    }
+
+    // Type filter
+    const matchesType = !typeFilter ||
+      car.tags.some(tag => tag.toLowerCase().includes(typeFilter.toLowerCase()));
+
+    // Location filter (assuming all cars are available in all locations for now)
+    const matchesLocation = !locationFilter || true;
+
+    return matchesSearch && matchesPrice && matchesType && matchesLocation;
+  });
+
+  renderRecommendedCars(filteredCars);
 }
 
 // Add to cart
@@ -889,6 +944,9 @@ function updateCounts(){
     renderRecommendedCars();
     renderRecentRentals();
     updateCounts();
+
+    // Add event listener for search button
+    document.getElementById("search-btn").addEventListener("click", searchCars);
   });
 
 
