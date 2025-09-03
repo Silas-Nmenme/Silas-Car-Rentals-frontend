@@ -33,7 +33,7 @@
   top: 0;
   left: 0;
   right: 0;
-  z-index: 1000;
+  z-index: 1030;
   transition: var(--transition);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
@@ -60,14 +60,15 @@ body[data-bs-theme="dark"] .main-header.scrolled {
   color: white;
   text-decoration: none;
   font-weight: 700;
-  font-size: 1.5rem;
+  font-size: 1.75rem;
   transition: var(--transition);
-  text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  text-shadow: 0 2px 4px rgba(0,0,0,0.15);
+  letter-spacing: 0.05em;
 }
 
 .brand:hover {
-  transform: scale(1.05) rotate(1deg);
-  text-shadow: 0 4px 8px rgba(0,0,0,0.2);
+  transform: scale(1.1) rotate(1deg);
+  text-shadow: 0 4px 8px rgba(0,0,0,0.3);
 }
 
 .nav-link {
@@ -78,6 +79,7 @@ body[data-bs-theme="dark"] .main-header.scrolled {
   border-radius: 6px;
   position: relative;
   overflow: hidden;
+  font-size: 1rem;
 }
 
 .nav-link::before {
@@ -87,8 +89,9 @@ body[data-bs-theme="dark"] .main-header.scrolled {
   left: -100%;
   width: 100%;
   height: 100%;
-  background: rgba(255,255,255,0.1);
+  background: rgba(255,255,255,0.15);
   transition: left 0.3s ease;
+  border-radius: 6px;
 }
 
 .nav-link:hover::before,
@@ -100,23 +103,25 @@ body[data-bs-theme="dark"] .main-header.scrolled {
 .nav-link.active {
   color: white !important;
   transform: translateY(-2px);
+  box-shadow: 0 2px 8px rgba(255,255,255,0.3);
 }
 
 .theme-toggle {
-  background: rgba(255,255,255,0.1);
-  border: 2px solid rgba(255,255,255,0.2);
+  background: rgba(255,255,255,0.15);
+  border: 2px solid rgba(255,255,255,0.3);
   color: white;
   padding: 0.5rem;
   border-radius: 50%;
   cursor: pointer;
   transition: var(--transition);
-  width: 40px;
-  height: 40px;
+  width: 44px;
+  height: 44px;
   display: flex;
   align-items: center;
   justify-content: center;
   position: relative;
   overflow: hidden;
+  box-shadow: 0 0 8px rgba(255,255,255,0.2);
 }
 
 .theme-toggle::before {
@@ -126,7 +131,7 @@ body[data-bs-theme="dark"] .main-header.scrolled {
   left: 50%;
   width: 0;
   height: 0;
-  background: rgba(255,255,255,0.2);
+  background: rgba(255,255,255,0.25);
   border-radius: 50%;
   transition: width 0.3s ease, height 0.3s ease;
   transform: translate(-50%, -50%);
@@ -138,6 +143,49 @@ body[data-bs-theme="dark"] .main-header.scrolled {
 }
 
 .theme-toggle:hover {
-  transform: scale(1.1) rotate(180deg);
-  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+  transform: scale(1.15) rotate(180deg);
+  box-shadow: 0 6px 16px rgba(255,255,255,0.4);
+}
+
+/* Additional header button styles */
+.btn-outline-success {
+  border-color: rgba(255,255,255,0.7);
+  color: white;
+  transition: var(--transition);
+}
+
+.btn-outline-success:hover {
+  background-color: rgba(255,255,255,0.15);
+  border-color: white;
+  color: white;
+  box-shadow: 0 0 8px rgba(255,255,255,0.5);
+}
+
+/* Dropdown menu overrides */
+.dropdown-menu {
+  border-radius: 8px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+  font-size: 0.9rem;
+  min-width: 180px;
+}
+
+/* Navbar toggler icon color */
+.navbar-toggler-icon {
+  filter: invert(1) brightness(1.2);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .brand {
+    font-size: 1.4rem;
+  }
+  .nav-link {
+    font-size: 0.9rem;
+    padding: 0.4rem 0.75rem !important;
+  }
+  .theme-toggle {
+    width: 36px;
+    height: 36px;
+    padding: 0.4rem;
+  }
 }
