@@ -1,6 +1,3 @@
-use the code below to revamp aand make the perfect home page @/public/home.html 
-and a perfect header @/public/header.css 
-
 <!doctype html>
 <html lang="en" data-bs-theme="light">
 <head>
@@ -282,17 +279,377 @@ and a perfect header @/public/header.css
         </div>
       </div>
 
-      <!-- Quick Stats -->
-      <div class="row g-3 mb-4" data-aos="fade-up">
-        <div class="col-md-4"><div class="card text-center p-3 shadow-sm"><i class="fas fa-shopping-cart text-success fa-2x mb-2"></i><h6>Cart</h6><p id="stat-cart">0 items</p></div></div>
-        <div class="col-md-4"><div class="card text-center p-3 shadow-sm"><i class="fas fa-heart text-danger fa-2x mb-2"></i><h6>Wishlist</h6><p id="stat-wishlist">0 items</p></div></div>
-        <div class="col-md-4"><div class="card text-center p-3 shadow-sm"><i class="fas fa-bookmark text-warning fa-2x mb-2"></i><h6>Saved Cars</h6><p id="stat-saved">0 items</p></div></div>
+      <!-- Search Bar for Cars -->
+      <div class="search-bar-card mb-4" data-aos="fade-up">
+        <h5 class="fw-bold mb-3">Search & Filter Cars</h5>
+        <div class="search-bar-filters">
+          <input type="text" id="search-input" class="form-control" placeholder="Search by make, model, or type..." style="flex: 2;" aria-label="Search cars">
+          <select id="price-filter" class="form-select" aria-label="Filter by price">
+            <option value="">All Prices</option>
+            <option value="0-20000">Under ₦20,000</option>
+            <option value="20000-40000">₦20,000 - ₦40,000</option>
+            <option value="40000-60000">₦40,000 - ₦60,000</option>
+            <option value="60000+">Over ₦60,000</option>
+          </select>
+          <select id="type-filter" class="form-select" aria-label="Filter by type">
+            <option value="">All Types</option>
+            <option value="sedan">Sedan</option>
+            <option value="suv">SUV</option>
+            <option value="luxury">Luxury</option>
+            <option value="sports">Sports</option>
+          </select>
+          <select id="location-filter" class="form-select" aria-label="Filter by location">
+            <option value="">All Locations</option>
+            <option value="lagos">Lagos</option>
+            <option value="abuja">Abuja</option>
+            <option value="port-harcourt">Port Harcourt</option>
+          </select>
+          <button class="btn btn-success" id="search-btn"><i class="fas fa-search me-2"></i>Search</button>
+        </div>
       </div>
+
+      <!-- Promotional Banners/Deals Section -->
+      <div class="mb-4" data-aos="fade-up">
+        <div id="promo-carousel" class="carousel slide" data-bs-ride="carousel">
+          <div class="carousel-inner">
+            <div class="carousel-item active">
+              <div class="card text-white bg-primary">
+                <div class="card-body text-center">
+                  <h5 class="card-title">🔥 20% Off Luxury Rentals!</h5>
+                  <p class="card-text">Book now and save on premium vehicles this week.</p>
+                  <a href="cars.html" class="btn btn-light">Browse Deals</a>
+                </div>
+              </div>
+            </div>
+            <div class="carousel-item">
+              <div class="card text-white bg-success">
+                <div class="card-body text-center">
+                  <h5 class="card-title">🚗 New BMW X5 Added!</h5>
+                  <p class="card-text">Experience luxury on wheels with our latest addition.</p>
+                  <a href="cars.html" class="btn btn-light">View Car</a>
+                </div>
+              </div>
+            </div>
+            <div class="carousel-item">
+              <div class="card text-white bg-warning">
+                <div class="card-body text-center">
+                  <h5 class="card-title">🎁 Loyalty Rewards!</h5>
+                  <p class="card-text">Earn points on every rental and redeem for free days.</p>
+                  <a href="#loyalty" class="btn btn-dark">Learn More</a>
+                </div>
+              </div>
+            </div>
+          </div>
+          <button class="carousel-control-prev" type="button" data-bs-target="#promo-carousel" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+          </button>
+          <button class="carousel-control-next" type="button" data-bs-target="#promo-carousel" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Enhanced Stats Dashboard -->
+      <div class="row g-3 mb-4" data-aos="fade-up">
+        <div class="col-md-3"><div class="card text-center p-3 shadow-sm"><i class="fas fa-shopping-cart text-success fa-2x mb-2"></i><h6>Cart</h6><p id="stat-cart">0 items</p></div></div>
+        <div class="col-md-3"><div class="card text-center p-3 shadow-sm"><i class="fas fa-heart text-danger fa-2x mb-2"></i><h6>Wishlist</h6><p id="stat-wishlist">0 items</p></div></div>
+        <div class="col-md-3"><div class="card text-center p-3 shadow-sm"><i class="fas fa-bookmark text-warning fa-2x mb-2"></i><h6>Saved Cars</h6><p id="stat-saved">0 items</p></div></div>
+        <div class="col-md-3"><div class="card text-center p-3 shadow-sm"><i class="fas fa-coins text-warning fa-2x mb-2"></i><h6>Loyalty Points</h6><p id="stat-points">0 pts</p></div></div>
+      </div>
+
+      <!-- Quick Booking Widget -->
+      <div class="quick-booking-card mb-4" data-aos="fade-up">
+        <h5 class="fw-bold mb-3">Quick Booking</h5>
+        <div class="row g-3">
+          <div class="col-md-6">
+            <label for="pickup-date" class="form-label">Pickup Date</label>
+            <input type="date" id="pickup-date" class="form-control">
+          </div>
+          <div class="col-md-6">
+            <label for="return-date" class="form-label">Return Date</label>
+            <input type="date" id="return-date" class="form-control">
+          </div>
+          <div class="col-md-6">
+            <label for="location-select" class="form-label">Location</label>
+            <select id="location-select" class="form-select">
+              <option value="lagos">Lagos</option>
+              <option value="abuja">Abuja</option>
+              <option value="port-harcourt">Port Harcourt</option>
+            </select>
+          </div>
+          <div class="col-md-6 d-flex align-items-end">
+            <button class="btn btn-primary w-100" id="quick-book-btn">Book Now</button>
+          </div>
+        </div>
+      </div>
+
+
 
       <!-- Recommended -->
       <div class="mb-4" data-aos="fade-up">
         <h5 class="fw-bold section-title">Recommended for You</h5>
         <div class="row g-3" id="recommended-cars"></div>
+      </div>
+
+      <!-- Testimonials -->
+      <div class="mb-4" data-aos="fade-up">
+        <h5 class="fw-bold section-title">What Our Customers Say</h5>
+        <div class="row g-3">
+          <div class="col-md-4">
+            <div class="card h-100 shadow-sm">
+              <div class="card-body text-center">
+                <div class="mb-3">
+                  <i class="fas fa-star text-warning"></i>
+                  <i class="fas fa-star text-warning"></i>
+                  <i class="fas fa-star text-warning"></i>
+                  <i class="fas fa-star text-warning"></i>
+                  <i class="fas fa-star text-warning"></i>
+                </div>
+                <p class="card-text">"Excellent service! The car was in perfect condition and the booking process was seamless."</p>
+                <h6 class="card-title fw-bold">John Doe</h6>
+                <small class="text-muted">Lagos, Nigeria</small>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="card h-100 shadow-sm">
+              <div class="card-body text-center">
+                <div class="mb-3">
+                  <i class="fas fa-star text-warning"></i>
+                  <i class="fas fa-star text-warning"></i>
+                  <i class="fas fa-star text-warning"></i>
+                  <i class="fas fa-star text-warning"></i>
+                  <i class="fas fa-star-half-alt text-warning"></i>
+                </div>
+                <p class="card-text">"Great variety of cars and competitive prices. Will definitely rent again!"</p>
+                <h6 class="card-title fw-bold">Jane Smith</h6>
+                <small class="text-muted">Abuja, Nigeria</small>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="card h-100 shadow-sm">
+              <div class="card-body text-center">
+                <div class="mb-3">
+                  <i class="fas fa-star text-warning"></i>
+                  <i class="fas fa-star text-warning"></i>
+                  <i class="fas fa-star text-warning"></i>
+                  <i class="fas fa-star text-warning"></i>
+                  <i class="fas fa-star text-warning"></i>
+                </div>
+                <p class="card-text">"Professional staff and well-maintained vehicles. Highly recommended!"</p>
+                <h6 class="card-title fw-bold">Mike Johnson</h6>
+                <small class="text-muted">Port Harcourt, Nigeria</small>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Activity Feed -->
+      <div class="mb-4" data-aos="fade-up">
+        <h5 class="fw-bold section-title">Recent Activity</h5>
+        <div class="card">
+          <div class="card-body">
+            <div class="activity-item d-flex align-items-center mb-3">
+              <div class="activity-icon bg-success text-white rounded-circle d-flex align-items-center justify-content-center me-3" style="width:40px; height:40px;">
+                <i class="fas fa-car"></i>
+              </div>
+              <div>
+                <p class="mb-0 fw-bold">New BMW X5 added to fleet</p>
+                <small class="text-muted">2 hours ago</small>
+              </div>
+            </div>
+            <div class="activity-item d-flex align-items-center mb-3">
+              <div class="activity-icon bg-primary text-white rounded-circle d-flex align-items-center justify-content-center me-3" style="width:40px; height:40px;">
+                <i class="fas fa-user"></i>
+              </div>
+              <div>
+                <p class="mb-0 fw-bold">John Doe completed a rental</p>
+                <small class="text-muted">5 hours ago</small>
+              </div>
+            </div>
+            <div class="activity-item d-flex align-items-center">
+              <div class="activity-icon bg-warning text-white rounded-circle d-flex align-items-center justify-content-center me-3" style="width:40px; height:40px;">
+                <i class="fas fa-gift"></i>
+              </div>
+              <div>
+                <p class="mb-0 fw-bold">New loyalty program launched</p>
+                <small class="text-muted">1 day ago</small>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- FAQ -->
+      <div class="mb-4" data-aos="fade-up">
+        <h5 class="fw-bold section-title">Frequently Asked Questions</h5>
+        <div class="accordion" id="faqAccordion">
+          <div class="accordion-item">
+            <h2 class="accordion-header">
+              <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#faq1" aria-expanded="true" aria-controls="faq1">
+                How do I book a car?
+              </button>
+            </h2>
+            <div id="faq1" class="accordion-collapse collapse show" data-bs-parent="#faqAccordion">
+              <div class="accordion-body">
+                You can book a car by selecting your preferred vehicle, choosing pickup and return dates, and completing the booking form. Payment is processed securely online.
+              </div>
+            </div>
+          </div>
+          <div class="accordion-item">
+            <h2 class="accordion-header">
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq2" aria-expanded="false" aria-controls="faq2">
+                What documents do I need to rent a car?
+              </button>
+            </h2>
+            <div id="faq2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+              <div class="accordion-body">
+                You'll need a valid driver's license, international driving permit (if applicable), and a credit card for the security deposit.
+              </div>
+            </div>
+          </div>
+          <div class="accordion-item">
+            <h2 class="accordion-header">
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq3" aria-expanded="false" aria-controls="faq3">
+                Is there a minimum age requirement?
+              </button>
+            </h2>
+            <div id="faq3" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+              <div class="accordion-body">
+                Yes, you must be at least 21 years old to rent a car. Additional fees may apply for drivers under 25.
+              </div>
+            </div>
+          </div>
+          <div class="accordion-item">
+            <h2 class="accordion-header">
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq4" aria-expanded="false" aria-controls="faq4">
+                What is your cancellation policy?
+              </button>
+            </h2>
+            <div id="faq4" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+              <div class="accordion-body">
+                Free cancellation up to 24 hours before pickup. Cancellations within 24 hours may incur a fee.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Newsletter -->
+      <div class="mb-4" data-aos="fade-up">
+        <div class="card bg-primary text-white">
+          <div class="card-body text-center">
+            <h5 class="card-title">Stay Updated</h5>
+            <p class="card-text">Subscribe to our newsletter for the latest deals and updates.</p>
+            <div class="row justify-content-center">
+              <div class="col-md-6">
+                <div class="input-group">
+                  <input type="email" class="form-control" placeholder="Enter your email" aria-label="Email for newsletter">
+                  <button class="btn btn-light" type="button">Subscribe</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Social Media -->
+      <div class="mb-4" data-aos="fade-up">
+        <h5 class="fw-bold section-title">Follow Us</h5>
+        <div class="d-flex justify-content-center gap-3">
+          <a href="#" class="btn btn-outline-primary btn-lg"><i class="fab fa-facebook-f"></i></a>
+          <a href="#" class="btn btn-outline-info btn-lg"><i class="fab fa-twitter"></i></a>
+          <a href="#" class="btn btn-outline-danger btn-lg"><i class="fab fa-instagram"></i></a>
+          <a href="#" class="btn btn-outline-primary btn-lg"><i class="fab fa-linkedin-in"></i></a>
+        </div>
+      </div>
+
+      <!-- Map -->
+      <div class="mb-4" data-aos="fade-up">
+        <h5 class="fw-bold section-title">Our Locations</h5>
+        <div class="card">
+          <div class="card-body">
+            <div class="row">
+              <div class="col-md-4">
+                <h6>Lagos</h6>
+                <p>123 Victoria Island, Lagos<br>Phone: +234 123 456 7890</p>
+              </div>
+              <div class="col-md-4">
+                <h6>Abuja</h6>
+                <p>456 Wuse II, Abuja<br>Phone: +234 123 456 7891</p>
+              </div>
+              <div class="col-md-4">
+                <h6>Port Harcourt</h6>
+                <p>789 GRA Phase 2, Port Harcourt<br>Phone: +234 123 456 7892</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Contact Widget -->
+      <div class="mb-4" data-aos="fade-up">
+        <h5 class="fw-bold section-title">Contact Us</h5>
+        <div class="row">
+          <div class="col-md-6">
+            <div class="card">
+              <div class="card-body">
+                <h6>Quick Contact</h6>
+                <p><i class="fas fa-phone me-2"></i>+234 123 456 7890</p>
+                <p><i class="fas fa-envelope me-2"></i>info@silascar.com</p>
+                <p><i class="fas fa-clock me-2"></i>Mon-Fri: 8AM-6PM</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="card">
+              <div class="card-body">
+                <h6>Send Message</h6>
+                <form>
+                  <div class="mb-3">
+                    <input type="text" class="form-control" placeholder="Your Name">
+                  </div>
+                  <div class="mb-3">
+                    <input type="email" class="form-control" placeholder="Your Email">
+                  </div>
+                  <div class="mb-3">
+                    <textarea class="form-control" rows="3" placeholder="Your Message"></textarea>
+                  </div>
+                  <button type="submit" class="btn btn-primary">Send</button>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Loyalty Program -->
+      <div class="mb-4" data-aos="fade-up">
+        <h5 class="fw-bold section-title">Loyalty Program</h5>
+        <div class="card">
+          <div class="card-body">
+            <div class="row align-items-center">
+              <div class="col-md-8">
+                <h6>Earn Points on Every Rental</h6>
+                <p>Earn 1 point for every ₦1,000 spent. Redeem points for free rental days!</p>
+                <div class="progress mb-3">
+                  <div class="progress-bar bg-success" role="progressbar" style="width: 65%" aria-valuenow="65" aria-valuemin="0" aria-valuemax="100"></div>
+                </div>
+                <small class="text-muted">650 / 1000 points to next reward</small>
+              </div>
+              <div class="col-md-4 text-center">
+                <div class="loyalty-points">
+                  <i class="fas fa-coins fa-3x text-warning mb-2"></i>
+                  <h4 class="text-success">650 pts</h4>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
 
       <!-- Recent Rentals -->
