@@ -17,6 +17,37 @@
     #profile-avatar:hover {
       transform: scale(1.05);
     }
+    /* Mobile responsiveness adjustments */
+    @media (max-width: 768px) {
+      #profile-avatar {
+        width: 100px !important;
+        height: 100px !important;
+        font-size: 1.75rem !important;
+      }
+      .card-body {
+        padding: 1.5rem !important;
+      }
+      .row .col-md-6 {
+        margin-bottom: 1rem;
+      }
+    }
+    @media (max-width: 576px) {
+      #profile-avatar {
+        width: 80px !important;
+        height: 80px !important;
+        font-size: 1.5rem !important;
+      }
+      .card-body {
+        padding: 1rem !important;
+      }
+      h4 {
+        font-size: 1.5rem;
+      }
+      .btn-lg {
+        padding: 0.75rem 1.5rem;
+        font-size: 1rem;
+      }
+    }
   </style>
 </head>
 <body style="font-family:'Inter',sans-serif; background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%); min-height: 100vh;">
