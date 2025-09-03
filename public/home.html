@@ -304,26 +304,27 @@ function updateCounts(){
 }
 
 // Personalized welcome with avatar + initials
-document.addEventListener("DOMContentLoaded",()=>{
-  if(!localStorage.getItem("Hello ${name}")) return window.location="login.html";
+document.addEventListener("DOMContentLoaded", () => {
+  const userJson = localStorage.getItem("user");
+  if (!userJson) return window.location = "login.html";
 
-  let user = JSON.parse(localStorage.getItem("Hello ${name}"));
-  let fullName = user?.name?.trim() || "Hello ${name}";
+  let user = JSON.parse(userJson);
+  let fullName = user?.name?.trim() || "User";
   let firstName = fullName.split(" ")[0]; // First word only
   let initials = fullName.split(" ")
-                        .map(n=>n[0])
-                        .join("")
-                        .substring(0,2)
-                        .toUpperCase();
+    .map(n => n[0])
+    .join("")
+    .substring(0, 2)
+    .toUpperCase();
 
   // Navbar profile (full name)
   document.getElementById("user-name").textContent = fullName;
 
   // Dashboard greeting (first name only)
-  document.getElementById("Hello ${name}").textContent = firstName;
+  document.getElementById("welcome-user").textContent = firstName;
 
   // Avatar handling (image or initials fallback)
-  if(user?.avatar){
+  if (user?.avatar) {
     document.getElementById("nav-avatar").innerHTML =
       `<img src="${user.avatar}" class="rounded-circle" style="width:32px;height:32px;object-fit:cover;">`;
     document.getElementById("welcome-avatar").innerHTML =
