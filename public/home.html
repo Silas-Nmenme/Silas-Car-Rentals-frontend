@@ -15,6 +15,7 @@
   <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet"/>
   <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="header.css">
   <style>
     /* Mobile responsiveness adjustments */
     @media (max-width: 768px) {
@@ -169,62 +170,89 @@
 </head>
 <body style="font-family:'Inter',sans-serif;">
 
-<!-- Top Navbar -->
-<nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm sticky-top animate__animated animate__fadeInDown">
-  <div class="container-fluid">
-    <!-- Sidebar toggle button for mobile -->
-    <button class="btn btn-outline-success d-lg-none me-2" data-bs-toggle="offcanvas" data-bs-target="#sidebarMenu" aria-label="Open menu" title="Open menu">
-      <i class="fas fa-bars"></i>
-    </button>
+<!-- Header -->
+<header class="main-header">
+  <nav class="navbar navbar-expand-lg">
+    <div class="container">
+      <!-- Sidebar toggle button for mobile -->
+      <button class="btn btn-outline-success d-lg-none me-2" data-bs-toggle="offcanvas" data-bs-target="#sidebarMenu" aria-label="Open menu" title="Open menu">
+        <i class="fas fa-bars"></i>
+      </button>
 
-    <a href="home.html" class="navbar-brand fw-bold text-success"><i class="fas fa-car me-2"></i>Silas Car Rentals</a>
+      <a href="home.html" class="navbar-brand brand"><i class="fas fa-car me-2"></i>Silas Car Rentals</a>
 
-    <form class="d-none d-md-flex ms-3 flex-fill">
-      <input class="form-control me-2" type="search" placeholder="Search cars...">
-      <button class="btn btn-success" aria-label="Search" title="Search"><i class="fas fa-search"></i></button>
-    </form>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" title="Toggle navigation" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
 
-    <div class="ms-auto d-flex align-items-center gap-3">
-      <!-- Notifications -->
-      <div class="dropdown">
-        <button class="btn btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-label="Notifications" title="Notifications"><i class="fas fa-bell"></i></button>
-        <ul class="dropdown-menu dropdown-menu-end" id="notifications">
-          <li class="dropdown-header fw-bold">Notifications</li>
-          <li><a class="dropdown-item" href="#">🚗 New BMW X5 added to fleet</a></li>
-          <li><a class="dropdown-item" href="#">🔥 20% off luxury rentals this week</a></li>
-          <li><a class="dropdown-item" href="#">✅ Your booking was confirmed</a></li>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item">
+            <a class="nav-link active" href="#home">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#services">Services</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#about">About</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#contact">Contact</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="login.html">Login</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="signup.html">Signup</a>
+          </li>
         </ul>
-      </div>
-      <!-- Counters -->
-      <a href="cart.html" class="btn btn-outline-primary position-relative" aria-label="Cart">
-        <i class="fas fa-shopping-cart"></i>
-        <span id="cart-count" class="badge bg-success position-absolute top-0 start-100 translate-middle">0</span>
-      </a>
-      <a href="wishlist.html" class="btn btn-outline-danger position-relative" aria-label="Wishlist">
-        <i class="fas fa-heart"></i>
-        <span id="wishlist-count" class="badge bg-danger position-absolute top-0 start-100 translate-middle">0</span>
-      </a>
-      <a href="saved.html" class="btn btn-outline-warning position-relative" aria-label="Saved">
-        <i class="fas fa-bookmark"></i>
-        <span id="saved-count" class="badge bg-warning position-absolute top-0 start-100 translate-middle">0</span>
-      </a>
-      <!-- Theme -->
-      <button id="theme-toggle" class="btn btn-outline-secondary" aria-label="Toggle theme" title="Toggle theme"><i class="fas fa-moon"></i></button>
-      <!-- Profile -->
-      <div class="dropdown">
-        <button class="btn btn-success dropdown-toggle d-flex align-items-center" data-bs-toggle="dropdown" aria-label="Profile menu" title="Profile menu">
-          <div id="nav-avatar" class="rounded-circle me-2 d-flex align-items-center justify-content-center bg-success text-white fw-bold" style="width:32px; height:32px; font-size:0.9rem;"></div>
-          <span id="user-name">User</span>
-        </button>
-        <ul class="dropdown-menu dropdown-menu-end">
-          <li><a class="dropdown-item" href="profile.html"><i class="fas fa-user me-2"></i>Profile</a></li>
-          <li><a class="dropdown-item" href="orders.html"><i class="fas fa-box me-2"></i>My Orders</a></li>
-          <li><button class="dropdown-item text-danger" id="logout-button"><i class="fas fa-sign-out-alt me-2"></i>Logout</button></li>
-        </ul>
+
+        <div class="ms-auto d-flex align-items-center gap-3">
+          <!-- Notifications -->
+          <div class="dropdown">
+            <button class="btn btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-label="Notifications" title="Notifications"><i class="fas fa-bell"></i></button>
+            <ul class="dropdown-menu dropdown-menu-end" id="notifications">
+              <li class="dropdown-header fw-bold">Notifications</li>
+              <li><a class="dropdown-item" href="#">🚗 New BMW X5 added to fleet</a></li>
+              <li><a class="dropdown-item" href="#">🔥 20% off luxury rentals this week</a></li>
+              <li><a class="dropdown-item" href="#">✅ Your booking was confirmed</a></li>
+            </ul>
+          </div>
+          <!-- Counters -->
+          <a href="cart.html" class="btn btn-outline-primary position-relative" aria-label="Cart">
+            <i class="fas fa-shopping-cart"></i>
+            <span id="cart-count" class="badge bg-success position-absolute top-0 start-100 translate-middle">0</span>
+          </a>
+          <a href="wishlist.html" class="btn btn-outline-danger position-relative" aria-label="Wishlist">
+            <i class="fas fa-heart"></i>
+            <span id="wishlist-count" class="badge bg-danger position-absolute top-0 start-100 translate-middle">0</span>
+          </a>
+          <a href="saved.html" class="btn btn-outline-warning position-relative" aria-label="Saved">
+            <i class="fas fa-bookmark"></i>
+            <span id="saved-count" class="badge bg-warning position-absolute top-0 start-100 translate-middle">0</span>
+          </a>
+          <!-- Theme -->
+          <button class="theme-toggle ms-3" id="theme-toggle" aria-label="Toggle theme" title="Toggle theme">
+            <i class="fas fa-moon" aria-hidden="true"></i>
+            <span class="sr-only">Toggle theme</span>
+          </button>
+          <!-- Profile -->
+          <div class="dropdown">
+            <button class="btn btn-success dropdown-toggle d-flex align-items-center" data-bs-toggle="dropdown" aria-label="Profile menu" title="Profile menu">
+              <div id="nav-avatar" class="rounded-circle me-2 d-flex align-items-center justify-content-center bg-success text-white fw-bold" style="width:32px; height:32px; font-size:0.9rem;"></div>
+              <span id="user-name">User</span>
+            </button>
+            <ul class="dropdown-menu dropdown-menu-end">
+              <li><a class="dropdown-item" href="profile.html"><i class="fas fa-user me-2"></i>Profile</a></li>
+              <li><a class="dropdown-item" href="orders.html"><i class="fas fa-box me-2"></i>My Orders</a></li>
+              <li><button class="dropdown-item text-danger" id="logout-button"><i class="fas fa-sign-out-alt me-2"></i>Logout</button></li>
+            </ul>
+          </div>
+        </div>
       </div>
     </div>
-  </div>
-</nav>
+  </nav>
+</header>
 
 <div class="container-fluid">
   <div class="row">
@@ -272,7 +300,6 @@
 
       <!-- Recent Rentals -->
       <div class="mb-4" data-aos="fade-up">
-        <h5 class="fw-bold section-title">Recent Rentals</h5>
         <ul class="list-group" id="recent-rentals"></ul>
       </div>
     </main>
