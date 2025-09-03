@@ -238,7 +238,7 @@
         <div class="brand-mark">SC</div>
         <span class="brand-name ms-2 fw-bold">Silas Car Rentals</span>
       </a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse" id="navbarNav">
@@ -317,13 +317,36 @@
       document.getElementById("saved-count").textContent = getStorage("savedCars").length;
     }
     
-    function showToast(msg, ms=2500) {
+    function showToast(msg, type = 'info', ms = 3000) {
       const toastEl = document.getElementById('toast');
       const toastMessage = document.getElementById('toast-message');
-      
+
       if (!toastEl || !toastMessage) return;
-      
-      toastMessage.textContent = msg;
+
+      // Clear previous classes
+      toastEl.className = 'toast';
+
+      // Add type class
+      toastEl.classList.add(`toast-${type}`);
+
+      // Icon mapping
+      const iconMap = {
+        success: 'fas fa-check-circle',
+        error: 'fas fa-exclamation-circle',
+        warning: 'fas fa-exclamation-triangle',
+        info: 'fas fa-info-circle'
+      };
+
+      // Set content
+      toastEl.innerHTML = `
+        <div class="toast-header">
+          <i class="${iconMap[type]} me-2"></i>
+          <strong class="me-auto">Notification</strong>
+          <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+        <div class="toast-body">${msg}</div>
+      `;
+
       const bsToast = new bootstrap.Toast(toastEl, { delay: ms });
       bsToast.show();
     }
@@ -339,7 +362,7 @@
               <i class="fas fa-heart-broken"></i>
               <h3>Your wishlist is empty</h3>
               <p class="text-muted">Start adding cars to your wishlist to see them here!</p>
-              <button class="btn btn-primary" onclick="window.location.href='cars.html'">
+              <button class="btn btn-primary" onclick="window.location.href='cars.html'" title="Browse available cars">
                 <i class="fas fa-car me-2"></i>Browse Cars
               </button>
             </div>
@@ -372,7 +395,8 @@
                 </button>
                 <button class="btn btn-outline-danger" 
                         onclick="removeFromWishlist('${car._id}')"
-                        title="Remove from wishlist">
+                        title="Remove from wishlist"
+                        aria-label="Remove from wishlist">
                   <i class="fas fa-trash"></i>
                 </button>
               </div>
@@ -404,9 +428,9 @@
         cart.push(car);
         setStorage("cart", cart);
         removeFromWishlist(id);
-        showToast("Moved to cart successfully!");
+        showToast("Moved to cart successfully!", "success");
       } else {
-        showToast("This car is already in your cart");
+        showToast("This car is already in your cart", "warning");
       }
     }
     
@@ -415,7 +439,7 @@
       setStorage("wishlist", list);
       updateCounts();
       renderWishlist();
-      showToast("Removed from wishlist");
+      showToast("Removed from wishlist", "info");
       
       // Add heart beat animation to the wishlist button
       const wishlistBtn = document.querySelector('[title="View Wishlist"]');
@@ -430,7 +454,7 @@
         setStorage("wishlist", []);
         updateCounts();
         renderWishlist();
-        showToast("Wishlist cleared successfully");
+        showToast("Wishlist cleared successfully", "success");
       }
     }
     

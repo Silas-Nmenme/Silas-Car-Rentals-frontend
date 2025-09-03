@@ -460,9 +460,30 @@
   <script>
   const BASE_URL = window.APP_CONFIG?.API_BASE_URL || "https://techyjaunt-auth-go43.onrender.com";
 
-  function showToast(msg, ms = 3000) {
+  function showToast(msg, type = 'info', ms = 3000) {
     const toast = document.getElementById('toast');
-    toast.textContent = msg;
+
+    // Clear previous classes
+    toast.className = '';
+
+    // Add type class
+    toast.classList.add('toast-custom');
+    toast.classList.add(`toast-${type}`);
+
+    // Icon mapping
+    const iconMap = {
+      success: 'fas fa-check-circle',
+      error: 'fas fa-exclamation-circle',
+      warning: 'fas fa-exclamation-triangle',
+      info: 'fas fa-info-circle'
+    };
+
+    // Set content
+    toast.innerHTML = `
+      <i class="${iconMap[type]} me-2"></i>
+      <span>${msg}</span>
+    `;
+
     toast.classList.add('show');
     setTimeout(() => toast.classList.remove('show'), ms);
   }
@@ -486,7 +507,7 @@
     const password = e.target.password.value.trim();
 
     if (!email || !password) {
-      showToast("Please fill in all fields");
+      showToast("Please fill in all fields", "warning");
       return;
     }
 
@@ -500,7 +521,7 @@
       const data = await res.json();
 
       if (!res.ok) {
-        showToast(data.message || "Login failed");
+        showToast(data.message || "Login failed", "error");
         return;
       }
 

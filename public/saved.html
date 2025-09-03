@@ -238,9 +238,29 @@
       document.getElementById("saved-count").textContent = getStorage("savedCars").length;
     }
     
-    function showToast(msg, ms=3000) {
+    function showToast(msg, type = 'info', ms = 3000) {
       const toast = document.getElementById("toast");
-      toast.textContent = msg;
+
+      // Clear previous classes
+      toast.className = 'toast-custom';
+
+      // Add type class
+      toast.classList.add(`toast-${type}`);
+
+      // Icon mapping
+      const iconMap = {
+        success: 'fas fa-check-circle',
+        error: 'fas fa-exclamation-circle',
+        warning: 'fas fa-exclamation-triangle',
+        info: 'fas fa-info-circle'
+      };
+
+      // Set content
+      toast.innerHTML = `
+        <i class="${iconMap[type]} me-2"></i>
+        <span>${msg}</span>
+      `;
+
       toast.classList.add("show");
       setTimeout(() => toast.classList.remove("show"), ms);
     }
@@ -318,9 +338,9 @@
         cart.push(car);
         setStorage("cart", cart);
         removeFromSaved(id);
-        showToast("🚗 Moved to cart successfully!");
+        showToast("🚗 Moved to cart successfully!", "success");
       } else {
-        showToast("⚠️ Car is already in your cart");
+        showToast("⚠️ Car is already in your cart", "warning");
       }
     }
     
@@ -333,7 +353,7 @@
         wishlist.push(car);
         setStorage("wishlist", wishlist);
         removeFromSaved(id);
-        showToast("❤️ Moved to wishlist!");
+        showToast("❤️ Moved to wishlist!", "success");
       } else {
         showToast("⚠️ Car is already in your wishlist");
       }

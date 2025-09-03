@@ -412,11 +412,44 @@ function updateGlobalCounts() {
   document.getElementById("saved-count").textContent = getStorage("savedCars").length;
 }
 
-function showToast(msg, ms = 3000) {
+function showToast(msg, type = 'info', ms = 3000) {
   const toast = document.getElementById("toast");
-  toast.textContent = msg;
+
+  // Clear previous classes
+  toast.className = 'toast';
+
+  // Add type class
+  toast.classList.add(`toast-${type}`);
+
+  // Icon mapping
+  const iconMap = {
+    success: 'fas fa-check-circle',
+    error: 'fas fa-exclamation-circle',
+    warning: 'fas fa-exclamation-triangle',
+    info: 'fas fa-info-circle'
+  };
+
+  // Set content
+  toast.innerHTML = `
+    <i class="${iconMap[type]} toast-icon"></i>
+    <span class="toast-message">${msg}</span>
+    <button class="toast-close" onclick="hideToast()">&times;</button>
+  `;
+
+  // Show toast
   toast.classList.add("show");
-  setTimeout(() => toast.classList.remove("show"), ms);
+
+  // Auto hide
+  setTimeout(() => hideToast(), ms);
+}
+
+function hideToast() {
+  const toast = document.getElementById("toast");
+  toast.classList.remove("show");
+  toast.classList.add("hide");
+  setTimeout(() => {
+    toast.classList.remove("hide");
+  }, 400); // Match transition duration
 }
 
 function renderCars(cars) {
@@ -570,7 +603,7 @@ document.addEventListener('click', (e) => {
   
   if (!car) {
     console.error("Car not found:", carId);
-    showToast("Car not found", 3000, "#f44336");
+    showToast("Car not found", "error");
     return;
   }
   
@@ -597,14 +630,14 @@ function addToCart(car) {
   console.log("Attempting to add to cart:", car); // Debug log
   const cart = getStorage("cart");
   if (cart.find((c) => c._id === car._id)) {
-    showToast("Car already in cart", 3000, "#ff9800");
+    showToast("Car already in cart", "warning");
     console.log("Car already in cart:", car); // Debug log
     return;
   }
   cart.push(car);
   localStorage.setItem("cart", JSON.stringify(cart));
   updateGlobalCounts();
-  showToast("Added to cart");
+  showToast("Added to cart", "success");
   console.log("Car added to cart:", car); // Debug log
 }
 
@@ -612,14 +645,14 @@ function addToWishlist(car) {
   console.log("Attempting to add to wishlist:", car); // Debug log
   const wishlist = getStorage("wishlist");
   if (wishlist.find((c) => c._id === car._id)) {
-    showToast("Car already in wishlist", 3000, "#ff9800");
+    showToast("Car already in wishlist", "warning");
     console.log("Car already in wishlist:", car); // Debug log
     return;
   }
   wishlist.push(car);
   localStorage.setItem("wishlist", JSON.stringify(wishlist));
   updateGlobalCounts();
-  showToast("Added to wishlist");
+  showToast("Added to wishlist", "success");
   console.log("Car added to wishlist:", car); // Debug log
 }
 
@@ -627,14 +660,14 @@ function addToSaved(car) {
   console.log("Attempting to save car:", car); // Debug log
   const savedCars = getStorage("savedCars");
   if (savedCars.find((c) => c._id === car._id)) {
-    showToast("Car already saved", 3000, "#ff9800");
+    showToast("Car already saved", "warning");
     console.log("Car already saved:", car); // Debug log
     return;
   }
   savedCars.push(car);
   localStorage.setItem("savedCars", JSON.stringify(savedCars));
   updateGlobalCounts();
-  showToast("Car saved");
+  showToast("Car saved", "success");
   console.log("Car saved:", car); // Debug log
 }
 

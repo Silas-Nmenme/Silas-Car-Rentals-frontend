@@ -2049,14 +2049,31 @@
     }
 
     // Toast notification
-    function showToast(message, duration = 3000) {
+    function showToast(msg, type = 'info', ms = 3000) {
       const toast = document.getElementById('toast');
-      toast.textContent = message;
-      toast.classList.add('show');
 
-      setTimeout(() => {
-        toast.classList.remove('show');
-      }, duration);
+      // Clear previous classes
+      toast.className = 'toast';
+
+      // Add type class
+      toast.classList.add(`toast-${type}`);
+
+      // Icon mapping
+      const iconMap = {
+        success: 'fas fa-check-circle',
+        error: 'fas fa-exclamation-circle',
+        warning: 'fas fa-exclamation-triangle',
+        info: 'fas fa-info-circle'
+      };
+
+      // Set content
+      toast.innerHTML = `
+        <i class="${iconMap[type]} me-2"></i>
+        <span>${msg}</span>
+      `;
+
+      toast.classList.add('show');
+      setTimeout(() => toast.classList.remove('show'), ms);
     }
 
     // Header scroll effect
