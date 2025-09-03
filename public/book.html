@@ -17,12 +17,12 @@
       font-family: 'Poppins', sans-serif;
       background-color: #f8f9fa;
     }
-    
+
     .navbar {
       background: linear-gradient(135deg, #16a34a, #15803d) !important;
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     }
-    
+
     .brand-mark {
       width: 40px;
       height: 40px;
@@ -32,33 +32,33 @@
       align-items: center;
       justify-content: center;
     }
-    
+
     .brand-name {
       color: white;
       font-weight: 700;
       font-size: 1.3rem;
     }
-    
+
     .nav-link {
       color: rgba(255, 255, 255, 0.85) !important;
       font-weight: 500;
       transition: all 0.3s;
     }
-    
+
     .nav-link:hover {
       color: white !important;
     }
-    
+
     .btn-ghost {
       background: transparent;
       border: 1px solid rgba(255, 255, 255, 0.3);
       color: white;
     }
-    
+
     .btn-ghost:hover {
       background: rgba(255, 255, 255, 0.1);
     }
-    
+
     .booking-hero {
       background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
       color: white;
@@ -66,7 +66,7 @@
       text-align: center;
       margin-bottom: 2rem;
     }
-    
+
     .booking-form {
       background: white;
       border-radius: 15px;
@@ -74,19 +74,19 @@
       padding: 2rem;
       margin: 2rem 0;
     }
-    
+
     .form-control, .form-select {
       border: 1px solid #e1e5eb;
       border-radius: 10px;
       padding: 0.75rem 1rem;
       transition: all 0.3s;
     }
-    
+
     .form-control:focus, .form-select:focus {
       border-color: #16a34a;
       box-shadow: 0 0 0 0.25rem rgba(22, 163, 74, 0.25);
     }
-    
+
     .btn-primary {
       background: linear-gradient(135deg, #16a34a, #15803d);
       border: none;
@@ -95,33 +95,33 @@
       font-weight: 600;
       transition: all 0.3s;
     }
-    
+
     .btn-primary:hover {
       background: linear-gradient(135deg, #15803d, #16a34a);
       transform: translateY(-2px);
       box-shadow: 0 4px 12px rgba(22, 163, 74, 0.3);
     }
-    
+
     .error-message {
       color: #dc3545;
       font-size: 0.875rem;
       margin-top: 0.25rem;
     }
-    
+
     .car-selector {
       margin-bottom: 2rem;
       padding: 1.5rem;
       background: #f8f9fa;
       border-radius: 10px;
     }
-    
+
     .selected-cars-display {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
       gap: 1.5rem;
       margin-top: 1rem;
     }
-    
+
     .car-id-box {
       background: white;
       border: 1px solid #e1e5eb;
@@ -131,39 +131,100 @@
       box-shadow: 0 4px 6px rgba(0,0,0,0.05);
       transition: all 0.3s;
     }
-    
+
     .car-id-box:hover {
       transform: translateY(-5px);
       box-shadow: 0 10px 15px rgba(0,0,0,0.1);
     }
-    
+
     .card-car {
       transition: all 0.3s;
     }
-    
+
     .card-car:hover {
       transform: translateY(-5px);
       box-shadow: 0 10px 20px rgba(0,0,0,0.15) !important;
     }
-    
+
     .footer {
       background: #1a1a1a;
       color: #fff;
       padding: 2rem 0;
       margin-top: 3rem;
     }
-    
+
+    /* Tablet and smaller */
     @media (max-width: 768px) {
       .booking-hero {
         padding: 2rem 0;
       }
-      
+
       .booking-form {
         padding: 1.5rem;
       }
-      
+
       .selected-cars-display {
         grid-template-columns: 1fr;
+      }
+    }
+
+    /* Mobile phones */
+    @media (max-width: 576px) {
+      .booking-hero {
+        padding: 1.5rem 0;
+      }
+
+      .booking-hero .display-4 {
+        font-size: 2rem;
+      }
+
+      .booking-form {
+        padding: 1rem;
+        margin: 1rem 0;
+      }
+
+      .form-control, .form-select {
+        padding: 0.6rem 0.8rem;
+        font-size: 0.9rem;
+      }
+
+      .btn-primary {
+        padding: 0.6rem 1.2rem;
+        font-size: 0.9rem;
+      }
+
+      .car-id-box {
+        padding: 1rem;
+      }
+
+      .car-id-box h4 {
+        font-size: 1.1rem;
+      }
+
+      .car-id-box p {
+        font-size: 0.9rem;
+      }
+
+      .footer {
+        padding: 1.5rem 0;
+        margin-top: 2rem;
+      }
+
+      .brand-name {
+        font-size: 1.1rem;
+      }
+
+      .nav-link {
+        font-size: 0.9rem;
+      }
+
+      .btn-ghost, .btn-primary {
+        font-size: 0.85rem;
+        padding: 0.5rem 0.75rem;
+      }
+
+      .car-selector {
+        padding: 1rem;
       }
     }
   </style>
