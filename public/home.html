@@ -303,42 +303,42 @@ function updateCounts(){
  document.getElementById("stat-saved").textContent=`${get("savedCars").length} items`;
 }
 
-// Personalized welcome with avatar + initials
-document.addEventListener("DOMContentLoaded", () => {
-  const userJson = localStorage.getItem("user");
-  if (!userJson) return window.location = "login.html";
+  // Personalized welcome with avatar + initials
+  document.addEventListener("DOMContentLoaded", () => {
+    const userJson = localStorage.getItem("user");
+    if (!userJson) return window.location = "login.html";
 
-  let user = JSON.parse(userJson);
-  let fullName = user?.name?.trim() || "User";
-  let firstName = fullName.split(" ")[0]; // First word only
-  let initials = fullName.split(" ")
-    .map(n => n[0])
-    .join("")
-    .substring(0, 2)
-    .toUpperCase();
+    let user = JSON.parse(userJson);
+    let fullName = user?.name?.trim() || user?.email?.split("@")[0] || "User";
+    let firstName = fullName.split(" ")[0]; // First word only
+    let initials = fullName.split(" ")
+      .map(n => n[0])
+      .join("")
+      .substring(0, 2)
+      .toUpperCase();
 
-  // Navbar profile (full name)
-  document.getElementById("user-name").textContent = fullName;
+    // Navbar profile (full name)
+    document.getElementById("user-name").textContent = fullName;
 
-  // Dashboard greeting (first name only)
-  document.getElementById("welcome-user").textContent = firstName;
+    // Dashboard greeting (first name only)
+    document.getElementById("welcome-user").textContent = firstName;
 
-  // Avatar handling (image or initials fallback)
-  if (user?.avatar) {
-    document.getElementById("nav-avatar").innerHTML =
-      `<img src="${user.avatar}" class="rounded-circle" style="width:32px;height:32px;object-fit:cover;">`;
-    document.getElementById("welcome-avatar").innerHTML =
-      `<img src="${user.avatar}" class="rounded-circle border" style="width:60px;height:60px;object-fit:cover;">`;
-  } else {
-    document.getElementById("nav-avatar").textContent = initials;
-    document.getElementById("welcome-avatar").textContent = initials;
-  }
+    // Avatar handling (image or initials fallback)
+    if (user?.avatar) {
+      document.getElementById("nav-avatar").innerHTML =
+        `<img src="${user.avatar}" class="rounded-circle" style="width:32px;height:32px;object-fit:cover;">`;
+      document.getElementById("welcome-avatar").innerHTML =
+        `<img src="${user.avatar}" class="rounded-circle border" style="width:60px;height:60px;object-fit:cover;">`;
+    } else {
+      document.getElementById("nav-avatar").textContent = initials;
+      document.getElementById("welcome-avatar").textContent = initials;
+    }
 
-  renderSidebar();
-  renderRecommendedCars();
-  renderRecentRentals();
-  updateCounts();
-});
+    renderSidebar();
+    renderRecommendedCars();
+    renderRecentRentals();
+    updateCounts();
+  });
 
 
 // Logout
