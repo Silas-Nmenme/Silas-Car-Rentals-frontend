@@ -1,700 +1,165 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-bs-theme="light">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Silas Car Rentals - Premium Car Rental Service in Nigeria | Luxury & Economy Cars</title>
-  <meta name="description" content="Nigeria's premier car rental service offering luxury sedans, SUVs, and economy vehicles. Experience seamless booking, 24/7 support, and premium service across Lagos and beyond." />
-  <meta name="keywords" content="car rental Nigeria, luxury car rental Lagos, rent car Nigeria, premium vehicles, business car rental, SUV rental Nigeria" />
-  <meta name="theme-color" content="#16a34a">
-  
-  <!-- Bootstrap 5 CSS -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Silas Car Rentals - Dashboard</title>
 
-  <!-- Font Awesome for icons -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
-
-  <!-- Animate.css for animations -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
-
-  <!-- AOS (Animate On Scroll) -->
-  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
-
-  <!-- Additional Animation Libraries -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/hover.css/2.3.1/css/hover-min.css" />
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate-css-grid@1.2.1/animate-css-grid.min.css" />
-
-  <link rel="preconnect" href="https://techyjaunt-auth-go43.onrender.com" />
-  <link rel="dns-prefetch" href="https://techyjaunt-auth-go43.onrender.com" />
-
-
+  <!-- Bootstrap -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Font Awesome -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"/>
+  <!-- Animate.css -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" rel="stylesheet"/>
+  <!-- AOS -->
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet"/>
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet"/>
 </head>
-  <body class="pt-5" data-bs-theme="light">
-  <!-- Enhanced Navbar -->
-  <header class="navbar navbar-expand-lg navbar-light bg-body shadow fixed-top border-bottom">
-    <div class="container-fluid">
-      <a href="#" class="navbar-brand d-flex align-items-center">
-        <div class="brand-mark me-2 rounded-3 d-flex align-items-center justify-content-center text-white fw-bold fs-5" style="width: 40px; height: 40px; background: linear-gradient(135deg, #16a34a 0%, #0d9488 100%);">SC</div>
-        <span class="brand-name fw-bold fs-4 text-body">Silas Car Rentals</span>
-      </a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav" aria-controls="mainNav" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <nav class="collapse navbar-collapse" id="mainNav">
-        <ul class="navbar-nav ms-auto mb-2 mb-lg-0 nav-links">
-          <li class="nav-item"><a class="nav-link fw-semibold" href="#">Home</a></li>
-          <li class="nav-item"><a class="nav-link fw-semibold" href="cars.html">Browse Cars</a></li>
-          <li class="nav-item"><a class="nav-link fw-semibold" href="#how">How it Works</a></li>
-          <li class="nav-item"><a class="nav-link fw-semibold" href="#testimonials">Testimonials</a></li>
-          <li class="nav-item"><a class="nav-link fw-semibold" href="#contact">Contact</a></li>
+<body style="font-family:'Inter',sans-serif;">
+
+<!-- Top Navbar -->
+<nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm sticky-top animate__animated animate__fadeInDown">
+  <div class="container-fluid">
+    <a href="home.html" class="navbar-brand fw-bold text-success"><i class="fas fa-car me-2"></i>Silas Car Rentals</a>
+    <form class="d-none d-md-flex ms-3 flex-fill">
+      <input class="form-control me-2" type="search" placeholder="Search cars...">
+      <button class="btn btn-success"><i class="fas fa-search"></i></button>
+    </form>
+    <div class="ms-auto d-flex align-items-center gap-2">
+      <!-- Notifications -->
+      <div class="dropdown">
+        <button class="btn btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown"><i class="fas fa-bell"></i></button>
+        <ul class="dropdown-menu dropdown-menu-end" id="notifications">
+          <li class="dropdown-header fw-bold">Notifications</li>
+          <li><hr class="dropdown-divider"></li>
         </ul>
-        <div class="d-flex align-items-center ms-lg-3 gap-2">
-          <a href="cart.html" class="btn btn-outline-primary position-relative" aria-label="Cart">
-            <i class="fas fa-shopping-cart"></i>
-            <span id="cart-count" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-success" style="font-size:0.8em;">0</span>
-          </a>
-          <a href="saved.html" class="btn btn-outline-danger position-relative" aria-label="Saved Items">
-            <i class="fas fa-heart"></i>
-            <span id="saved-count" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style="font-size:0.8em;">0</span>
-          </a>
-          <button class="btn btn-outline-secondary" id="theme-toggle" aria-label="Toggle dark/light mode">🌙</button>
-          <button class="btn btn-outline-danger" id="logout-button" aria-label="Logout">
-            <i class="fas fa-sign-out-alt me-1"></i> Logout
-          </button>
-        </div>
-      </nav>
+      </div>
+      <!-- Counters -->
+      <a href="cart.html" class="btn btn-outline-primary position-relative">
+        <i class="fas fa-shopping-cart"></i>
+        <span id="cart-count" class="badge bg-success position-absolute top-0 start-100 translate-middle">0</span>
+      </a>
+      <a href="wishlist.html" class="btn btn-outline-danger position-relative">
+        <i class="fas fa-heart"></i>
+        <span id="wishlist-count" class="badge bg-danger position-absolute top-0 start-100 translate-middle">0</span>
+      </a>
+      <a href="saved.html" class="btn btn-outline-warning position-relative">
+        <i class="fas fa-bookmark"></i>
+        <span id="saved-count" class="badge bg-warning position-absolute top-0 start-100 translate-middle">0</span>
+      </a>
+      <!-- Theme -->
+      <button id="theme-toggle" class="btn btn-outline-secondary"><i class="fas fa-moon"></i></button>
+      <!-- Profile -->
+      <div class="dropdown">
+        <button class="btn btn-success dropdown-toggle d-flex align-items-center" data-bs-toggle="dropdown">
+          <i class="fas fa-user-circle me-2"></i> <span id="user-name">User</span>
+        </button>
+        <ul class="dropdown-menu dropdown-menu-end">
+          <li><a class="dropdown-item" href="profile.html"><i class="fas fa-user me-2"></i>Profile</a></li>
+          <li><a class="dropdown-item" href="orders.html"><i class="fas fa-box me-2"></i>My Orders</a></li>
+          <li><button class="dropdown-item text-danger" id="logout-button"><i class="fas fa-sign-out-alt me-2"></i>Logout</button></li>
+        </ul>
+      </div>
     </div>
-  </header>
-
-  <main>
-    <!-- Enhanced Hero Section -->
-    <section class="hero-section py-6" data-aos="fade-up">
-      <div class="container">
-        <div class="row align-items-center min-vh-80">
-          <div class="col-lg-8 mx-auto text-center">
-            <div class="mb-4">
-              <span class="badge bg-success bg-opacity-20 text-success border border-success border-opacity-25 px-4 py-2 rounded-pill fw-semibold">
-                <i class="fas fa-star me-2"></i>Nigeria's Premium Car Rental Service
-              </span>
-            </div>
-            <h1 class="hero-title display-3 fw-bold mb-4">
-              Experience Luxury Mobility<br>Across Nigeria
-            </h1>
-            <p class="hero-subtitle lead mb-5">
-              Discover our curated fleet of premium vehicles designed for business executives, 
-              luxury travelers, and discerning clients who demand excellence in every journey.
-            </p>
-            <div class="d-flex justify-content-center gap-3 flex-wrap mb-5">
-              <a href="cars.html" class="btn btn-success btn-lg">
-                <i class="fas fa-car me-2"></i> Explore Premium Fleet
-              </a>
-              <a href="book.html" class="btn btn-outline-success btn-lg">
-                <i class="fas fa-calendar-check me-2"></i> Instant Booking
-              </a>
-            </div>
-            
-            <!-- Trust Badges -->
-            <div class="trust-badges">
-              <div class="trust-badge">
-                <i class="fas fa-shield-alt text-success"></i>
-                <span>SSL Secured</span>
-              </div>
-              <div class="trust-badge">
-                <i class="fas fa-truck-fast text-primary"></i>
-                <span>Free Delivery</span>
-              </div>
-              <div class="trust-badge">
-                <i class="fas fa-headset text-info"></i>
-                <span>24/7 Support</span>
-              </div>
-              <div class="trust-badge">
-                <i class="fas fa-certificate text-warning"></i>
-                <span>Verified Partner</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Stats Section -->
-    <section class="py-5 bg-dark" data-aos="fade-up">
-      <div class="container">
-        <div class="row g-4">
-          <div class="col-md-3 col-6">
-            <div class="stat-item">
-              <div class="stat-icon text-white">
-                <i class="fas fa-users"></i>
-              </div>
-              <div>
-                <div class="h4 fw-bold mb-1">5,000+</div>
-                <div class="text-muted">Happy Clients</div>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-3 col-6">
-            <div class="stat-item">
-              <div class="stat-icon text-white">
-                <i class="fas fa-car"></i>
-              </div>
-              <div>
-                <div class="h4 fw-bold mb-1">200+</div>
-                <div class="text-muted">Premium Vehicles</div>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-3 col-6">
-            <div class="stat-item">
-              <div class="stat-icon text-white">
-                <i class="fas fa-star"></i>
-              </div>
-              <div>
-                <div class="h4 fw-bold mb-1">4.9/5</div>
-                <div class="text-muted">Customer Rating</div>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-3 col-6">
-            <div class="stat-item">
-              <div class="stat-icon text-white">
-                <i class="fas fa-map-marker-alt"></i>
-              </div>
-              <div>
-                <div class="h4 fw-bold mb-1">25+</div>
-                <div class="text-muted">Cities Covered</div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Featured Vehicles -->
-    <section class="py-6 bg-white" data-aos="fade-up">
-      <div class="container">
-        <div class="text-center mb-6">
-          <h2 class="display-5 fw-bold mb-3">Our Premium Collection</h2>
-          <p class="lead text-muted">Experience the finest selection of luxury and executive vehicles</p>
-        </div>
-        <div class="row g-4">
-          <div class="col-md-4">
-            <div class="card car-showcase h-100" data-aos="zoom-in">
-              <div class="position-relative">
-                <img src="https://vehicle-images.dealerinspire.com/a1a7-11002896/W1KAF4GB4SR252999/00f2d6ad30e089cb5c02791d58c3af6a.jpg" class="card-img-top" alt="Mercedes-Benz C300 Luxury Sedan">
-                <div class="position-absolute top-0 end-0 m-3">
-                  <span class="badge bg-success px-3 py-2">Available</span>
-                </div>
-              </div>
-              <div class="card-body">
-                <div class="d-flex justify-content-between align-items-start mb-3">
-                  <h5 class="card-title fw-bold">Mercedes-Benz C300</h5>
-                  <div class="text-success fw-bold fs-4">₦45,000/day</div>
-                </div>
-                <div class="mb-3">
-                  <span class="badge bg-primary bg-opacity-10 text-primary me-2">Automatic</span>
-                  <span class="badge bg-info bg-opacity-10 text-info me-2">Premium</span>
-                  <span class="badge bg-secondary bg-opacity-10 text-secondary">4 Seats</span>
-                </div>
-                <div class="d-flex gap-2">
-                  <button class="btn btn-success flex-fill" id="add-to-cart-mercedes-c300">
-                    <i class="fas fa-cart-plus me-2"></i> Add to Cart
-                  </button>
-                  <button class="btn btn-outline-danger" id="wishlist-mercedes-c300" aria-label="Add to wishlist">
-                    <i class="far fa-heart"></i>
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-4">
-            <div class="card car-showcase h-100" data-aos="zoom-in" data-aos-delay="100">
-              <div class="position-relative">
-                <img src="https://images.unsplash.com/photo-1544636331-e26879cd4d9b?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" class="card-img-top" alt="Toyota Camry Executive Sedan">
-                <div class="position-absolute top-0 end-0 m-3">
-                  <span class="badge bg-success px-3 py-2">Available</span>
-                </div>
-              </div>
-              <div class="card-body">
-                <div class="d-flex justify-content-between align-items-start mb-3">
-                  <h5 class="card-title fw-bold">Toyota Camry 2023</h5>
-                  <div class="text-success fw-bold fs-4">₦25,000/day</div>
-                </div>
-                <div class="mb-3">
-                  <span class="badge bg-primary bg-opacity-10 text-primary me-2">Automatic</span>
-                  <span class="badge bg-info bg-opacity-10 text-info me-2">Executive</span>
-                  <span class="badge bg-secondary bg-opacity-10 text-secondary">5 Seats</span>
-                </div>
-                <div class="d-flex gap-2">
-                  <button class="btn btn-success flex-fill" id="add-to-cart-toyota-camry">
-                    <i class="fas fa-cart-plus me-2"></i> Add to Cart
-                  </button>
-                  <button class="btn btn-outline-danger" id="wishlist-toyota-camry" aria-label="Add to wishlist">
-                    <i class="far fa-heart"></i>
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-4">
-            <div class="card car-showcase h-100" data-aos="zoom-in" data-aos-delay="200">
-              <div class="position-relative">
-                <img src="https://images.unsplash.com/photo-1549399542-7e3f8b79c341?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" class="card-img-top" alt="BMW X5 Luxury SUV">
-                <div class="position-absolute top-0 end-0 m-3">
-                  <span class="badge bg-warning px-3 py-2">Limited</span>
-                </div>
-              </div>
-              <div class="card-body">
-                <div class="d-flex justify-content-between align-items-start mb-3">
-                  <h5 class="card-title fw-bold">BMW X5 Luxury</h5>
-                  <div class="text-success fw-bold fs-4">₦65,000/day</div>
-                </div>
-                <div class="mb-3">
-                  <span class="badge bg-primary bg-opacity-10 text-primary me-2">Automatic</span>
-                  <span class="badge bg-info bg-opacity-10 text-info me-2">Luxury</span>
-                  <span class="badge bg-secondary bg-opacity-10 text-secondary">7 Seats</span>
-                </div>
-                <div class="d-flex gap-2">
-                  <button class="btn btn-success flex-fill" id="add-to-cart-bmw-x5">
-                    <i class="fas fa-cart-plus me-2"></i> Add to Cart
-                  </button>
-                  <button class="btn btn-outline-danger" id="wishlist-bmw-x5" aria-label="Add to wishlist">
-                    <i class="far fa-heart"></i>
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="text-center mt-5">
-          <a href="cars.html" class="btn btn-outline-success btn-lg">
-            <i class="fas fa-eye me-2"></i> View Complete Collection
-          </a>
-        </div>
-      </div>
-    </section>
-
-    <!-- How It Works -->
-    <section id="how" class="py-6 bg-light" data-aos="fade-up">
-      <div class="container">
-        <div class="text-center mb-6">
-          <h2 class="display-5 fw-bold mb-3">Seamless Rental Experience</h2>
-          <p class="lead text-muted">Three simple steps to your perfect vehicle</p>
-        </div>
-        <div class="row g-5">
-          <div class="col-md-4 text-center" data-aos="fade-up" data-aos-delay="100">
-            <div class="feature-icon mx-auto mb-4" style="width: 80px; height: 80px; background: linear-gradient(135deg, #16a34a 0%, #0d9488 100%); border-radius: 20px; display: flex; align-items: center; justify-content: center; font-size: 2rem; color: white;">
-              <i class="fas fa-search"></i>
-            </div>
-            <h4 class="fw-bold mb-3">1. Browse & Select</h4>
-            <p class="text-muted">Explore our diverse fleet with advanced filters. Find your perfect vehicle by brand, features, or budget requirements.</p>
-          </div>
-          <div class="col-md-4 text-center" data-aos="fade-up" data-aos-delay="200">
-            <div class="feature-icon mx-auto mb-4" style="width: 80px; height: 80px; background: linear-gradient(135deg, #16a34a 0%, #0d9488 100%); border-radius: 20px; display: flex; align-items: center; justify-content: center; font-size: 2rem; color: white;">
-              <i class="fas fa-calendar-check"></i>
-            </div>
-            <h4 class="fw-bold mb-3">2. Secure Booking</h4>
-            <p class="text-muted">Choose your rental dates, add premium options, and complete your booking through our encrypted, secure checkout process.</p>
-          </div>
-          <div class="col-md-4 text-center" data-aos="fade-up" data-aos-delay="300">
-            <div class="feature-icon mx-auto mb-4" style="width: 80px; height: 80px; background: linear-gradient(135deg, #16a34a 0%, #0d9488 100%); border-radius: 20px; display: flex; align-items: center; justify-content: center; font-size: 2rem; color: white;">
-              <i class="fas fa-car"></i>
-            </div>
-            <h4 class="fw-bold mb-3">3. Drive Away</h4>
-            <p class="text-muted">Complete your payment, receive instant confirmation, and enjoy premium vehicle delivery at your preferred location.</p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Testimonials -->
-    <section id="testimonials" class="py-6 bg-white" data-aos="fade-up">
-      <div class="container">
-        <div class="text-center mb-6">
-          <h2 class="display-5 fw-bold mb-3">Client Testimonials</h2>
-          <p class="lead text-muted">Hear from our satisfied customers</p>
-        </div>
-        <div class="row g-4">
-          <div class="col-md-4" data-aos="fade-up" data-aos-delay="100">
-            <div class="testimonial-card p-4 h-100">
-              <div class="rating-stars mb-3">
-                <i class="fas fa-star text-warning"></i>
-                <i class="fas fa-star text-warning"></i>
-                <i class="fas fa-star text-warning"></i>
-                <i class="fas fa-star text-warning"></i>
-                <i class="fas fa-star text-warning"></i>
-              </div>
-              <p class="mb-4">"Exceptional service from start to finish! The Mercedes-Benz was in pristine condition and the booking process was incredibly smooth. The team went above and beyond to ensure our corporate event was a success."</p>
-              <div class="d-flex align-items-center gap-3">
-                <div class="testimonial-avatar text-white d-flex align-items-center justify-content-center">AO</div>
-                <div>
-                  <div class="fw-bold">Ada Okonkwo</div>
-                  <div class="text-muted small">Business Executive, Lagos</div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-4" data-aos="fade-up" data-aos-delay="200">
-            <div class="testimonial-card p-4 h-100">
-              <div class="rating-stars mb-3">
-                <i class="fas fa-star text-warning"></i>
-                <i class="fas fa-star text-warning"></i>
-                <i class="fas fa-star text-warning"></i>
-                <i class="fas fa-star text-warning"></i>
-                <i class="fas fa-star text-warning"></i>
-              </div>
-              <p class="mb-4">"The BMW X5 was perfect for our family vacation. Clean, comfortable, and the staff was incredibly helpful throughout the entire process. Will definitely be using Silas Car Rentals for all our future trips!"</p>
-              <div class="d-flex align-items-center gap-3">
-                <div class="testimonial-avatar text-white d-flex align-items-center justify-content-center">EC</div>
-                <div>
-                  <div class="fw-bold">Emeka Chukwu</div>
-                  <div class="text-muted small">Family Vacation, Abuja</div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-4" data-aos="fade-up" data-aos-delay="300">
-            <div class="testimonial-card p-4 h-100">
-              <div class="rating-stars mb-3">
-                <i class="fas fa-star text-warning"></i>
-                <i class="fas fa-star text-warning"></i>
-                <i class="fas fa-star text-warning"></i>
-                <i class="fas fa-star text-warning"></i>
-                <i class="fas fa-star-half-alt text-warning"></i>
-              </div>
-              <p class="mb-4">"As a frequent business traveler, I appreciate reliability above all. Silas Car Rentals never disappoints - punctual, professional, and their vehicles are always in excellent condition. Highly recommended!"</p>
-              <div class="d-flex align-items-center gap-3">
-                <div class="testimonial-avatar text-white d-flex align-items-center justify-content-center">CA</div>
-                <div>
-                  <div class="fw-bold">Chinedu Adeyemi</div>
-                  <div class="text-muted small">Frequent Traveler, Port Harcourt</div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Professional Footer -->
-    <footer id="contact" class="professional-footer text-light py-6">
-      <div class="container">
-        <div class="row g-5">
-          <div class="col-lg-4">
-            <div class="mb-4">
-              <div class="brand-mark bg-success text-white d-inline-flex align-items-center justify-content-center rounded-circle" style="width:60px;height:60px;font-size:1.8rem; background: linear-gradient(135deg, #16a34a 0%, #0d9488 100%);">SC</div>
-              <h4 class="mt-3 text-success fw-bold">Silas Car Rentals</h4>
-              <p class="text-muted">Nigeria's premier car rental service offering luxury and executive vehicles for business and leisure travel across major cities.</p>
-            </div>
-            <div class="contact-info">
-              <div class="mb-3">
-                <i class="fas fa-envelope text-success me-2"></i>
-                <a href="mailto:silasonyekachi15@gmail.com" class="text-light text-decoration-none">silasonyekachi15@gmail.com</a>
-              </div>
-              <div class="mb-3">
-                <i class="fas fa-phone text-success me-2"></i>
-                <a href="tel:+2348107586167" class="text-light text-decoration-none">+234 810 758 6167</a>
-              </div>
-              <div>
-                <i class="fas fa-map-marker-alt text-success me-2"></i>
-                <span class="text-light">Lagos, Nigeria</span>
-              </div>
-            </div>
-          </div>
-          <div class="col-lg-2 col-md-4">
-            <h6 class="text-success fw-bold mb-4">Our Services</h6>
-            <ul class="list-unstyled">
-              <li class="mb-2"><a href="book.html" class="text-light text-decoration-none"><i class="fas fa-car me-2 text-success"></i> Luxury Rentals</a></li>
-              <li class="mb-2"><a href="book.html" class="text-light text-decoration-none"><i class="fas fa-building me-2 text-success"></i> Corporate Services</a></li>
-              <li class="mb-2"><a href="book.html" class="text-light text-decoration-none"><i class="fas fa-plane me-2 text-success"></i> Airport Transfers</a></li>
-              <li class="mb-2"><a href="book.html" class="text-light text-decoration-none"><i class="fas fa-user-tie me-2 text-success"></i> Chauffeur Services</a></li>
-              <li><a href="book.html" class="text-light text-decoration-none"><i class="fas fa-calendar-alt me-2 text-success"></i> Long-term Leasing</a></li>
-            </ul>
-          </div>
-          <div class="col-lg-2 col-md-4">
-            <h6 class="text-success fw-bold mb-4">Company</h6>
-            <ul class="list-unstyled">
-              <li><a href="about.html" class="text-light text-decoration-none">About Us</a></li>
-              <li><a href="terms.html" class="text-light text-decoration-none">Terms & Conditions</a></li>
-              <li><a href="privacy.html" class="text-light text-decoration-none">Privacy Policy</a></li>
-              <li><a href="faq.html" class="text-light text-decoration-none">FAQ</a></li>
-              <li><a href="contact.html" class="text-light text-decoration-none">Contact Support</a></li>
-            </ul>
-          </div>
-          <div class="col-lg-4 col-md-8">
-            <h6 class="text-success fw-bold mb-4">Stay Updated</h6>
-            <form id="newsletter-form" class="d-flex gap-2 mb-3">
-              <input type="email" name="email" class="form-control" placeholder="Enter your email" required>
-              <button type="submit" class="btn btn-success">Subscribe</button>
-            </form>
-            <div id="newsletter-message" class="small"></div>
-            <div class="social-links d-flex gap-3">
-              <a href="#" class="text-light text-decoration-none">
-                <i class="fab fa-facebook-f"></i>
-              </a>
-              <a href="#" class="text-light text-decoration-none">
-                <i class="fab fa-twitter"></i>
-              </a>
-              <a href="#" class="text-light text-decoration-none">
-                <i class="fab fa-instagram"></i>
-              </a>
-              <a href="#" class="text-light text-decoration-none">
-                <i class="fab fa-linkedin-in"></i>
-              </a>
-            </div>
-          </div>
-        </div>
-      </div>
-    </footer>
-  </main>
-
-  <!-- Scroll to top button -->
-  <button class="scroll-to-top" id="scroll-to-top" aria-label="Scroll to top">
-    <i class="fas fa-chevron-up"></i>
-  </button>
-
-  <!-- Toast notification -->
-  <div class="toast" id="toast" role="alert" aria-live="assertive" aria-atomic="true">
-    <div class="toast-body"></div>
   </div>
+</nav>
 
-  <!-- Scripts -->
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-  <script src="js/config.js"></script>
-  <script src="app.js"></script>
-  <script>
-    // Initialize AOS animations
-    AOS.init({
-      duration: 800,
-      easing: 'ease-in-out',
-      once: true,
-      offset: 100
-    });
+<div class="container-fluid">
+  <div class="row">
+    <!-- Sidebar -->
+    <aside class="col-md-3 col-lg-2 bg-light border-end min-vh-100 p-3">
+      <h6 class="text-muted mb-3">Dashboard</h6>
+      <ul class="nav flex-column gap-2">
+        <li><a href="profile.html" class="nav-link"><i class="fas fa-user me-2"></i> Profile</a></li>
+        <li><a href="orders.html" class="nav-link"><i class="fas fa-box me-2"></i> Orders</a></li>
+        <li><a href="cart.html" class="nav-link"><i class="fas fa-shopping-cart me-2"></i> Cart</a></li>
+        <li><a href="wishlist.html" class="nav-link"><i class="fas fa-heart me-2"></i> Wishlist</a></li>
+        <li><a href="saved.html" class="nav-link"><i class="fas fa-bookmark me-2"></i> Saved</a></li>
+      </ul>
+    </aside>
 
-    // Scroll to top functionality
-    const scrollToTopBtn = document.getElementById('scroll-to-top');
-    window.addEventListener('scroll', () => {
-      if (window.pageYOffset > 300) {
-        scrollToTopBtn.classList.add('show');
-      } else {
-        scrollToTopBtn.classList.remove('show');
-      }
-    });
+    <!-- Main -->
+    <main class="col-md-9 col-lg-10 p-4">
+      <!-- Welcome -->
+      <div class="mb-4 animate__animated animate__fadeIn">
+        <h2 class="fw-bold">Hi, <span id="welcome-user">User</span> 👋</h2>
+        <p class="text-muted">Welcome to your professional dashboard. Manage your rentals and discover new cars.</p>
+      </div>
 
-    scrollToTopBtn.addEventListener('click', () => {
-      window.scrollTo({
-        top: 0,
-        behavior: 'smooth'
-      });
-    });
+      <!-- Quick Stats -->
+      <div class="row g-3 mb-4" data-aos="fade-up">
+        <div class="col-md-4"><div class="card text-center p-3 shadow-sm"><i class="fas fa-shopping-cart text-success fa-2x mb-2"></i><h6>Cart</h6><p id="stat-cart">0 items</p></div></div>
+        <div class="col-md-4"><div class="card text-center p-3 shadow-sm"><i class="fas fa-heart text-danger fa-2x mb-2"></i><h6>Wishlist</h6><p id="stat-wishlist">0 items</p></div></div>
+        <div class="col-md-4"><div class="card text-center p-3 shadow-sm"><i class="fas fa-bookmark text-warning fa-2x mb-2"></i><h6>Saved Cars</h6><p id="stat-saved">0 items</p></div></div>
+      </div>
 
-    // Smooth scrolling for anchor links
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-      anchor.addEventListener('click', function (e) {
-        e.preventDefault();
-        const target = document.querySelector(this.getAttribute('href'));
-        if (target) {
-          target.scrollIntoView({
-            behavior: 'smooth',
-            block: 'start'
-          });
-        }
-      });
-    });
+      <!-- Recommended -->
+      <div class="mb-4" data-aos="fade-up">
+        <h5 class="fw-bold">Recommended for You</h5>
+        <div class="row g-3" id="recommended-cars"></div>
+      </div>
 
-    // Newsletter form handling
-    const newsletterForm = document.getElementById('newsletter-form');
-    if (newsletterForm) {
-      newsletterForm.addEventListener('submit', function(e) {
-        e.preventDefault();
-        const email = this.querySelector('input[type="email"]').value;
-        const messageDiv = document.getElementById('newsletter-message');
-        
-        // Simple validation
-        if (!email || !email.includes('@')) {
-          messageDiv.textContent = 'Please enter a valid email address.';
-          messageDiv.style.color = '#dc3545';
-          return;
-        }
+      <!-- Recent Rentals -->
+      <div class="mb-4" data-aos="fade-up">
+        <h5 class="fw-bold">Recent Rentals</h5>
+        <ul class="list-group" id="recent-rentals"></ul>
+      </div>
+    </main>
+  </div>
+</div>
 
-        // Simulate subscription (replace with actual API call)
-        messageDiv.textContent = 'Thank you for subscribing to our newsletter!';
-        messageDiv.style.color = '#198754';
-        this.reset();
-        
-        // Clear message after 5 seconds
-        setTimeout(() => {
-          messageDiv.textContent = '';
-        }, 5000);
-      });
-    }
+<!-- Toast -->
+<div class="toast position-fixed bottom-0 end-0 m-3" id="toast"><div class="toast-body"></div></div>
 
-    // Initialize theme toggle
-    document.addEventListener('DOMContentLoaded', function() {
-      // This will be handled by app.js
-      updateGlobalCounts();
-    });
-  </script>
-  <script>
-    // Authentication check
-    document.addEventListener('DOMContentLoaded', function() {
-      const user = localStorage.getItem('user');
-      if (!user) {
-        window.location.href = 'login.html';
-      }
-    });
+<!-- Footer -->
+<footer class="bg-dark text-light text-center py-3">&copy; 2025 Silas Car Rentals. All Rights Reserved.</footer>
 
-    // Add logout button click handler to redirect to login page
-    document.getElementById('logout-button').addEventListener('click', function() {
-      localStorage.removeItem('user');
-      localStorage.removeItem('token');
-      history.replaceState(null, null, 'login.html');
-      window.location.href = 'login.html';
-    });
+<!-- JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+<script>
+AOS.init();
 
-    // Theme toggle functionality
-    const themeToggle = document.getElementById('theme-toggle');
-    const body = document.body;
+const get=(k)=>JSON.parse(localStorage.getItem(k))||[];
+const set=(k,v)=>localStorage.setItem(k,JSON.stringify(v));
 
-    // Load saved theme
-    const savedTheme = localStorage.getItem('theme') || 'light';
-    body.setAttribute('data-bs-theme', savedTheme);
-    themeToggle.textContent = savedTheme === 'dark' ? '☀️' : '🌙';
+function updateCounts(){
+ document.getElementById("cart-count").textContent=get("cart").length;
+ document.getElementById("wishlist-count").textContent=get("wishlist").length;
+ document.getElementById("saved-count").textContent=get("savedCars").length;
+ document.getElementById("stat-cart").textContent=`${get("cart").length} items`;
+ document.getElementById("stat-wishlist").textContent=`${get("wishlist").length} items`;
+ document.getElementById("stat-saved").textContent=`${get("savedCars").length} items`;
+}
 
-    // Toggle theme
-    themeToggle.addEventListener('click', function() {
-      const currentTheme = body.getAttribute('data-bs-theme');
-      const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+// Personalized welcome
+document.addEventListener("DOMContentLoaded",()=>{
+ if(!localStorage.getItem("user")) return window.location="login.html";
+ let user=JSON.parse(localStorage.getItem("user"));
+ let name=user?.name || "User";
+ document.getElementById("user-name").textContent=name;
+ document.getElementById("welcome-user").textContent=name;
+ updateCounts();
+});
 
-      body.setAttribute('data-bs-theme', newTheme);
-      themeToggle.textContent = newTheme === 'dark' ? '☀️' : '🌙';
+// Logout
+document.getElementById("logout-button").addEventListener("click",()=>{
+ localStorage.clear(); window.location="login.html";
+});
 
-      // Save theme preference
-      localStorage.setItem('theme', newTheme);
-    });
-
-    // Car data for the featured vehicles
-    const carsData = {
-      'mercedes-c300': {
-        _id: 'mercedes-c300',
-        make: 'Mercedes-Benz',
-        model: 'C300',
-        price: 45000,
-        image: 'https://vehicle-images.dealerinspire.com/a1a7-11002896/W1KAF4GB4SR252999/00f2d6ad30e089cb5c02791d58c3af6a.jpg',
-        transmission: 'Automatic',
-        category: 'Premium',
-        seats: 4
-      },
-      'toyota-camry': {
-        _id: 'toyota-camry',
-        make: 'Toyota',
-        model: 'Camry 2023',
-        price: 25000,
-        image: 'https://images.unsplash.com/photo-1544636331-e26879cd4d9b?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80',
-        transmission: 'Automatic',
-        category: 'Executive',
-        seats: 5
-      },
-      'bmw-x5': {
-        _id: 'bmw-x5',
-        make: 'BMW',
-        model: 'X5 Luxury',
-        price: 65000,
-        image: 'https://images.unsplash.com/photo-1549399542-7e3f8b79c341?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80',
-        transmission: 'Automatic',
-        category: 'Luxury',
-        seats: 7
-      }
-    };
-
-    // LocalStorage helpers
-    function getStorage(key) {
-      try {
-        return JSON.parse(localStorage.getItem(key)) || [];
-      } catch {
-        return [];
-      }
-    }
-
-    function setStorage(key, value) {
-      localStorage.setItem(key, JSON.stringify(value));
-    }
-
-    // Update counts
-    function updateGlobalCounts() {
-      const cartCount = document.getElementById('cart-count');
-      const savedCount = document.getElementById('saved-count');
-
-      if (cartCount) cartCount.textContent = getStorage('cart').length;
-      if (savedCount) savedCount.textContent = getStorage('savedCars').length;
-    }
-
-    // Toast notification
-    function showToast(message, duration = 3000) {
-      const toast = document.getElementById('toast');
-      if (!toast) return;
-
-      toast.innerHTML = `<div class="toast-body">${message}</div>`;
-      toast.classList.add('show');
-
-      setTimeout(() => {
-        toast.classList.remove('show');
-      }, duration);
-    }
-
-    // Add to cart functionality
-    function addToCart(carId) {
-      const car = carsData[carId];
-      if (!car) return;
-
-      const cart = getStorage('cart');
-      if (cart.find(c => c._id === car._id)) {
-        showToast('Car already in cart', 3000);
-        return;
-      }
-
-      cart.push(car);
-      setStorage('cart', cart);
-      updateGlobalCounts();
-      showToast('Added to cart successfully!');
-    }
-
-    // Add to wishlist functionality
-    function addToWishlist(carId) {
-      const car = carsData[carId];
-      if (!car) return;
-
-      const wishlist = getStorage('wishlist');
-      if (wishlist.find(c => c._id === car._id)) {
-        showToast('Car already in wishlist', 3000);
-        return;
-      }
-
-      wishlist.push(car);
-      setStorage('wishlist', wishlist);
-      updateGlobalCounts();
-      showToast('Added to wishlist!');
-
-      // Update button appearance
-      const button = document.getElementById(`wishlist-${carId}`);
-      if (button) {
-        button.innerHTML = '<i class="fas fa-heart"></i>';
-        button.classList.add('active');
-      }
-    }
-
-    // Event listeners for buttons
-    document.addEventListener('DOMContentLoaded', function() {
-      // Add to cart buttons
-      document.getElementById('add-to-cart-mercedes-c300').addEventListener('click', () => addToCart('mercedes-c300'));
-      document.getElementById('add-to-cart-toyota-camry').addEventListener('click', () => addToCart('toyota-camry'));
-      document.getElementById('add-to-cart-bmw-x5').addEventListener('click', () => addToCart('bmw-x5'));
-
-      // Wishlist buttons
-      document.getElementById('wishlist-mercedes-c300').addEventListener('click', () => addToWishlist('mercedes-c300'));
-      document.getElementById('wishlist-toyota-camry').addEventListener('click', () => addToWishlist('toyota-camry'));
-      document.getElementById('wishlist-bmw-x5').addEventListener('click', () => addToWishlist('bmw-x5'));
-    });
-  </script>
+// Theme toggle
+const themeBtn=document.getElementById("theme-toggle");
+themeBtn.addEventListener("click",()=>{
+ let body=document.body;
+ let newTheme=body.getAttribute("data-bs-theme")==="dark"?"light":"dark";
+ body.setAttribute("data-bs-theme",newTheme);
+ themeBtn.innerHTML=newTheme==="dark"?'<i class="fas fa-sun"></i>':'<i class="fas fa-moon"></i>';
+ localStorage.setItem("theme",newTheme);
+});
+const savedTheme=localStorage.getItem("theme")||"light";
+document.body.setAttribute("data-bs-theme",savedTheme);
+themeBtn.innerHTML=savedTheme==="dark"?'<i class="fas fa-sun"></i>':'<i class="fas fa-moon"></i>';
+</script>
 </body>
 </html>
