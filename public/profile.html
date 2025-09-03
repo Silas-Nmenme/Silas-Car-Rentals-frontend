@@ -70,6 +70,22 @@
                 <p><strong>Status:</strong> <span id="display-status">Verified</span></p>
               </div>
             </div>
+            <div class="row">
+              <div class="col-md-6">
+                <p><strong>User ID:</strong> <span id="display-user-id">N/A</span></p>
+              </div>
+              <div class="col-md-6">
+                <p><strong>Admin Status:</strong> <span id="display-admin-status">User</span></p>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-6">
+                <p><strong>Profile Created:</strong> <span id="display-created-date">N/A</span></p>
+              </div>
+              <div class="col-md-6">
+                <!-- Placeholder for future use -->
+              </div>
+            </div>
           </div>
 
           <!-- Edit Profile Button -->
@@ -142,6 +158,10 @@ async function loadProfile() {
     document.getElementById("display-email").textContent = user.email;
     document.getElementById("display-phone").textContent = user.phone || "N/A";
     document.getElementById("display-status").textContent = user.isVerified ? "Verified" : "Unverified";
+
+    document.getElementById("display-user-id").textContent = user.id || "N/A";
+    document.getElementById("display-admin-status").textContent = user.role === 'admin' ? "Admin" : "User";
+    document.getElementById("display-created-date").textContent = user.createdAt ? new Date(user.createdAt).toLocaleDateString() : "N/A";
 
     renderAvatar(user);
   } catch (err) {
