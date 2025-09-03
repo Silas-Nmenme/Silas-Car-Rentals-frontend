@@ -141,8 +141,8 @@
 AOS.init();
 
 const API_BASE = "https://techyjaunt-auth-go43.onrender.com/api/users";
-const token = localStorage.getItem("token");
-const get = (k)=>JSON.parse(localStorage.getItem(k))||[];
+
+const get=(k)=>JSON.parse(localStorage.getItem(k))||[];
 
 // Sidebar links config
 const sidebarLinks = [
@@ -164,7 +164,7 @@ function renderSidebar() {
   document.getElementById("sidebar-links-desktop").innerHTML=linksHtml;
 }
 
-// Cars array (sample data)
+// Cars array
 const cars = [
   { name:"Mercedes-Benz C300", price:45000, image:"https://vehicle-images.dealerinspire.com/a1a7-11002896/W1KAF4GB4SR252999/00f2d6ad30e089cb5c02791d58c3af6a.jpg", tags:["Automatic","Premium","4 Seats"], available:true },
   { name:"Toyota Camry 2023", price:25000, image:"https://images.unsplash.com/photo-1549399542-7e3f8b79c341?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80", tags:["Automatic","Executive","5 Seats"], available:true },
@@ -179,6 +179,7 @@ function renderRecommendedCars() {
     container.innerHTML="<p class='text-muted'>No cars available right now.</p>";
     return;
   }
+
   let wishlist=get("wishlist");
   let savedCars=get("savedCars");
 
@@ -296,71 +297,82 @@ function addRecentRental(carName){
 
 // Counts
 function updateCounts(){
-  document.getElementById("cart-count").textContent=get("cart").length;
-  document.getElementById("wishlist-count").textContent=get("wishlist").length;
-  document.getElementById("saved-count").textContent=get("savedCars").length;
-  document.getElementById("stat-cart").textContent=`${get("cart").length} items`;
-  document.getElementById("stat-wishlist").textContent=`${get("wishlist").length} items`;
-  document.getElementById("stat-saved").textContent=`${get("savedCars").length} items`;
+ document.getElementById("cart-count").textContent=get("cart").length;
+ document.getElementById("wishlist-count").textContent=get("wishlist").length;
+ document.getElementById("saved-count").textContent=get("savedCars").length;
+ document.getElementById("stat-cart").textContent=`${get("cart").length} items`;
+ document.getElementById("stat-wishlist").textContent=`${get("wishlist").length} items`;
+ document.getElementById("stat-saved").textContent=`${get("savedCars").length} items`;
 }
 
-// Personalized welcome with avatar + initials
-document.addEventListener("DOMContentLoaded", async () => {
-  if (!token) { window.location="login.html"; return; }
-
-  let user = JSON.parse(localStorage.getItem("user") || "{}");
-
-  try {
-    const res = await fetch(`${API_BASE}/profile`, {
-      headers: { Authorization: `Bearer ${token}` },
-      credentials: "include"
-    });
-    if (res.ok) {
-      const data = await res.json();
-      user = data.user;
-      localStorage.setItem("user", JSON.stringify(user));
+  // Personalized welcome with avatar + initials
+  document.addEventListener("DOMContentLoaded", async () => {
+    const userJson = localStorage.getItem("user");
+    if (!userJson) {
+      window.location = "login.html";
+      return;
     }
-  } catch (err) {
-    console.error("Failed to fetch profile:", err);
-  }
 
-  let fullName = user?.name?.trim() || user?.email?.split("@")[0] || "User";
-  let firstName = fullName.split(" ")[0];
-  let initials = fullName.split(" ").map(n=>n[0]).join("").substring(0,2).toUpperCase();
+    let user = JSON.parse(userJson);
 
-  document.getElementById("user-name").textContent = fullName;
-  document.getElementById("welcome-user").textContent = firstName;
+    // Fetch latest profile
+    try {
+      const res = await fetch(`${API_BASE}/profile`, {credentials: "include"});
+      if (res.ok) {
+        const data = await res.json();
+        user = data.user;
+        localStorage.setItem("user", JSON.stringify(user));
+      }
+    } catch (err) {
+      console.error("Failed to fetch profile:", err);
+    }
 
-  const avatarUrl = user?.profilePicture?.url || user?.avatar || null;
-  if (avatarUrl) {
-    document.getElementById("nav-avatar").innerHTML =
-      `<img src="${avatarUrl}" class="rounded-circle" style="width:32px;height:32px;object-fit:cover;">`;
-    document.getElementById("welcome-avatar").innerHTML =
-      `<img src="${avatarUrl}" class="rounded-circle border" style="width:60px;height:60px;object-fit:cover;">`;
-  } else {
-    document.getElementById("nav-avatar").textContent = initials;
-    document.getElementById("welcome-avatar").textContent = initials;
-  }
+    let fullName = user?.name?.trim() || user?.email?.split("@")[0] || "User";
+    let firstName = fullName.split(" ")[0]; // First word only
+    let initials = fullName.split(" ")
+      .map(n => n[0])
+      .join("")
+      .substring(0, 2)
+      .toUpperCase();
 
-  renderSidebar();
-  renderRecommendedCars();
-  renderRecentRentals();
-  updateCounts();
-});
+    // Navbar profile (full name)
+    document.getElementById("user-name").textContent = fullName;
+
+    // Dashboard greeting (first name only)
+    document.getElementById("welcome-user").textContent = firstName;
+
+    // Avatar handling (image or initials fallback)
+    if (user?.profilePicture?.url || user?.avatar) {
+      const imgSrc = user?.profilePicture?.url || user?.avatar;
+      document.getElementById("nav-avatar").innerHTML =
+        `<img src="${imgSrc}" class="rounded-circle" style="width:32px;height:32px;object-fit:cover;">`;
+      document.getElementById("welcome-avatar").innerHTML =
+        `<img src="${imgSrc}" class="rounded-circle border" style="width:60px;height:60px;object-fit:cover;">`;
+    } else {
+      document.getElementById("nav-avatar").textContent = initials;
+      document.getElementById("welcome-avatar").textContent = initials;
+    }
+
+    renderSidebar();
+    renderRecommendedCars();
+    renderRecentRentals();
+    updateCounts();
+  });
+
 
 // Logout
 document.getElementById("logout-button").addEventListener("click",()=>{
-  localStorage.clear(); window.location="login.html";
+ localStorage.clear(); window.location="login.html";
 });
 
 // Theme toggle
 const themeBtn=document.getElementById("theme-toggle");
 themeBtn.addEventListener("click",()=>{
-  let body=document.body;
-  let newTheme=body.getAttribute("data-bs-theme")==="dark"?"light":"dark";
-  body.setAttribute("data-bs-theme",newTheme);
-  themeBtn.innerHTML=newTheme==="dark"?'<i class="fas fa-sun"></i>':'<i class="fas fa-moon"></i>';
-  localStorage.setItem("theme",newTheme);
+ let body=document.body;
+ let newTheme=body.getAttribute("data-bs-theme")==="dark"?"light":"dark";
+ body.setAttribute("data-bs-theme",newTheme);
+ themeBtn.innerHTML=newTheme==="dark"?'<i class="fas fa-sun"></i>':'<i class="fas fa-moon"></i>';
+ localStorage.setItem("theme",newTheme);
 });
 const savedTheme=localStorage.getItem("theme")||"light";
 document.body.setAttribute("data-bs-theme",savedTheme);
