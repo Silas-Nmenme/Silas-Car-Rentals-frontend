@@ -39,7 +39,9 @@
         <button class="btn btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown"><i class="fas fa-bell"></i></button>
         <ul class="dropdown-menu dropdown-menu-end" id="notifications">
           <li class="dropdown-header fw-bold">Notifications</li>
-          <li><hr class="dropdown-divider"></li>
+          <li><a class="dropdown-item" href="#">🚗 New BMW X5 added to fleet</a></li>
+          <li><a class="dropdown-item" href="#">🔥 20% off luxury rentals this week</a></li>
+          <li><a class="dropdown-item" href="#">✅ Your booking was confirmed</a></li>
         </ul>
       </div>
       <!-- Counters -->
@@ -83,26 +85,14 @@
       </div>
       <div class="offcanvas-body p-3">
         <h6 class="text-muted mb-3">Dashboard</h6>
-        <ul class="nav flex-column gap-2">
-          <li><a href="profile.html" class="nav-link"><i class="fas fa-user me-2"></i> Profile</a></li>
-          <li><a href="orders.html" class="nav-link"><i class="fas fa-box me-2"></i> Orders</a></li>
-          <li><a href="cart.html" class="nav-link"><i class="fas fa-shopping-cart me-2"></i> Cart</a></li>
-          <li><a href="wishlist.html" class="nav-link"><i class="fas fa-heart me-2"></i> Wishlist</a></li>
-          <li><a href="saved.html" class="nav-link"><i class="fas fa-bookmark me-2"></i> Saved</a></li>
-        </ul>
+        <ul class="nav flex-column gap-2" id="sidebar-links"></ul>
       </div>
     </div>
 
     <!-- Sidebar Desktop -->
     <aside class="col-md-3 col-lg-2 bg-light border-end min-vh-100 p-3 d-none d-lg-block">
       <h6 class="text-muted mb-3">Dashboard</h6>
-      <ul class="nav flex-column gap-2">
-        <li><a href="profile.html" class="nav-link"><i class="fas fa-user me-2"></i> Profile</a></li>
-        <li><a href="orders.html" class="nav-link"><i class="fas fa-box me-2"></i> Orders</a></li>
-        <li><a href="cart.html" class="nav-link"><i class="fas fa-shopping-cart me-2"></i> Cart</a></li>
-        <li><a href="wishlist.html" class="nav-link"><i class="fas fa-heart me-2"></i> Wishlist</a></li>
-        <li><a href="saved.html" class="nav-link"><i class="fas fa-bookmark me-2"></i> Saved</a></li>
-      </ul>
+      <ul class="nav flex-column gap-2" id="sidebar-links-desktop"></ul>
     </aside>
 
     <!-- Main -->
@@ -152,6 +142,119 @@ AOS.init();
 
 const get=(k)=>JSON.parse(localStorage.getItem(k))||[];
 
+// Sidebar links config
+const sidebarLinks = [
+  {href:"profile.html", icon:"fa-user", text:"Profile"},
+  {href:"orders.html", icon:"fa-box", text:"Orders"},
+  {href:"cart.html", icon:"fa-shopping-cart", text:"Cart"},
+  {href:"wishlist.html", icon:"fa-heart", text:"Wishlist"},
+  {href:"saved.html", icon:"fa-bookmark", text:"Saved"}
+];
+
+// Render sidebar with active state
+function renderSidebar() {
+  const current = window.location.pathname.split("/").pop();
+  const linksHtml = sidebarLinks.map(l=>{
+    const active = current===l.href ? "active fw-bold text-success" : "";
+    return `<li><a href="${l.href}" class="nav-link ${active}"><i class="fas ${l.icon} me-2"></i>${l.text}</a></li>`;
+  }).join("");
+  document.getElementById("sidebar-links").innerHTML=linksHtml;
+  document.getElementById("sidebar-links-desktop").innerHTML=linksHtml;
+}
+
+// Cars array
+const cars = [
+  {
+    name: "Mercedes-Benz C300",
+    price: 45000,
+    image: "https://vehicle-images.dealerinspire.com/a1a7-11002896/W1KAF4GB4SR252999/00f2d6ad30e089cb5c02791d58c3af6a.jpg",
+    tags: ["Automatic", "Premium", "4 Seats"],
+    available: true
+  },
+  {
+    name: "Toyota Camry 2023",
+    price: 25000,
+    image: "https://images.unsplash.com/photo-1549399542-7e3f8b79c341?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+    tags: ["Automatic", "Executive", "5 Seats"],
+    available: true
+  },
+  {
+    name: "BMW X5 Luxury",
+    price: 65000,
+    image: "https://images.unsplash.com/photo-1544636331-e26879cd4d9b?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+    tags: ["Automatic", "Luxury", "7 Seats"],
+    available: false
+  }
+];
+
+// Render Recommended Cars
+function renderRecommendedCars() {
+  const container=document.getElementById("recommended-cars");
+  container.innerHTML="";
+  if(!cars.length){
+    container.innerHTML="<p class='text-muted'>No cars available right now.</p>";
+    return;
+  }
+  cars.forEach((car,i)=>{
+    const badge=car.available?`<span class="badge bg-success">Available</span>`:`<span class="badge bg-warning">Limited</span>`;
+    const tags=car.tags.map(t=>`<span class="badge bg-light text-dark me-1">${t}</span>`).join("");
+    container.innerHTML+=`
+      <div class="col-md-4" data-aos="fade-up" data-aos-delay="${i*100}">
+        <div class="card h-100 shadow-sm">
+          <div class="position-relative">
+            <img src="${car.image}" class="card-img-top" alt="${car.name}" loading="lazy">
+            <div class="position-absolute top-0 end-0 m-2">${badge}</div>
+          </div>
+          <div class="card-body">
+            <h6 class="fw-bold">${car.name}</h6>
+            <p class="text-success fw-bold">₦${car.price.toLocaleString()}/day</p>
+            <div class="mb-2">${tags}</div>
+            <button class="btn btn-sm btn-success w-100" onclick="addToCart('${car.name}')">
+              <i class="fas fa-shopping-cart me-1"></i> Add to Cart
+            </button>
+          </div>
+        </div>
+      </div>`;
+  });
+}
+
+// Add to cart
+function addToCart(carName){
+  let cart=get("cart"); cart.push(carName);
+  localStorage.setItem("cart",JSON.stringify(cart));
+  updateCounts();
+  addRecentRental(carName);
+  showToast(`${carName} added to cart ✅`);
+}
+
+// Show toast
+function showToast(msg){
+  const toast=document.getElementById("toast");
+  toast.querySelector(".toast-body").textContent=msg;
+  new bootstrap.Toast(toast).show();
+}
+
+// Recent Rentals
+function renderRecentRentals(){
+  const list=document.getElementById("recent-rentals");
+  const rentals=get("recentRentals");
+  if(!rentals.length){
+    list.innerHTML="<li class='list-group-item text-muted'>No rentals yet.</li>";
+    return;
+  }
+  list.innerHTML="";
+  rentals.slice(-5).reverse().forEach(r=>{
+    list.innerHTML+=`<li class="list-group-item"><i class="fas fa-car text-success me-2"></i>${r}</li>`;
+  });
+}
+function addRecentRental(carName){
+  let rentals=get("recentRentals");
+  rentals.push(carName);
+  localStorage.setItem("recentRentals",JSON.stringify(rentals));
+  renderRecentRentals();
+}
+
+// Counts
 function updateCounts(){
  document.getElementById("cart-count").textContent=get("cart").length;
  document.getElementById("wishlist-count").textContent=get("wishlist").length;
@@ -169,11 +272,9 @@ document.addEventListener("DOMContentLoaded",()=>{
  let firstName=fullName.split(" ")[0];
  let initials=fullName.split(" ").map(n=>n[0]).join("").substring(0,2).toUpperCase();
 
- // Greeting
  document.getElementById("user-name").textContent=fullName;
  document.getElementById("welcome-user").textContent=firstName;
 
- // Avatars (fallback to initials if no avatar URL)
  if(user?.avatar){
    document.getElementById("nav-avatar").innerHTML=`<img src="${user.avatar}" class="rounded-circle" style="width:32px;height:32px;object-fit:cover;">`;
    document.getElementById("welcome-avatar").innerHTML=`<img src="${user.avatar}" class="rounded-circle border" style="width:60px;height:60px;object-fit:cover;">`;
@@ -182,6 +283,9 @@ document.addEventListener("DOMContentLoaded",()=>{
    document.getElementById("welcome-avatar").textContent=initials;
  }
 
+ renderSidebar();
+ renderRecommendedCars();
+ renderRecentRentals();
  updateCounts();
 });
 
