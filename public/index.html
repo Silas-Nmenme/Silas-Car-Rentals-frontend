@@ -75,6 +75,9 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/hover.css/2.3.1/css/hover-min.css" />
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate-css-grid@1.2.1/animate-css-grid.min.css" />
 
+  <!-- Google Maps API -->
+  <script async defer src="https://maps.googleapis.com/maps/api/js?key=YOUR_GOOGLE_MAPS_API_KEY&libraries=places"></script>
+
   <link rel="preconnect" href="https://techyjaunt-auth-go43.onrender.com" />
   <link rel="dns-prefetch" href="https://techyjaunt-auth-go43.onrender.com" />
 
@@ -1868,6 +1871,185 @@
           <p class="feature-description">
             Well-maintained, latest model vehicles for a superior driving experience.
           </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Weather Section -->
+  <section class="services-section" id="weather">
+    <div class="container">
+      <h2 class="section-title">Weather Conditions Across Nigeria</h2>
+      <p class="text-center mb-5" style="color: var(--light-muted); font-size: 1.1rem; max-width: 600px; margin: 0 auto;">
+        Check current weather conditions in major Nigerian cities to plan your perfect rental journey.
+      </p>
+
+      <div class="weather-grid" id="weather-grid">
+        <div class="weather-card">
+          <div class="weather-header">
+            <h3>Lagos</h3>
+            <div class="weather-icon">
+              <i class="fas fa-sun"></i>
+            </div>
+          </div>
+          <div class="weather-info">
+            <div class="temperature">
+              <span class="temp-value">--</span>
+              <span class="temp-unit">°C</span>
+            </div>
+            <div class="weather-details">
+              <p class="weather-description">Loading...</p>
+              <div class="weather-stats">
+                <span class="humidity"><i class="fas fa-tint"></i> --%</span>
+                <span class="wind"><i class="fas fa-wind"></i> -- km/h</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="weather-card">
+          <div class="weather-header">
+            <h3>Abuja</h3>
+            <div class="weather-icon">
+              <i class="fas fa-cloud"></i>
+            </div>
+          </div>
+          <div class="weather-info">
+            <div class="temperature">
+              <span class="temp-value">--</span>
+              <span class="temp-unit">°C</span>
+            </div>
+            <div class="weather-details">
+              <p class="weather-description">Loading...</p>
+              <div class="weather-stats">
+                <span class="humidity"><i class="fas fa-tint"></i> --%</span>
+                <span class="wind"><i class="fas fa-wind"></i> -- km/h</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="weather-card">
+          <div class="weather-header">
+            <h3>Port Harcourt</h3>
+            <div class="weather-icon">
+              <i class="fas fa-cloud-rain"></i>
+            </div>
+          </div>
+          <div class="weather-info">
+            <div class="temperature">
+              <span class="temp-value">--</span>
+              <span class="temp-unit">°C</span>
+            </div>
+            <div class="weather-details">
+              <p class="weather-description">Loading...</p>
+              <div class="weather-stats">
+                <span class="humidity"><i class="fas fa-tint"></i> --%</span>
+                <span class="wind"><i class="fas fa-wind"></i> -- km/h</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="weather-card">
+          <div class="weather-header">
+            <h3>Kano</h3>
+            <div class="weather-icon">
+              <i class="fas fa-sun"></i>
+            </div>
+          </div>
+          <div class="weather-info">
+            <div class="temperature">
+              <span class="temp-value">--</span>
+              <span class="temp-unit">°C</span>
+            </div>
+            <div class="weather-details">
+              <p class="weather-description">Loading...</p>
+              <div class="weather-stats">
+                <span class="humidity"><i class="fas fa-tint"></i> --%</span>
+                <span class="wind"><i class="fas fa-wind"></i> -- km/h</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="weather-notice">
+        <p class="text-center" style="color: var(--light-muted); font-size: 0.9rem; margin-top: 2rem;">
+          <i class="fas fa-info-circle me-2"></i>
+          Weather data is updated every 30 minutes. Plan your trips accordingly for optimal comfort.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Map Section -->
+  <section class="services-section" id="locations">
+    <div class="container">
+      <h2 class="section-title">Our Locations Across Nigeria</h2>
+      <p class="text-center mb-5" style="color: var(--light-muted); font-size: 1.1rem; max-width: 600px; margin: 0 auto;">
+        Find our rental locations and service points nationwide. Click on markers for more details.
+      </p>
+
+      <div class="map-container">
+        <div id="map" style="width: 100%; height: 500px; border-radius: 16px; box-shadow: var(--light-shadow);"></div>
+      </div>
+
+      <div class="locations-grid" style="margin-top: 3rem;">
+        <div class="location-card">
+          <div class="location-icon">
+            <i class="fas fa-map-marker-alt"></i>
+          </div>
+          <div class="location-info">
+            <h4>Lagos Office</h4>
+            <p>Victoria Island, Lagos</p>
+            <p class="location-details">24/7 Service • Airport Pickup Available</p>
+            <a href="tel:+2348107586167" class="location-phone">
+              <i class="fas fa-phone"></i> +234 810 758 6167
+            </a>
+          </div>
+        </div>
+
+        <div class="location-card">
+          <div class="location-icon">
+            <i class="fas fa-map-marker-alt"></i>
+          </div>
+          <div class="location-info">
+            <h4>Abuja Office</h4>
+            <p>Wuse II, Abuja</p>
+            <p class="location-details">Business District • Executive Services</p>
+            <a href="tel:+2348107586167" class="location-phone">
+              <i class="fas fa-phone"></i> +234 810 758 6167
+            </a>
+          </div>
+        </div>
+
+        <div class="location-card">
+          <div class="location-icon">
+            <i class="fas fa-map-marker-alt"></i>
+          </div>
+          <div class="location-info">
+            <h4>Port Harcourt Office</h4>
+            <p>GRA Phase 2, Port Harcourt</p>
+            <p class="location-details">Oil & Gas Hub • 24/7 Support</p>
+            <a href="tel:+2348107586167" class="location-phone">
+              <i class="fas fa-phone"></i> +234 810 758 6167
+            </a>
+          </div>
+        </div>
+
+        <div class="location-card">
+          <div class="location-icon">
+            <i class="fas fa-map-marker-alt"></i>
+          </div>
+          <div class="location-info">
+            <h4>Kano Office</h4>
+            <p>Nasarawa GRA, Kano</p>
+            <p class="location-details">Northern Region • Airport Services</p>
+            <a href="tel:+2348107586167" class="location-phone">
+              <i class="fas fa-phone"></i> +234 810 758 6167
+            </a>
+          </div>
         </div>
       </div>
     </div>
