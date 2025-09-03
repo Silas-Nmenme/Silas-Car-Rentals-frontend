@@ -306,16 +306,11 @@
   <!-- Bootstrap JS CDN -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
   <script src="booking-fix.js"></script>
+  <script src="count-updates.js"></script>
   
   <script>
     function getStorage(key) { return JSON.parse(localStorage.getItem(key)) || []; }
     function setStorage(key, value) { localStorage.setItem(key, JSON.stringify(value)); }
-    
-    function updateCounts() {
-      document.getElementById("cart-count").textContent = getStorage("cart").length;
-      document.getElementById("wishlist-count").textContent = getStorage("wishlist").length;
-      document.getElementById("saved-count").textContent = getStorage("savedCars").length;
-    }
     
     function showToast(msg, type = 'info', ms = 3000) {
       const toastEl = document.getElementById('toast');
