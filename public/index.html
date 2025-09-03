@@ -2199,6 +2199,11 @@
           body: JSON.stringify({ email }),
         });
 
+        if (response.status === 409) {
+          // Email already subscribed
+          return { message: 'Email already subscribed', alreadySubscribed: true };
+        }
+
         if (!response.ok) {
           throw new Error('Subscription failed');
         }
@@ -2233,7 +2238,11 @@
         }
         try {
           const result = await subscribeNewsletter(email);
-          showToast("Successfully subscribed to newsletter!", "success");
+          if (result.alreadySubscribed) {
+            showToast("You're already subscribed to our newsletter!", "info");
+          } else {
+            showToast("Successfully subscribed to newsletter!", "success");
+          }
         } catch (error) {
           showToast("Failed to subscribe. Please try again.", "error");
         }
