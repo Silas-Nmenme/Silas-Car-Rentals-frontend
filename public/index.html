@@ -1991,6 +1991,15 @@
             <a href="https://wa.link/c73sw8" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a>
           </div>
         </div>
+
+        <div class="footer-section">
+          <h3>Newsletter</h3>
+          <p>Subscribe to our newsletter for the latest deals and updates.</p>
+          <div class="input-group mb-3">
+            <input type="email" class="form-control" id="newsletter-email" placeholder="Enter your email" aria-label="Email for newsletter">
+            <button class="btn btn-success" type="button" id="newsletter-subscribe">Subscribe</button>
+          </div>
+        </div>
       </div>
 
       <div style="text-align: center; padding-top: 2rem; border-top: 1px solid rgba(255,255,255,0.1);">
@@ -2179,6 +2188,29 @@
       }
     }
 
+    // Newsletter subscription
+    async function subscribeNewsletter(email) {
+      try {
+        const response = await fetch('https://techyjaunt-auth-go43.onrender.com/newsletter/subscribe', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ email }),
+        });
+
+        if (!response.ok) {
+          throw new Error('Subscription failed');
+        }
+
+        const data = await response.json();
+        return data;
+      } catch (error) {
+        console.error('Newsletter subscription error:', error);
+        throw error;
+      }
+    }
+
     // Initialize all functionality
     document.addEventListener('DOMContentLoaded', () => {
       initThemeToggle();
@@ -2187,6 +2219,25 @@
       initSmoothScrolling();
       initContactForm();
       setCurrentYear();
+
+      // Newsletter subscription event listener
+      document.getElementById("newsletter-subscribe").addEventListener("click", async () => {
+        const email = document.getElementById("newsletter-email").value.trim();
+        if (!email) {
+          showToast("Please enter a valid email address.", "warning");
+          return;
+        }
+        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+          showToast("Please enter a valid email address.", "warning");
+          return;
+        }
+        try {
+          const result = await subscribeNewsletter(email);
+          showToast("Successfully subscribed to newsletter!", "success");
+        } catch (error) {
+          showToast("Failed to subscribe. Please try again.", "error");
+        }
+      });
     });
 
     // Add loading animation to page

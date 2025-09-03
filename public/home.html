@@ -566,8 +566,8 @@
             <div class="row justify-content-center">
               <div class="col-md-6">
                 <div class="input-group">
-                  <input type="email" class="form-control" placeholder="Enter your email" aria-label="Email for newsletter">
-                  <button class="btn btn-light" type="button">Subscribe</button>
+          <input type="email" class="form-control" id="home-newsletter-email" placeholder="Enter your email" aria-label="Email for newsletter">
+          <button class="btn btn-light" type="button" id="home-newsletter-subscribe">Subscribe</button>
                 </div>
               </div>
             </div>
@@ -947,6 +947,25 @@ function updateCounts(){
 
     // Add event listener for search button
     document.getElementById("search-btn").addEventListener("click", searchCars);
+
+    // Newsletter subscription
+    document.getElementById("home-newsletter-subscribe").addEventListener("click", async () => {
+      const email = document.getElementById("home-newsletter-email").value.trim();
+      if (!email) {
+        showToast("Please enter a valid email address.");
+        return;
+      }
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        showToast("Please enter a valid email address.");
+        return;
+      }
+      try {
+        const result = await subscribeNewsletter(email);
+        showToast("Successfully subscribed to newsletter!");
+      } catch (error) {
+        showToast("Failed to subscribe. Please try again.");
+      }
+    });
   });
 
 
