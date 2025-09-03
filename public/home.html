@@ -209,7 +209,7 @@
           <div class="col-md-4">
             <div class="card car-showcase h-100" data-aos="zoom-in" data-aos-delay="100">
               <div class="position-relative">
-                <img src="https://images.unsplash.com/photo-1549399542-7e3f8b79c341?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" class="card-img-top" alt="Toyota Camry Executive Sedan">
+                <img src="https://images.unsplash.com/photo-1544636331-e26879cd4d9b?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" class="card-img-top" alt="Toyota Camry Executive Sedan">
                 <div class="position-absolute top-0 end-0 m-3">
                   <span class="badge bg-success px-3 py-2">Available</span>
                 </div>
@@ -238,7 +238,7 @@
           <div class="col-md-4">
             <div class="card car-showcase h-100" data-aos="zoom-in" data-aos-delay="200">
               <div class="position-relative">
-                <img src="https://images.unsplash.com/photo-1544636331-e26879cd4d9b?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" class="card-img-top" alt="BMW X5 Luxury SUV">
+                <img src="https://images.unsplash.com/photo-1549399542-7e3f8b79c341?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" class="card-img-top" alt="BMW X5 Luxury SUV">
                 <div class="position-absolute top-0 end-0 m-3">
                   <span class="badge bg-warning px-3 py-2">Limited</span>
                 </div>
@@ -571,6 +571,129 @@
 
       // Save theme preference
       localStorage.setItem('theme', newTheme);
+    });
+
+    // Car data for the featured vehicles
+    const carsData = {
+      'mercedes-c300': {
+        _id: 'mercedes-c300',
+        make: 'Mercedes-Benz',
+        model: 'C300',
+        price: 45000,
+        image: 'https://vehicle-images.dealerinspire.com/a1a7-11002896/W1KAF4GB4SR252999/00f2d6ad30e089cb5c02791d58c3af6a.jpg',
+        transmission: 'Automatic',
+        category: 'Premium',
+        seats: 4
+      },
+      'toyota-camry': {
+        _id: 'toyota-camry',
+        make: 'Toyota',
+        model: 'Camry 2023',
+        price: 25000,
+        image: 'https://images.unsplash.com/photo-1544636331-e26879cd4d9b?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80',
+        transmission: 'Automatic',
+        category: 'Executive',
+        seats: 5
+      },
+      'bmw-x5': {
+        _id: 'bmw-x5',
+        make: 'BMW',
+        model: 'X5 Luxury',
+        price: 65000,
+        image: 'https://images.unsplash.com/photo-1549399542-7e3f8b79c341?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80',
+        transmission: 'Automatic',
+        category: 'Luxury',
+        seats: 7
+      }
+    };
+
+    // LocalStorage helpers
+    function getStorage(key) {
+      try {
+        return JSON.parse(localStorage.getItem(key)) || [];
+      } catch {
+        return [];
+      }
+    }
+
+    function setStorage(key, value) {
+      localStorage.setItem(key, JSON.stringify(value));
+    }
+
+    // Update counts
+    function updateGlobalCounts() {
+      const cartCount = document.getElementById('cart-count');
+      const savedCount = document.getElementById('saved-count');
+
+      if (cartCount) cartCount.textContent = getStorage('cart').length;
+      if (savedCount) savedCount.textContent = getStorage('savedCars').length;
+    }
+
+    // Toast notification
+    function showToast(message, duration = 3000) {
+      const toast = document.getElementById('toast');
+      if (!toast) return;
+
+      toast.innerHTML = `<div class="toast-body">${message}</div>`;
+      toast.classList.add('show');
+
+      setTimeout(() => {
+        toast.classList.remove('show');
+      }, duration);
+    }
+
+    // Add to cart functionality
+    function addToCart(carId) {
+      const car = carsData[carId];
+      if (!car) return;
+
+      const cart = getStorage('cart');
+      if (cart.find(c => c._id === car._id)) {
+        showToast('Car already in cart', 3000);
+        return;
+      }
+
+      cart.push(car);
+      setStorage('cart', cart);
+      updateGlobalCounts();
+      showToast('Added to cart successfully!');
+    }
+
+    // Add to wishlist functionality
+    function addToWishlist(carId) {
+      const car = carsData[carId];
+      if (!car) return;
+
+      const wishlist = getStorage('wishlist');
+      if (wishlist.find(c => c._id === car._id)) {
+        showToast('Car already in wishlist', 3000);
+        return;
+      }
+
+      wishlist.push(car);
+      setStorage('wishlist', wishlist);
+      updateGlobalCounts();
+      showToast('Added to wishlist!');
+
+      // Update button appearance
+      const button = document.getElementById(`wishlist-${carId}`);
+      if (button) {
+        button.innerHTML = '<i class="fas fa-heart"></i>';
+        button.classList.add('active');
+      }
+    }
+
+    // Event listeners for buttons
+    document.addEventListener('DOMContentLoaded', function() {
+      // Add to cart buttons
+      document.getElementById('add-to-cart-mercedes-c300').addEventListener('click', () => addToCart('mercedes-c300'));
+      document.getElementById('add-to-cart-toyota-camry').addEventListener('click', () => addToCart('toyota-camry'));
+      document.getElementById('add-to-cart-bmw-x5').addEventListener('click', () => addToCart('bmw-x5'));
+
+      // Wishlist buttons
+      document.getElementById('wishlist-mercedes-c300').addEventListener('click', () => addToWishlist('mercedes-c300'));
+      document.getElementById('wishlist-toyota-camry').addEventListener('click', () => addToWishlist('toyota-camry'));
+      document.getElementById('wishlist-bmw-x5').addEventListener('click', () => addToWishlist('bmw-x5'));
     });
   </script>
 </body>
