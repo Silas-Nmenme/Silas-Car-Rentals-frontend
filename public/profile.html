@@ -53,7 +53,7 @@
 
           <!-- Upload Profile Picture -->
           <form id="upload-form" class="mb-4">
-            <label class="form-label fw-bold">Profile Picture</label>
+            <label for="profilePicture" class="form-label fw-bold">Profile Picture</label>
             <input type="file" class="form-control mb-2" id="profilePicture" name="profilePicture" accept="image/*">
             <div class="d-flex gap-2">
               <button type="submit" class="btn btn-success btn-sm">
@@ -64,6 +64,13 @@
               </button>
             </div>
           </form>
+
+          <!-- Return to Home Button (shown after upload) -->
+          <div id="return-home" class="mt-3 d-none">
+            <a href="home.html" class="btn btn-primary">
+              <i class="fas fa-home me-1"></i> Return to Home
+            </a>
+          </div>
 
           <!-- Update Profile -->
           <form id="update-form">
@@ -206,6 +213,7 @@ document.getElementById("upload-form").addEventListener("submit", async e=>{
     if (!res.ok) throw new Error(data.message || "Upload failed");
     showToast(data.message);
     loadProfile();
+    document.getElementById("return-home").classList.remove("d-none");
   } catch (err) {
     showToast(err.message,"error");
   }
