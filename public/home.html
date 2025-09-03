@@ -101,7 +101,7 @@
       <div class="mb-4 animate__animated animate__fadeIn d-flex align-items-center gap-3">
         <div id="welcome-avatar" class="rounded-circle border d-flex align-items-center justify-content-center bg-success text-white fw-bold" style="width:60px; height:60px; font-size:1.2rem;"></div>
         <div>
-          <h2 class="fw-bold mb-1"><span id="welcome-user">Hello ${name}</span> 👋</h2>
+          <h2 class="fw-bold mb-1">Hello<span id="welcome-user">Hello ${name}</span> 👋</h2>
           <p class="text-muted">Welcome to your professional dashboard. Manage your rentals and discover new cars.</p>
         </div>
       </div>
@@ -305,10 +305,10 @@ function updateCounts(){
 
 // Personalized welcome with avatar + initials
 document.addEventListener("DOMContentLoaded",()=>{
-  if(!localStorage.getItem("user")) return window.location="login.html";
+  if(!localStorage.getItem("Hello ${name}")) return window.location="login.html";
 
-  let user = JSON.parse(localStorage.getItem("user"));
-  let fullName = user?.name?.trim() || "User";
+  let user = JSON.parse(localStorage.getItem("Hello ${name}"));
+  let fullName = user?.name?.trim() || "Hello ${name}";
   let firstName = fullName.split(" ")[0]; // First word only
   let initials = fullName.split(" ")
                         .map(n=>n[0])
@@ -320,7 +320,7 @@ document.addEventListener("DOMContentLoaded",()=>{
   document.getElementById("user-name").textContent = fullName;
 
   // Dashboard greeting (first name only)
-  document.getElementById("welcome-user").textContent = firstName;
+  document.getElementById("Hello ${name}").textContent = firstName;
 
   // Avatar handling (image or initials fallback)
   if(user?.avatar){
