@@ -26,7 +26,7 @@
       <input class="form-control me-2" type="search" placeholder="Search cars...">
       <button class="btn btn-success"><i class="fas fa-search"></i></button>
     </form>
-    <div class="ms-auto d-flex align-items-center gap-2">
+    <div class="ms-auto d-flex align-items-center gap-3">
       <!-- Notifications -->
       <div class="dropdown">
         <button class="btn btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown"><i class="fas fa-bell"></i></button>
@@ -53,7 +53,8 @@
       <!-- Profile -->
       <div class="dropdown">
         <button class="btn btn-success dropdown-toggle d-flex align-items-center" data-bs-toggle="dropdown">
-          <i class="fas fa-user-circle me-2"></i> <span id="user-name">User</span>
+          <img id="nav-avatar" src="" alt="avatar" class="rounded-circle me-2" style="width:32px; height:32px; object-fit:cover;">
+          <span id="user-name">User</span>
         </button>
         <ul class="dropdown-menu dropdown-menu-end">
           <li><a class="dropdown-item" href="profile.html"><i class="fas fa-user me-2"></i>Profile</a></li>
@@ -82,9 +83,13 @@
     <!-- Main -->
     <main class="col-md-9 col-lg-10 p-4">
       <!-- Welcome -->
-      <div class="mb-4 animate__animated animate__fadeIn">
-        <h2 class="fw-bold">Hi, <span id="welcome-user">User</span> 👋</h2>
-        <p class="text-muted">Welcome to your professional dashboard. Manage your rentals and discover new cars.</p>
+      <div class="mb-4 animate__animated animate__fadeIn d-flex align-items-center gap-3">
+        <img id="welcome-avatar" src="" alt="avatar" class="rounded-circle border" style="width:60px; height:60px; object-fit:cover;">
+        <div>
+          <!-- FIX: Removed comma and will insert first name -->
+          <h2 class="fw-bold mb-1">Hi <span id="welcome-user">User</span> 👋</h2>
+          <p class="text-muted">Welcome to your professional dashboard. Manage your rentals and discover new cars.</p>
+        </div>
       </div>
 
       <!-- Quick Stats -->
@@ -122,7 +127,6 @@
 AOS.init();
 
 const get=(k)=>JSON.parse(localStorage.getItem(k))||[];
-const set=(k,v)=>localStorage.setItem(k,JSON.stringify(v));
 
 function updateCounts(){
  document.getElementById("cart-count").textContent=get("cart").length;
@@ -133,13 +137,20 @@ function updateCounts(){
  document.getElementById("stat-saved").textContent=`${get("savedCars").length} items`;
 }
 
-// Personalized welcome
+// Personalized welcome with avatar + first name
 document.addEventListener("DOMContentLoaded",()=>{
  if(!localStorage.getItem("user")) return window.location="login.html";
  let user=JSON.parse(localStorage.getItem("user"));
- let name=user?.name || "User";
- document.getElementById("user-name").textContent=name;
- document.getElementById("welcome-user").textContent=name;
+ let fullName=user?.name || "User";
+ let firstName=fullName.split(" ")[0]; // get first word only
+ let avatar=user?.avatar || `https://ui-avatars.com/api/?name=${encodeURIComponent(firstName)}&background=16a34a&color=fff`;
+
+ // Navbar & greeting
+ document.getElementById("user-name").textContent=fullName;
+ document.getElementById("welcome-user").textContent=firstName;
+ document.getElementById("nav-avatar").src=avatar;
+ document.getElementById("welcome-avatar").src=avatar;
+
  updateCounts();
 });
 
