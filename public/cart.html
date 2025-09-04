@@ -164,10 +164,10 @@
       <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav ms-auto">
           <li class="nav-item">
-            <a class="nav-link" href="perfect-cars.html">Browse</a>
+            <a class="nav-link" href="#" onclick="handleBrowseClick()">Browse</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="home.html">Book</a>
+            <a class="nav-link" href="#" onclick="handleBookClick()">Book</a>
           </li>
           <li class="nav-item">
             <button class="btn btn-sm btn-outline-primary ms-2" onclick="location.href='cart.html'" title="View Cart">
@@ -282,6 +282,16 @@
       const legacyToken = localStorage.getItem('authToken') || localStorage.getItem('userToken') || localStorage.getItem('token');
       if (legacyToken) return { token: legacyToken };
       return null;
+    }
+
+    function handleBrowseClick() {
+      const user = getCurrentUser();
+      window.location.href = user ? 'perfect-cars.html' : 'cars.html';
+    }
+
+    function handleBookClick() {
+      const user = getCurrentUser();
+      window.location.href = user ? 'perfect-cars.html' : 'cars.html';
     }
 
     function showToast(msg, ms=2500) {
