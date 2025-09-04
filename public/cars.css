@@ -223,12 +223,12 @@ body[data-theme="dark"] .user-actions .btn {
   border: 1px solid var(--dark-btn-bg);
 }
 
-/* Responsive adjustments for header */
-@media (max-width: 768px) {
-  .main-header {
-    padding: 0.5rem 0;
-  }
-
+/* Dropdown menu styles */
+.dropdown-menu {
+  background: var(--light-card-bg);
+  border: 1px solid var(--light-border);
+  border-radius: 8px;
+  box-shadow: var(--light-shadow);
   .brand {
     font-size: 1.2rem;
   }

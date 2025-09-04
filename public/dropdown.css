@@ -1,0 +1,101 @@
+/* Dropdown menu styles for cars.html */
+.dropdown-menu {
+  background: var(--light-card-bg);
+  border: 1px solid var(--light-border);
+  border-radius: 8px;
+  box-shadow: var(--light-shadow);
+  padding: 0.5rem 0;
+  min-width: 180px;
+  margin-top: 0.5rem;
+}
+
+body[data-theme="dark"] .dropdown-menu {
+  background: var(--dark-card-bg);
+  border: 1px solid var(--dark-border);
+  box-shadow: var(--dark-shadow);
+}
+
+.dropdown-item {
+  color: var(--light-text);
+  padding: 0.75rem 1.5rem;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  font-weight: 500;
+  border-radius: 4px;
+  margin: 0 0.25rem;
+}
+
+body[data-theme="dark"] .dropdown-item {
+  color: var(--dark-text);
+}
+
+.dropdown-item:hover {
+  background: var(--light-primary);
+  color: white;
+  transform: translateX(5px);
+}
+
+body[data-theme="dark"] .dropdown-item:hover {
+  background: var(--dark-primary);
+  color: white;
+}
+
+.dropdown-item:focus {
+  background: var(--light-primary);
+  color: white;
+  outline: none;
+}
+
+body[data-theme="dark"] .dropdown-item:focus {
+  background: var(--dark-primary);
+  color: white;
+}
+
+/* Dropdown toggle button */
+.dropdown-toggle {
+  border: none;
+  background: transparent;
+  color: rgba(255,255,255,0.9) !important;
+  font-weight: 600;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  padding: 0.5rem 1rem !important;
+  border-radius: 6px;
+  position: relative;
+  overflow: hidden;
+}
+
+.dropdown-toggle::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: rgba(255,255,255,0.1);
+  transition: left 0.3s ease;
+}
+
+.dropdown-toggle:hover::before,
+.dropdown-toggle:focus::before,
+.dropdown-toggle.show::before {
+  left: 0;
+}
+
+.dropdown-toggle:hover,
+.dropdown-toggle:focus,
+.dropdown-toggle.show {
+  color: white !important;
+  transform: translateY(-2px);
+}
+
+.dropdown-toggle::after {
+  margin-left: 0.5rem;
+  border-top: 0.3em solid;
+  border-right: 0.3em solid transparent;
+  border-bottom: 0;
+  border-left: 0.3em solid transparent;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.dropdown-toggle.show::after {
+  transform: rotate(180deg);
+}
