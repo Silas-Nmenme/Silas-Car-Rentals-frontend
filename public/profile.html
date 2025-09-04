@@ -296,6 +296,8 @@ async function loadProfile() {
     document.getElementById("profile-status").textContent = user.isVerified ? "Verified" : "Unverified";
     document.getElementById("profile-status").className = user.isVerified ? "badge bg-success" : "badge bg-warning";
 
+    document.getElementById("user-name").textContent = user.name;
+
     document.getElementById("display-name").textContent = user.name;
     document.getElementById("display-email").textContent = user.email;
     document.getElementById("display-phone").textContent = user.phoneNumber || "N/A";
@@ -321,6 +323,15 @@ function renderAvatar(user) {
     const initials = user.name.split(" ").map(n=>n[0]).join("").substring(0,2).toUpperCase();
     avatarDiv.textContent = initials;
   }
+
+  const navAvatarDiv = document.getElementById("nav-avatar");
+  navAvatarDiv.innerHTML = "";
+  if (user.profilePicture?.url) {
+    navAvatarDiv.innerHTML = `<img src="${user.profilePicture.url}" style="width:100%;height:100%;object-fit:cover;">`;
+  } else {
+    const initials = user.name.split(" ").map(n=>n[0]).join("").substring(0,2).toUpperCase();
+    navAvatarDiv.textContent = initials;
+  }
 }
 
 // Logout
@@ -328,6 +339,30 @@ document.getElementById("logout-button").addEventListener("click", ()=>{
   localStorage.clear();
   window.location="login.html";
 });
+
+// Update counts
+function updateCounts() {
+  document.getElementById("cart-count").textContent = (JSON.parse(localStorage.getItem("cart")) || []).length;
+  document.getElementById("wishlist-count").textContent = (JSON.parse(localStorage.getItem("wishlist")) || []).length;
+  document.getElementById("saved-count").textContent = (JSON.parse(localStorage.getItem("savedCars")) || []).length;
+}
+updateCounts();
+
+// Theme toggle
+const themeBtn = document.getElementById("theme-toggle");
+themeBtn.addEventListener("click", () => {
+  let body = document.body;
+  let html = document.documentElement;
+  let newTheme = body.getAttribute("data-bs-theme") === "dark" ? "light" : "dark";
+  body.setAttribute("data-bs-theme", newTheme);
+  html.setAttribute("data-bs-theme", newTheme);
+  themeBtn.innerHTML = newTheme === "dark" ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
+  localStorage.setItem("theme", newTheme);
+});
+const savedTheme = localStorage.getItem("theme") || "light";
+document.body.setAttribute("data-bs-theme", savedTheme);
+document.documentElement.setAttribute("data-bs-theme", savedTheme);
+themeBtn.innerHTML = savedTheme === "dark" ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
 
 // Init
 loadProfile();
