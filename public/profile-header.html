@@ -1,0 +1,45 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm sticky-top main-header">
+  <div class="container-fluid">
+    <a href="home.html" class="navbar-brand fw-bold text-success d-flex align-items-center brand">
+      <i class="fas fa-car me-2"></i>Silas Car Rentals
+    </a>
+    <button class="btn btn-outline-primary me-3" id="back-button" title="Back to previous page" aria-label="Back to previous page">
+      <i class="fas fa-arrow-left"></i> Back
+    </button>
+    <button class="theme-toggle ms-auto" id="theme-toggle" aria-label="Toggle theme" title="Toggle theme">
+      <i class="fas fa-moon" aria-hidden="true"></i>
+      <span class="sr-only">Toggle theme</span>
+    </button>
+  </div>
+</nav>
+
+<script>
+  // Back button functionality: go back in history or fallback to home.html
+  document.getElementById('back-button').addEventListener('click', () => {
+    if (document.referrer && document.referrer !== window.location.href) {
+      window.history.back();
+    } else {
+      window.location.href = 'home.html';
+    }
+  });
+
+  // Theme toggle logic
+  const themeToggleBtn = document.getElementById('theme-toggle');
+  const body = document.body;
+
+  function setTheme(theme) {
+    body.setAttribute('data-bs-theme', theme);
+    themeToggleBtn.innerHTML = theme === 'dark' ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
+    localStorage.setItem('theme', theme);
+  }
+
+  themeToggleBtn.addEventListener('click', () => {
+    const currentTheme = body.getAttribute('data-bs-theme') || 'light';
+    const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+    setTheme(newTheme);
+  });
+
+  // Initialize theme from localStorage or default to light
+  const savedTheme = localStorage.getItem('theme') || 'light';
+  setTheme(savedTheme);
+</script>

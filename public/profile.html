@@ -13,7 +13,57 @@
   <link href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" rel="stylesheet"/>
   <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="header.css">
   <style>
+    body {
+      background: var(--light-bg);
+      padding-top: 6rem;
+    }
+    body[data-bs-theme="dark"] {
+      background: var(--dark-bg);
+    }
+    .card {
+      background: var(--light-card-bg);
+      border: 1px solid var(--light-border);
+      box-shadow: var(--light-shadow);
+      transition: var(--transition);
+    }
+    body[data-bs-theme="dark"] .card {
+      background: var(--dark-card-bg);
+      border-color: var(--dark-border);
+      box-shadow: var(--dark-shadow);
+    }
+    .card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    }
+    body[data-bs-theme="dark"] .card:hover {
+      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    }
+    .text-success {
+      color: var(--light-primary) !important;
+    }
+    body[data-bs-theme="dark"] .text-success {
+      color: var(--dark-primary) !important;
+    }
+    .text-muted {
+      color: var(--light-muted) !important;
+    }
+    body[data-bs-theme="dark"] .text-muted {
+      color: var(--dark-muted) !important;
+    }
+    .bg-success {
+      background: var(--light-primary) !important;
+    }
+    body[data-bs-theme="dark"] .bg-success {
+      background: var(--dark-primary) !important;
+    }
+    .badge.bg-success {
+      background: var(--light-primary) !important;
+    }
+    body[data-bs-theme="dark"] .badge.bg-success {
+      background: var(--dark-primary) !important;
+    }
     #profile-avatar:hover {
       transform: scale(1.05);
     }
@@ -50,19 +100,84 @@
     }
   </style>
 </head>
-<body style="font-family:'Inter',sans-serif; background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%); min-height: 100vh;">
+<body style="font-family:'Inter',sans-serif; background: var(--light-bg); min-height: 100vh; padding-top: 6rem;">
 
-<!-- Navbar -->
-<nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm sticky-top">
-  <div class="container-fluid">
-    <a href="home.html" class="navbar-brand fw-bold text-success d-flex align-items-center">
-      <i class="fas fa-car me-2"></i>Silas Car Rentals
-    </a>
-    <button class="btn btn-outline-danger ms-auto" id="logout-button">
-      <i class="fas fa-sign-out-alt me-1"></i> Logout
-    </button>
-  </div>
-</nav>
+<!-- Header -->
+<header class="main-header">
+  <nav class="navbar navbar-expand-lg">
+    <div class="container">
+      <a href="home.html" class="navbar-brand brand"><i class="fas fa-car me-2"></i>Silas Car Rentals</a>
+
+      <a href="home.html" class="btn btn-outline-primary me-3" style="font-size: 0.9rem;">
+        <i class="fas fa-arrow-left me-1"></i>Back to Home
+      </a>
+
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" title="Toggle navigation" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="home.html">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="perfect-cars.html">Cars</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active" href="profile.html">Profile</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="contact.html">Contact</a>
+          </li>
+        </ul>
+
+        <div class="ms-auto d-flex align-items-center gap-3">
+          <!-- Notifications -->
+          <div class="dropdown">
+            <button class="btn btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-label="Notifications" title="Notifications"><i class="fas fa-bell"></i></button>
+            <ul class="dropdown-menu dropdown-menu-end" id="notifications">
+              <li class="dropdown-header fw-bold">Notifications</li>
+              <li><a class="dropdown-item" href="#">🚗 New BMW X5 added to fleet</a></li>
+              <li><a class="dropdown-item" href="#">🔥 20% off luxury rentals this week</a></li>
+              <li><a class="dropdown-item" href="#">✅ Your booking was confirmed</a></li>
+            </ul>
+          </div>
+          <!-- Counters -->
+          <a href="cart.html" class="btn btn-outline-primary position-relative" aria-label="Cart">
+            <i class="fas fa-shopping-cart"></i>
+            <span id="cart-count" class="badge bg-success position-absolute top-0 start-100 translate-middle">0</span>
+          </a>
+          <a href="wishlist.html" class="btn btn-outline-danger position-relative" aria-label="Wishlist">
+            <i class="fas fa-heart"></i>
+            <span id="wishlist-count" class="badge bg-danger position-absolute top-0 start-100 translate-middle">0</span>
+          </a>
+          <a href="saved.html" class="btn btn-outline-warning position-relative" aria-label="Saved">
+            <i class="fas fa-bookmark"></i>
+            <span id="saved-count" class="badge bg-warning position-absolute top-0 start-100 translate-middle">0</span>
+          </a>
+          <!-- Theme -->
+          <button class="theme-toggle ms-3" id="theme-toggle" aria-label="Toggle theme" title="Toggle theme">
+            <i class="fas fa-moon" aria-hidden="true"></i>
+            <span class="sr-only">Toggle theme</span>
+          </button>
+          <!-- Profile -->
+          <div class="dropdown">
+            <button class="btn btn-success dropdown-toggle d-flex align-items-center" data-bs-toggle="dropdown" aria-label="Profile menu" title="Profile menu">
+              <div id="nav-avatar" class="rounded-circle me-2 d-flex align-items-center justify-content-center bg-success text-white fw-bold" style="width:32px; height:32px; font-size:0.9rem;"></div>
+              <span id="user-name">User</span>
+            </button>
+            <ul class="dropdown-menu dropdown-menu-end">
+              <li><a class="dropdown-item" href="profile.html"><i class="fas fa-user me-2"></i>Profile</a></li>
+              <li><a class="dropdown-item" href="orders.html"><i class="fas fa-box me-2"></i>My Orders</a></li>
+              <li><button class="dropdown-item text-danger" id="logout-button"><i class="fas fa-sign-out-alt me-2"></i>Logout</button></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </nav>
+</header>
 
 <div class="container py-5">
   <div class="row justify-content-center">

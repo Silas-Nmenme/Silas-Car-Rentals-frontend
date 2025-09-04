@@ -831,6 +831,242 @@
       height: 200px;
       object-fit: cover;
     }
+
+    /* About Section */
+    .about-section {
+      background: var(--light-card-bg);
+      padding: 4rem 0;
+      border: 1px solid var(--light-border);
+      box-shadow: var(--light-shadow);
+    }
+
+    body[data-theme="dark"] .about-section {
+      background: var(--dark-card-bg);
+      border-color: var(--dark-border);
+      box-shadow: var(--dark-shadow);
+    }
+
+    .about-content {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 3rem;
+      align-items: start;
+    }
+
+    .about-text p {
+      margin-bottom: 1.5rem;
+      line-height: 1.7;
+      color: var(--light-text);
+    }
+
+    body[data-theme="dark"] .about-text p {
+      color: var(--dark-text);
+    }
+
+    .about-stats {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+    }
+
+    .stat-item {
+      text-align: center;
+      padding: 2rem;
+      background: var(--light-card-bg);
+      border-radius: 12px;
+      box-shadow: var(--light-shadow);
+      border: 1px solid var(--light-border);
+      transition: var(--transition);
+    }
+
+    body[data-theme="dark"] .stat-item {
+      background: var(--dark-card-bg);
+      box-shadow: var(--dark-shadow);
+      border-color: var(--dark-border);
+    }
+
+    .stat-item:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    }
+
+    body[data-theme="dark"] .stat-item:hover {
+      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    }
+
+    .stat-item h3 {
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: var(--light-primary);
+      margin-bottom: 0.5rem;
+    }
+
+    body[data-theme="dark"] .stat-item h3 {
+      color: var(--dark-primary);
+    }
+
+    .stat-item p {
+      color: var(--light-muted);
+      font-weight: 600;
+      margin: 0;
+    }
+
+    body[data-theme="dark"] .stat-item p {
+      color: var(--dark-muted);
+    }
+
+    /* Contact Section */
+    .contact-section {
+      background: var(--light-card-bg);
+      padding: 4rem 0;
+      border: 1px solid var(--light-border);
+      box-shadow: var(--light-shadow);
+    }
+
+    body[data-theme="dark"] .contact-section {
+      background: var(--dark-card-bg);
+      border-color: var(--dark-border);
+      box-shadow: var(--dark-shadow);
+    }
+
+    .contact-content {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3rem;
+      align-items: start;
+    }
+
+    .contact-info {
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+    }
+
+    .contact-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 1rem;
+      padding: 1.5rem;
+      background: var(--light-card-bg);
+      border-radius: 12px;
+      box-shadow: var(--light-shadow);
+      border: 1px solid var(--light-border);
+      transition: var(--transition);
+    }
+
+    body[data-theme="dark"] .contact-item {
+      background: var(--dark-card-bg);
+      box-shadow: var(--dark-shadow);
+      border-color: var(--dark-border);
+    }
+
+    .contact-item:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+    }
+
+    body[data-theme="dark"] .contact-item:hover {
+      box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+    }
+
+    .contact-item i {
+      font-size: 1.5rem;
+      color: var(--light-primary);
+      margin-top: 0.25rem;
+    }
+
+    body[data-theme="dark"] .contact-item i {
+      color: var(--dark-primary);
+    }
+
+    .contact-item h4 {
+      margin: 0 0 0.5rem 0;
+      color: var(--light-text);
+      font-size: 1.1rem;
+      font-weight: 600;
+    }
+
+    body[data-theme="dark"] .contact-item h4 {
+      color: var(--dark-text);
+    }
+
+    .contact-item p {
+      margin: 0;
+      color: var(--light-muted);
+      line-height: 1.5;
+    }
+
+    body[data-theme="dark"] .contact-item p {
+      color: var(--dark-muted);
+    }
+
+    .contact-form {
+      background: var(--light-card-bg);
+      padding: 2rem;
+      border-radius: 12px;
+      box-shadow: var(--light-shadow);
+      border: 1px solid var(--light-border);
+    }
+
+    body[data-theme="dark"] .contact-form {
+      background: var(--dark-card-bg);
+      box-shadow: var(--dark-shadow);
+      border-color: var(--dark-border);
+    }
+
+    .form-group {
+      margin-bottom: 1.5rem;
+    }
+
+    .form-group input,
+    .form-group textarea {
+      width: 100%;
+      padding: 1rem;
+      border: 2px solid var(--light-border);
+      border-radius: 8px;
+      background: var(--light-card-bg);
+      color: var(--light-text);
+      font-size: 1rem;
+      transition: var(--transition);
+    }
+
+    body[data-theme="dark"] .form-group input,
+    body[data-theme="dark"] .form-group textarea {
+      background: var(--dark-card-bg);
+      border-color: var(--dark-border);
+      color: var(--dark-text);
+    }
+
+    .form-group input:focus,
+    .form-group textarea:focus {
+      outline: none;
+      border-color: var(--light-primary);
+      box-shadow: 0 0 0 3px rgba(13, 148, 136, 0.1);
+    }
+
+    body[data-theme="dark"] .form-group input:focus,
+    body[data-theme="dark"] .form-group textarea:focus {
+      border-color: var(--dark-primary);
+      box-shadow: 0 0 0 3px rgba(20, 184, 166, 0.1);
+    }
+
+    .form-group textarea {
+      resize: vertical;
+      min-height: 120px;
+    }
+
+    /* Section Titles */
+    .section-title {
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: var(--light-text);
+      margin-bottom: 2rem;
+      text-align: center;
+    }
+
+    body[data-theme="dark"] .section-title {
+      color: var(--dark-text);
+    }
   </style>
 </head>
 <body data-theme="dark">
@@ -850,16 +1086,16 @@
         <div class="collapse navbar-collapse" id="navbarNav">
           <ul class="navbar-nav ms-auto">
             <li class="nav-item">
-              <a class="nav-link" href="home.html">Home</a>
+              <a class="nav-link" href="#home">Home</a>
             </li>
             <li class="nav-item">
               <a class="nav-link active" href="#cars-collection">Cars</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="about.html">About</a>
+              <a class="nav-link" href="#about">About</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="contact.html">Contact</a>
+              <a class="nav-link" href="#contact">Contact</a>
             </li>
           </ul>
 
@@ -1024,8 +1260,102 @@
     </div>
   </section>
 
+  <!-- About Section -->
+  <section class="about-section" id="about">
+    <div class="container">
+      <h2 class="section-title">About Silas Car Rentals</h2>
+      <div class="about-content">
+        <div class="about-text">
+          <p>
+            Welcome to Silas Car Rentals, Nigeria's premier car rental service dedicated to providing exceptional vehicles for business and leisure travel. Founded with a vision to make premium transportation accessible to everyone, we offer a carefully curated fleet of luxury and standard vehicles that combine comfort, reliability, and style.
+          </p>
+          <p>
+            Our commitment to excellence extends beyond just providing cars – we ensure every vehicle is professionally maintained, thoroughly inspected, and ready for your journey. Whether you're traveling for business meetings, family vacations, or special occasions, our diverse fleet caters to all your transportation needs.
+          </p>
+          <p>
+            With locations across Lagos and a dedicated customer service team available 24/7, we strive to make your rental experience seamless and memorable. Choose Silas Car Rentals for the perfect blend of luxury, convenience, and peace of mind.
+          </p>
+        </div>
+        <div class="about-stats">
+          <div class="stat-item">
+            <h3>500+</h3>
+            <p>Happy Customers</p>
+          </div>
+          <div class="stat-item">
+            <h3>100+</h3>
+            <p>Luxury Vehicles</p>
+          </div>
+          <div class="stat-item">
+            <h3>5+</h3>
+            <p>Years Experience</p>
+          </div>
+          <div class="stat-item">
+            <h3>24/7</h3>
+            <p>Customer Support</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact Section -->
+  <section class="contact-section" id="contact">
+    <div class="container">
+      <h2 class="section-title">Contact Us</h2>
+      <div class="contact-content">
+        <div class="contact-info">
+          <div class="contact-item">
+            <i class="fas fa-phone"></i>
+            <div>
+              <h4>Phone</h4>
+              <p>+234 810 758 6167</p>
+            </div>
+          </div>
+          <div class="contact-item">
+            <i class="fas fa-envelope"></i>
+            <div>
+              <h4>Email</h4>
+              <p>silasonyekachi15@gmail.com</p>
+            </div>
+          </div>
+          <div class="contact-item">
+            <i class="fas fa-map-marker-alt"></i>
+            <div>
+              <h4>Location</h4>
+              <p>Lagos, Nigeria</p>
+            </div>
+          </div>
+          <div class="contact-item">
+            <i class="fas fa-clock"></i>
+            <div>
+              <h4>Business Hours</h4>
+              <p>Mon - Sun: 24/7 Available</p>
+            </div>
+          </div>
+        </div>
+        <div class="contact-form">
+          <form id="contact-form">
+            <div class="form-group">
+              <input type="text" id="contact-name" placeholder="Your Name" required>
+            </div>
+            <div class="form-group">
+              <input type="email" id="contact-email" placeholder="Your Email" required>
+            </div>
+            <div class="form-group">
+              <input type="text" id="contact-subject" placeholder="Subject" required>
+            </div>
+            <div class="form-group">
+              <textarea id="contact-message" placeholder="Your Message" rows="5" required></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">Send Message</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <!-- Footer -->
-  <footer class="main-footer">
+  <footer class="main-footer" id="footer">
     <div class="container">
       <div class="footer-content">
         <div class="footer-section">
@@ -1585,6 +1915,21 @@
       const yearElement = document.getElementById('year');
       if (yearElement) {
         yearElement.textContent = new Date().getFullYear();
+      }
+    });
+
+    // Load user name from localStorage
+    document.addEventListener('DOMContentLoaded', function() {
+      const userNameElement = document.getElementById('user-name');
+      const navAvatarElement = document.getElementById('nav-avatar');
+
+      if (userNameElement && navAvatarElement) {
+        const userName = localStorage.getItem('userName') || 'User';
+        userNameElement.textContent = userName;
+
+        // Generate avatar initial
+        const initial = userName.charAt(0).toUpperCase();
+        navAvatarElement.textContent = initial;
       }
     });
   </script>
