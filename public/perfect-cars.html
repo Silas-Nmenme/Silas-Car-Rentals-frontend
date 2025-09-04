@@ -1918,19 +1918,50 @@
       }
     });
 
-    // Load user name from localStorage
-    document.addEventListener('DOMContentLoaded', function() {
-      const userNameElement = document.getElementById('user-name');
-      const navAvatarElement = document.getElementById('nav-avatar');
+    // Load user profile and render avatar
+    async function loadUserProfile() {
+      const token = localStorage.getItem("token");
+      if (!token) return;
 
-      if (userNameElement && navAvatarElement) {
-        const userName = localStorage.getItem('userName') || 'User';
-        userNameElement.textContent = userName;
+      try {
+        const res = await fetch(`${API_BASE}/api/users/profile`, {
+          headers: { Authorization: `Bearer ${token}` },
+          credentials: "include"
+        });
 
-        // Generate avatar initial
-        const initial = userName.charAt(0).toUpperCase();
-        navAvatarElement.textContent = initial;
+        if (res.status === 401) {
+          localStorage.clear();
+          return;
+        }
+
+        const data = await res.json();
+        if (!res.ok) return;
+
+        const user = data.user;
+        localStorage.setItem("user", JSON.stringify(user));
+
+        document.getElementById("user-name").textContent = user.name;
+        renderAvatar(user);
+      } catch (err) {
+        console.error("Failed to load user profile:", err);
       }
+    }
+
+    // Render avatar
+    function renderAvatar(user) {
+      const navAvatarDiv = document.getElementById("nav-avatar");
+      navAvatarDiv.innerHTML = "";
+      if (user.profilePicture?.url) {
+        navAvatarDiv.innerHTML = `<img src="${user.profilePicture.url}" style="width:100%;height:100%;object-fit:cover;">`;
+      } else {
+        const initials = user.name.split(" ").map(n=>n[0]).join("").substring(0,2).toUpperCase();
+        navAvatarDiv.textContent = initials;
+      }
+    }
+
+    // Load user profile on page load
+    document.addEventListener('DOMContentLoaded', function() {
+      loadUserProfile();
     });
   </script>
 </body>
