@@ -338,7 +338,7 @@ body[data-bs-theme="dark"] .main .section-title::after {
     padding: 0.4rem;
   }
   .main {
-    padding-top: 1rem !important;
+    padding-top: 6rem !important;
   }
   .main .welcome-section {
     padding: 1.5rem;
