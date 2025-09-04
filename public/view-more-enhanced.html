@@ -1603,8 +1603,9 @@ document.addEventListener("DOMContentLoaded", async () => {
     console.error("Failed to fetch profile:", err);
   }
 
-  let fullName = user?.name?.trim() || localUser?.name?.trim() || user?.email?.split("@")[0] || "User";
-  let firstName = fullName.split(" ")[0]; // First word only
+  let fullName = (user?.name || `${user?.firstName || ''} ${user?.lastName || ''}`.trim() || localUser?.name || `${localUser?.firstName || ''} ${localUser?.lastName || ''}`.trim() || user?.email?.split("@")[0] || "User").trim();
+  if (!fullName || fullName === '') fullName = "User";
+  let firstName = fullName.split(" ")[0] || fullName; // First word only, fallback to fullName if split fails
 
   let initials = fullName.split(" ")
     .map(n => n[0])
