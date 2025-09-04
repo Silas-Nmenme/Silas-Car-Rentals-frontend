@@ -362,39 +362,51 @@
       .container {
         flex-direction: column;
       }
-      
+
       .welcome-section {
         padding: 1.5rem;
         border-right: none;
         border-bottom: 1px solid rgba(255, 255, 255, 0.2);
       }
-      
+
       .welcome-content h2 {
         font-size: 2rem;
       }
-      
+
       .form-container {
         margin: 1rem;
         padding: 2rem;
       }
-      
+
       header {
-        padding: 0.75rem 1rem;
+        padding: 0.5rem 1rem;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.5rem;
       }
-      
+
       header h1 {
-        font-size: 1.5rem;
+        font-size: 1.2rem;
+        flex: none;
       }
-      
+
+      header nav {
+        flex: none;
+        justify-content: center;
+        gap: 0.5rem;
+      }
+
       header nav a {
-        font-size: 0.9rem;
+        font-size: 0.8rem;
         padding: 0.4rem 0.8rem;
         margin: 0 0.25rem;
       }
-      
+
       .back-btn {
         padding: 0.5rem 1rem;
-        font-size: 0.85rem;
+        font-size: 0.8rem;
+        align-self: flex-end;
+        margin-top: 0.5rem;
       }
     }
   </style>
