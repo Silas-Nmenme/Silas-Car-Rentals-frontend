@@ -48,24 +48,36 @@
       --elastic: cubic-bezier(0.175, 0.885, 0.32, 1.275);
     }
 
-    /* Additional custom styles for view-more-enhanced */
-    body {
-      font-family: 'Inter', sans-serif;
+    /* Enhanced Car Card Styles */
+    .car-card {
+      cursor: pointer;
+      transition: var(--transition);
+      border: none;
+      overflow: hidden;
+      background: var(--light-card-bg);
+      border-radius: 16px;
+      box-shadow: var(--light-shadow);
     }
-  .car-card {
-    cursor: pointer;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    border: none;
-    overflow: hidden;
-  }
-  .car-card:hover {
-    transform: translateY(-8px);
-    box-shadow: 0 20px 40px rgba(0,0,0,0.15);
-    z-index: 10;
-  }
+
+    body[data-bs-theme="dark"] .car-card {
+      background: var(--dark-card-bg);
+      box-shadow: var(--dark-shadow);
+    }
+
+    .car-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+      z-index: 10;
+    }
+
+    body[data-bs-theme="dark"] .car-card:hover {
+      box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+    }
+
     .car-actions button {
       transition: transform 0.3s ease;
     }
+
     .car-actions button:hover {
       transform: scale(1.2);
     }
@@ -85,7 +97,6 @@
       border-color: var(--dark-border);
     }
 
-    /* Enhanced Car Card Styles */
     .car-overlay {
       position: absolute;
       top: 10px;
@@ -313,9 +324,28 @@
     .toast-close:hover {
       opacity: 1;
     }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      .welcome-section {
+        padding: 1.5rem;
+      }
+
+      .car-card {
+        padding: 1.5rem;
+      }
+
+      .car-actions {
+        flex-direction: column;
+      }
+
+      .car-actions .btn {
+        width: 100%;
+      }
+    }
   </style>
 </head>
-<body style="font-family:'Inter',sans-serif;">
+<body data-bs-theme="light">
 
 <!-- Header -->
 <header class="main-header">
@@ -326,7 +356,9 @@
         <i class="fas fa-bars"></i>
       </button>
 
-      <a href="home.html" class="navbar-brand brand"><i class="fas fa-car me-2"></i>Silas Car Rentals</a>
+      <a href="home.html" class="navbar-brand brand">
+        <i class="fas fa-car me-2"></i>Silas Car Rentals
+      </a>
 
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" title="Toggle navigation" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -351,7 +383,9 @@
         <div class="ms-auto d-flex align-items-center gap-3">
           <!-- Notifications -->
           <div class="dropdown">
-            <button class="btn btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-label="Notifications" title="Notifications"><i class="fas fa-bell"></i></button>
+            <button class="btn btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-label="Notifications" title="Notifications">
+              <i class="fas fa-bell"></i>
+            </button>
             <ul class="dropdown-menu dropdown-menu-end" id="notifications">
               <li class="dropdown-header fw-bold">Notifications</li>
               <li><a class="dropdown-item" href="#">🚗 New BMW X5 added to fleet</a></li>
@@ -359,24 +393,31 @@
               <li><a class="dropdown-item" href="#">✅ Your booking was confirmed</a></li>
             </ul>
           </div>
-          <!-- Counters -->
+
+          <!-- Cart -->
           <a href="cart.html" class="btn btn-outline-primary position-relative" aria-label="Cart">
             <i class="fas fa-shopping-cart"></i>
             <span id="cart-count" class="badge bg-success position-absolute top-0 start-100 translate-middle">0</span>
           </a>
+
+          <!-- Wishlist -->
           <a href="wishlist.html" class="btn btn-outline-danger position-relative" aria-label="Wishlist">
             <i class="fas fa-heart"></i>
             <span id="wishlist-count" class="badge bg-danger position-absolute top-0 start-100 translate-middle">0</span>
           </a>
+
+          <!-- Saved -->
           <a href="saved.html" class="btn btn-outline-warning position-relative" aria-label="Saved">
             <i class="fas fa-bookmark"></i>
             <span id="saved-count" class="badge bg-warning position-absolute top-0 start-100 translate-middle">0</span>
           </a>
-          <!-- Theme -->
-          <button class="theme-toggle ms-3" id="theme-toggle" aria-label="Toggle theme" title="Toggle theme">
+
+          <!-- Theme Toggle -->
+          <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme" title="Toggle theme">
             <i class="fas fa-moon" aria-hidden="true"></i>
             <span class="sr-only">Toggle theme</span>
           </button>
+
           <!-- Profile -->
           <div class="dropdown">
             <button class="btn btn-success dropdown-toggle d-flex align-items-center" data-bs-toggle="dropdown" aria-label="Profile menu" title="Profile menu">
@@ -425,6 +466,7 @@
           <p class="text-muted">Explore our extensive fleet of premium and standard vehicles.</p>
         </div>
       </div>
+
       <h2 class="section-title text-center mb-4" data-aos="fade-up">View More Cars</h2>
       <p class="text-center mb-5 text-muted" data-aos="fade-up" data-aos-delay="100">
         Explore our extensive fleet of premium and standard vehicles, all maintained to the highest standards.
@@ -700,6 +742,9 @@ let filteredCars = [];
 let currentPage = 1;
 const carsPerPage = 6;
 
+// Compare functionality variables
+let compareList = JSON.parse(localStorage.getItem("compareList")) || [];
+
 function showToast(msg, type = 'info', ms = 3000) {
   const toast = document.getElementById("toast");
 
@@ -804,859 +849,4 @@ function renderCars(cars) {
 
           <div class="car-features mb-3">
             <div class="d-flex flex-wrap gap-1">
-              ${car.tags.slice(0, 3).map(tag => `<span class="badge bg-light text-dark">${tag}</span>`).join('')}
-              ${car.tags.length > 3 ? `<span class="badge bg-secondary">+${car.tags.length - 3}</span>` : ''}
-            </div>
-          </div>
-
-          <div class="price-section mb-3">
-            ${discount > 0 ? `
-              <div class="d-flex align-items-center gap-2">
-                <span class="text-decoration-line-through text-muted">₦${originalPrice.toLocaleString()}</span>
-                <span class="badge bg-danger">${discount}% OFF</span>
-              </div>
-            ` : ''}
-            <div class="d-flex align-items-center justify-content-between">
-              <div>
-                <span class="h4 text-success fw-bold mb-0">₦${car.price.toLocaleString()}</span>
-                <small class="text-muted">/ day</small>
-              </div>
-              <div class="text-end">
-                <small class="text-muted d-block">From ₦${Math.round(car.price * 0.8).toLocaleString()}</small>
-                <small class="text-success">Save up to 20%</small>
-              </div>
-            </div>
-          </div>
-
-          <div class="car-specs mb-3">
-            <div class="row g-2 text-center">
-              <div class="col-4">
-                <i class="fas fa-users text-muted mb-1"></i>
-                <div class="small">${car.tags.find(t => t.includes('Seats')) || '5 Seats'}</div>
-              </div>
-              <div class="col-4">
-                <i class="fas fa-cogs text-muted mb-1"></i>
-                <div class="small">${car.tags.find(t => t.includes('Automatic')) ? 'Auto' : 'Manual'}</div>
-              </div>
-              <div class="col-4">
-                <i class="fas fa-gas-pump text-muted mb-1"></i>
-                <div class="small">${car.tags.find(t => t.includes('Electric')) ? 'Electric' : 'Petrol'}</div>
-              </div>
-            </div>
-          </div>
-
-          <div class="car-actions d-flex gap-2">
-            <button class="btn ${isAvailable ? 'btn-success' : 'btn-secondary'} flex-fill" data-action="add-cart" data-id="${car._id}" ${!isAvailable ? 'disabled' : ''}>
-              <i class="fas fa-shopping-cart me-1"></i> ${isAvailable ? 'Add to Cart' : 'Unavailable'}
-            </button>
-            <button class="btn btn-outline-danger" data-action="add-wishlist" data-id="${car._id}">
-              <i class="fas fa-heart"></i>
-            </button>
-            <button class="btn btn-outline-warning" data-action="add-saved" data-id="${car._id}">
-              <i class="fas fa-bookmark"></i>
-            </button>
-          </div>
-
-          <div class="mt-2 text-center">
-            <button class="btn btn-link btn-sm text-decoration-none p-0" data-action="view-details" data-id="${car._id}">
-              View Details <i class="fas fa-chevron-right ms-1"></i>
-            </button>
-          </div>
-        </div>
-      </div>
-    `;
-  }).join('');
-
-  // Update compare button state
-  updateCompareButton();
-}
-
-function generateStars(rating) {
-  const fullStars = Math.floor(rating);
-  const hasHalfStar = rating % 1 >= 0.5;
-  const emptyStars = 5 - fullStars - (hasHalfStar ? 1 : 0);
-
-  return `
-    ${'<i class="fas fa-star text-warning"></i>'.repeat(fullStars)}
-    ${hasHalfStar ? '<i class="fas fa-star-half-alt text-warning"></i>' : ''}
-    ${'<i class="far fa-star text-warning"></i>'.repeat(emptyStars)}
-  `;
-}
-
-function applyFilters() {
-  // For now, no filters on this page, but can be added later
-  filteredCars = [...allCars];
-  renderCars(filteredCars);
-  updateLoadMoreButton();
-}
-
-function updateLoadMoreButton() {
-  const loadMoreBtn = document.getElementById("load-more");
-  const totalPages = Math.ceil(filteredCars.length / carsPerPage);
-
-  if (currentPage < totalPages) {
-    loadMoreBtn.style.display = "inline-block";
-  } else {
-    loadMoreBtn.style.display = "none";
-  }
-}
-
-function loadMoreCars() {
-  currentPage++;
-  const startIndex = (currentPage - 1) * carsPerPage;
-  const endIndex = startIndex + carsPerPage;
-  const carsToShow = filteredCars.slice(0, endIndex);
-
-  renderCars(carsToShow);
-  updateLoadMoreButton();
-}
-
-// Cars array - same as home.html
-const cars = [
-  { name:"Mercedes-Benz C300", price:45000, image:"https://vehicle-images.dealerinspire.com/a1a7-11002896/W1KAF4GB4SR252999/00f2d6ad30e089cb5c02791d58c3af6a.jpg", tags:["Automatic","Premium","4 Seats"], available:true },
-  { name:"Toyota Camry 2023", price:25000, image:"https://images.unsplash.com/photo-1549399542-7e3f8b79c341?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80", tags:["Automatic","Executive","5 Seats"], available:true },
-  { name:"BMW X5 Luxury", price:65000, image:"https://images.unsplash.com/photo-1544636331-e26879cd4d9b?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80", tags:["Automatic","Luxury","7 Seats"], available:false }
-];
-
-function fetchCars() {
-  allCars = cars.map(car => ({
-    ...car,
-    _id: car.name.replace(/\s+/g, '').toLowerCase() // Generate _id from name for consistency
-  }));
-  filteredCars = [...allCars];
-  applyFilters();
-}
-
-fetchCars();
-
-// Add event listeners for car action buttons using event delegation
-document.addEventListener('click', (e) => {
-  const action = e.target.dataset.action;
-  const carId = e.target.dataset.id;
-
-  if (!action || !carId) return;
-
-  const car = allCars.find(c => c._id === carId) || filteredCars.find(c => c._id === carId);
-
-  if (!car) {
-    console.error("Car not found:", carId);
-    showToast("Car not found", "error");
-    return;
-  }
-
-  switch (action) {
-    case 'add-cart':
-      addToCart(car);
-      break;
-
-    case 'add-wishlist':
-      addToWishlist(car);
-      break;
-
-    case 'add-saved':
-      addToSaved(car);
-      break;
-
-    case 'quick-view':
-      showQuickView(car);
-      break;
-
-    case 'compare':
-      toggleCompare(car);
-      break;
-
-    case 'share':
-      showShareModal(car);
-      break;
-
-    case 'view-details':
-      showViewDetails(car);
-      break;
-  }
-});
-
-function addToCart(car) {
-  const cart = JSON.parse(localStorage.getItem("cart")) || [];
-  if (cart.find(c => c._id === car._id)) {
-    showToast("Car already in cart", "warning");
-    return;
-  }
-  cart.push(car);
-  localStorage.setItem("cart", JSON.stringify(cart));
-  updateCounts();
-  showToast("Added to cart", "success");
-}
-
-function addToWishlist(car) {
-  const wishlist = JSON.parse(localStorage.getItem("wishlist")) || [];
-  if (wishlist.find(c => c._id === car._id)) {
-    showToast("Car already in wishlist", "warning");
-    return;
-  }
-  wishlist.push(car);
-  localStorage.setItem("wishlist", JSON.stringify(wishlist));
-  updateCounts();
-  showToast("Added to wishlist", "success");
-}
-
-function addToSaved(car) {
-  const savedCars = JSON.parse(localStorage.getItem("savedCars")) || [];
-  if (savedCars.find(c => c._id === car._id)) {
-    showToast("Car already saved", "warning");
-    return;
-  }
-  savedCars.push(car);
-  localStorage.setItem("savedCars", JSON.stringify(savedCars));
-  updateCounts();
-  showToast("Car saved", "success");
-}
-
-function updateCounts() {
-  document.getElementById("cart-count").textContent = (JSON.parse(localStorage.getItem("cart")) || []).length;
-  document.getElementById("wishlist-count").textContent = (JSON.parse(localStorage.getItem("wishlist")) || []).length;
-  document.getElementById("saved-count").textContent = (JSON.parse(localStorage.getItem("savedCars")) || []).length;
-}
-
-// Quick View Modal
-function showQuickView(car) {
-  const modal = new bootstrap.Modal(document.getElementById('quickViewModal'));
-  const content = document.getElementById('quickViewContent');
-  const rating = car.rating || (Math.random() * 2 + 3).toFixed(1);
-  const reviewCount = car.reviewCount || Math.floor(Math.random() * 50 + 5);
-  const discount = car.discount || 0;
-  const originalPrice = discount > 0 ? Math.round(car.price / (1 - discount/100)) : car.price;
-
-  content.innerHTML = `
-    <div class="row">
-      <div class="col-md-6">
-        <img src="${car.image || placeholderImage}" alt="${car.name}" class="img-fluid rounded mb-3">
-      </div>
-      <div class="col-md-6">
-        <h4 class="fw-bold">${car.name}</h4>
-        <div class="d-flex align-items-center mb-2">
-          <div class="stars me-2">${generateStars(rating)}</div>
-          <small class="text-muted">(${reviewCount} reviews)</small>
-        </div>
-        <div class="car-features mb-3">
-          ${car.tags.map(tag => `<span class="badge bg-light text-dark me-1">${tag}</span>`).join('')}
-        </div>
-        <div class="price-section mb-3">
-          ${discount > 0 ? `
-            <div class="d-flex align-items-center gap-2 mb-2">
-              <span class="text-decoration-line-through text-muted">₦${originalPrice.toLocaleString()}</span>
-              <span class="badge bg-danger">${discount}% OFF</span>
-            </div>
-          ` : ''}
-          <div class="h4 text-success fw-bold">₦${car.price.toLocaleString()} <small class="text-muted">/ day</small></div>
-        </div>
-        <div class="car-specs mb-3">
-          <div class="row g-2 text-center">
-            <div class="col-4">
-              <i class="fas fa-users text-muted mb-1"></i>
-              <div class="small">${car.tags.find(t => t.includes('Seats')) || '5 Seats'}</div>
-            </div>
-            <div class="col-4">
-              <i class="fas fa-cogs text-muted mb-1"></i>
-              <div class="small">${car.tags.find(t => t.includes('Automatic')) ? 'Auto' : 'Manual'}</div>
-            </div>
-            <div class="col-4">
-              <i class="fas fa-gas-pump text-muted mb-1"></i>
-              <div class="small">${car.tags.find(t => t.includes('Electric')) ? 'Electric' : 'Petrol'}</div>
-            </div>
-          </div>
-        </div>
-        <p class="text-muted">Experience premium comfort and performance with this ${car.name}. Perfect for your next adventure.</p>
-      </div>
-    </div>
-  `;
-
-  // Update add to cart button
-  const addToCartBtn = document.getElementById('quickViewAddToCart');
-  addToCartBtn.onclick = () => {
-    addToCart(car);
-    modal.hide();
-  };
-
-  modal.show();
-}
-
-// Compare functionality
-function toggleCompare(car) {
-  const index = compareList.findIndex(c => c._id === car._id);
-  if (index > -1) {
-    compareList.splice(index, 1);
-    showToast("Removed from compare list", "info");
-  } else {
-    if (compareList.length >= 4) {
-      showToast("You can compare up to 4 cars at a time", "warning");
-      return;
-    }
-    compareList.push(car);
-    showToast("Added to compare list", "success");
-  }
-  localStorage.setItem("compareList", JSON.stringify(compareList));
-  updateCompareButton();
-}
-
-// Show Compare Modal
-function showCompareModal() {
-  if (compareList.length === 0) {
-    showToast("No cars to compare", "warning");
-    return;
-  }
-
-  const modal = new bootstrap.Modal(document.getElementById('compareModal'));
-  const content = document.getElementById('compareContent');
-
-  content.innerHTML = `
-    <div class="table-responsive">
-      <table class="table table-bordered">
-        <thead>
-          <tr>
-            <th>Feature</th>
-            ${compareList.map(car => `<th>${car.name}</th>`).join('')}
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td><strong>Price</strong></td>
-            ${compareList.map(car => `<td>₦${car.price.toLocaleString()}</td>`).join('')}
-          </tr>
-          <tr>
-            <td><strong>Rating</strong></td>
-            ${compareList.map(car => `<td>${generateStars(car.rating || 4.0)}</td>`).join('')}
-          </tr>
-          <tr>
-            <td><strong>Transmission</strong></td>
-            ${compareList.map(car => `<td>${car.tags.find(t => t.includes('Automatic')) ? 'Automatic' : 'Manual'}</td>`).join('')}
-          </tr>
-          <tr>
-            <td><strong>Fuel Type</strong></td>
-            ${compareList.map(car => `<td>${car.tags.find(t => t.includes('Electric')) ? 'Electric' : 'Petrol'}</td>`).join('')}
-          </tr>
-          <tr>
-            <td><strong>Seats</strong></td>
-            ${compareList.map(car => `<td>${car.tags.find(t => t.includes('Seats')) || '5'}</td>`).join('')}
-          </tr>
-          <tr>
-            <td><strong>Features</strong></td>
-            ${compareList.map(car => `<td>${car.tags.slice(0, 2).join(', ')}</td>`).join('')}
-          </tr>
-        </tbody>
-      </table>
-    </div>
-  `;
-
-  modal.show();
-}
-
-// Share Modal
-function showShareModal(car) {
-  const modal = new bootstrap.Modal(document.getElementById('shareModal'));
-  const content = document.getElementById('shareContent');
-  const shareUrl = `${window.location.origin}/car-details.html?id=${car._id}`;
-
-  content.innerHTML = `
-    <div class="text-center">
-      <img src="${car.image || placeholderImage}" alt="${car.name}" class="img-fluid rounded mb-3" style="max-height: 200px;">
-      <h5>${car.name}</h5>
-      <p class="text-muted">₦${car.price.toLocaleString()} / day</p>
-      <div class="mt-3">
-        <input type="text" class="form-control" id="shareLink" value="${shareUrl}" readonly>
-      </div>
-      <div class="mt-3">
-        <button class="btn btn-outline-primary me-2" onclick="shareOnFacebook('${shareUrl}')">
-          <i class="fab fa-facebook-f me-1"></i>Facebook
-        </button>
-        <button class="btn btn-outline-info me-2" onclick="shareOnTwitter('${shareUrl}', '${car.name}')">
-          <i class="fab fa-twitter me-1"></i>Twitter
-        </button>
-        <button class="btn btn-outline-success" onclick="shareOnWhatsApp('${shareUrl}', '${car.name}')">
-          <i class="fab fa-whatsapp me-1"></i>WhatsApp
-        </button>
-      </div>
-    </div>
-  `;
-
-  modal.show();
-}
-
-// Share functions
-function shareOnFacebook(url) {
-  window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`, '_blank');
-}
-
-function shareOnTwitter(url, title) {
-  window.open(`https://twitter.com/intent/tweet?url=${encodeURIComponent(url)}&text=${encodeURIComponent(`Check out this ${title} on Silas Car Rentals!`)}`, '_blank');
-}
-
-function shareOnWhatsApp(url, title) {
-  window.open(`https://wa.me/?text=${encodeURIComponent(`Check out this ${title} on Silas Car Rentals: ${url}`)}`, '_blank');
-}
-
-// View Details
-function showViewDetails(car) {
-  // For now, redirect to a car details page or show a modal
-  // You can implement this as needed
-  showToast("View Details functionality coming soon!", "info");
-  // window.location.href = `car-details.html?id=${car._id}`;
-}
-
-// Scroll to top functionality
-const scrollToTopBtn = document.getElementById('scroll-to-top');
-
-window.addEventListener('scroll', () => {
-  const scrollHeight = document.documentElement.scrollHeight;
-  const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-  const clientHeight = document.documentElement.clientHeight;
-
-  const isNearBottom = scrollTop + clientHeight >= scrollHeight - 200;
-
-  if (isNearBottom && scrollTop > 300) {
-    scrollToTopBtn.classList.add('show');
-  } else {
-    scrollToTopBtn.classList.remove('show');
-  }
-});
-
-scrollToTopBtn.addEventListener('click', () => {
-  window.scrollTo({
-    top: 0,
-    behavior: 'smooth'
-  });
-});
-
-// Theme toggle functionality
-const themeToggle = document.getElementById('theme-toggle');
-const body = document.body;
-
-const currentTheme = localStorage.getItem('theme') || 'light';
-body.setAttribute('data-bs-theme', currentTheme);
-
-function updateThemeIcon() {
-  const icon = themeToggle.querySelector('i');
-  if (body.getAttribute('data-bs-theme') === 'dark') {
-    icon.className = 'fas fa-sun';
-  } else {
-    icon.className = 'fas fa-moon';
-  }
-}
-
-updateThemeIcon();
-
-themeToggle.addEventListener('click', () => {
-  const currentTheme = body.getAttribute('data-bs-theme');
-  const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-
-  body.setAttribute('data-bs-theme', newTheme);
-  localStorage.setItem('theme', newTheme);
-  updateThemeIcon();
-});
-
-// Sidebar links config
-const sidebarLinks = [
-  {href:"profile.html", icon:"fa-user", text:"Profile"},
-  {href:"orders.html", icon:"fa-box", text:"Orders"},
-  {href:"cart.html", icon:"fa-shopping-cart", text:"Cart"},
-  {href:"wishlist.html", icon:"fa-heart", text:"Wishlist"},
-  {href:"saved.html", icon:"fa-bookmark", text:"Saved"}
-];
-
-// Render sidebar with active state
-function renderSidebar() {
-  const current = window.location.pathname.split("/").pop();
-  const linksHtml = sidebarLinks.map(l=>{
-    const active = current===l.href ? "active fw-bold text-success" : "";
-    return `<li><a href="${l.href}" class="nav-link ${active}"><i class="fas ${l.icon} me-2"></i>${l.text}</a></li>`;
-  }).join("");
-  document.getElementById("sidebar-links").innerHTML=linksHtml;
-}
-
-// Search and Filter Cars
-function searchCars() {
-  const searchInput = document.getElementById("search-input").value.toLowerCase().trim();
-  const priceFilter = document.getElementById("price-filter").value;
-  const typeFilter = document.getElementById("type-filter").value;
-  const locationFilter = document.getElementById("location-filter").value;
-
-  filteredCars = allCars.filter(car => {
-    // Search by name or tags
-    const matchesSearch = !searchInput ||
-      car.name.toLowerCase().includes(searchInput) ||
-      car.tags.some(tag => tag.toLowerCase().includes(searchInput));
-
-    // Price filter
-    let matchesPrice = true;
-    if (priceFilter) {
-      const [min, max] = priceFilter.split('-').map(p => parseInt(p));
-      if (max) {
-        matchesPrice = car.price >= min && car.price <= max;
-      } else {
-        matchesPrice = car.price >= min;
-      }
-    }
-
-    // Type filter (using tags for type matching)
-    const matchesType = !typeFilter || car.tags.some(tag => tag.toLowerCase().includes(typeFilter.toLowerCase()));
-
-    // Location filter (assuming all cars are available in all locations for now)
-    const matchesLocation = !locationFilter || true;
-
-    return matchesSearch && matchesPrice && matchesType && matchesLocation;
-  });
-
-  currentPage = 1; // Reset to first page on search
-  renderCars(filteredCars.slice(0, carsPerPage));
-  updateLoadMoreButton();
-}
-
-function applyFilters() {
-  filteredCars = [...allCars];
-  searchCars();
-}
-
-// Load more event listener
-document.getElementById("load-more").addEventListener("click", loadMoreCars);
-
-// Search button event listener
-document.getElementById("search-btn").addEventListener("click", searchCars);
-
-// Also trigger search on Enter key in search input
-document.getElementById("search-input").addEventListener("keypress", (e) => {
-  if (e.key === "Enter") {
-    searchCars();
-  }
-});
-
-// Logout button
-document.getElementById("logout-button").addEventListener("click", () => {
-  localStorage.clear();
-  window.location = "login.html";
-});
-
-// Clear all filters function
-function clearAllFilters() {
-  document.getElementById("search-input").value = "";
-  document.getElementById("price-filter").value = "";
-  document.getElementById("type-filter").value = "";
-  document.getElementById("location-filter").value = "";
-  document.getElementById("transmission-filter").value = "";
-  document.getElementById("fuel-filter").value = "";
-  document.getElementById("seats-filter").value = "";
-  document.getElementById("year-filter").value = "";
-  document.getElementById("rating-filter").value = "";
-  document.getElementById("availability-filter").value = "";
-
-  // Reset advanced filters visibility
-  const advancedFilters = document.getElementById("advanced-filters");
-  if (advancedFilters) {
-    advancedFilters.style.display = "none";
-  }
-
-  // Reset search suggestions
-  const suggestions = document.getElementById("search-suggestions");
-  if (suggestions) {
-    suggestions.style.display = "none";
-  }
-
-  // Reset to first page
-  currentPage = 1;
-
-  // Re-apply filters (which will show all cars)
-  applyFilters();
-
-  showToast("All filters cleared", "info");
-}
-
-// Copy share link functionality
-function copyShareLink() {
-  const shareLink = document.getElementById("shareLink");
-  if (shareLink) {
-    shareLink.select();
-    shareLink.setSelectionRange(0, 99999); // For mobile devices
-    navigator.clipboard.writeText(shareLink.value).then(() => {
-      showToast("Link copied to clipboard!", "success");
-    }).catch(err => {
-      console.error('Failed to copy: ', err);
-      showToast("Failed to copy link", "error");
-    });
-  }
-}
-
-// Event listeners for additional buttons
-document.addEventListener('DOMContentLoaded', () => {
-  // Compare button
-  const compareBtn = document.getElementById("compare-btn");
-  if (compareBtn) {
-    compareBtn.addEventListener("click", showCompareModal);
-  }
-
-  // Copy share link button
-  const copyShareLinkBtn = document.getElementById("copyShareLink");
-  if (copyShareLinkBtn) {
-    copyShareLinkBtn.addEventListener("click", copyShareLink);
-  }
-
-  // Clear all filters button
-  const clearAllFiltersBtn = document.getElementById("clear-all-filters");
-  if (clearAllFiltersBtn) {
-    clearAllFiltersBtn.addEventListener("click", clearAllFilters);
-  }
-
-  // Toggle advanced filters
-  const toggleAdvancedFiltersBtn = document.getElementById("toggle-advanced-filters");
-  if (toggleAdvancedFiltersBtn) {
-    toggleAdvancedFiltersBtn.addEventListener("click", () => {
-      const advancedFilters = document.getElementById("advanced-filters");
-      const icon = toggleAdvancedFiltersBtn.querySelector("i");
-
-      if (advancedFilters.style.display === "none" || advancedFilters.style.display === "") {
-        advancedFilters.style.display = "block";
-        toggleAdvancedFiltersBtn.innerHTML = '<i class="fas fa-chevron-up me-1"></i>Hide Advanced Filters';
-      } else {
-        advancedFilters.style.display = "none";
-        toggleAdvancedFiltersBtn.innerHTML = '<i class="fas fa-chevron-down me-1"></i>Show Advanced Filters';
-      }
-    });
-  }
-
-  // Apply advanced filters
-  const applyAdvancedFiltersBtn = document.getElementById("apply-advanced-filters");
-  if (applyAdvancedFiltersBtn) {
-    applyAdvancedFiltersBtn.addEventListener("click", () => {
-      searchCars();
-      showToast("Advanced filters applied", "success");
-    });
-  }
-
-  // Save search functionality
-  const saveSearchBtn = document.getElementById("save-search-btn");
-  if (saveSearchBtn) {
-    saveSearchBtn.addEventListener("click", () => {
-      const searchCriteria = {
-        search: document.getElementById("search-input").value,
-        price: document.getElementById("price-filter").value,
-        type: document.getElementById("type-filter").value,
-        location: document.getElementById("location-filter").value,
-        transmission: document.getElementById("transmission-filter").value,
-        fuel: document.getElementById("fuel-filter").value,
-        seats: document.getElementById("seats-filter").value,
-        year: document.getElementById("year-filter").value,
-        rating: document.getElementById("rating-filter").value,
-        availability: document.getElementById("availability-filter").value,
-        timestamp: new Date().toISOString()
-      };
-
-      const savedSearches = JSON.parse(localStorage.getItem("savedSearches")) || [];
-      savedSearches.push(searchCriteria);
-      localStorage.setItem("savedSearches", JSON.stringify(savedSearches));
-
-      showToast("Search saved successfully!", "success");
-    });
-  }
-
-  // Export functionality
-  const exportBtn = document.getElementById("export-btn");
-  if (exportBtn) {
-    exportBtn.addEventListener("click", () => {
-      const dataStr = JSON.stringify(filteredCars, null, 2);
-      const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
-
-      const exportFileDefaultName = 'car-rental-export.json';
-
-      const linkElement = document.createElement('a');
-      linkElement.setAttribute('href', dataUri);
-      linkElement.setAttribute('download', exportFileDefaultName);
-      linkElement.click();
-
-      showToast("Data exported successfully!", "success");
-    });
-  }
-
-  // Sort functionality
-  document.querySelectorAll('.sort-option').forEach(option => {
-    option.addEventListener('click', (e) => {
-      e.preventDefault();
-      const sortType = e.target.dataset.sort;
-      const currentSort = document.getElementById("current-sort");
-
-      // Update current sort display
-      currentSort.textContent = e.target.textContent;
-
-      // Sort the cars
-      filteredCars.sort((a, b) => {
-        switch (sortType) {
-          case 'price-asc':
-            return a.price - b.price;
-          case 'price-desc':
-            return b.price - a.price;
-          case 'name-asc':
-            return a.name.localeCompare(b.name);
-          case 'name-desc':
-            return b.name.localeCompare(a.name);
-          case 'rating-desc':
-            return (b.rating || 0) - (a.rating || 0);
-          case 'year-desc':
-            return (b.year || 0) - (a.year || 0);
-          case 'popularity-desc':
-            return (b.popularity || 0) - (a.popularity || 0);
-          default:
-            return 0;
-        }
-      });
-
-      // Re-render cars
-      renderCars(filteredCars.slice(0, currentPage * carsPerPage));
-      updateLoadMoreButton();
-
-      showToast(`Sorted by ${e.target.textContent}`, "info");
-    });
-  });
-
-  // Search suggestions
-  const searchInput = document.getElementById("search-input");
-  const suggestions = document.getElementById("search-suggestions");
-
-  if (searchInput && suggestions) {
-    searchInput.addEventListener("input", () => {
-      const query = searchInput.value.toLowerCase().trim();
-      if (query.length < 2) {
-        suggestions.style.display = "none";
-        return;
-      }
-
-      const matchingSuggestions = [];
-      allCars.forEach(car => {
-        if (car.name.toLowerCase().includes(query)) {
-          matchingSuggestions.push(car.name);
-        }
-        car.tags.forEach(tag => {
-          if (tag.toLowerCase().includes(query) && !matchingSuggestions.includes(tag)) {
-            matchingSuggestions.push(tag);
-          }
-        });
-      });
-
-      if (matchingSuggestions.length > 0) {
-        suggestions.innerHTML = matchingSuggestions.slice(0, 5).map(suggestion => `
-          <div class="suggestion-item" onclick="selectSuggestion('${suggestion}')">${suggestion}</div>
-        `).join('');
-        suggestions.style.display = "block";
-      } else {
-        suggestions.style.display = "none";
-      }
-    });
-
-    // Hide suggestions when clicking outside
-    document.addEventListener("click", (e) => {
-      if (!searchInput.contains(e.target) && !suggestions.contains(e.target)) {
-        suggestions.style.display = "none";
-      }
-    });
-  }
-});
-
-// Select suggestion function
-function selectSuggestion(suggestion) {
-  document.getElementById("search-input").value = suggestion;
-  document.getElementById("search-suggestions").style.display = "none";
-  searchCars();
-}
-
-// Update stats
-function updateStats() {
-  const totalCars = allCars.length;
-  const availableCars = allCars.filter(car => car.available !== false).length;
-  const avgPrice = totalCars > 0 ? Math.round(allCars.reduce((sum, car) => sum + car.price, 0) / totalCars) : 0;
-
-  document.getElementById("total-cars").textContent = totalCars;
-  document.getElementById("available-cars").textContent = availableCars;
-  document.getElementById("avg-price").textContent = `₦${avgPrice.toLocaleString()}`;
-}
-
-// Personalized welcome with avatar + initials
-document.addEventListener("DOMContentLoaded", async () => {
-  const userJson = localStorage.getItem("user");
-
-  if (!userJson) {
-    window.location = "login.html";
-    return;
-  }
-
-  let user = JSON.parse(userJson);
-
-  // Debug: Log user object
-  console.log("User object from localStorage:", user);
-
-  // Fetch latest profile
-  try {
-    const res = await fetch(`${API_BASE}/profile`, {credentials: "include"});
-    if (res.ok) {
-      const data = await res.json();
-      user = data.user;
-      localStorage.setItem("user", JSON.stringify(user));
-      console.log("Updated user object from API:", user);
-    }
-  } catch (err) {
-    console.error("Failed to fetch profile:", err);
-  }
-
-  // More robust name extraction
-  let fullName = user?.name?.trim() ||
-                 user?.fullName?.trim() ||
-                 `${user?.firstName || ''} ${user?.lastName || ''}`.trim() ||
-                 user?.email?.split("@")[0] ||
-                 user?.username ||
-                 "User";
-
-  if (!fullName || fullName === '') fullName = "User";
-
-  let firstName = fullName.split(" ")[0] || fullName;
-
-  let initials = fullName.split(" ")
-    .map(n => n[0])
-    .join("")
-    .substring(0, 2)
-    .toUpperCase();
-
-  console.log("Computed fullName:", fullName);
-  console.log("Computed firstName:", firstName);
-  console.log("Computed initials:", initials);
-
-  // Navbar profile (full name)
-  const userNameElement = document.getElementById("user-name");
-  if (userNameElement) {
-    userNameElement.textContent = fullName;
-    console.log("Set user-name to:", fullName);
-  } else {
-    console.error("user-name element not found");
-  }
-
-  // Dashboard greeting (first name only)
-  const welcomeUserElement = document.getElementById("welcome-user");
-  if (welcomeUserElement) {
-    welcomeUserElement.textContent = firstName;
-    console.log("Set welcome-user to:", firstName);
-  } else {
-    console.error("welcome-user element not found");
-  }
-
-  // Avatar handling (image or initials fallback)
-  if (user?.profilePicture?.url || user?.avatar || user?.profileImage) {
-    const imgSrc = user?.profilePicture?.url || user?.avatar || user?.profileImage;
-    document.getElementById("nav-avatar").innerHTML =
-      `<img src="${imgSrc}" class="rounded-circle" style="width:32px;height:32px;object-fit:cover;">`;
-    document.getElementById("welcome-avatar").innerHTML =
-      `<img src="${imgSrc}" class="rounded-circle border" style="width:60px;height:60px;object-fit:cover;">`;
-  } else {
-    document.getElementById("nav-avatar").textContent = initials;
-    document.getElementById("welcome-avatar").textContent = initials;
-  }
-
-  renderSidebar();
-  updateCounts();
-  updateStats();
-});
-</script>
-</body>
-</html>
+              ${car.tags.slice(0, 3).map(tag => `<span class="badge bg-light text-dark">${tag}</span
