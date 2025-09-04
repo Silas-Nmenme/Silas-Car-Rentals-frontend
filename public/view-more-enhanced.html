@@ -4,734 +4,24 @@
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width,initial-scale=1"/>
   <title>View More Cars - Silas Car Rentals</title>
-
-  <!-- Bootstrap 5.3.2 (Responsive & Mobile-first) -->
+  <!-- Bootstrap -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-  <!-- Font Awesome -->
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"/>
-  <!-- Animate.css -->
   <link href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" rel="stylesheet"/>
-  <!-- AOS -->
   <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet"/>
-  <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet"/>
   <link rel="stylesheet" href="header.css">
   <link rel="stylesheet" href="cars.css">
   <link rel="stylesheet" href="dropdown.css">
-  <style>
+<style>
     :root {
-      /* Light Theme Variables */
-      --light-primary: #0d9488;
-      --light-primary-700: #0f766e;
-      --light-text: #374151;
-      --light-muted: #6b7280;
-      --light-border: #e5e7eb;
-      --light-shadow: 0 4px 20px rgba(0,0,0,0.08);
-      --light-bg: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-      --light-card-bg: #ffffff;
-      --light-accent: #f59e0b;
-
-      /* Dark Theme Variables */
-      --dark-primary: #14b8a6;
-      --dark-primary-700: #0d9488;
-      --dark-text: #e5e7eb;
-      --dark-muted: #9ca3af;
-      --dark-border: #374151;
-      --dark-shadow: 0 4px 20px rgba(0,0,0,0.3);
-      --dark-bg: linear-gradient(135deg, #111827 0%, #1f2937 100%);
-      --dark-card-bg: #1f2937;
-      --dark-accent: #fbbf24;
-
-      /* Common Variables */
-      --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-      --bounce: cubic-bezier(0.68, -0.55, 0.265, 1.55);
-      --elastic: cubic-bezier(0.175, 0.885, 0.32, 1.275);
     }
-
-    /* Enhanced Car Card Styles */
-    .car-card {
-      cursor: pointer;
-      transition: var(--transition);
-      border: none;
-      overflow: hidden;
-      background: var(--light-card-bg);
-      border-radius: 16px;
-      box-shadow: var(--light-shadow);
-    }
-
-    body[data-bs-theme="dark"] .car-card {
-      background: var(--dark-card-bg);
-      box-shadow: var(--dark-shadow);
-    }
-
-    .car-card:hover {
-      transform: translateY(-8px);
-      box-shadow: 0 20px 40px rgba(0,0,0,0.15);
-      z-index: 10;
-    }
-
-    body[data-bs-theme="dark"] .car-card:hover {
-      box-shadow: 0 20px 40px rgba(0,0,0,0.4);
-    }
-
-    .car-actions button {
-      transition: transform 0.3s ease;
-    }
-
-    .car-actions button:hover {
-      transform: scale(1.2);
-    }
-
-    .welcome-section {
-      background: var(--light-card-bg);
-      padding: 2rem;
-      border-radius: 16px;
-      box-shadow: var(--light-shadow);
-      margin: 2rem 0;
-      border: 1px solid var(--light-border);
-    }
-
-    body[data-bs-theme="dark"] .welcome-section {
-      background: var(--dark-card-bg);
-      box-shadow: var(--dark-shadow);
-      border-color: var(--dark-border);
-    }
-
-    .car-overlay {
-      position: absolute;
-      top: 10px;
-      right: 10px;
-      opacity: 0;
-      transition: opacity 0.3s ease;
-    }
-
-    .car-card:hover .car-overlay {
-      opacity: 1;
-    }
-
-    .availability-badge {
-      position: absolute;
-      top: 10px;
-      left: 10px;
-      padding: 4px 8px;
-      border-radius: 4px;
-      font-size: 0.75rem;
-      font-weight: 600;
-      z-index: 2;
-    }
-
-    .discount-badge {
-      position: absolute;
-      top: 10px;
-      left: 10px;
-      padding: 4px 8px;
-      border-radius: 4px;
-      font-size: 0.75rem;
-      font-weight: 600;
-      z-index: 2;
-    }
-
-    .car-features .badge {
-      font-size: 0.75rem;
-      padding: 4px 8px;
-    }
-
-    .car-specs .small {
-      font-weight: 500;
-      color: var(--light-text);
-    }
-
-    body[data-bs-theme="dark"] .car-specs .small {
-      color: var(--dark-text);
-    }
-
-    .stars {
-      font-size: 0.875rem;
-    }
-
-    .suggestions-dropdown {
-      position: absolute;
-      top: 100%;
-      left: 0;
-      right: 0;
-      background: var(--light-card-bg);
-      border: 1px solid var(--light-border);
-      border-radius: 8px;
-      box-shadow: var(--light-shadow);
-      z-index: 1000;
-      max-height: 200px;
-      overflow-y: auto;
-    }
-
-    body[data-bs-theme="dark"] .suggestions-dropdown {
-      background: var(--dark-card-bg);
-      border-color: var(--dark-border);
-      box-shadow: var(--dark-shadow);
-    }
-
-    .suggestions-dropdown .suggestion-item {
-      padding: 8px 12px;
-      cursor: pointer;
-      border-bottom: 1px solid var(--light-border);
-    }
-
-    .suggestions-dropdown .suggestion-item:hover {
-      background: var(--light-primary);
-      color: white;
-    }
-
-    body[data-bs-theme="dark"] .suggestions-dropdown .suggestion-item:hover {
-      background: var(--dark-primary);
-    }
-
-    .suggestions-dropdown .suggestion-item:last-child {
-      border-bottom: none;
-    }
-
-    .stat-item {
-      text-align: center;
-      padding: 0.5rem;
-    }
-
-    .stat-number {
-      display: block;
-      font-size: 1.5rem;
-      font-weight: 700;
-      color: var(--light-primary);
-    }
-
-    body[data-bs-theme="dark"] .stat-number {
-      color: var(--dark-primary);
-    }
-
-    .stat-label {
-      font-size: 0.875rem;
-    }
-
-    .scroll-to-top {
-      position: fixed;
-      bottom: 20px;
-      right: 20px;
-      width: 50px;
-      height: 50px;
-      border-radius: 50%;
-      background: var(--light-primary);
-      color: white;
-      border: none;
-      cursor: pointer;
-      opacity: 0;
-      visibility: hidden;
-      transition: all 0.3s ease;
-      z-index: 1000;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-    }
-
-    .scroll-to-top.show {
-      opacity: 1;
-      visibility: visible;
-    }
-
-    .scroll-to-top:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 6px 16px rgba(0,0,0,0.2);
-    }
-
-    body[data-bs-theme="dark"] .scroll-to-top {
-      background: var(--dark-primary);
-    }
-
-    .toast {
-      opacity: 0;
-      transform: translateY(100%);
-      transition: all 0.3s ease;
-    }
-
-    .toast.show {
-      opacity: 1;
-      transform: translateY(0);
-    }
-
-    .toast.hide {
-      opacity: 0;
-      transform: translateY(100%);
-    }
-
-    .toast-success {
-      background: #d1fae5;
-      color: #065f46;
-      border: 1px solid #a7f3d0;
-    }
-
-    .toast-error {
-      background: #fee2e2;
-      color: #991b1b;
-      border: 1px solid #fecaca;
-    }
-
-    .toast-warning {
-      background: #fef3c7;
-      color: #92400e;
-      border: 1px solid #fde68a;
-    }
-
-    .toast-info {
-      background: #dbeafe;
-      color: #1e40af;
-      border: 1px solid #bfdbfe;
-    }
-
-    body[data-bs-theme="dark"] .toast-success {
-      background: #064e3b;
-      color: #d1fae5;
-      border-color: #065f46;
-    }
-
-    body[data-bs-theme="dark"] .toast-error {
-      background: #7f1d1d;
-      color: #fee2e2;
-      border-color: #991b1b;
-    }
-
-    body[data-bs-theme="dark"] .toast-warning {
-      background: #78350f;
-      color: #fef3c7;
-      border-color: #92400e;
-    }
-
-    body[data-bs-theme="dark"] .toast-info {
-      background: #1e3a8a;
-      color: #dbeafe;
-      border-color: #1e40af;
-    }
-
-    .toast-icon {
-      margin-right: 8px;
-      font-size: 1.1rem;
-    }
-
-    .toast-close {
-      background: none;
-      border: none;
-      font-size: 1.2rem;
-      cursor: pointer;
-      margin-left: 8px;
-      opacity: 0.7;
-    }
-
-    .toast-close:hover {
-      opacity: 1;
-    }
-
-    /* Responsive Design */
-    @media (max-width: 768px) {
-      .welcome-section {
-        padding: 1.5rem;
-      }
-
-      .car-card {
-        padding: 1.5rem;
-      }
-
-      .car-actions {
-        flex-direction: column;
-      }
-
-      .car-actions .btn {
-        width: 100%;
-      }
-    }
-  </style>
+</style>
 </head>
-<body data-bs-theme="light">
-
-<!-- Header -->
-<header class="main-header">
-  <nav class="navbar navbar-expand-lg">
-    <div class="container">
-      <!-- Sidebar toggle button for mobile -->
-      <button class="btn btn-outline-success d-lg-none me-2" data-bs-toggle="offcanvas" data-bs-target="#sidebarMenu" aria-label="Open menu" title="Open menu">
-        <i class="fas fa-bars"></i>
-      </button>
-
-      <a href="home.html" class="navbar-brand brand">
-        <i class="fas fa-car me-2"></i>Silas Car Rentals
-      </a>
-
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" title="Toggle navigation" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-
-      <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav ms-auto">
-          <li class="nav-item">
-            <a class="nav-link active" href="#home">Home</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#services">Services</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#about">About</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#contact">Contact</a>
-          </li>
-        </ul>
-
-        <div class="ms-auto d-flex align-items-center gap-3">
-          <!-- Notifications -->
-          <div class="dropdown">
-            <button class="btn btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-label="Notifications" title="Notifications">
-              <i class="fas fa-bell"></i>
-            </button>
-            <ul class="dropdown-menu dropdown-menu-end" id="notifications">
-              <li class="dropdown-header fw-bold">Notifications</li>
-              <li><a class="dropdown-item" href="#">🚗 New BMW X5 added to fleet</a></li>
-              <li><a class="dropdown-item" href="#">🔥 20% off luxury rentals this week</a></li>
-              <li><a class="dropdown-item" href="#">✅ Your booking was confirmed</a></li>
-            </ul>
-          </div>
-
-          <!-- Cart -->
-          <a href="cart.html" class="btn btn-outline-primary position-relative" aria-label="Cart">
-            <i class="fas fa-shopping-cart"></i>
-            <span id="cart-count" class="badge bg-success position-absolute top-0 start-100 translate-middle">0</span>
-          </a>
-
-          <!-- Wishlist -->
-          <a href="wishlist.html" class="btn btn-outline-danger position-relative" aria-label="Wishlist">
-            <i class="fas fa-heart"></i>
-            <span id="wishlist-count" class="badge bg-danger position-absolute top-0 start-100 translate-middle">0</span>
-          </a>
-
-          <!-- Saved -->
-          <a href="saved.html" class="btn btn-outline-warning position-relative" aria-label="Saved">
-            <i class="fas fa-bookmark"></i>
-            <span id="saved-count" class="badge bg-warning position-absolute top-0 start-100 translate-middle">0</span>
-          </a>
-
-          <!-- Theme Toggle -->
-          <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme" title="Toggle theme">
-            <i class="fas fa-moon" aria-hidden="true"></i>
-            <span class="sr-only">Toggle theme</span>
-          </button>
-
-          <!-- Profile -->
-          <div class="dropdown">
-            <button class="btn btn-success dropdown-toggle d-flex align-items-center" data-bs-toggle="dropdown" aria-label="Profile menu" title="Profile menu">
-              <div id="nav-avatar" class="rounded-circle me-2 d-flex align-items-center justify-content-center bg-success text-white fw-bold" style="width:32px; height:32px; font-size:0.9rem;"></div>
-              <span id="user-name">User</span>
-            </button>
-            <ul class="dropdown-menu dropdown-menu-end">
-              <li><a class="dropdown-item" href="profile.html"><i class="fas fa-user me-2"></i>Profile</a></li>
-              <li><a class="dropdown-item" href="orders.html"><i class="fas fa-box me-2"></i>My Orders</a></li>
-              <li><button class="dropdown-item text-danger" id="logout-button"><i class="fas fa-sign-out-alt me-2"></i>Logout</button></li>
-            </ul>
-          </div>
-        </div>
-      </div>
-    </div>
-  </nav>
-</header>
-
-<div class="container-fluid">
-  <div class="row">
-    <!-- Sidebar Offcanvas -->
-    <div class="offcanvas offcanvas-start sidebar" tabindex="-1" id="sidebarMenu">
-      <div class="offcanvas-header">
-        <h5 class="offcanvas-title fw-bold text-success"><i class="fas fa-car me-2"></i>Menu</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" title="Close menu"></button>
-      </div>
-      <div class="offcanvas-body p-3">
-        <h6 class="text-muted mb-3">Dashboard</h6>
-        <ul class="nav flex-column gap-2" id="sidebar-links"></ul>
-      </div>
-    </div>
-
-    <!-- Sidebar Desktop -->
-    <aside class="col-md-3 col-lg-2 sidebar min-vh-100 p-3 d-none d-lg-block">
-      <h6 class="text-muted mb-3">Dashboard</h6>
-      <ul class="nav flex-column gap-2" id="sidebar-links-desktop"></ul>
-    </aside>
-
-    <!-- Main -->
-    <main class="col-md-12 p-4 main">
-      <!-- Welcome -->
-      <div class="mb-4 animate__animated animate__fadeIn d-flex align-items-center gap-3 welcome-section">
-        <div id="welcome-avatar" class="rounded-circle border d-flex align-items-center justify-content-center bg-success text-white fw-bold" style="width:60px; height:60px; font-size:1.2rem;"></div>
-        <div>
-          <h2 class="fw-bold mb-1"> Hello <span id="welcome-user"></span> 👋</h2>
-          <p class="text-muted">Explore our extensive fleet of premium and standard vehicles.</p>
-        </div>
-      </div>
-
-      <h2 class="section-title text-center mb-4" data-aos="fade-up">View More Cars</h2>
-      <p class="text-center mb-5 text-muted" data-aos="fade-up" data-aos-delay="100">
-        Explore our extensive fleet of premium and standard vehicles, all maintained to the highest standards.
-      </p>
-
-      <!-- Advanced Search & Filter Section -->
-      <div class="search-bar-card mb-4" data-aos="fade-up" data-aos-delay="150">
-        <div class="d-flex justify-content-between align-items-center mb-3">
-          <h5 class="fw-bold mb-0">Advanced Search & Filters</h5>
-          <div class="d-flex gap-2">
-            <button class="btn btn-outline-primary btn-sm" id="save-search-btn" title="Save current search">
-              <i class="fas fa-save me-1"></i>Save Search
-            </button>
-            <button class="btn btn-outline-secondary btn-sm" id="clear-all-filters" title="Clear all filters">
-              <i class="fas fa-times me-1"></i>Clear All
-            </button>
-          </div>
-        </div>
-
-        <!-- Main Search Row -->
-        <div class="search-bar-filters mb-3">
-          <div class="position-relative" style="flex: 2;">
-            <input type="text" id="search-input" class="form-control" placeholder="Search by name, tags, features..." autocomplete="off" aria-label="Search cars">
-            <div id="search-suggestions" class="suggestions-dropdown" style="display: none;"></div>
-          </div>
-          <select id="price-filter" class="form-select" aria-label="Filter by price">
-            <option value="">All Prices</option>
-            <option value="0-20000">Under ₦20,000</option>
-            <option value="20000-40000">₦20,000 - ₦40,000</option>
-            <option value="40000-60000">₦40,000 - ₦60,000</option>
-            <option value="60000+">Over ₦60,000</option>
-          </select>
-          <select id="type-filter" class="form-select" aria-label="Filter by type">
-            <option value="">All Types</option>
-            <option value="sedan">Sedan</option>
-            <option value="suv">SUV</option>
-            <option value="luxury">Luxury</option>
-            <option value="sports">Sports</option>
-            <option value="hatchback">Hatchback</option>
-            <option value="convertible">Convertible</option>
-          </select>
-          <button class="btn btn-success" id="search-btn">
-            <i class="fas fa-search me-2"></i>Search
-          </button>
-        </div>
-
-        <!-- Advanced Filters Row -->
-        <div class="advanced-filters" id="advanced-filters" style="display: none;">
-          <div class="row g-3">
-            <div class="col-md-3">
-              <label class="form-label fw-semibold">Location</label>
-              <select id="location-filter" class="form-select" aria-label="Filter by location">
-                <option value="">All Locations</option>
-                <option value="lagos">Lagos</option>
-                <option value="abuja">Abuja</option>
-                <option value="port-harcourt">Port Harcourt</option>
-                <option value="kano">Kano</option>
-                <option value="ibadan">Ibadan</option>
-              </select>
-            </div>
-            <div class="col-md-3">
-              <label class="form-label fw-semibold">Transmission</label>
-              <select id="transmission-filter" class="form-select" aria-label="Filter by transmission">
-                <option value="">Any Transmission</option>
-                <option value="automatic">Automatic</option>
-                <option value="manual">Manual</option>
-              </select>
-            </div>
-            <div class="col-md-3">
-              <label class="form-label fw-semibold">Fuel Type</label>
-              <select id="fuel-filter" class="form-select" aria-label="Filter by fuel type">
-                <option value="">Any Fuel Type</option>
-                <option value="petrol">Petrol</option>
-                <option value="diesel">Diesel</option>
-                <option value="electric">Electric</option>
-                <option value="hybrid">Hybrid</option>
-              </select>
-            </div>
-            <div class="col-md-3">
-              <label class="form-label fw-semibold">Seating Capacity</label>
-              <select id="seats-filter" class="form-select" aria-label="Filter by seats">
-                <option value="">Any Capacity</option>
-                <option value="2">2 Seats</option>
-                <option value="4">4 Seats</option>
-                <option value="5">5 Seats</option>
-                <option value="7">7+ Seats</option>
-              </select>
-            </div>
-            <div class="col-md-3">
-              <label class="form-label fw-semibold">Year Range</label>
-              <select id="year-filter" class="form-select" aria-label="Filter by year">
-                <option value="">Any Year</option>
-                <option value="2024">2024 & Newer</option>
-                <option value="2020-2023">2020-2023</option>
-                <option value="2015-2019">2015-2019</option>
-                <option value="2010-2014">2010-2014</option>
-              </select>
-            </div>
-            <div class="col-md-3">
-              <label class="form-label fw-semibold">Rating</label>
-              <select id="rating-filter" class="form-select" aria-label="Filter by rating">
-                <option value="">Any Rating</option>
-                <option value="4.5">4.5+ Stars</option>
-                <option value="4">4+ Stars</option>
-                <option value="3">3+ Stars</option>
-              </select>
-            </div>
-            <div class="col-md-3">
-              <label class="form-label fw-semibold">Availability</label>
-              <select id="availability-filter" class="form-select" aria-label="Filter by availability">
-                <option value="">All Cars</option>
-                <option value="available">Available Now</option>
-                <option value="booked">Currently Booked</option>
-              </select>
-            </div>
-            <div class="col-md-3 d-flex align-items-end">
-              <button class="btn btn-outline-success w-100" id="apply-advanced-filters">
-                <i class="fas fa-filter me-1"></i>Apply Filters
-              </button>
-            </div>
-          </div>
-        </div>
-
-        <!-- Filter Toggle -->
-        <div class="text-center mt-3">
-          <button class="btn btn-link text-decoration-none" id="toggle-advanced-filters">
-            <i class="fas fa-chevron-down me-1"></i>Show Advanced Filters
-          </button>
-        </div>
-      </div>
-
-      <!-- Quick Stats & Actions Bar -->
-      <div class="stats-actions-bar d-flex justify-content-between align-items-center mb-4" data-aos="fade-up" data-aos-delay="175">
-        <div class="stats-info d-flex gap-4">
-          <div class="stat-item">
-            <span class="stat-number" id="total-cars">0</span>
-            <span class="stat-label text-muted">Total Cars</span>
-          </div>
-          <div class="stat-item">
-            <span class="stat-number" id="available-cars">0</span>
-            <span class="stat-label text-muted">Available</span>
-          </div>
-          <div class="stat-item">
-            <span class="stat-number" id="avg-price">₦0</span>
-            <span class="stat-label text-muted">Avg Price</span>
-          </div>
-        </div>
-        <div class="actions-group d-flex gap-2">
-          <button class="btn btn-outline-info btn-sm" id="compare-btn" disabled>
-            <i class="fas fa-balance-scale me-1"></i>Compare (<span id="compare-count">0</span>)
-          </button>
-          <button class="btn btn-outline-primary btn-sm" id="bulk-actions-btn" style="display: none;">
-            <i class="fas fa-tasks me-1"></i>Bulk Actions
-          </button>
-          <div class="dropdown">
-            <button class="btn btn-outline-secondary btn-sm dropdown-toggle" data-bs-toggle="dropdown">
-              <i class="fas fa-sort me-1"></i>Sort: <span id="current-sort">Price: Low to High</span>
-            </button>
-            <ul class="dropdown-menu">
-              <li><a class="dropdown-item sort-option" data-sort="price-asc" href="#">Price: Low to High</a></li>
-              <li><a class="dropdown-item sort-option" data-sort="price-desc" href="#">Price: High to Low</a></li>
-              <li><a class="dropdown-item sort-option" data-sort="name-asc" href="#">Name: A-Z</a></li>
-              <li><a class="dropdown-item sort-option" data-sort="name-desc" href="#">Name: Z-A</a></li>
-              <li><a class="dropdown-item sort-option" data-sort="rating-desc" href="#">Highest Rated</a></li>
-              <li><a class="dropdown-item sort-option" data-sort="year-desc" href="#">Newest First</a></li>
-              <li><a class="dropdown-item sort-option" data-sort="popularity-desc" href="#">Most Popular</a></li>
-            </ul>
-          </div>
-          <button class="btn btn-outline-success btn-sm" id="export-btn">
-            <i class="fas fa-download me-1"></i>Export
-          </button>
-        </div>
-      </div>
-
-      <div id="car-count" class="car-count text-center mb-4" data-aos="fade-up" data-aos-delay="200">Loading available cars...</div>
-
-      <div class="services-grid" id="cars-grid" aria-live="polite" data-aos="fade-up" data-aos-delay="300">
-        <!-- Car cards will be rendered here -->
-      </div>
-
-      <div class="load-more-container text-center mt-4" data-aos="fade-up" data-aos-delay="400">
-        <button class="btn btn-outline-success" id="load-more" style="display: none; padding: 1rem 2rem; border-radius: 50px;">Load More Cars</button>
-      </div>
-    </main>
-  </div>
-</div>
-
-<!-- Footer from home.html -->
-<footer class="bg-dark text-light text-center py-3 mt-5">
-  &copy; 2025 Silas Car Rentals. All Rights Reserved.
-</footer>
-
-<!-- Toast -->
-<div class="toast position-fixed bottom-0 end-0 m-3" id="toast" role="status" aria-live="polite"></div>
-
-<!-- Quick View Modal -->
-<div class="modal fade" id="quickViewModal" tabindex="-1" aria-labelledby="quickViewModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-lg">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="quickViewModalLabel">Car Details</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body" id="quickViewContent">
-        <!-- Content will be populated by JavaScript -->
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-success" id="quickViewAddToCart">Add to Cart</button>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- Compare Modal -->
-<div class="modal fade" id="compareModal" tabindex="-1" aria-labelledby="compareModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-xl">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="compareModalLabel">Compare Cars</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body" id="compareContent">
-        <!-- Content will be populated by JavaScript -->
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- Share Modal -->
-<div class="modal fade" id="shareModal" tabindex="-1" aria-labelledby="shareModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="shareModalLabel">Share Car</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body" id="shareContent">
-        <!-- Content will be populated by JavaScript -->
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary" id="copyShareLink">Copy Link</button>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- Scroll to top button -->
-<button id="scroll-to-top" class="scroll-to-top" aria-label="Scroll to top">
-  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-    <path d="M12 19V5M5 12l7-7 7 7"/>
-  </svg>
-</button>
-
-<!-- Bootstrap Bundle JS -->
+<body>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-<!-- AOS JS -->
 <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-<script>
-  AOS.init();
-</script>
+<script>AOS.init();</script>
 
 <script>
 const API_BASE = "https://techyjaunt-auth-go43.onrender.com";
@@ -742,19 +32,427 @@ let filteredCars = [];
 let currentPage = 1;
 const carsPerPage = 6;
 
-// Compare functionality variables
-let compareList = JSON.parse(localStorage.getItem("compareList")) || [];
+// Fetch cars from backend
+async function fetchCars() {
+  try {
+    const res = await fetch(`${API_BASE}/cars`);
+    if (!res.ok) throw new Error("Failed to fetch cars");
+    const data = await res.json();
+    allCars = data;
+    filteredCars = [...allCars];
+    renderCars(paginate(filteredCars, currentPage));
+    updateStats();
+    toggleLoadMore();
+  } catch (err) {
+    showToast(err.message, "error");
+  }
+}
+
+// Pagination helper
+function paginate(arr, page) {
+  const start = (page - 1) * carsPerPage;
+  return arr.slice(start, start + carsPerPage);
+}
+
+// Update quick stats
+function updateStats() {
+  document.getElementById("total-cars").textContent = allCars.length;
+  document.getElementById("available-cars").textContent = allCars.filter(c => c.available !== false).length;
+  const avgPrice = allCars.length > 0 ? Math.round(allCars.reduce((a, b) => a + b.price, 0) / allCars.length) : 0;
+  document.getElementById("avg-price").textContent = `₦${avgPrice}`;
+}
+
+// Toggle Load More button
+function toggleLoadMore() {
+  const btn = document.getElementById("load-more");
+  if (filteredCars.length > currentPage * carsPerPage) {
+    btn.style.display = "inline-block";
+  } else {
+    btn.style.display = "none";
+  }
+}
+
+// Apply filters
+function applyFilters() {
+  const query = document.getElementById("search-input").value.toLowerCase();
+  const type = document.getElementById("type-filter").value;
+  const price = document.getElementById("price-filter").value;
+  filteredCars = allCars.filter(car => {
+    let matches = true;
+    if (query && !car.name.toLowerCase().includes(query) && !car.tags.some(t => t.toLowerCase().includes(query))) {
+      matches = false;
+    }
+    if (type && car.type !== type) matches = false;
+    if (price) {
+      const [min, max] = price.split("-");
+      if (max) {
+        if (car.price < +min || car.price > +max) matches = false;
+      } else if (price.includes("+")) {
+        if (car.price < +min) matches = false;
+      }
+    }
+    return matches;
+  });
+  currentPage = 1;
+  renderCars(paginate(filteredCars, currentPage));
+  updateStats();
+  toggleLoadMore();
+}
+
+// Load more cars
+function loadMoreCars() {
+  currentPage++;
+  const newCars = paginate(filteredCars, currentPage);
+  appendCars(newCars);
+  toggleLoadMore();
+}
+
+// Render car grid
+function renderCars(cars) {
+  const grid = document.getElementById("cars-grid");
+  grid.innerHTML = "";
+  appendCars(cars);
+}
+
+function appendCars(cars) {
+  const grid = document.getElementById("cars-grid");
+  cars.forEach(car => {
+    const rating = car.rating || (Math.random() * 2 + 3).toFixed(1);
+    const reviewCount = car.reviewCount || Math.floor(Math.random() * 50 + 5);
+    const isAvailable = car.available !== false;
+    const discount = car.discount || 0;
+    const originalPrice = discount > 0 ? Math.round(car.price / (1 - discount/100)) : car.price;
+
+    const card = document.createElement("div");
+    card.className = "car-card card p-3 mb-4 position-relative";
+    card.setAttribute("data-id", car._id);
+    card.setAttribute("data-aos", "fade-up");
+    card.setAttribute("data-aos-delay", "100");
+    card.innerHTML = `
+      ${!isAvailable ? '<div class="availability-badge bg-warning text-dark">Booked</div>' : ''}
+      ${discount > 0 ? `<div class="discount-badge bg-danger text-white">-${discount}%</div>` : ''}
+
+      <div class="position-relative">
+        <img src="${car.image || placeholderImage}" alt="${car.name}" loading="lazy"
+             class="card-img-top rounded" style="height: 200px; object-fit: cover;">
+        <div class="car-overlay">
+          <button class="btn btn-light btn-sm me-2" data-action="quick-view" data-id="${car._id}" title="Quick View">
+            <i class="fas fa-eye"></i>
+          </button>
+          <button class="btn btn-light btn-sm me-2" data-action="compare" data-id="${car._id}" title="Compare">
+            <i class="fas fa-balance-scale"></i>
+          </button>
+          <button class="btn btn-light btn-sm" data-action="share" data-id="${car._id}" title="Share">
+            <i class="fas fa-share-alt"></i>
+          </button>
+        </div>
+      </div>
+
+      <div class="card-body p-0 mt-3">
+        <div class="d-flex justify-content-between align-items-start mb-2">
+          <h5 class="card-title mb-0 fw-bold">${car.name}</h5>
+          <div class="rating">
+            <div class="d-flex align-items-center">
+              <div class="stars me-1">
+                ${generateStars(rating)}
+              </div>
+              <small class="text-muted">(${reviewCount})</small>
+            </div>
+          </div>
+        </div>
+
+        <div class="car-features mb-3">
+          <div class="d-flex flex-wrap gap-1">
+            ${car.tags.slice(0, 3).map(tag => `<span class="badge bg-light text-dark">${tag}</span>`).join('')}
+          </div>
+        </div>
+
+        <div class="car-specs mb-3">
+          <div class="row g-2">
+            <div class="col-6">
+              <small class="d-block">Price</small>
+              <span class="fw-bold text-success">₦${car.price.toLocaleString()}</span>
+              ${discount > 0 ? `<small class="text-muted text-decoration-line-through ms-2">₦${originalPrice.toLocaleString()}</small>` : ''}
+            </div>
+            <div class="col-6">
+              <small class="d-block">Type</small>
+              <small class="fw-semibold">${car.type || 'N/A'}</small>
+            </div>
+            <div class="col-6">
+              <small class="d-block">Year</small>
+              <small class="fw-semibold">${car.year || 'N/A'}</small>
+            </div>
+            <div class="col-6">
+              <small class="d-block">Seats</small>
+              <small class="fw-semibold">${car.seats || 'N/A'}</small>
+            </div>
+          </div>
+        </div>
+
+        <div class="car-actions d-flex gap-2">
+          <button class="btn btn-success flex-fill" data-action="add-to-cart" data-id="${car._id}" ${!isAvailable ? 'disabled' : ''}>
+            <i class="fas fa-cart-plus me-1"></i>${!isAvailable ? 'Booked' : 'Add to Cart'}
+          </button>
+          <button class="btn btn-outline-danger" data-action="wishlist" data-id="${car._id}">
+            <i class="fas fa-heart"></i>
+          </button>
+          <button class="btn btn-outline-warning" data-action="save" data-id="${car._id}">
+            <i class="fas fa-bookmark"></i>
+          </button>
+        </div>
+      </div>
+    `;
+    grid.appendChild(card);
+  });
+
+  // Add event listeners
+  setTimeout(() => {
+    document.querySelectorAll('.car-card').forEach(card => {
+      card.addEventListener('click', handleCarCardClick);
+    });
+  }, 100);
+
+  document.getElementById("car-count").textContent = `${filteredCars.length} car${filteredCars.length !== 1 ? 's' : ''} available`;
+}
+
+function generateStars(rating) {
+  const fullStars = Math.floor(rating);
+  const hasHalfStar = rating % 1 !== 0;
+  const emptyStars = 5 - fullStars - (hasHalfStar ? 1 : 0);
+
+  let starsHtml = '';
+
+  for (let i = 0; i < fullStars; i++) {
+    starsHtml += '<i class="fas fa-star text-warning"></i>';
+  }
+
+  if (hasHalfStar) {
+    starsHtml += '<i class="fas fa-star-half-alt text-warning"></i>';
+  }
+
+  for (let i = 0; i < emptyStars; i++) {
+    starsHtml += '<i class="far fa-star text-warning"></i>';
+  }
+
+  return starsHtml;
+}
+
+function handleCarCardClick(event) {
+  const target = event.target.closest('[data-action]');
+  if (!target) return;
+
+  event.preventDefault();
+  const action = target.dataset.action;
+  const carId = target.dataset.id;
+
+  switch (action) {
+    case 'quick-view':
+      showQuickView(carId);
+      break;
+    case 'compare':
+      toggleCompare(carId);
+      break;
+    case 'share':
+      showShareModal(carId);
+      break;
+    case 'add-to-cart':
+      addToCart(carId);
+      break;
+    case 'wishlist':
+      toggleWishlist(carId);
+      break;
+    case 'save':
+      toggleSaved(carId);
+      break;
+  }
+}
+
+function showQuickView(carId) {
+  const car = allCars.find(c => c._id === carId);
+  if (!car) return;
+
+  const modal = new bootstrap.Modal(document.getElementById('quickViewModal'));
+  const content = document.getElementById('quickViewContent');
+
+  content.innerHTML = `
+    <div class="row">
+      <div class="col-md-6">
+        <img src="${car.image || placeholderImage}" alt="${car.name}" class="img-fluid rounded">
+      </div>
+      <div class="col-md-6">
+        <h4>${car.name}</h4>
+        <div class="mb-3">
+          <span class="h5 text-success">₦${car.price.toLocaleString()}</span>
+          ${car.discount > 0 ? `<span class="text-muted text-decoration-line-through ms-2">₦${Math.round(car.price / (1 - car.discount/100)).toLocaleString()}</span>` : ''}
+        </div>
+        <div class="mb-3">
+          ${generateStars(car.rating || 4.0)}
+          <small class="text-muted">(${car.reviewCount || 0} reviews)</small>
+        </div>
+        <div class="mb-3">
+          <h6>Specifications:</h6>
+          <ul class="list-unstyled">
+            <li><strong>Type:</strong> ${car.type || 'N/A'}</li>
+            <li><strong>Year:</strong> ${car.year || 'N/A'}</li>
+            <li><strong>Seats:</strong> ${car.seats || 'N/A'}</li>
+            <li><strong>Transmission:</strong> ${car.transmission || 'N/A'}</li>
+            <li><strong>Fuel:</strong> ${car.fuel || 'N/A'}</li>
+          </ul>
+        </div>
+        <div class="mb-3">
+          <h6>Features:</h6>
+          <div class="d-flex flex-wrap gap-1">
+            ${car.tags.map(tag => `<span class="badge bg-light text-dark">${tag}</span>`).join('')}
+          </div>
+        </div>
+      </div>
+    </div>
+  `;
+
+  modal.show();
+}
+
+function toggleCompare(carId) {
+  const index = compareList.indexOf(carId);
+  if (index > -1) {
+    compareList.splice(index, 1);
+    showToast('Removed from compare list', 'info');
+  } else {
+    if (compareList.length >= 4) {
+      showToast('Maximum 4 cars can be compared', 'warning');
+      return;
+    }
+    compareList.push(carId);
+    showToast('Added to compare list', 'success');
+  }
+
+  localStorage.setItem('compareList', JSON.stringify(compareList));
+  updateCompareButton();
+}
+
+function updateCompareButton() {
+  const btn = document.getElementById('compare-btn');
+  const count = document.getElementById('compare-count');
+  count.textContent = compareList.length;
+  btn.disabled = compareList.length === 0;
+}
+
+function showShareModal(carId) {
+  const car = allCars.find(c => c._id === carId);
+  if (!car) return;
+
+  const modal = new bootstrap.Modal(document.getElementById('shareModal'));
+  const content = document.getElementById('shareContent');
+
+  const shareUrl = `${window.location.origin}/car-details.html?id=${carId}`;
+
+  content.innerHTML = `
+    <div class="text-center">
+      <h5>Share ${car.name}</h5>
+      <p>Share this car with your friends!</p>
+      <div class="input-group mb-3">
+        <input type="text" class="form-control" id="share-link" value="${shareUrl}" readonly>
+        <button class="btn btn-outline-primary" type="button" id="copy-link-btn">
+          <i class="fas fa-copy"></i> Copy
+        </button>
+      </div>
+      <div class="d-flex justify-content-center gap-2">
+        <a href="https://wa.me/?text=${encodeURIComponent(`Check out this car: ${car.name} - ${shareUrl}`)}" target="_blank" class="btn btn-success">
+          <i class="fab fa-whatsapp"></i>
+        </a>
+        <a href="https://twitter.com/intent/tweet?text=${encodeURIComponent(`Check out this car: ${car.name}`)}&url=${encodeURIComponent(shareUrl)}" target="_blank" class="btn btn-info">
+          <i class="fab fa-twitter"></i>
+        </a>
+        <a href="https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}" target="_blank" class="btn btn-primary">
+          <i class="fab fa-facebook"></i>
+        </a>
+      </div>
+    </div>
+  `;
+
+  modal.show();
+
+  // Copy link functionality
+  document.getElementById('copy-link-btn').addEventListener('click', () => {
+    const linkInput = document.getElementById('share-link');
+    linkInput.select();
+    document.execCommand('copy');
+    showToast('Link copied to clipboard!', 'success');
+  });
+}
+
+function addToCart(carId) {
+  const car = allCars.find(c => c._id === carId);
+  if (!car) return;
+
+  let cart = JSON.parse(localStorage.getItem('cart')) || [];
+  const existingItem = cart.find(item => item._id === carId);
+
+  if (existingItem) {
+    existingItem.quantity += 1;
+  } else {
+    cart.push({ ...car, quantity: 1 });
+  }
+
+  localStorage.setItem('cart', JSON.stringify(cart));
+  updateCartCount();
+  showToast(`${car.name} added to cart!`, 'success');
+}
+
+function toggleWishlist(carId) {
+  let wishlist = JSON.parse(localStorage.getItem('wishlist')) || [];
+  const index = wishlist.indexOf(carId);
+
+  if (index > -1) {
+    wishlist.splice(index, 1);
+    showToast('Removed from wishlist', 'info');
+  } else {
+    wishlist.push(carId);
+    showToast('Added to wishlist', 'success');
+  }
+
+  localStorage.setItem('wishlist', JSON.stringify(wishlist));
+  updateWishlistCount();
+}
+
+function toggleSaved(carId) {
+  let saved = JSON.parse(localStorage.getItem('saved')) || [];
+  const index = saved.indexOf(carId);
+
+  if (index > -1) {
+    saved.splice(index, 1);
+    showToast('Removed from saved', 'info');
+  } else {
+    saved.push(carId);
+    showToast('Added to saved', 'success');
+  }
+
+  localStorage.setItem('saved', JSON.stringify(saved));
+  updateSavedCount();
+}
+
+function updateCartCount() {
+  const cart = JSON.parse(localStorage.getItem('cart')) || [];
+  const count = cart.reduce((sum, item) => sum + item.quantity, 0);
+  document.getElementById('cart-count').textContent = count;
+}
+
+function updateWishlistCount() {
+  const wishlist = JSON.parse(localStorage.getItem('wishlist')) || [];
+  document.getElementById('wishlist-count').textContent = wishlist.length;
+}
+
+function updateSavedCount() {
+  const saved = JSON.parse(localStorage.getItem('saved')) || [];
+  document.getElementById('saved-count').textContent = saved.length;
+}
 
 function showToast(msg, type = 'info', ms = 3000) {
   const toast = document.getElementById("toast");
 
-  // Clear previous classes
   toast.className = 'toast';
-
-  // Add type class
   toast.classList.add(`toast-${type}`);
 
-  // Icon mapping
   const iconMap = {
     success: 'fas fa-check-circle',
     error: 'fas fa-exclamation-circle',
@@ -762,17 +460,14 @@ function showToast(msg, type = 'info', ms = 3000) {
     info: 'fas fa-info-circle'
   };
 
-  // Set content
   toast.innerHTML = `
     <i class="${iconMap[type]} toast-icon"></i>
     <span class="toast-message">${msg}</span>
     <button class="toast-close" onclick="hideToast()">&times;</button>
   `;
 
-  // Show toast
   toast.classList.add("show");
 
-  // Auto hide
   setTimeout(() => hideToast(), ms);
 }
 
@@ -782,71 +477,418 @@ function hideToast() {
   toast.classList.add("hide");
   setTimeout(() => {
     toast.classList.remove("hide");
-  }, 400); // Match transition duration
+  }, 400);
 }
 
-function renderCars(cars) {
-  const grid = document.getElementById("cars-grid");
-  const count = document.getElementById("car-count");
+function clearAllFilters() {
+  document.getElementById("search-input").value = "";
+  document.getElementById("price-filter").value = "";
+  document.getElementById("type-filter").value = "";
+  // Clear advanced filters
+  document.getElementById("location-filter").value = "";
+  document.getElementById("transmission-filter").value = "";
+  document.getElementById("fuel-filter").value = "";
+  document.getElementById("seats-filter").value = "";
+  document.getElementById("year-filter").value = "";
+  document.getElementById("rating-filter").value = "";
+  document.getElementById("availability-filter").value = "";
 
-  if (cars.length === 0) {
-    grid.innerHTML = `
-      <div class="no-cars text-center" data-aos="fade-in">
-        <i class="fas fa-car fa-4x mb-3 text-muted"></i>
-        <h3>No cars found</h3>
-        <p class="text-muted">Try adjusting your search or filter criteria.</p>
-        <button class="btn btn-outline-primary mt-3" onclick="clearAllFilters()">
-          <i class="fas fa-times me-1"></i>Clear All Filters
-        </button>
-      </div>
-    `;
-    count.textContent = "No cars available";
-    return;
-  }
+  filteredCars = [...allCars];
+  currentPage = 1;
+  renderCars(paginate(filteredCars, currentPage));
+  updateStats();
+  toggleLoadMore();
+  showToast('All filters cleared', 'info');
+}
 
-  count.textContent = `${cars.length} car${cars.length !== 1 ? 's' : ''} available`;
+// Event listeners
+document.getElementById("search-btn").addEventListener("click", applyFilters);
+document.getElementById("clear-all-filters").addEventListener("click", () => {
+  document.getElementById("search-input").value = "";
+  document.getElementById("type-filter").value = "";
+  document.getElementById("price-filter").value = "";
+  filteredCars = [...allCars];
+  currentPage = 1;
+  renderCars(paginate(filteredCars, currentPage));
+  updateStats();
+  toggleLoadMore();
+});
+document.getElementById("load-more").addEventListener("click", loadMoreCars);
 
-  grid.innerHTML = cars.map(car => {
-    const rating = car.rating || (Math.random() * 2 + 3).toFixed(1);
-    const reviewCount = car.reviewCount || Math.floor(Math.random() * 50 + 5);
-    const isAvailable = car.available !== false;
-    const discount = car.discount || 0;
-    const originalPrice = discount > 0 ? Math.round(car.price / (1 - discount/100)) : car.price;
+// User Initialization
+document.addEventListener("DOMContentLoaded", () => {
+  const user = JSON.parse(localStorage.getItem("user")) || { name: "User" };
+  document.getElementById("user-name").textContent = user.name;
+  document.getElementById("welcome-user").textContent = user.name;
+  const avatarLetter = user.name.charAt(0).toUpperCase();
+  document.getElementById("nav-avatar").textContent = avatarLetter;
+  document.getElementById("welcome-avatar").textContent = avatarLetter;
+  document.getElementById("logout-button").addEventListener("click", () => {
+    localStorage.removeItem("user");
+    window.location.href = "login.html";
+  });
+  fetchCars();
+});
 
-    return `
-      <div class="car-card card p-3 mb-4 position-relative" data-id="${car._id}" data-aos="fade-up" data-aos-delay="100">
-        ${!isAvailable ? '<div class="availability-badge bg-warning text-dark">Booked</div>' : ''}
-        ${discount > 0 ? `<div class="discount-badge bg-danger text-white">-${discount}%</div>` : ''}
+// Additional JavaScript for enhanced functionality
+let compareList = JSON.parse(localStorage.getItem('compareList')) || [];
+let currentSort = 'price-asc';
 
-        <div class="position-relative">
-          <img src="${car.image || placeholderImage}" alt="${car.name}" loading="lazy"
-               class="card-img-top rounded" style="height: 200px; object-fit: cover;">
-          <div class="car-overlay">
-            <button class="btn btn-light btn-sm me-2" data-action="quick-view" data-id="${car._id}" title="Quick View">
-              <i class="fas fa-eye"></i>
-            </button>
-            <button class="btn btn-light btn-sm me-2" data-action="compare" data-id="${car._id}" title="Compare">
-              <i class="fas fa-balance-scale"></i>
-            </button>
-            <button class="btn btn-light btn-sm" data-action="share" data-id="${car._id}" title="Share">
-              <i class="fas fa-share-alt"></i>
-            </button>
-          </div>
+// Initialize additional features
+document.addEventListener("DOMContentLoaded", () => {
+  // Initialize compare list
+  updateCompareButton();
+
+  // Initialize search suggestions
+  initializeSearchSuggestions();
+
+  // Initialize advanced filters
+  initializeAdvancedFilters();
+
+  // Initialize sorting
+  initializeSorting();
+
+  // Initialize scroll to top
+  initializeScrollToTop();
+
+  // Initialize theme toggle
+  initializeThemeToggle();
+
+  // Initialize sidebar
+  initializeSidebar();
+
+  // Initialize export functionality
+  initializeExport();
+
+  // Initialize saved searches
+  initializeSavedSearches();
+});
+
+function initializeSearchSuggestions() {
+  const searchInput = document.getElementById('search-input');
+  const suggestions = document.getElementById('search-suggestions');
+
+  searchInput.addEventListener('input', (e) => {
+    const query = e.target.value.toLowerCase();
+    if (query.length < 2) {
+      suggestions.style.display = 'none';
+      return;
+    }
+
+    const matchingCars = allCars.filter(car =>
+      car.name.toLowerCase().includes(query) ||
+      car.tags.some(tag => tag.toLowerCase().includes(query))
+    ).slice(0, 5);
+
+    if (matchingCars.length > 0) {
+      suggestions.innerHTML = matchingCars.map(car => `
+        <div class="suggestion-item" data-id="${car._id}">
+          <i class="fas fa-car me-2"></i>${car.name}
         </div>
+      `).join('');
+      suggestions.style.display = 'block';
+    } else {
+      suggestions.style.display = 'none';
+    }
+  });
 
-        <div class="card-body p-0 mt-3">
-          <div class="d-flex justify-content-between align-items-start mb-2">
-            <h5 class="card-title mb-0 fw-bold">${car.name}</h5>
-            <div class="rating">
-              <div class="d-flex align-items-center">
-                <div class="stars me-1">
-                  ${generateStars(rating)}
-                </div>
-                <small class="text-muted">(${reviewCount})</small>
-              </div>
-            </div>
-          </div>
+  // Handle suggestion clicks
+  suggestions.addEventListener('click', (e) => {
+    const item = e.target.closest('.suggestion-item');
+    if (item) {
+      const carId = item.dataset.id;
+      const car = allCars.find(c => c._id === carId);
+      if (car) {
+        searchInput.value = car.name;
+        suggestions.style.display = 'none';
+        applyFilters();
+      }
+    }
+  });
 
-          <div class="car-features mb-3">
-            <div class="d-flex flex-wrap gap-1">
-              ${car.tags.slice(0, 3).map(tag => `<span class="badge bg-light text-dark">${tag}</span
+  // Hide suggestions when clicking outside
+  document.addEventListener('click', (e) => {
+    if (!searchInput.contains(e.target) && !suggestions.contains(e.target)) {
+      suggestions.style.display = 'none';
+    }
+  });
+}
+
+function initializeAdvancedFilters() {
+  const toggleBtn = document.getElementById('toggle-advanced-filters');
+  const advancedFilters = document.getElementById('advanced-filters');
+  const applyBtn = document.getElementById('apply-advanced-filters');
+
+  toggleBtn.addEventListener('click', () => {
+    const isVisible = advancedFilters.style.display !== 'none';
+    advancedFilters.style.display = isVisible ? 'none' : 'block';
+    toggleBtn.innerHTML = isVisible
+      ? '<i class="fas fa-chevron-down me-1"></i>Show Advanced Filters'
+      : '<i class="fas fa-chevron-up me-1"></i>Hide Advanced Filters';
+  });
+
+  applyBtn.addEventListener('click', () => {
+    applyAdvancedFilters();
+  });
+}
+
+function applyAdvancedFilters() {
+  const location = document.getElementById('location-filter').value;
+  const transmission = document.getElementById('transmission-filter').value;
+  const fuel = document.getElementById('fuel-filter').value;
+  const seats = document.getElementById('seats-filter').value;
+  const year = document.getElementById('year-filter').value;
+  const rating = document.getElementById('rating-filter').value;
+  const availability = document.getElementById('availability-filter').value;
+
+  filteredCars = allCars.filter(car => {
+    let matches = true;
+
+    if (location && car.location !== location) matches = false;
+    if (transmission && car.transmission !== transmission) matches = false;
+    if (fuel && car.fuel !== fuel) matches = false;
+    if (seats && car.seats !== parseInt(seats)) matches = false;
+
+    if (year) {
+      const currentYear = new Date().getFullYear();
+      if (year === '2024') {
+        if (car.year < 2024) matches = false;
+      } else if (year === '2020-2023') {
+        if (car.year < 2020 || car.year > 2023) matches = false;
+      } else if (year === '2015-2019') {
+        if (car.year < 2015 || car.year > 2019) matches = false;
+      } else if (year === '2010-2014') {
+        if (car.year < 2010 || car.year > 2014) matches = false;
+      }
+    }
+
+    if (rating) {
+      const minRating = parseFloat(rating);
+      if ((car.rating || 0) < minRating) matches = false;
+    }
+
+    if (availability === 'available' && car.available === false) matches = false;
+    if (availability === 'booked' && car.available !== false) matches = false;
+
+    return matches;
+  });
+
+  currentPage = 1;
+  renderCars(paginate(filteredCars, currentPage));
+  updateStats();
+  toggleLoadMore();
+  showToast('Advanced filters applied', 'success');
+}
+
+function initializeSorting() {
+  document.querySelectorAll('.sort-option').forEach(option => {
+    option.addEventListener('click', (e) => {
+      e.preventDefault();
+      const sortType = e.target.dataset.sort;
+      currentSort = sortType;
+      document.getElementById('current-sort').textContent = e.target.textContent;
+      applySorting();
+    });
+  });
+}
+
+function applySorting() {
+  filteredCars.sort((a, b) => {
+    switch (currentSort) {
+      case 'price-asc':
+        return a.price - b.price;
+      case 'price-desc':
+        return b.price - a.price;
+      case 'name-asc':
+        return a.name.localeCompare(b.name);
+      case 'name-desc':
+        return b.name.localeCompare(a.name);
+      case 'rating-desc':
+        return (b.rating || 0) - (a.rating || 0);
+      case 'year-desc':
+        return (b.year || 0) - (a.year || 0);
+      case 'popularity-desc':
+        return (b.reviewCount || 0) - (a.reviewCount || 0);
+      default:
+        return 0;
+    }
+  });
+
+  currentPage = 1;
+  renderCars(paginate(filteredCars, currentPage));
+  showToast('Cars sorted successfully', 'info');
+}
+
+function initializeScrollToTop() {
+  const scrollBtn = document.getElementById('scroll-to-top');
+
+  window.addEventListener('scroll', () => {
+    if (window.pageYOffset > 300) {
+      scrollBtn.classList.add('show');
+    } else {
+      scrollBtn.classList.remove('show');
+    }
+  });
+
+  scrollBtn.addEventListener('click', () => {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    });
+  });
+}
+
+function initializeThemeToggle() {
+  const themeToggle = document.getElementById('theme-toggle');
+  const html = document.documentElement;
+
+  // Set initial theme
+  const savedTheme = localStorage.getItem('theme') || 'light';
+  html.setAttribute('data-bs-theme', savedTheme);
+  updateThemeIcon(savedTheme);
+
+  themeToggle.addEventListener('click', () => {
+    const currentTheme = html.getAttribute('data-bs-theme');
+    const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+
+    html.setAttribute('data-bs-theme', newTheme);
+    localStorage.setItem('theme', newTheme);
+    updateThemeIcon(newTheme);
+
+    showToast(`Switched to ${newTheme} theme`, 'info');
+  });
+}
+
+function updateThemeIcon(theme) {
+  const icon = document.querySelector('#theme-toggle i');
+  if (theme === 'dark') {
+    icon.className = 'fas fa-sun';
+  } else {
+    icon.className = 'fas fa-moon';
+  }
+}
+
+function initializeSidebar() {
+  // Populate sidebar links
+  const sidebarLinks = [
+    { href: 'home.html', icon: 'fas fa-home', text: 'Home' },
+    { href: 'cars.html', icon: 'fas fa-car', text: 'Browse Cars' },
+    { href: 'cart.html', icon: 'fas fa-shopping-cart', text: 'Cart' },
+    { href: 'wishlist.html', icon: 'fas fa-heart', text: 'Wishlist' },
+    { href: 'saved.html', icon: 'fas fa-bookmark', text: 'Saved' },
+    { href: 'orders.html', icon: 'fas fa-box', text: 'My Orders' },
+    { href: 'profile.html', icon: 'fas fa-user', text: 'Profile' },
+  ];
+
+  const sidebarContainer = document.getElementById('sidebar-links');
+  const sidebarDesktopContainer = document.getElementById('sidebar-links-desktop');
+
+  sidebarLinks.forEach(link => {
+    const linkElement = document.createElement('li');
+    linkElement.innerHTML = `<a href="${link.href}" class="nav-link"><i class="${link.icon} me-2"></i>${link.text}</a>`;
+    sidebarContainer.appendChild(linkElement.cloneNode(true));
+    sidebarDesktopContainer.appendChild(linkElement);
+  });
+}
+
+function initializeExport() {
+  document.getElementById('export-btn').addEventListener('click', () => {
+    const data = filteredCars.map(car => ({
+      Name: car.name,
+      Price: car.price,
+      Type: car.type || 'N/A',
+      Year: car.year || 'N/A',
+      Seats: car.seats || 'N/A',
+      Rating: car.rating || 'N/A',
+      Available: car.available !== false ? 'Yes' : 'No'
+    }));
+
+    const csv = convertToCSV(data);
+    downloadCSV(csv, 'car-list.csv');
+    showToast('Car list exported successfully', 'success');
+  });
+}
+
+function convertToCSV(data) {
+  const headers = Object.keys(data[0]);
+  const csvRows = [headers.join(',')];
+
+  data.forEach(row => {
+    const values = headers.map(header => {
+      const value = row[header];
+      return typeof value === 'string' && value.includes(',') ? `"${value}"` : value;
+    });
+    csvRows.push(values.join(','));
+  });
+
+  return csvRows.join('\n');
+}
+
+function downloadCSV(csv, filename) {
+  const blob = new Blob([csv], { type: 'text/csv' });
+  const url = window.URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = filename;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  window.URL.revokeObjectURL(url);
+}
+
+function initializeSavedSearches() {
+  document.getElementById('save-search-btn').addEventListener('click', () => {
+    const searchData = {
+      query: document.getElementById('search-input').value,
+      type: document.getElementById('type-filter').value,
+      price: document.getElementById('price-filter').value,
+      location: document.getElementById('location-filter').value,
+      transmission: document.getElementById('transmission-filter').value,
+      fuel: document.getElementById('fuel-filter').value,
+      seats: document.getElementById('seats-filter').value,
+      year: document.getElementById('year-filter').value,
+      rating: document.getElementById('rating-filter').value,
+      availability: document.getElementById('availability-filter').value,
+      sort: currentSort,
+      timestamp: new Date().toISOString()
+    };
+
+    let savedSearches = JSON.parse(localStorage.getItem('savedSearches')) || [];
+    savedSearches.push(searchData);
+    localStorage.setItem('savedSearches', JSON.stringify(savedSearches));
+
+    showToast('Search saved successfully', 'success');
+  });
+}
+
+// Enhanced applyFilters to include advanced filters
+function applyFilters() {
+  const query = document.getElementById("search-input").value.toLowerCase();
+  const type = document.getElementById("type-filter").value;
+  const price = document.getElementById("price-filter").value;
+
+  filteredCars = allCars.filter(car => {
+    let matches = true;
+    if (query && !car.name.toLowerCase().includes(query) && !car.tags.some(t => t.toLowerCase().includes(query))) {
+      matches = false;
+    }
+    if (type && car.type !== type) matches = false;
+    if (price) {
+      const [min, max] = price.split("-");
+      if (max) {
+        if (car.price < +min || car.price > +max) matches = false;
+      } else if (price.includes("+")) {
+        if (car.price < +min) matches = false;
+      }
+    }
+    return matches;
+  });
+
+  currentPage = 1;
+  renderCars(paginate(filteredCars, currentPage));
+  updateStats();
+  toggleLoadMore();
+}
+</script>
+</body>
+</html>
