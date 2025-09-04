@@ -824,6 +824,19 @@
         flex: 1;
       }
     }
+
+    /* Professional Section Theme Support */
+    .professional-section {
+      background: var(--light-card-bg);
+      border: 1px solid var(--light-border);
+      box-shadow: var(--light-shadow);
+    }
+
+    body[data-bs-theme="dark"] .professional-section {
+      background: var(--dark-card-bg);
+      border-color: var(--dark-border);
+      box-shadow: var(--dark-shadow);
+    }
   </style>
 </head>
 <body style="font-family:'Inter',sans-serif;">
@@ -1021,7 +1034,7 @@
       <!-- Removed Quick Booking section as requested -->
 
       <!-- Professional Replacement Section -->
-      <div class="professional-section mb-4 p-4 bg-light rounded shadow-sm" data-aos="fade-up">
+      <div class="professional-section mb-4 p-4 rounded shadow-sm" data-aos="fade-up">
         <h5 class="fw-bold mb-3">Why Choose Silas Car Rentals?</h5>
         <div class="row text-center">
           <div class="col-md-4 mb-3">
