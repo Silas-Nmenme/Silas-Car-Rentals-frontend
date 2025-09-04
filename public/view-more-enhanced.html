@@ -1589,6 +1589,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 
   let user = JSON.parse(userJson);
+  let localUser = user;
 
   // Fetch latest profile
   try {
@@ -1602,7 +1603,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     console.error("Failed to fetch profile:", err);
   }
 
-  let fullName = user?.name?.trim() || user?.email?.split("@")[0] || "User";
+  let fullName = user?.name?.trim() || localUser?.name?.trim() || user?.email?.split("@")[0] || "User";
   let firstName = fullName.split(" ")[0]; // First word only
 
   let initials = fullName.split(" ")
