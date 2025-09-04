@@ -4,10 +4,22 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Email Verification - Silas Car Rental</title>
-  <!-- Bootstrap CSS CDN -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
-  <!-- Font Awesome CDN -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Bootstrap 5 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+
+  <!-- Font Awesome for icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
+  <!-- Animate.css for animations -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+
+  <!-- AOS (Animate On Scroll) -->
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+
+  <!-- Additional Animation Libraries -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/hover.css/2.3.1/css/hover-min.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate-css-grid@1.2.1/animate-css-grid.min.css" />
+
   <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <style>
@@ -19,7 +31,7 @@
 
     body {
       font-family: 'Poppins', sans-serif;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      background: linear-gradient(135deg, #0d9488 0%, #14b8a6 100%);
       color: #ffffff;
       overflow-x: hidden;
       min-height: 100vh;
@@ -56,7 +68,7 @@
 
     .verification-icon {
       font-size: 4rem;
-      color: #667eea;
+      color: #0d9488;
       margin-bottom: 1.5rem;
       animation: pulse 2s infinite;
     }
@@ -104,9 +116,9 @@
 
     .token-input:focus {
       outline: none;
-      border-color: #667eea;
+      border-color: #0d9488;
       background: #ffffff;
-      box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
+      box-shadow: 0 0 0 4px rgba(13, 148, 136, 0.1);
       transform: translateY(-2px);
     }
 
@@ -121,19 +133,19 @@
       padding: 1rem 1.5rem;
       border: none;
       border-radius: 12px;
-      background: linear-gradient(45deg, #667eea, #764ba2);
+      background: linear-gradient(45deg, #0d9488, #14b8a6);
       color: white;
       font-size: 1.1rem;
       font-weight: 600;
       cursor: pointer;
       transition: all 0.3s ease;
-      box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+      box-shadow: 0 4px 15px rgba(13, 148, 136, 0.3);
     }
 
     .verify-btn:hover {
       transform: translateY(-3px);
-      box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
-      background: linear-gradient(45deg, #5a6fd8, #6a4190);
+      box-shadow: 0 6px 20px rgba(13, 148, 136, 0.4);
+      background: linear-gradient(45deg, #0f766e, #115e59);
     }
 
     .verify-btn:active {
