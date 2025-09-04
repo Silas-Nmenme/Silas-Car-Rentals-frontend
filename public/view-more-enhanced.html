@@ -614,6 +614,62 @@
 <!-- Toast -->
 <div class="toast position-fixed bottom-0 end-0 m-3" id="toast" role="status" aria-live="polite"></div>
 
+<!-- Quick View Modal -->
+<div class="modal fade" id="quickViewModal" tabindex="-1" aria-labelledby="quickViewModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="quickViewModalLabel">Car Details</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body" id="quickViewContent">
+        <!-- Content will be populated by JavaScript -->
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-success" id="quickViewAddToCart">Add to Cart</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Compare Modal -->
+<div class="modal fade" id="compareModal" tabindex="-1" aria-labelledby="compareModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-xl">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="compareModalLabel">Compare Cars</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body" id="compareContent">
+        <!-- Content will be populated by JavaScript -->
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Share Modal -->
+<div class="modal fade" id="shareModal" tabindex="-1" aria-labelledby="shareModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="shareModalLabel">Share Car</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body" id="shareContent">
+        <!-- Content will be populated by JavaScript -->
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" id="copyShareLink">Copy Link</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <!-- Scroll to top button -->
 <button id="scroll-to-top" class="scroll-to-top" aria-label="Scroll to top">
   <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -867,6 +923,17 @@ function fetchCars() {
 
 fetchCars();
 
+// Compare list management
+let compareList = JSON.parse(localStorage.getItem("compareList")) || [];
+
+// Update compare button state
+function updateCompareButton() {
+  const compareBtn = document.getElementById("compare-btn");
+  const compareCount = document.getElementById("compare-count");
+  compareCount.textContent = compareList.length;
+  compareBtn.disabled = compareList.length === 0;
+}
+
 // Add event listeners for car action buttons using event delegation
 document.addEventListener('click', (e) => {
   const action = e.target.dataset.action;
@@ -893,6 +960,22 @@ document.addEventListener('click', (e) => {
 
     case 'add-saved':
       addToSaved(car);
+      break;
+
+    case 'quick-view':
+      showQuickView(car);
+      break;
+
+    case 'compare':
+      toggleCompare(car);
+      break;
+
+    case 'share':
+      showShareModal(car);
+      break;
+
+    case 'view-details':
+      showViewDetails(car);
       break;
   }
 });
@@ -937,6 +1020,191 @@ function updateCounts() {
   document.getElementById("cart-count").textContent = (JSON.parse(localStorage.getItem("cart")) || []).length;
   document.getElementById("wishlist-count").textContent = (JSON.parse(localStorage.getItem("wishlist")) || []).length;
   document.getElementById("saved-count").textContent = (JSON.parse(localStorage.getItem("savedCars")) || []).length;
+}
+
+// Quick View Modal
+function showQuickView(car) {
+  const modal = new bootstrap.Modal(document.getElementById('quickViewModal'));
+  const content = document.getElementById('quickViewContent');
+  const rating = car.rating || (Math.random() * 2 + 3).toFixed(1);
+  const reviewCount = car.reviewCount || Math.floor(Math.random() * 50 + 5);
+  const discount = car.discount || 0;
+  const originalPrice = discount > 0 ? Math.round(car.price / (1 - discount/100)) : car.price;
+
+  content.innerHTML = `
+    <div class="row">
+      <div class="col-md-6">
+        <img src="${car.image || placeholderImage}" alt="${car.name}" class="img-fluid rounded mb-3">
+      </div>
+      <div class="col-md-6">
+        <h4 class="fw-bold">${car.name}</h4>
+        <div class="d-flex align-items-center mb-2">
+          <div class="stars me-2">${generateStars(rating)}</div>
+          <small class="text-muted">(${reviewCount} reviews)</small>
+        </div>
+        <div class="car-features mb-3">
+          ${car.tags.map(tag => `<span class="badge bg-light text-dark me-1">${tag}</span>`).join('')}
+        </div>
+        <div class="price-section mb-3">
+          ${discount > 0 ? `
+            <div class="d-flex align-items-center gap-2 mb-2">
+              <span class="text-decoration-line-through text-muted">₦${originalPrice.toLocaleString()}</span>
+              <span class="badge bg-danger">${discount}% OFF</span>
+            </div>
+          ` : ''}
+          <div class="h4 text-success fw-bold">₦${car.price.toLocaleString()} <small class="text-muted">/ day</small></div>
+        </div>
+        <div class="car-specs mb-3">
+          <div class="row g-2 text-center">
+            <div class="col-4">
+              <i class="fas fa-users text-muted mb-1"></i>
+              <div class="small">${car.tags.find(t => t.includes('Seats')) || '5 Seats'}</div>
+            </div>
+            <div class="col-4">
+              <i class="fas fa-cogs text-muted mb-1"></i>
+              <div class="small">${car.tags.find(t => t.includes('Automatic')) ? 'Auto' : 'Manual'}</div>
+            </div>
+            <div class="col-4">
+              <i class="fas fa-gas-pump text-muted mb-1"></i>
+              <div class="small">${car.tags.find(t => t.includes('Electric')) ? 'Electric' : 'Petrol'}</div>
+            </div>
+          </div>
+        </div>
+        <p class="text-muted">Experience premium comfort and performance with this ${car.name}. Perfect for your next adventure.</p>
+      </div>
+    </div>
+  `;
+
+  // Update add to cart button
+  const addToCartBtn = document.getElementById('quickViewAddToCart');
+  addToCartBtn.onclick = () => {
+    addToCart(car);
+    modal.hide();
+  };
+
+  modal.show();
+}
+
+// Compare functionality
+function toggleCompare(car) {
+  const index = compareList.findIndex(c => c._id === car._id);
+  if (index > -1) {
+    compareList.splice(index, 1);
+    showToast("Removed from compare list", "info");
+  } else {
+    if (compareList.length >= 4) {
+      showToast("You can compare up to 4 cars at a time", "warning");
+      return;
+    }
+    compareList.push(car);
+    showToast("Added to compare list", "success");
+  }
+  localStorage.setItem("compareList", JSON.stringify(compareList));
+  updateCompareButton();
+}
+
+// Show Compare Modal
+function showCompareModal() {
+  if (compareList.length === 0) {
+    showToast("No cars to compare", "warning");
+    return;
+  }
+
+  const modal = new bootstrap.Modal(document.getElementById('compareModal'));
+  const content = document.getElementById('compareContent');
+
+  content.innerHTML = `
+    <div class="table-responsive">
+      <table class="table table-bordered">
+        <thead>
+          <tr>
+            <th>Feature</th>
+            ${compareList.map(car => `<th>${car.name}</th>`).join('')}
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Price</strong></td>
+            ${compareList.map(car => `<td>₦${car.price.toLocaleString()}</td>`).join('')}
+          </tr>
+          <tr>
+            <td><strong>Rating</strong></td>
+            ${compareList.map(car => `<td>${generateStars(car.rating || 4.0)}</td>`).join('')}
+          </tr>
+          <tr>
+            <td><strong>Transmission</strong></td>
+            ${compareList.map(car => `<td>${car.tags.find(t => t.includes('Automatic')) ? 'Automatic' : 'Manual'}</td>`).join('')}
+          </tr>
+          <tr>
+            <td><strong>Fuel Type</strong></td>
+            ${compareList.map(car => `<td>${car.tags.find(t => t.includes('Electric')) ? 'Electric' : 'Petrol'}</td>`).join('')}
+          </tr>
+          <tr>
+            <td><strong>Seats</strong></td>
+            ${compareList.map(car => `<td>${car.tags.find(t => t.includes('Seats')) || '5'}</td>`).join('')}
+          </tr>
+          <tr>
+            <td><strong>Features</strong></td>
+            ${compareList.map(car => `<td>${car.tags.slice(0, 2).join(', ')}</td>`).join('')}
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  `;
+
+  modal.show();
+}
+
+// Share Modal
+function showShareModal(car) {
+  const modal = new bootstrap.Modal(document.getElementById('shareModal'));
+  const content = document.getElementById('shareContent');
+  const shareUrl = `${window.location.origin}/car-details.html?id=${car._id}`;
+
+  content.innerHTML = `
+    <div class="text-center">
+      <img src="${car.image || placeholderImage}" alt="${car.name}" class="img-fluid rounded mb-3" style="max-height: 200px;">
+      <h5>${car.name}</h5>
+      <p class="text-muted">₦${car.price.toLocaleString()} / day</p>
+      <div class="mt-3">
+        <input type="text" class="form-control" id="shareLink" value="${shareUrl}" readonly>
+      </div>
+      <div class="mt-3">
+        <button class="btn btn-outline-primary me-2" onclick="shareOnFacebook('${shareUrl}')">
+          <i class="fab fa-facebook-f me-1"></i>Facebook
+        </button>
+        <button class="btn btn-outline-info me-2" onclick="shareOnTwitter('${shareUrl}', '${car.name}')">
+          <i class="fab fa-twitter me-1"></i>Twitter
+        </button>
+        <button class="btn btn-outline-success" onclick="shareOnWhatsApp('${shareUrl}', '${car.name}')">
+          <i class="fab fa-whatsapp me-1"></i>WhatsApp
+        </button>
+      </div>
+    </div>
+  `;
+
+  modal.show();
+}
+
+// Share functions
+function shareOnFacebook(url) {
+  window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`, '_blank');
+}
+
+function shareOnTwitter(url, title) {
+  window.open(`https://twitter.com/intent/tweet?url=${encodeURIComponent(url)}&text=${encodeURIComponent(`Check out this ${title} on Silas Car Rentals!`)}`, '_blank');
+}
+
+function shareOnWhatsApp(url, title) {
+  window.open(`https://wa.me/?text=${encodeURIComponent(`Check out this ${title} on Silas Car Rentals: ${url}`)}`, '_blank');
+}
+
+// View Details
+function showViewDetails(car) {
+  // For now, redirect to a car details page or show a modal
+  // You can implement this as needed
+  showToast("View Details functionality coming soon!", "info");
+  // window.location.href = `car-details.html?id=${car._id}`;
 }
 
 // Scroll to top functionality
@@ -1071,6 +1339,246 @@ document.getElementById("logout-button").addEventListener("click", () => {
   window.location = "login.html";
 });
 
+// Clear all filters function
+function clearAllFilters() {
+  document.getElementById("search-input").value = "";
+  document.getElementById("price-filter").value = "";
+  document.getElementById("type-filter").value = "";
+  document.getElementById("location-filter").value = "";
+  document.getElementById("transmission-filter").value = "";
+  document.getElementById("fuel-filter").value = "";
+  document.getElementById("seats-filter").value = "";
+  document.getElementById("year-filter").value = "";
+  document.getElementById("rating-filter").value = "";
+  document.getElementById("availability-filter").value = "";
+
+  // Reset advanced filters visibility
+  const advancedFilters = document.getElementById("advanced-filters");
+  if (advancedFilters) {
+    advancedFilters.style.display = "none";
+  }
+
+  // Reset search suggestions
+  const suggestions = document.getElementById("search-suggestions");
+  if (suggestions) {
+    suggestions.style.display = "none";
+  }
+
+  // Reset to first page
+  currentPage = 1;
+
+  // Re-apply filters (which will show all cars)
+  applyFilters();
+
+  showToast("All filters cleared", "info");
+}
+
+// Copy share link functionality
+function copyShareLink() {
+  const shareLink = document.getElementById("shareLink");
+  if (shareLink) {
+    shareLink.select();
+    shareLink.setSelectionRange(0, 99999); // For mobile devices
+    navigator.clipboard.writeText(shareLink.value).then(() => {
+      showToast("Link copied to clipboard!", "success");
+    }).catch(err => {
+      console.error('Failed to copy: ', err);
+      showToast("Failed to copy link", "error");
+    });
+  }
+}
+
+// Event listeners for additional buttons
+document.addEventListener('DOMContentLoaded', () => {
+  // Compare button
+  const compareBtn = document.getElementById("compare-btn");
+  if (compareBtn) {
+    compareBtn.addEventListener("click", showCompareModal);
+  }
+
+  // Copy share link button
+  const copyShareLinkBtn = document.getElementById("copyShareLink");
+  if (copyShareLinkBtn) {
+    copyShareLinkBtn.addEventListener("click", copyShareLink);
+  }
+
+  // Clear all filters button
+  const clearAllFiltersBtn = document.getElementById("clear-all-filters");
+  if (clearAllFiltersBtn) {
+    clearAllFiltersBtn.addEventListener("click", clearAllFilters);
+  }
+
+  // Toggle advanced filters
+  const toggleAdvancedFiltersBtn = document.getElementById("toggle-advanced-filters");
+  if (toggleAdvancedFiltersBtn) {
+    toggleAdvancedFiltersBtn.addEventListener("click", () => {
+      const advancedFilters = document.getElementById("advanced-filters");
+      const icon = toggleAdvancedFiltersBtn.querySelector("i");
+
+      if (advancedFilters.style.display === "none" || advancedFilters.style.display === "") {
+        advancedFilters.style.display = "block";
+        toggleAdvancedFiltersBtn.innerHTML = '<i class="fas fa-chevron-up me-1"></i>Hide Advanced Filters';
+      } else {
+        advancedFilters.style.display = "none";
+        toggleAdvancedFiltersBtn.innerHTML = '<i class="fas fa-chevron-down me-1"></i>Show Advanced Filters';
+      }
+    });
+  }
+
+  // Apply advanced filters
+  const applyAdvancedFiltersBtn = document.getElementById("apply-advanced-filters");
+  if (applyAdvancedFiltersBtn) {
+    applyAdvancedFiltersBtn.addEventListener("click", () => {
+      searchCars();
+      showToast("Advanced filters applied", "success");
+    });
+  }
+
+  // Save search functionality
+  const saveSearchBtn = document.getElementById("save-search-btn");
+  if (saveSearchBtn) {
+    saveSearchBtn.addEventListener("click", () => {
+      const searchCriteria = {
+        search: document.getElementById("search-input").value,
+        price: document.getElementById("price-filter").value,
+        type: document.getElementById("type-filter").value,
+        location: document.getElementById("location-filter").value,
+        transmission: document.getElementById("transmission-filter").value,
+        fuel: document.getElementById("fuel-filter").value,
+        seats: document.getElementById("seats-filter").value,
+        year: document.getElementById("year-filter").value,
+        rating: document.getElementById("rating-filter").value,
+        availability: document.getElementById("availability-filter").value,
+        timestamp: new Date().toISOString()
+      };
+
+      const savedSearches = JSON.parse(localStorage.getItem("savedSearches")) || [];
+      savedSearches.push(searchCriteria);
+      localStorage.setItem("savedSearches", JSON.stringify(savedSearches));
+
+      showToast("Search saved successfully!", "success");
+    });
+  }
+
+  // Export functionality
+  const exportBtn = document.getElementById("export-btn");
+  if (exportBtn) {
+    exportBtn.addEventListener("click", () => {
+      const dataStr = JSON.stringify(filteredCars, null, 2);
+      const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
+
+      const exportFileDefaultName = 'car-rental-export.json';
+
+      const linkElement = document.createElement('a');
+      linkElement.setAttribute('href', dataUri);
+      linkElement.setAttribute('download', exportFileDefaultName);
+      linkElement.click();
+
+      showToast("Data exported successfully!", "success");
+    });
+  }
+
+  // Sort functionality
+  document.querySelectorAll('.sort-option').forEach(option => {
+    option.addEventListener('click', (e) => {
+      e.preventDefault();
+      const sortType = e.target.dataset.sort;
+      const currentSort = document.getElementById("current-sort");
+
+      // Update current sort display
+      currentSort.textContent = e.target.textContent;
+
+      // Sort the cars
+      filteredCars.sort((a, b) => {
+        switch (sortType) {
+          case 'price-asc':
+            return a.price - b.price;
+          case 'price-desc':
+            return b.price - a.price;
+          case 'name-asc':
+            return a.name.localeCompare(b.name);
+          case 'name-desc':
+            return b.name.localeCompare(a.name);
+          case 'rating-desc':
+            return (b.rating || 0) - (a.rating || 0);
+          case 'year-desc':
+            return (b.year || 0) - (a.year || 0);
+          case 'popularity-desc':
+            return (b.popularity || 0) - (a.popularity || 0);
+          default:
+            return 0;
+        }
+      });
+
+      // Re-render cars
+      renderCars(filteredCars.slice(0, currentPage * carsPerPage));
+      updateLoadMoreButton();
+
+      showToast(`Sorted by ${e.target.textContent}`, "info");
+    });
+  });
+
+  // Search suggestions
+  const searchInput = document.getElementById("search-input");
+  const suggestions = document.getElementById("search-suggestions");
+
+  if (searchInput && suggestions) {
+    searchInput.addEventListener("input", () => {
+      const query = searchInput.value.toLowerCase().trim();
+      if (query.length < 2) {
+        suggestions.style.display = "none";
+        return;
+      }
+
+      const matchingSuggestions = [];
+      allCars.forEach(car => {
+        if (car.name.toLowerCase().includes(query)) {
+          matchingSuggestions.push(car.name);
+        }
+        car.tags.forEach(tag => {
+          if (tag.toLowerCase().includes(query) && !matchingSuggestions.includes(tag)) {
+            matchingSuggestions.push(tag);
+          }
+        });
+      });
+
+      if (matchingSuggestions.length > 0) {
+        suggestions.innerHTML = matchingSuggestions.slice(0, 5).map(suggestion => `
+          <div class="suggestion-item" onclick="selectSuggestion('${suggestion}')">${suggestion}</div>
+        `).join('');
+        suggestions.style.display = "block";
+      } else {
+        suggestions.style.display = "none";
+      }
+    });
+
+    // Hide suggestions when clicking outside
+    document.addEventListener("click", (e) => {
+      if (!searchInput.contains(e.target) && !suggestions.contains(e.target)) {
+        suggestions.style.display = "none";
+      }
+    });
+  }
+});
+
+// Select suggestion function
+function selectSuggestion(suggestion) {
+  document.getElementById("search-input").value = suggestion;
+  document.getElementById("search-suggestions").style.display = "none";
+  searchCars();
+}
+
+// Update stats
+function updateStats() {
+  const totalCars = allCars.length;
+  const availableCars = allCars.filter(car => car.available !== false).length;
+  const avgPrice = totalCars > 0 ? Math.round(allCars.reduce((sum, car) => sum + car.price, 0) / totalCars) : 0;
+
+  document.getElementById("total-cars").textContent = totalCars;
+  document.getElementById("available-cars").textContent = availableCars;
+  document.getElementById("avg-price").textContent = `₦${avgPrice.toLocaleString()}`;
+}
+
 // Personalized welcome with avatar + initials
 document.addEventListener("DOMContentLoaded", async () => {
   const userJson = localStorage.getItem("user");
@@ -1123,6 +1631,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   renderSidebar();
   updateCounts();
+  updateStats();
 });
 </script>
 </body>
