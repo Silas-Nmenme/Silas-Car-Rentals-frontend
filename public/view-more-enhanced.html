@@ -1589,7 +1589,9 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 
   let user = JSON.parse(userJson);
-  let localUser = user;
+
+  // Debug: Log user object
+  console.log("User object from localStorage:", user);
 
   // Fetch latest profile
   try {
@@ -1598,14 +1600,23 @@ document.addEventListener("DOMContentLoaded", async () => {
       const data = await res.json();
       user = data.user;
       localStorage.setItem("user", JSON.stringify(user));
+      console.log("Updated user object from API:", user);
     }
   } catch (err) {
     console.error("Failed to fetch profile:", err);
   }
 
-  let fullName = (user?.name || `${user?.firstName || ''} ${user?.lastName || ''}`.trim() || localUser?.name || `${localUser?.firstName || ''} ${localUser?.lastName || ''}`.trim() || user?.email?.split("@")[0] || "User").trim();
+  // More robust name extraction
+  let fullName = user?.name?.trim() ||
+                 user?.fullName?.trim() ||
+                 `${user?.firstName || ''} ${user?.lastName || ''}`.trim() ||
+                 user?.email?.split("@")[0] ||
+                 user?.username ||
+                 "User";
+
   if (!fullName || fullName === '') fullName = "User";
-  let firstName = fullName.split(" ")[0] || fullName; // First word only, fallback to fullName if split fails
+
+  let firstName = fullName.split(" ")[0] || fullName;
 
   let initials = fullName.split(" ")
     .map(n => n[0])
@@ -1613,15 +1624,31 @@ document.addEventListener("DOMContentLoaded", async () => {
     .substring(0, 2)
     .toUpperCase();
 
+  console.log("Computed fullName:", fullName);
+  console.log("Computed firstName:", firstName);
+  console.log("Computed initials:", initials);
+
   // Navbar profile (full name)
-  document.getElementById("user-name").textContent = fullName;
+  const userNameElement = document.getElementById("user-name");
+  if (userNameElement) {
+    userNameElement.textContent = fullName;
+    console.log("Set user-name to:", fullName);
+  } else {
+    console.error("user-name element not found");
+  }
 
   // Dashboard greeting (first name only)
-  document.getElementById("welcome-user").textContent = firstName;
+  const welcomeUserElement = document.getElementById("welcome-user");
+  if (welcomeUserElement) {
+    welcomeUserElement.textContent = firstName;
+    console.log("Set welcome-user to:", firstName);
+  } else {
+    console.error("welcome-user element not found");
+  }
 
   // Avatar handling (image or initials fallback)
-  if (user?.profilePicture?.url || user?.avatar) {
-    const imgSrc = user?.profilePicture?.url || user?.avatar;
+  if (user?.profilePicture?.url || user?.avatar || user?.profileImage) {
+    const imgSrc = user?.profilePicture?.url || user?.avatar || user?.profileImage;
     document.getElementById("nav-avatar").innerHTML =
       `<img src="${imgSrc}" class="rounded-circle" style="width:32px;height:32px;object-fit:cover;">`;
     document.getElementById("welcome-avatar").innerHTML =
