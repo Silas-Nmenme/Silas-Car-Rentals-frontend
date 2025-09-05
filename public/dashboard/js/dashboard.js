@@ -80,7 +80,10 @@ async function fetchUserProfile() {
     const res = await fetch(BASE_URL + ENDPOINTS.authMe, { headers: { Authorization: 'Bearer ' + token } });
     if (!res.ok) throw new Error();
     const user = await res.json();
-    userNameEl.textContent = user.name || user.email;
+    // Set first name only for welcome message
+    let fullName = user.name || user.email;
+    let firstName = fullName.split(" ")[0];
+    userNameEl.textContent = firstName;
     if (user.role === 'admin') {
       adminAnalyticsSection.classList.remove('hidden');
       adminBookingsSection.classList.remove('hidden');
@@ -92,7 +95,8 @@ async function fetchUserProfile() {
   } catch {
     // Fallback for demo
     const mockUser = { name: 'Admin User', email: 'admin@example.com', role: 'admin' };
-    userNameEl.textContent = mockUser.name;
+    let firstName = mockUser.name.split(" ")[0];
+    userNameEl.textContent = firstName;
     if (mockUser.role === 'admin') {
       adminAnalyticsSection.classList.remove('hidden');
       adminBookingsSection.classList.remove('hidden');
