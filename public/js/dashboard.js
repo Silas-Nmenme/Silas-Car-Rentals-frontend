@@ -1,6 +1,6 @@
 // public/dashboard.js
 
-import { BASE_URL, ENDPOINTS, showToast } from './app.js';
+import { BASE_URL, ENDPOINTS, showToast } from '../app.js';
 
 const token = localStorage.getItem('token');
 if (!token) {
