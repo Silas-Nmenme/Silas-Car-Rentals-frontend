@@ -1606,6 +1606,14 @@ function updateCounts(){
       document.getElementById("welcome-avatar").textContent = initials;
     }
 
+    // Add Dashboard link if user is admin
+    if (user?.isAdmin || user?.role === 'admin') {
+      const dropdownMenu = document.querySelector('.dropdown-menu');
+      const dashboardLi = document.createElement('li');
+      dashboardLi.innerHTML = '<a class="dropdown-item" href="dashboard.html"><i class="fas fa-tachometer-alt me-2"></i>Dashboard</a>';
+      dropdownMenu.insertBefore(dashboardLi, dropdownMenu.lastElementChild);
+    }
+
     renderSidebar();
     renderRecommendedCars();
     renderRecentRentals();
