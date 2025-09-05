@@ -79,12 +79,13 @@ async function fetchUserProfile() {
   try {
     const res = await fetch(BASE_URL + ENDPOINTS.authMe, { headers: { Authorization: 'Bearer ' + token } });
     if (!res.ok) throw new Error();
-    const user = await res.json();
+    const data = await res.json();
+    const user = data.user || data;
     // Set first name only for welcome message
     let fullName = user.name || user.email;
     let firstName = fullName.split(" ")[0];
     userNameEl.textContent = firstName;
-    if (user.role === 'admin') {
+    if (user.role === 'admin' || user.isAdmin) {
       adminAnalyticsSection.classList.remove('hidden');
       adminBookingsSection.classList.remove('hidden');
       adminUsersSection.classList.remove('hidden');
