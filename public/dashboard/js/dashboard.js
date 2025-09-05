@@ -325,6 +325,7 @@ carSearchInput.addEventListener('input', debounce(async (e) => {
 // Handle form for both add and edit
 addCarForm.addEventListener('submit', async (e) => {
   e.preventDefault();
+  console.log('Form submitted'); // Debug log
   const editId = addCarForm.dataset.editId;
   const carData = {
     make: document.getElementById('car-make').value.trim(),
@@ -336,6 +337,8 @@ addCarForm.addEventListener('submit', async (e) => {
     description: document.getElementById('car-description').value.trim()
   };
 
+  console.log('Car data:', carData); // Debug log
+
   // Basic validation
   if (!carData.make || !carData.model || !carData.year || !carData.price || !carData.brand || !carData.color || !carData.description) {
     showToast('Please fill in all required fields', 'error');
@@ -346,6 +349,7 @@ addCarForm.addEventListener('submit', async (e) => {
     let res;
     if (editId) {
       // Update car
+      console.log('Updating car:', editId); // Debug log
       res = await fetch(BASE_URL + ENDPOINTS.editCar.replace(':carId', editId), {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + token },
@@ -353,6 +357,7 @@ addCarForm.addEventListener('submit', async (e) => {
       });
     } else {
       // Add car
+      console.log('Adding car to:', BASE_URL + ENDPOINTS.addCar); // Debug log
       res = await fetch(BASE_URL + ENDPOINTS.addCar, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + token },
@@ -360,6 +365,7 @@ addCarForm.addEventListener('submit', async (e) => {
       });
     }
 
+    console.log('Response status:', res.status); // Debug log
     if (!res.ok) throw new Error();
 
     showToast(editId ? 'Car updated successfully' : 'Car added successfully', 'success');
@@ -367,7 +373,8 @@ addCarForm.addEventListener('submit', async (e) => {
     delete addCarForm.dataset.editId;
     document.querySelector('#add-car-form button[type="submit"]').textContent = 'Add Car';
     loadCars(); // Refresh the car list
-  } catch {
+  } catch (error) {
+    console.error('Error:', error); // Debug log
     showToast(editId ? 'Failed to update car' : 'Failed to add car', 'error');
   }
 });
