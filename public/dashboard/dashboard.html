@@ -102,9 +102,9 @@
             <i class="fas fa-chevron-down ms-2"></i>
           </button>
           <div class="dropdown">
-            <a href="#" onclick="showProfile()">Profile</a>
+            <a href="profile.html">Profile</a>
             <a href="#" onclick="showSettings()">Settings</a>
-            <a href="#" id="logout-btn">Logout</a>
+            <a href="#" onclick="logout()">Logout</a>
           </div>
         </div>
       </div>
@@ -308,9 +308,23 @@
         document.querySelector('.user-menu .dropdown').style.display = 'none';
       }
     });
+    // Load user data
+    function loadUserData() {
+      const userData = localStorage.getItem('user');
+      if (userData) {
+        const user = JSON.parse(userData);
+        document.getElementById('dash-username').textContent = user.name || 'User';
+      }
+    }
+    // Logout function
+    function logout() {
+      localStorage.clear();
+      window.location.href = 'login.html';
+    }
     // Placeholder functions for menu items
-    function showProfile() { alert('Profile page coming soon!'); }
     function showSettings() { alert('Settings page coming soon!'); }
+    // Initialize
+    loadUserData();
   </script>
 </body>
 </html>
