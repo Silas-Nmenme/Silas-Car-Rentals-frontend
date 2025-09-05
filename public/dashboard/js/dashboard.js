@@ -1,9 +1,47 @@
 // public/dashboard.js
 
-import { BASE_URL, ENDPOINTS } from './config.js';
-import { showToast, debounce } from './utils.js';
+// Inlined config
+const BASE_URL = "https://techyjaunt-auth-go43.onrender.com";
+const ENDPOINTS = {
+  authMe: "/api/auth/me",
+  userStats: "/api/users/stats",
+  rentalHistory: "/api/rentals/history",
+  adminAnalytics: "/api/admin/analytics",
+  users: "/api/users",
+  cars: "/api/cars",
+  addCar: "/api/cars/add-car",
+  editCar: "/api/cars/edit-car",
+  deleteCar: "/api/cars/delete-car",
+  getCars: "/api/cars/get-cars",
+  searchCars: "/api/cars/search-cars"
+};
+
+// Inlined utils functions
+function showToast(message, type = 'info') {
+  const toast = document.getElementById('toast');
+  toast.textContent = message;
+  toast.className = `toast show`;
+  toast.style.background = type === 'error' ? '#f44336' : type === 'success' ? '#28a745' : '#007bff';
+
+  setTimeout(() => {
+    toast.classList.remove('show');
+  }, 3000);
+}
+
+function debounce(func, wait) {
+  let timeout;
+  return function executedFunction(...args) {
+    const later = () => {
+      clearTimeout(timeout);
+      func(...args);
+    };
+    clearTimeout(timeout);
+    timeout = setTimeout(later, wait);
+  };
+}
 
 const token = localStorage.getItem('token');
+console.log('Token:', token); // Debug log
 if (!token) {
   showToast('Please login first');
   setTimeout(() => window.location.href = 'login.html', 1500);
