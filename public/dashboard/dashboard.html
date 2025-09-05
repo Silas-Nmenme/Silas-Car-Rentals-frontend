@@ -54,6 +54,11 @@
     </div>
     <ul class="nav flex-column">
       <li class="nav-item">
+        <a class="nav-link" href="../home.html">
+          <i class="fas fa-home"></i> Home
+        </a>
+      </li>
+      <li class="nav-item">
         <a class="nav-link active" href="#overview" onclick="showSection('overview')">
           <i class="fas fa-tachometer-alt"></i> Overview
         </a>
@@ -85,6 +90,7 @@
           <i class="fas fa-car text-primary" style="font-size: 2rem;"></i>
           <span class="fw-bold ms-2">Silas Car Rentals</span>
         </div>
+        <a href="../home.html" class="btn btn-outline-primary me-3"><i class="fas fa-home"></i> Home</a>
         <input type="text" class="form-control search-bar me-3" placeholder="Search...">
         <h2 id="page-title" class="mb-0">Overview</h2>
       </div>
@@ -102,7 +108,7 @@
             <i class="fas fa-chevron-down ms-2"></i>
           </button>
           <div class="dropdown">
-            <a href="dashboardprofile.html">Profile</a>
+            <a href="../profile.html">Profile</a>
             <a href="#" onclick="showSettings()">Settings</a>
             <a href="#" onclick="logout()">Logout</a>
           </div>
@@ -319,7 +325,7 @@
     // Logout function
     function logout() {
       localStorage.clear();
-      window.location.href = 'login.html';
+      window.location.href = '../login.html';
     }
     // Placeholder functions for menu items
     function showSettings() { alert('Settings page coming soon!'); }
