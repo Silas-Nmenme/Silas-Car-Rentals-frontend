@@ -345,7 +345,7 @@ async function verifyEmail(token) {
 
   try {
     const res = await fetch(`${BASE_URL}/api/users/verify-email/${token}`, {
-      method: "POST"
+      method: "GET"
     });
 
     const data = await res.json();
