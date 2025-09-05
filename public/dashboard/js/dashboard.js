@@ -76,6 +76,23 @@ function renderAllPreviews() { renderCounts(); renderPreview('wishlist-grid', 'w
 
 // Fetch Profile
 async function fetchUserProfile() {
+  // First, try to get user from localStorage
+  const storedUser = JSON.parse(localStorage.getItem('user'));
+  if (storedUser && storedUser.name) {
+    let fullName = storedUser.name;
+    let firstName = fullName.split(" ")[0];
+    userNameEl.textContent = firstName;
+    if (storedUser.role === 'admin') {
+      adminAnalyticsSection.classList.remove('hidden');
+      adminBookingsSection.classList.remove('hidden');
+      adminUsersSection.classList.remove('hidden');
+      adminAddCarSection.classList.remove('hidden');
+      loadAdminData();
+      loadUsers();
+    }
+    return;
+  }
+
   try {
     const res = await fetch(BASE_URL + ENDPOINTS.authMe, { headers: { Authorization: 'Bearer ' + token } });
     if (!res.ok) throw new Error();
