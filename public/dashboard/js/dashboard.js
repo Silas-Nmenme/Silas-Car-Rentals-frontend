@@ -1,6 +1,7 @@
 // public/dashboard.js
 
-import { BASE_URL, ENDPOINTS, showToast } from '../../app.js';
+import { BASE_URL, ENDPOINTS } from './config.js';
+import { showToast } from './utils.js';
 
 const token = localStorage.getItem('token');
 if (!token) {
@@ -172,24 +173,35 @@ userSelect.addEventListener('change', async () => {
 // Add Car Form
 addCarForm.addEventListener('submit', async (e) => {
   e.preventDefault();
-  const formData = new FormData(addCarForm);
   const carData = {
-    make: document.getElementById('car-make').value,
-    model: document.getElementById('car-model').value,
+    make: document.getElementById('car-make').value.trim(),
+    model: document.getElementById('car-model').value.trim(),
     year: parseInt(document.getElementById('car-year').value),
     price: parseFloat(document.getElementById('car-price').value),
-    image: document.getElementById('car-image').value || null
+    brand: document.getElementById('car-brand').value.trim(),
+    color: document.getElementById('car-color').value.trim(),
+    description: document.getElementById('car-description').value.trim(),
+    image: document.getElementById('car-image').value.trim() || null
   };
+
+  // Basic validation
+  if (!carData.make || !carData.model || !carData.year || !carData.price || !carData.brand || !carData.color || !carData.description) {
+    showToast('Please fill in all required fields', 'error');
+    return;
+  }
+
   try {
-    const res = await fetch(BASE_URL + '/api/cars', {
+    const res = await fetch(BASE_URL + ENDPOINTS.cars, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + token },
       body: JSON.stringify(carData)
     });
     if (!res.ok) throw new Error();
-    showToast('Car added successfully');
+    showToast('Car added successfully', 'success');
     addCarForm.reset();
-  } catch { showToast('Failed to add car'); }
+  } catch {
+    showToast('Failed to add car', 'error');
+  }
 });
 
 // Logout

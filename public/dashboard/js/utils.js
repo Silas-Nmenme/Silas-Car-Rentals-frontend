@@ -192,28 +192,26 @@ function calculateRentalPrice(car, startDate, endDate) {
 }
 
 // Export functions for use in other modules
-if (typeof module !== 'undefined' && module.exports) {
-    module.exports = {
-        formatCurrency,
-        formatDate,
-        formatDateTime,
-        calculateDaysBetween,
-        showLoading,
-        hideLoading,
-        showToast,
-        validateEmail,
-        validatePhone,
-        getQueryParam,
-        setQueryParam,
-        removeQueryParam,
-        debounce,
-        storage,
-        isLoggedIn,
-        getAuthHeaders,
-        handleApiError,
-        generateId,
-        capitalizeFirst,
-        formatCarName,
-        calculateRentalPrice
-    };
-}
+export {
+    formatCurrency,
+    formatDate,
+    formatDateTime,
+    calculateDaysBetween,
+    showLoading,
+    hideLoading,
+    showToast,
+    validateEmail,
+    validatePhone,
+    getQueryParam,
+    setQueryParam,
+    removeQueryParam,
+    debounce,
+    storage,
+    isLoggedIn,
+    getAuthHeaders,
+    handleApiError,
+    generateId,
+    capitalizeFirst,
+    formatCarName,
+    calculateRentalPrice
+};

@@ -1,14 +1,12 @@
 // Dashboard Configuration
-export const API_CONFIG = {
-  BASE_URL: "https://techyjaunt-auth-go43.onrender.com",
-  ENDPOINTS: {
-    authMe: "/api/auth/me",
-    userStats: "/api/users/stats",
-    rentalHistory: "/api/rentals/history",
-    adminAnalytics: "/api/admin/analytics",
-    users: "/api/users",
-    cars: "/api/cars"
-  }
+export const BASE_URL = "https://techyjaunt-auth-go43.onrender.com";
+export const ENDPOINTS = {
+  authMe: "/api/auth/me",
+  userStats: "/api/users/stats",
+  rentalHistory: "/api/rentals/history",
+  adminAnalytics: "/api/admin/analytics",
+  users: "/api/users",
+  cars: "/api/cars"
 };
 
 // Storage Keys
