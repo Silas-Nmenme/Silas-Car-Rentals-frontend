@@ -16,7 +16,22 @@
     .sidebar .nav-link { color: #adb5bd; padding: 15px 20px; display: block; text-decoration: none; transition: all 0.3s ease; }
     .sidebar .nav-link:hover, .sidebar .nav-link.active { background: #6c757d; color: white; transform: translateX(5px); }
     .main-content { margin-left: 250px; padding: 20px; }
-    .header { background: white; padding: 15px 20px; border-bottom: 1px solid #dee2e6; margin-bottom: 20px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+    .header { background: white; padding: 15px 20px; border-bottom: 1px solid #dee2e6; margin-bottom: 20px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); transition: background 0.3s ease; }
+    .dark-mode .header { background: #343a40; color: white; border-bottom-color: #495057; }
+    .dark-mode body { background-color: #212529; color: #f8f9fa; }
+    .dark-mode .sidebar { background: linear-gradient(135deg, #212529, #343a40); }
+    .dark-mode .stats-card, .dark-mode .form-section, .dark-mode .table-responsive { background: #343a40; color: #f8f9fa; }
+    .dark-mode .modal { background: #343a40; color: #f8f9fa; }
+    .dark-mode .toast { background: #495057; }
+    .header .search-bar { max-width: 300px; }
+    .header .user-menu { position: relative; }
+    .header .user-menu .dropdown { display: none; position: absolute; right: 0; top: 100%; background: white; border: 1px solid #dee2e6; border-radius: 5px; min-width: 150px; z-index: 1000; }
+    .dark-mode .header .user-menu .dropdown { background: #343a40; border-color: #495057; }
+    .header .user-menu .dropdown a { display: block; padding: 10px; text-decoration: none; color: #333; }
+    .dark-mode .header .user-menu .dropdown a { color: #f8f9fa; }
+    .header .user-menu .dropdown a:hover { background: #f8f9fa; }
+    .dark-mode .header .user-menu .dropdown a:hover { background: #495057; }
+    .header .toggle-btn { border: none; background: none; font-size: 1.2rem; cursor: pointer; }
     .stats-card { background: white; border-radius: 10px; padding: 20px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); transition: transform 0.3s ease; }
     .stats-card:hover { transform: translateY(-5px); }
     .form-section { background: white; border-radius: 10px; padding: 20px; margin-bottom: 20px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
@@ -65,13 +80,33 @@
   <div class="main-content">
     <!-- Header -->
     <div class="header d-flex justify-content-between align-items-center">
-      <div>
-        <a href="../home.html" class="btn btn-outline-primary me-3"><i class="fas fa-home"></i> Home</a>
-        <h2 id="page-title">Overview</h2>
+      <div class="d-flex align-items-center">
+        <div class="me-3">
+          <i class="fas fa-car text-primary" style="font-size: 2rem;"></i>
+          <span class="fw-bold ms-2">Silas Car Rentals</span>
+        </div>
+        <input type="text" class="form-control search-bar me-3" placeholder="Search...">
+        <h2 id="page-title" class="mb-0">Overview</h2>
       </div>
-      <div>
-        <span id="dash-username">Admin</span>
-        <button class="btn btn-outline-danger ms-3" id="logout-btn">Logout</button>
+      <div class="d-flex align-items-center">
+        <button class="btn btn-outline-secondary me-3 toggle-btn" id="dark-mode-toggle" title="Toggle Dark Mode">
+          <i class="fas fa-moon"></i>
+        </button>
+        <button class="btn btn-outline-info me-3" title="Notifications">
+          <i class="fas fa-bell"></i>
+        </button>
+        <div class="user-menu">
+          <button class="btn btn-outline-secondary d-flex align-items-center" onclick="toggleUserMenu()">
+            <i class="fas fa-user-circle me-2" style="font-size: 1.5rem;"></i>
+            <span id="dash-username">Admin</span>
+            <i class="fas fa-chevron-down ms-2"></i>
+          </button>
+          <div class="dropdown">
+            <a href="#" onclick="showProfile()">Profile</a>
+            <a href="#" onclick="showSettings()">Settings</a>
+            <a href="#" id="logout-btn">Logout</a>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -242,6 +277,40 @@
       document.getElementById('submit-btn').textContent = 'Add Car';
       delete document.getElementById('add-car-form').dataset.editId;
     }
+    // Dark mode toggle
+    document.getElementById('dark-mode-toggle').addEventListener('click', function() {
+      document.body.classList.toggle('dark-mode');
+      const icon = this.querySelector('i');
+      if (document.body.classList.contains('dark-mode')) {
+        icon.classList.remove('fa-moon');
+        icon.classList.add('fa-sun');
+        localStorage.setItem('darkMode', 'enabled');
+      } else {
+        icon.classList.remove('fa-sun');
+        icon.classList.add('fa-moon');
+        localStorage.setItem('darkMode', 'disabled');
+      }
+    });
+    // Load dark mode preference
+    if (localStorage.getItem('darkMode') === 'enabled') {
+      document.body.classList.add('dark-mode');
+      document.getElementById('dark-mode-toggle').querySelector('i').classList.replace('fa-moon', 'fa-sun');
+    }
+    // User menu toggle
+    function toggleUserMenu() {
+      const dropdown = document.querySelector('.user-menu .dropdown');
+      dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
+    }
+    // Close dropdown when clicking outside
+    document.addEventListener('click', function(event) {
+      const userMenu = document.querySelector('.user-menu');
+      if (!userMenu.contains(event.target)) {
+        document.querySelector('.user-menu .dropdown').style.display = 'none';
+      }
+    });
+    // Placeholder functions for menu items
+    function showProfile() { alert('Profile page coming soon!'); }
+    function showSettings() { alert('Settings page coming soon!'); }
   </script>
 </body>
 </html>
