@@ -1612,6 +1612,9 @@ function updateCounts(){
       const dashboardLi = document.createElement('li');
       dashboardLi.innerHTML = '<a class="dropdown-item" href="dashboard.html"><i class="fas fa-tachometer-alt me-2"></i>Dashboard</a>';
       dropdownMenu.insertBefore(dashboardLi, dropdownMenu.lastElementChild);
+
+      // Add Dashboard to sidebar links
+      sidebarLinks.push({href:"dashboard.html", icon:"fa-tachometer-alt", text:"Dashboard"});
     }
 
     renderSidebar();
