@@ -336,15 +336,8 @@ function showToast(msg, ms = 3000) {
 }
 
 // Enhanced verification function with loading state
-document.getElementById('verifyBtn').addEventListener('click', async () => {
-  const token = document.getElementById('token').value.trim();
+async function verifyEmail(token) {
   const verifyBtn = document.getElementById('verifyBtn');
-  
-  if (!token) {
-    showToast("Please enter your verification token");
-    document.getElementById('token').focus();
-    return;
-  }
 
   // Show loading state
   verifyBtn.classList.add('loading');
@@ -354,7 +347,7 @@ document.getElementById('verifyBtn').addEventListener('click', async () => {
     const res = await fetch(`${BASE_URL}/api/users/verify-email/${token}`, {
       method: "POST"
     });
-    
+
     const data = await res.json();
 
     if (!res.ok) {
@@ -367,9 +360,9 @@ document.getElementById('verifyBtn').addEventListener('click', async () => {
     verifyBtn.classList.add('success-animation');
     verifyBtn.textContent = "✓ Verified!";
     verifyBtn.style.background = "linear-gradient(45deg, #10b981, #059669)";
-    
+
     showToast("Email verified successfully! Redirecting...");
-    
+
     setTimeout(() => {
       window.location.href = "login.html";
     }, 1500);
@@ -387,9 +380,21 @@ document.getElementById('verifyBtn').addEventListener('click', async () => {
       verifyBtn.classList.remove('success-animation');
     }, 2000);
   }
+}
+
+document.getElementById('verifyBtn').addEventListener('click', async () => {
+  const token = document.getElementById('token').value.trim();
+
+  if (!token) {
+    showToast("Please enter your verification token");
+    document.getElementById('token').focus();
+    return;
+  }
+
+  await verifyEmail(token);
 });
 
-// Auto-fill from query string with animation
+// Auto-fill from query string with animation and auto verification
 const urlParams = new URLSearchParams(window.location.search);
 const tokenParam = urlParams.get("token");
 if (tokenParam) {
@@ -401,6 +406,11 @@ if (tokenParam) {
     tokenInput.classList.add('success-animation');
     setTimeout(() => tokenInput.classList.remove('success-animation'), 600);
   }, 300);
+
+  // Automatically trigger verification
+  window.addEventListener('load', () => {
+    verifyEmail(tokenParam);
+  });
 }
 
 // Focus on input when page loads
