@@ -1,7 +1,7 @@
 // public/dashboard.js
 
 import { BASE_URL, ENDPOINTS } from './config.js';
-import { showToast } from './utils.js';
+import { showToast, debounce } from './utils.js';
 
 const token = localStorage.getItem('token');
 if (!token) {
@@ -25,9 +25,12 @@ const adminBookingsSection = document.getElementById('admin-bookings');
 const bookingsTableBody = document.getElementById('bookings-table-body');
 const adminUsersSection = document.getElementById('admin-users');
 const adminAddCarSection = document.getElementById('admin-add-car');
+const adminCarManagementSection = document.getElementById('admin-car-management');
 const userSelect = document.getElementById('user-select');
 const userDetails = document.getElementById('user-details');
 const addCarForm = document.getElementById('add-car-form');
+const carSearchInput = document.getElementById('car-search');
+const carsTableBody = document.getElementById('cars-table-body');
 
 // Modal
 const modalOverlay = document.getElementById('modal-overlay');
@@ -87,8 +90,10 @@ async function fetchUserProfile() {
       adminBookingsSection.classList.remove('hidden');
       adminUsersSection.classList.remove('hidden');
       adminAddCarSection.classList.remove('hidden');
+      adminCarManagementSection.classList.remove('hidden');
       loadAdminData();
       loadUsers();
+      loadCars();
     }
     return;
   }
@@ -107,8 +112,10 @@ async function fetchUserProfile() {
       adminBookingsSection.classList.remove('hidden');
       adminUsersSection.classList.remove('hidden');
       adminAddCarSection.classList.remove('hidden');
+      adminCarManagementSection.classList.remove('hidden');
       loadAdminData();
       loadUsers();
+      loadCars();
     }
   } catch {
     // Fallback for demo
@@ -120,8 +127,10 @@ async function fetchUserProfile() {
       adminBookingsSection.classList.remove('hidden');
       adminUsersSection.classList.remove('hidden');
       adminAddCarSection.classList.remove('hidden');
+      adminCarManagementSection.classList.remove('hidden');
       loadAdminData();
       loadUsers();
+      loadCars();
     }
     showToast('Using demo mode', 'info');
   }
@@ -190,6 +199,29 @@ async function loadUsers() {
   } catch { showToast('Failed to load users'); }
 }
 
+// Load Cars for Admin
+async function loadCars() {
+  try {
+    const res = await fetch(BASE_URL + ENDPOINTS.getCars, { headers: { Authorization: 'Bearer ' + token } });
+    const data = await res.json();
+    const cars = data.cars || [];
+    carsTableBody.innerHTML = cars.length
+      ? cars.map(car => `
+        <tr>
+          <td>${car.make}</td>
+          <td>${car.model}</td>
+          <td>${car.year}</td>
+          <td>₦${car.price.toLocaleString()}</td>
+          <td>
+            <button class="btn btn-sm btn-warning" onclick="editCar('${car._id}')">Edit</button>
+            <button class="btn btn-sm btn-danger" onclick="deleteCar('${car._id}')">Delete</button>
+          </td>
+        </tr>
+      `).join('')
+      : `<tr><td colspan="5" class="meta">No cars found</td></tr>`;
+  } catch { carsTableBody.innerHTML = `<tr><td colspan="5" class="meta">Error loading cars</td></tr>`; }
+}
+
 // User Select Change
 userSelect.addEventListener('change', async () => {
   const userId = userSelect.value;
@@ -205,9 +237,95 @@ userSelect.addEventListener('change', async () => {
   } catch { showToast('Failed to load user details'); }
 });
 
-// Add Car Form
+
+
+// Edit Car
+window.editCar = async function(carId) {
+  // Fetch current car data
+  try {
+    const res = await fetch(BASE_URL + ENDPOINTS.getCars, { headers: { Authorization: 'Bearer ' + token } });
+    const data = await res.json();
+    const car = data.cars.find(c => c._id === carId);
+    if (!car) {
+      showToast('Car not found', 'error');
+      return;
+    }
+
+    // Populate form with car data
+    document.getElementById('car-make').value = car.make;
+    document.getElementById('car-model').value = car.model;
+    document.getElementById('car-year').value = car.year;
+    document.getElementById('car-price').value = car.price;
+    document.getElementById('car-brand').value = car.brand;
+    document.getElementById('car-color').value = car.color;
+    document.getElementById('car-description').value = car.description;
+    document.getElementById('car-image').value = car.image || '';
+
+    // Change form submit to update
+    addCarForm.dataset.editId = carId;
+    document.querySelector('#add-car-form button[type="submit"]').textContent = 'Update Car';
+
+    // Scroll to form
+    document.getElementById('admin-add-car').scrollIntoView({ behavior: 'smooth' });
+  } catch {
+    showToast('Failed to load car data', 'error');
+  }
+};
+
+// Delete Car
+window.deleteCar = async function(carId) {
+  if (!confirm('Are you sure you want to delete this car?')) return;
+
+  try {
+    const res = await fetch(BASE_URL + ENDPOINTS.deleteCar.replace(':carId', carId), {
+      method: 'DELETE',
+      headers: { Authorization: 'Bearer ' + token }
+    });
+    if (!res.ok) throw new Error();
+    showToast('Car deleted successfully', 'success');
+    loadCars(); // Refresh the car list
+  } catch {
+    showToast('Failed to delete car', 'error');
+  }
+};
+
+// Search Cars
+carSearchInput.addEventListener('input', debounce(async (e) => {
+  const query = e.target.value.trim();
+  if (!query) {
+    loadCars(); // Load all cars if search is empty
+    return;
+  }
+
+  try {
+    const res = await fetch(BASE_URL + ENDPOINTS.searchCars + `?make=${encodeURIComponent(query)}`, {
+      headers: { Authorization: 'Bearer ' + token }
+    });
+    const data = await res.json();
+    const cars = data.car || [];
+    carsTableBody.innerHTML = cars.length
+      ? cars.map(car => `
+        <tr>
+          <td>${car.make}</td>
+          <td>${car.model}</td>
+          <td>${car.year}</td>
+          <td>₦${car.price.toLocaleString()}</td>
+          <td>
+            <button class="btn btn-sm btn-warning" onclick="editCar('${car._id}')">Edit</button>
+            <button class="btn btn-sm btn-danger" onclick="deleteCar('${car._id}')">Delete</button>
+          </td>
+        </tr>
+      `).join('')
+      : `<tr><td colspan="5" class="meta">No cars found for "${query}"</td></tr>`;
+  } catch {
+    showToast('Failed to search cars', 'error');
+  }
+}, 300));
+
+// Handle form for both add and edit
 addCarForm.addEventListener('submit', async (e) => {
   e.preventDefault();
+  const editId = addCarForm.dataset.editId;
   const carData = {
     make: document.getElementById('car-make').value.trim(),
     model: document.getElementById('car-model').value.trim(),
@@ -215,8 +333,7 @@ addCarForm.addEventListener('submit', async (e) => {
     price: parseFloat(document.getElementById('car-price').value),
     brand: document.getElementById('car-brand').value.trim(),
     color: document.getElementById('car-color').value.trim(),
-    description: document.getElementById('car-description').value.trim(),
-    image: document.getElementById('car-image').value.trim() || null
+    description: document.getElementById('car-description').value.trim()
   };
 
   // Basic validation
@@ -226,16 +343,32 @@ addCarForm.addEventListener('submit', async (e) => {
   }
 
   try {
-    const res = await fetch(BASE_URL + ENDPOINTS.cars, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + token },
-      body: JSON.stringify(carData)
-    });
+    let res;
+    if (editId) {
+      // Update car
+      res = await fetch(BASE_URL + ENDPOINTS.editCar.replace(':carId', editId), {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + token },
+        body: JSON.stringify(carData)
+      });
+    } else {
+      // Add car
+      res = await fetch(BASE_URL + ENDPOINTS.addCar, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + token },
+        body: JSON.stringify(carData)
+      });
+    }
+
     if (!res.ok) throw new Error();
-    showToast('Car added successfully', 'success');
+
+    showToast(editId ? 'Car updated successfully' : 'Car added successfully', 'success');
     addCarForm.reset();
+    delete addCarForm.dataset.editId;
+    document.querySelector('#add-car-form button[type="submit"]').textContent = 'Add Car';
+    loadCars(); // Refresh the car list
   } catch {
-    showToast('Failed to add car', 'error');
+    showToast(editId ? 'Failed to update car' : 'Failed to add car', 'error');
   }
 });
 
