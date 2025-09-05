@@ -5,7 +5,9 @@ export const API_CONFIG = {
     authMe: "/api/auth/me",
     userStats: "/api/users/stats",
     rentalHistory: "/api/rentals/history",
-    adminAnalytics: "/api/admin/analytics"
+    adminAnalytics: "/api/admin/analytics",
+    users: "/api/users",
+    cars: "/api/cars"
   }
 };
 

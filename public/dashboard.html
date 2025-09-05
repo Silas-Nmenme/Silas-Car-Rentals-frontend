@@ -55,6 +55,12 @@
     .shake {
       animation: shake 0.5s ease-in-out;
     }
+
+    /* Dropdown for users list */
+    #user-select {
+      max-width: 300px;
+      margin-bottom: 1rem;
+    }
   </style>
 </head>
 <body class="dashboard-body">
@@ -62,7 +68,7 @@
   <!-- HEADER -->
   <header class="navbar">
     <div class="container nav-inner">
-      <a href="index.html" class="brand">
+      <a href="dashboard.html" class="brand">
         <div class="brand-mark">SC</div>
         <span class="brand-name">Silas Dashboard</span>
       </a>
@@ -74,12 +80,12 @@
   </header>
 
   <!-- MAIN -->
-  <main class="container section">
-    <h1>Welcome, <span id="dash-username">User</span> 👋</h1>
+  <main class="container section animate__animated animate__fadeIn">
+    <h1 class="animate__animated animate__bounce">Welcome, <span id="dash-username">User</span> 👋</h1>
     <p class="meta">Manage your rentals, wishlist, saved cars, and if you're an admin, view & manage bookings.</p>
 
     <!-- USER STATS -->
-    <section class="stats-grid" id="user-stats">
+    <section class="stats-grid animate__animated animate__slideInUp" id="user-stats">
       <div class="stat-card"><h2 id="total-rentals">0</h2><p>Total Rentals</p></div>
       <div class="stat-card clickable" id="wishlist-stat"><h2 id="wishlist-count-stat">0</h2><p>Wishlist Items</p></div>
       <div class="stat-card clickable" id="saved-cars-stat"><h2 id="saved-count-stat">0</h2><p>Saved Cars</p></div>
@@ -87,7 +93,7 @@
     </section>
 
     <!-- RENTAL HISTORY -->
-    <section>
+    <section class="animate__animated animate__slideInLeft">
       <h2>Rental History</h2>
       <table class="data-table">
         <thead><tr><th>Car</th><th>Start</th><th>End</th><th>Price</th><th>Status</th></tr></thead>
@@ -96,19 +102,19 @@
     </section>
 
     <!-- WISHLIST -->
-    <section>
+    <section class="animate__animated animate__slideInRight">
       <h2>My Wishlist ❤️</h2>
       <div class="grid" id="wishlist-grid"><p class="meta">Loading wishlist...</p></div>
     </section>
 
     <!-- SAVED CARS -->
-    <section>
+    <section class="animate__animated animate__slideInLeft">
       <h2>Saved Cars 🚗</h2>
       <div class="grid" id="saved-cars-grid"><p class="meta">Loading saved cars...</p></div>
     </section>
 
     <!-- ADMIN ANALYTICS -->
-    <section id="admin-analytics" class="hidden">
+    <section id="admin-analytics" class="hidden animate__animated animate__zoomIn">
       <h2>Admin Analytics 📊</h2>
       <div class="stats-grid">
         <div class="stat-card"><h2 id="admin-total-users">0</h2><p>Total Users</p></div>
@@ -118,7 +124,7 @@
     </section>
 
     <!-- BOOKINGS PANEL (ADMIN) -->
-    <section id="admin-bookings" class="hidden">
+    <section id="admin-bookings" class="hidden animate__animated animate__slideInUp">
       <h2>Manage Bookings 📅</h2>
       <table class="data-table">
         <thead><tr><th>User</th><th>Car</th><th>Pickup</th><th>Return</th><th>Status</th><th>Action</th></tr></thead>
@@ -127,7 +133,7 @@
     </section>
 
     <!-- USERS LIST (ADMIN) -->
-    <section id="admin-users" class="hidden">
+    <section id="admin-users" class="hidden animate__animated animate__fadeInUp">
       <h2>Users List 👥</h2>
       <div class="mb-3">
         <select id="user-select" class="form-select w-auto" aria-label="Select user to view details">
@@ -143,7 +149,7 @@
     </section>
 
     <!-- ADD CAR FORM (ADMIN) -->
-    <section id="admin-add-car" class="hidden">
+    <section id="admin-add-car" class="hidden animate__animated animate__zoomIn">
       <h2>Add New Car 🚗</h2>
       <form id="add-car-form" class="row g-3 needs-validation" novalidate>
         <div class="col-md-6">
@@ -174,6 +180,18 @@
           <button type="submit" class="btn btn-primary">Add Car</button>
         </div>
       </form>
+    </section>
+
+    <!-- CAR MANAGEMENT (ADMIN) -->
+    <section id="admin-car-management" class="hidden animate__animated animate__slideInUp">
+      <h2>Car Management 🚗</h2>
+      <div class="mb-3">
+        <input type="text" id="car-search" class="form-control" placeholder="Search cars by make..." />
+      </div>
+      <table class="data-table">
+        <thead><tr><th>Make</th><th>Model</th><th>Year</th><th>Price</th><th>Actions</th></tr></thead>
+        <tbody id="cars-table-body"><tr><td colspan="5" class="meta">Loading...</td></tr></tbody>
+      </table>
     </section>
   </main>
 
