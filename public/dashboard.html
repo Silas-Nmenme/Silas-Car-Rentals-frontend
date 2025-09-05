@@ -173,8 +173,19 @@
           <div class="invalid-feedback">Please enter the price.</div>
         </div>
         <div class="col-md-4">
-          <label for="car-image" class="form-label">Image URL</label>
-          <input type="url" class="form-control" id="car-image" />
+          <label for="car-brand" class="form-label">Brand</label>
+          <input type="text" class="form-control" id="car-brand" required />
+          <div class="invalid-feedback">Please enter the car brand.</div>
+        </div>
+        <div class="col-md-6">
+          <label for="car-color" class="form-label">Color</label>
+          <input type="text" class="form-control" id="car-color" required />
+          <div class="invalid-feedback">Please enter the car color.</div>
+        </div>
+        <div class="col-md-6">
+          <label for="car-description" class="form-label">Description</label>
+          <textarea class="form-control" id="car-description" rows="3" required></textarea>
+          <div class="invalid-feedback">Please enter a description.</div>
         </div>
         <div class="col-12">
           <button type="submit" class="btn btn-primary">Add Car</button>

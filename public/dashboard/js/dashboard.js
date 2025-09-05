@@ -352,7 +352,9 @@ async function handleAddCar(e) {
     model: formData.get('car-model'),
     year: parseInt(formData.get('car-year')),
     price: parseFloat(formData.get('car-price')),
-    image: formData.get('car-image') || undefined
+    brand: formData.get('car-brand'),
+    color: formData.get('car-color'),
+    description: formData.get('car-description')
   };
 
   await addCar(carData);
@@ -535,7 +537,7 @@ function renderCarsTable(cars) {
 async function addCar(carData) {
   try {
     const token = storage.get('token');
-    const response = await fetch(`${API_CONFIG.BASE_URL}${ENDPOINTS.cars}`, {
+    const response = await fetch(`${API_CONFIG.BASE_URL}/api/cars/add-car`, {
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${token}`,
