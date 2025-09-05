@@ -1,643 +1,204 @@
-/**
- * Dashboard JavaScript for Silas Car Rentals
- * Handles user dashboard functionality including:
- * - User authentication state
- * - Rental history
- - Wishlist management
- * - Saved cars
- * - Admin features
- */
+// public/dashboard.js
 
-import { API_CONFIG } from './config.js';
-import { formatCurrency, formatDate, showToast, storage } from './utils.js';
+import { BASE_URL, ENDPOINTS, showToast } from '../../app.js';
 
-// API endpoints
-const ENDPOINTS = {
-  authMe: '/api/auth/me',
-  userStats: '/api/users/stats',
-  rentalHistory: '/api/rentals/history',
-  wishlist: '/api/wishlist',
-  savedCars: '/api/saved-cars',
-  adminAnalytics: '/api/admin/analytics',
-  bookings: '/api/bookings',
-  users: '/api/users',
-  cars: '/api/cars'
-};
+const token = localStorage.getItem('token');
+if (!token) {
+  showToast('Please login first');
+  setTimeout(() => window.location.href = 'login.html', 1500);
+}
 
-// Dashboard state
-let dashboardState = {
-  user: null,
-  rentals: [],
-  wishlist: [],
-  savedCars: [],
-  adminData: null,
-  isLoading: false
-};
+// Elements
+const userNameEl = document.getElementById('dash-username');
+const logoutBtn = document.getElementById('logout-btn');
+const totalRentalsEl = document.getElementById('total-rentals');
+const wishlistCountEl = document.getElementById('wishlist-count-stat');
+const savedCountEl = document.getElementById('saved-count-stat');
+const cartCountEl = document.getElementById('cart-count');
+const cartCountStatEl = document.getElementById('cart-count-stat');
+const rentalsTableBody = document.getElementById('rentals-table-body');
+const wishlistGrid = document.getElementById('wishlist-grid');
+const savedCarsGrid = document.getElementById('saved-cars-grid');
+const adminAnalyticsSection = document.getElementById('admin-analytics');
+const adminBookingsSection = document.getElementById('admin-bookings');
+const bookingsTableBody = document.getElementById('bookings-table-body');
+const adminUsersSection = document.getElementById('admin-users');
+const adminAddCarSection = document.getElementById('admin-add-car');
+const userSelect = document.getElementById('user-select');
+const userDetails = document.getElementById('user-details');
+const addCarForm = document.getElementById('add-car-form');
 
-// Initialize dashboard
-document.addEventListener('DOMContentLoaded', async () => {
-  await initializeDashboard();
-});
+// Modal
+const modalOverlay = document.getElementById('modal-overlay');
+const modalTitle = document.getElementById('modal-title');
+const modalItems = document.getElementById('modal-items');
 
-async function initializeDashboard() {
+function openModal(title, items, type) {
+  modalTitle.textContent = title;
+  modalItems.innerHTML = items.length
+    ? items.map(car => `
+      <div class="card">
+        <h3>${car.name}</h3>
+        <p>₦${car.price.toLocaleString()}</p>
+        ${type === 'cart'
+          ? `<button class="btn btn-primary btn-sm" onclick='rentNow(${JSON.stringify(car).replace(/"/g, '"')})'>Rent Now</button>` : ''}
+        <button class="btn btn-outline btn-sm" onclick='removeFrom("${type}", ${car.id})'>Remove</button>
+      </div>`).join('')
+    : `<p class="meta">No items in ${title.toLowerCase()}.</p>`;
+  modalOverlay.style.display = 'flex';
+}
+function closeModal() { modalOverlay.style.display = 'none'; }
+modalOverlay.addEventListener('click', e => { if (e.target === modalOverlay) closeModal(); });
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+// Wishlist/Saved/Carts click
+document.getElementById('wishlist-stat').addEventListener('click', () => openModal('Wishlist', JSON.parse(localStorage.getItem('wishlist')) || [], 'wishlist'));
+document.getElementById('saved-cars-stat').addEventListener('click', () => openModal('Saved Cars', JSON.parse(localStorage.getItem('savedCars')) || [], 'savedCars'));
+document.getElementById('cart-stat').addEventListener('click', () => openModal('Cart', JSON.parse(localStorage.getItem('cart')) || [], 'cart'));
+document.getElementById('cart-btn').addEventListener('click', () => openModal('Cart', JSON.parse(localStorage.getItem('cart')) || [], 'cart'));
+
+// Render Previews
+function renderPreview(id, storageKey) {
+  const data = JSON.parse(localStorage.getItem(storageKey)) || [];
+  document.getElementById(id).innerHTML = data.length
+    ? data.slice(0, 3).map(car => `<div class="card"><h3>${car.name}</h3><p>₦${car.price.toLocaleString()}</p></div>`).join('')
+    : `<p class="meta">No ${storageKey} yet.</p>`;
+}
+function renderCounts() {
+  wishlistCountEl.textContent = (JSON.parse(localStorage.getItem('wishlist')) || []).length;
+  savedCountEl.textContent = (JSON.parse(localStorage.getItem('savedCars')) || []).length;
+  const cartLen = (JSON.parse(localStorage.getItem('cart')) || []).length;
+  cartCountEl.textContent = cartLen;
+  cartCountStatEl.textContent = cartLen;
+}
+function renderAllPreviews() { renderCounts(); renderPreview('wishlist-grid', 'wishlist'); renderPreview('saved-cars-grid', 'savedCars'); }
+
+// Fetch Profile
+async function fetchUserProfile() {
   try {
-    // Check authentication
-    const token = storage.get('token');
-    if (!token) {
-      window.location.href = '../login.html';
-      return;
+    const res = await fetch(BASE_URL + ENDPOINTS.authMe, { headers: { Authorization: 'Bearer ' + token } });
+    if (!res.ok) throw new Error();
+    const user = await res.json();
+    userNameEl.textContent = user.name || user.email;
+    if (user.role === 'admin') {
+      adminAnalyticsSection.classList.remove('hidden');
+      adminBookingsSection.classList.remove('hidden');
+      adminUsersSection.classList.remove('hidden');
+      adminAddCarSection.classList.remove('hidden');
+      loadAdminData();
+      loadUsers();
     }
-
-    // Load user data
-    await loadUserData();
-    
-    // Setup event listeners
-    setupEventListeners();
-    
-    // Load dashboard data
-    await Promise.all([
-      loadUserStats(),
-      loadRentalHistory(),
-      loadWishlist(),
-      loadSavedCars()
-    ]);
-    
-    // Check if user is admin
-    if (dashboardState.user?.role === 'admin') {
-      await loadAdminData();
-      await loadUsers();
-      await loadCars();
-    }
-    
-  } catch (error) {
-    console.error('Dashboard initialization error:', error);
-    showToast('Failed to load dashboard. Please refresh the page.');
-  }
+  } catch { showToast('Session expired'); setTimeout(() => { localStorage.removeItem('token'); location.href = 'login.html'; }, 1500); }
 }
 
-async function loadUserData() {
+// Fetch Stats
+async function fetchUserStats() {
   try {
-    const token = storage.get('token');
-    const response = await fetch(`${API_CONFIG.BASE_URL}${ENDPOINTS.authMe}`, {
-      headers: {
-        'Authorization': `Bearer ${token}`
-      }
-    });
-    
-    if (!response.ok) {
-      if (response.status === 401) {
-        storage.remove('token');
-        window.location.href = '../login.html';
-        return;
-      }
-      throw new Error('Failed to load user data');
-    }
-    
-    const user = await response.json();
-    dashboardState.user = user;
-    
-    // Update UI with user info
-    document.getElementById('dash-username').textContent = user.name || 'User';
-    
-  } catch (error) {
-    console.error('Error loading user data:', error);
-    throw error;
-  }
+    const res = await fetch(BASE_URL + ENDPOINTS.userStats, { headers: { Authorization: 'Bearer ' + token } });
+    const stats = await res.json();
+    totalRentalsEl.textContent = stats.totalRentals ?? 0;
+  } catch { showToast('Failed to load stats'); }
 }
 
-async function loadUserStats() {
+// Rental History
+async function fetchRentalHistory() {
   try {
-    const token = storage.get('token');
-    const response = await fetch(`${API_CONFIG.BASE_URL}${ENDPOINTS.userStats}`, {
-      headers: {
-        'Authorization': `Bearer ${token}`
-      }
-    });
-    
-    if (response.ok) {
-      const stats = await response.json();
-      updateStatsUI(stats);
-    }
-  } catch (error) {
-    console.error('Error loading user stats:', error);
-  }
+    const res = await fetch(BASE_URL + ENDPOINTS.rentalHistory, { headers: { Authorization: 'Bearer ' + token } });
+    const rentals = await res.json();
+    rentalsTableBody.innerHTML = rentals.length
+      ? rentals.map(r => `<tr><td>${r.carName}</td><td>${new Date(r.startDate).toLocaleDateString()}</td><td>${new Date(r.endDate).toLocaleDateString()}</td><td>₦${r.price.toLocaleString()}</td><td>${r.status}</td></tr>`).join('')
+      : `<tr><td colspan="5" class="meta">No rentals found</td></tr>`;
+  } catch { rentalsTableBody.innerHTML = `<tr><td colspan="5" class="meta">Error loading rentals</td></tr>`; }
 }
 
-function updateStatsUI(stats) {
-  document.getElementById('total-rentals').textContent = stats.totalRentals || 0;
-  document.getElementById('wishlist-count-stat').textContent = stats.wishlistCount || 0;
-  document.getElementById('saved-count-stat').textContent = stats.savedCount || 0;
-  document.getElementById('cart-count-stat').textContent = stats.cartCount || 0;
-}
-
-async function loadRentalHistory() {
-  try {
-    const token = storage.get('token');
-    const response = await fetch(`${API_CONFIG.BASE_URL}${ENDPOINTS.rentalHistory}`, {
-      headers: {
-        'Authorization': `Bearer ${token}`
-      }
-    });
-    
-    if (response.ok) {
-      const rentals = await response.json();
-      dashboardState.rentals = rentals;
-      renderRentalHistory(rentals);
-    }
-  } catch (error) {
-    console.error('Error loading rental history:', error);
-  }
-}
-
-function renderRentalHistory(rentals) {
-  const tbody = document.getElementById('rentals-table-body');
-  if (!tbody) return;
-  
-  if (rentals.length === 0) {
-    tbody.innerHTML = '<tr><td colspan="5" class="meta">No rentals found</td></tr>';
-    return;
-  }
-  
-  tbody.innerHTML = rentals.map(rental => `
-    <tr>
-      <td>${rental.car?.make || 'N/A'} ${rental.car?.model || 'N/A'}</td>
-      <td>${formatDate(rental.startDate)}</td>
-      <td>${formatDate(rental.endDate)}</td>
-      <td>${formatCurrency(rental.totalPrice || 0)}</td>
-      <td>
-        <span class="status-badge status-${rental.status?.toLowerCase() || 'pending'}">
-          ${rental.status || 'Pending'}
-        </span>
-      </td>
-    </tr>
-  `).join('');
-}
-
-async function loadWishlist() {
-  try {
-    const token = storage.get('token');
-    const response = await fetch(`${API_CONFIG.BASE_URL}${ENDPOINTS.wishlist}`, {
-      headers: {
-        'Authorization': `Bearer ${token}`
-      }
-    });
-    
-    if (response.ok) {
-      const wishlist = await response.json();
-      dashboardState.wishlist = wishlist;
-      renderWishlist(wishlist);
-    }
-  } catch (error) {
-    console.error('Error loading wishlist:', error);
-  }
-}
-
-function renderWishlist(wishlist) {
-  const grid = document.getElementById('wishlist-grid');
-  if (!grid) return;
-  
-  if (wishlist.length === 0) {
-    grid.innerHTML = '<p class="meta">Your wishlist is empty</p>';
-    return;
-  }
-  
-  grid.innerHTML = wishlist.map(item => `
-    <div class="car-card">
-      <img src="${item.image || '/assets/placeholder.jpg'}" alt="${item.make} ${item.model}">
-      <h3>${item.make} ${item.model}</h3>
-      <p>${formatCurrency(item.price || 0)}</p>
-      <button class="btn btn-sm" onclick="removeFromWishlist('${item._id}')">Remove</button>
-    </div>
-  `).join('');
-}
-
-async function loadSavedCars() {
-  try {
-    const token = storage.get('token');
-    const response = await fetch(`${API_CONFIG.BASE_URL}${ENDPOINTS.savedCars}`, {
-      headers: {
-        'Authorization': `Bearer ${token}`
-      }
-    });
-    
-    if (response.ok) {
-      const savedCars = await response.json();
-      dashboardState.savedCars = savedCars;
-      renderSavedCars(savedCars);
-    }
-  } catch (error) {
-    console.error('Error loading saved cars:', error);
-  }
-}
-
-function renderSavedCars(savedCars) {
-  const grid = document.getElementById('saved-cars-grid');
-  if (!grid) return;
-  
-  if (savedCars.length === 0) {
-    grid.innerHTML = '<p class="meta">No saved cars found</p>';
-    return;
-  }
-  
-  grid.innerHTML = savedCars.map(car => `
-    <div class="car-card">
-      <img src="${car.image || '/assets/placeholder.jpg'}" alt="${car.make} ${car.model}">
-      <h3>${car.make} ${car.model}</h3>
-      <p>${formatCurrency(car.price || 0)}</p>
-      <button class="btn btn-sm" onclick="removeFromSaved('${car._id}')">Remove</button>
-    </div>
-  `).join('');
-}
-
+// Admin Bookings
 async function loadAdminData() {
   try {
-    const token = storage.get('token');
-    const [analyticsRes, bookingsRes] = await Promise.all([
-      fetch(`${API_CONFIG.BASE_URL}${ENDPOINTS.adminAnalytics}`, {
-        headers: { 'Authorization': `Bearer ${token}` }
-      }),
-      fetch(`${API_CONFIG.BASE_URL}${ENDPOINTS.bookings}`, {
-        headers: { 'Authorization': `Bearer ${token}` }
-      })
-    ]);
-    
-    if (analyticsRes.ok && bookingsRes.ok) {
-      const [analytics, bookings] = await Promise.all([
-        analyticsRes.json(),
-        bookingsRes.json()
-      ]);
-      
-      renderAdminData(analytics, bookings);
-    }
-  } catch (error) {
-    console.error('Error loading admin data:', error);
-  }
+    // Analytics
+    const analyticsRes = await fetch(BASE_URL + ENDPOINTS.adminAnalytics, { headers: { Authorization: 'Bearer ' + token } });
+    const analytics = await analyticsRes.json();
+    document.getElementById('admin-total-users').textContent = analytics.totalUsers ?? 0;
+    document.getElementById('admin-total-cars').textContent = analytics.totalCars ?? 0;
+    document.getElementById('admin-total-revenue').textContent = `₦${(analytics.totalRevenue || 0).toLocaleString()}`;
+
+    // Bookings
+    const bookingsRes = await fetch(BASE_URL + '/api/bookings', { headers: { Authorization: 'Bearer ' + token } });
+    const bookings = await bookingsRes.json();
+    bookingsTableBody.innerHTML = bookings.length
+      ? bookings.map(b => `<tr><td>${b.email}</td><td>${b.car?.make || ''} ${b.car?.model || ''}</td><td>${new Date(b.startDate).toLocaleDateString()}</td><td>${new Date(b.endDate).toLocaleDateString()}</td><td>${b.status || 'Pending'}</td><td><button onclick="updateBookingStatus('${b._id}','approved')" class="btn btn-sm btn-success">Approve</button><button onclick="updateBookingStatus('${b._id}','rejected')" class="btn btn-sm btn-danger">Reject</button></td></tr>`).join('')
+      : `<tr><td colspan="6" class="meta">No bookings found</td></tr>`;
+  } catch { bookingsTableBody.innerHTML = `<tr><td colspan="6" class="meta">Error loading bookings</td></tr>`; }
 }
 
-function renderAdminData(analytics, bookings) {
-  // Update admin analytics
-  const adminSection = document.getElementById('admin-analytics');
-  if (adminSection) {
-    adminSection.classList.remove('hidden');
-    document.getElementById('admin-total-users').textContent = analytics.totalUsers || 0;
-    document.getElementById('admin-total-cars').textContent = analytics.totalCars || 0;
-    document.getElementById('admin-total-revenue').textContent = formatCurrency(analytics.totalRevenue || 0);
-  }
-  
-  // Render bookings table
-  const bookingsTable = document.getElementById('bookings-table-body');
-  if (bookingsTable) {
-    bookingsTable.innerHTML = bookings.map(booking => `
-      <tr>
-        <td>${booking.user?.name || 'N/A'}</td>
-        <td>${booking.car?.make || 'N/A'} ${booking.car?.model || 'N/A'}</td>
-        <td>${formatDate(booking.pickupDate)}</td>
-        <td>${formatDate(booking.returnDate)}</td>
-        <td>
-          <span class="status-badge status-${booking.status?.toLowerCase() || 'pending'}">
-            ${booking.status || 'Pending'}
-          </span>
-        </td>
-        <td>
-          <button class="btn btn-sm" onclick="updateBookingStatus('${booking._id}', 'approved')">Approve</button>
-          <button class="btn btn-sm btn-danger" onclick="updateBookingStatus('${booking._id}', 'rejected')">Reject</button>
-        </td>
-      </tr>
-    `).join('');
-  }
-}
-
-// Event listeners
-function setupEventListeners() {
-  // Logout button
-  const logoutBtn = document.getElementById('logout-btn');
-  if (logoutBtn) {
-    logoutBtn.addEventListener('click', handleLogout);
-  }
-
-  // Navigation links
-  document.querySelectorAll('[data-action]').forEach(element => {
-    element.addEventListener('click', handleAction);
-  });
-
-  // Add car form
-  const addCarForm = document.getElementById('add-car-form');
-  if (addCarForm) {
-    addCarForm.addEventListener('submit', handleAddCar);
-  }
-
-  // Car search
-  const carSearch = document.getElementById('car-search');
-  if (carSearch) {
-    carSearch.addEventListener('input', (e) => {
-      searchCars(e.target.value);
-    });
-  }
-}
-
-async function handleLogout() {
+window.updateBookingStatus = async function(id, status) {
+  if (!confirm(`Mark booking as ${status}?`)) return;
   try {
-    localStorage.removeItem('token');
-    window.location.href = '../login.html';
-  } catch (error) {
-    console.error('Logout error:', error);
-  }
-}
-
-async function handleAddCar(e) {
-  e.preventDefault();
-  const formData = new FormData(e.target);
-  const carData = {
-    make: formData.get('car-make'),
-    model: formData.get('car-model'),
-    year: parseInt(formData.get('car-year')),
-    price: parseFloat(formData.get('car-price')),
-    brand: formData.get('car-brand'),
-    color: formData.get('car-color'),
-    description: formData.get('car-description')
-  };
-
-  await addCar(carData);
-}
-
-function handleAction(e) {
-  const action = e.target.dataset.action;
-  const id = e.target.dataset.id;
-  
-  switch (action) {
-    case 'remove-wishlist':
-      removeFromWishlist(id);
-      break;
-    case 'remove-saved':
-      removeFromSaved(id);
-      break;
-    case 'update-booking':
-      updateBookingStatus(id, e.target.dataset.status);
-      break;
-  }
-}
-
-async function removeFromWishlist(carId) {
-  try {
-    const token = storage.get('token');
-    const response = await fetch(`${API_CONFIG.BASE_URL}${ENDPOINTS.wishlist}/${carId}`, {
-      method: 'DELETE',
-      headers: {
-        'Authorization': `Bearer ${token}`
-      }
-    });
-    
-    if (response.ok) {
-      showToast('Removed from wishlist');
-      await loadWishlist();
-    }
-  } catch (error) {
-    console.error('Error removing from wishlist:', error);
-  }
-}
-
-async function removeFromSaved(carId) {
-  try {
-    const token = storage.get('token');
-    const response = await fetch(`${API_CONFIG.BASE_URL}${ENDPOINTS.savedCars}/${carId}`, {
-      method: 'DELETE',
-      headers: {
-        'Authorization': `Bearer ${token}`
-      }
-    });
-    
-    if (response.ok) {
-      showToast('Removed from saved cars');
-      await loadSavedCars();
-    }
-  } catch (error) {
-    console.error('Error removing from saved cars:', error);
-  }
-}
-
-async function updateBookingStatus(bookingId, status) {
-  try {
-    const token = storage.get('token');
-    const response = await fetch(`${API_CONFIG.BASE_URL}${ENDPOINTS.bookings}/${bookingId}`, {
+    const res = await fetch(BASE_URL + `/api/bookings/${id}`, {
       method: 'PATCH',
-      headers: {
-        'Authorization': `Bearer ${token}`,
-        'Content-Type': 'application/json'
-      },
+      headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + token },
       body: JSON.stringify({ status })
     });
-
-    if (response.ok) {
-      showToast(`Booking ${status}`);
-      await loadAdminData();
-    }
-  } catch (error) {
-    console.error('Error updating booking status:', error);
-  }
+    if (!res.ok) throw new Error();
+    showToast(`Booking ${status}`);
+    loadAdminData();
+  } catch { showToast('Failed to update booking'); }
 }
 
-// Load all users for admin
+// Load Users for Admin
 async function loadUsers() {
   try {
-    const token = storage.get('token');
-    const response = await fetch(`${API_CONFIG.BASE_URL}${ENDPOINTS.users}`, {
-      headers: {
-        'Authorization': `Bearer ${token}`
-      }
-    });
-
-    if (response.ok) {
-      const users = await response.json();
-      renderUserDropdown(users);
-    }
-  } catch (error) {
-    console.error('Error loading users:', error);
-  }
+    const res = await fetch(BASE_URL + '/api/users', { headers: { Authorization: 'Bearer ' + token } });
+    const users = await res.json();
+    userSelect.innerHTML = '<option selected disabled>Select a user</option>' +
+      users.map(u => `<option value="${u._id}">${u.name || u.email}</option>`).join('');
+  } catch { showToast('Failed to load users'); }
 }
 
-// Render user dropdown
-function renderUserDropdown(users) {
-  const select = document.getElementById('user-select');
-  if (!select) return;
-
-  select.innerHTML = '<option selected disabled>Select a user</option>';
-  users.forEach(user => {
-    const option = document.createElement('option');
-    option.value = user._id;
-    option.textContent = user.name;
-    select.appendChild(option);
-  });
-
-  select.addEventListener('change', (e) => {
-    const userId = e.target.value;
-    const user = users.find(u => u._id === userId);
-    if (user) {
-      renderUserDetails(user);
-    }
-  });
-}
-
-// Render user details
-function renderUserDetails(user) {
-  const details = document.getElementById('user-details');
-  if (!details) return;
-
-  document.getElementById('user-name').textContent = user.name;
-  document.getElementById('user-email').textContent = user.email;
-  document.getElementById('user-role').textContent = user.role;
-  document.getElementById('user-registered').textContent = formatDate(user.createdAt);
-
-  details.classList.remove('d-none');
-}
-
-// Load all cars for admin
-async function loadCars() {
+// User Select Change
+userSelect.addEventListener('change', async () => {
+  const userId = userSelect.value;
+  if (!userId) return;
   try {
-    const token = storage.get('token');
-    const response = await fetch(`${API_CONFIG.BASE_URL}${ENDPOINTS.cars}`, {
-      headers: {
-        'Authorization': `Bearer ${token}`
-      }
-    });
+    const res = await fetch(BASE_URL + `/api/users/${userId}`, { headers: { Authorization: 'Bearer ' + token } });
+    const user = await res.json();
+    document.getElementById('user-name').textContent = user.name || user.email;
+    document.getElementById('user-email').textContent = user.email;
+    document.getElementById('user-role').textContent = user.role;
+    document.getElementById('user-registered').textContent = new Date(user.createdAt).toLocaleDateString();
+    userDetails.classList.remove('d-none');
+  } catch { showToast('Failed to load user details'); }
+});
 
-    if (response.ok) {
-      const cars = await response.json();
-      renderCarsTable(cars);
-    }
-  } catch (error) {
-    console.error('Error loading cars:', error);
-  }
-}
-
-// Render cars table
-function renderCarsTable(cars) {
-  const tbody = document.getElementById('cars-table-body');
-  if (!tbody) return;
-
-  if (cars.length === 0) {
-    tbody.innerHTML = '<tr><td colspan="5" class="meta">No cars found</td></tr>';
-    return;
-  }
-
-  tbody.innerHTML = cars.map(car => `
-    <tr>
-      <td>${car.make}</td>
-      <td>${car.model}</td>
-      <td>${car.year}</td>
-      <td>${formatCurrency(car.price || 0)}</td>
-      <td>
-        <button class="btn btn-sm btn-warning" onclick="editCar('${car._id}')">Edit</button>
-        <button class="btn btn-sm btn-danger" onclick="deleteCar('${car._id}')">Delete</button>
-      </td>
-    </tr>
-  `).join('');
-}
-
-// Add new car
-async function addCar(carData) {
+// Add Car Form
+addCarForm.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const formData = new FormData(addCarForm);
+  const carData = {
+    make: document.getElementById('car-make').value,
+    model: document.getElementById('car-model').value,
+    year: parseInt(document.getElementById('car-year').value),
+    price: parseFloat(document.getElementById('car-price').value),
+    image: document.getElementById('car-image').value || null
+  };
   try {
-    const token = storage.get('token');
-    const response = await fetch(`${API_CONFIG.BASE_URL}/api/cars/add-car`, {
+    const res = await fetch(BASE_URL + '/api/cars', {
       method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${token}`,
-        'Content-Type': 'application/json'
-      },
+      headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + token },
       body: JSON.stringify(carData)
     });
+    if (!res.ok) throw new Error();
+    showToast('Car added successfully');
+    addCarForm.reset();
+  } catch { showToast('Failed to add car'); }
+});
 
-    if (response.ok) {
-      showToast('Car added successfully');
-      await loadCars();
-      document.getElementById('add-car-form').reset();
-    } else {
-      showToast('Failed to add car', 'error');
-    }
-  } catch (error) {
-    console.error('Error adding car:', error);
-    showToast('Error adding car', 'error');
-  }
-}
+// Logout
+logoutBtn.addEventListener('click', () => { localStorage.removeItem('token'); location.href = 'login.html'; });
 
-// Edit car
-async function editCar(carId) {
-  // For simplicity, we'll use a prompt or modal to edit
-  const newMake = prompt('Enter new make:');
-  if (!newMake) return;
-
-  try {
-    const token = storage.get('token');
-    const response = await fetch(`${API_CONFIG.BASE_URL}${ENDPOINTS.cars}/${carId}`, {
-      method: 'PUT',
-      headers: {
-        'Authorization': `Bearer ${token}`,
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({ make: newMake })
-    });
-
-    if (response.ok) {
-      showToast('Car updated successfully');
-      await loadCars();
-    } else {
-      showToast('Failed to update car', 'error');
-    }
-  } catch (error) {
-    console.error('Error updating car:', error);
-    showToast('Error updating car', 'error');
-  }
-}
-
-// Delete car
-async function deleteCar(carId) {
-  if (!confirm('Are you sure you want to delete this car?')) return;
-
-  try {
-    const token = storage.get('token');
-    const response = await fetch(`${API_CONFIG.BASE_URL}${ENDPOINTS.cars}/${carId}`, {
-      method: 'DELETE',
-      headers: {
-        'Authorization': `Bearer ${token}`
-      }
-    });
-
-    if (response.ok) {
-      showToast('Car deleted successfully');
-      await loadCars();
-    } else {
-      showToast('Failed to delete car', 'error');
-    }
-  } catch (error) {
-    console.error('Error deleting car:', error);
-    showToast('Error deleting car', 'error');
-  }
-}
-
-// Search cars
-function searchCars(query) {
-  const rows = document.querySelectorAll('#cars-table-body tr');
-  rows.forEach(row => {
-    const make = row.cells[0].textContent.toLowerCase();
-    if (make.includes(query.toLowerCase())) {
-      row.style.display = '';
-    } else {
-      row.style.display = 'none';
-    }
-  });
-}
-
-// Export for use in other modules
-export {
-  dashboardState,
-  loadUserData,
-  loadRentalHistory,
-  loadWishlist,
-  loadSavedCars,
-  loadAdminData,
-  loadUsers,
-  loadCars,
-  addCar,
-  editCar,
-  deleteCar,
-  searchCars
-};
+// Init
+(async function init() {
+  await fetchUserProfile();
+  await fetchUserStats();
+  await fetchRentalHistory();
+  renderAllPreviews();
+})();
