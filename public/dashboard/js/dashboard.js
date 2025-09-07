@@ -194,25 +194,45 @@ async function fetchRentalHistory() {
   } catch { rentalsTableBody.innerHTML = `<tr><td colspan="5" class="meta">Error loading rentals</td></tr>`; }
 }
 
-// Admin Bookings
+// Admin Data
 async function loadAdminData() {
   try {
-    // Analytics
-    const analyticsRes = await fetch(BASE_URL + ENDPOINTS.adminAnalytics, { headers: { Authorization: 'Bearer ' + token } });
-    const analytics = await analyticsRes.json();
-    console.log('Admin analytics data:', analytics); // Added debug log
-    document.getElementById('admin-total-users').textContent = analytics.totalUsers ?? 0;
-    document.getElementById('admin-total-cars').textContent = analytics.totalCars ?? 0;
-    document.getElementById('admin-total-revenue').textContent = `₦${(analytics.totalRevenue || 0).toLocaleString()}`;
+    // Fetch users for total count
+    const usersRes = await fetch(BASE_URL + ENDPOINTS.users, { headers: { Authorization: 'Bearer ' + token } });
+    const users = await usersRes.json();
+    console.log('Users data:', users);
+    document.getElementById('admin-total-users').textContent = users.length || 0;
+
+    // Fetch cars for total count
+    const carsRes = await fetch(BASE_URL + ENDPOINTS.getCars, { headers: { Authorization: 'Bearer ' + token } });
+    const carsData = await carsRes.json();
+    const cars = carsData.cars || [];
+    console.log('Cars data:', cars);
+    document.getElementById('admin-total-cars').textContent = cars.length || 0;
+
+    // Try to fetch analytics for revenue
+    try {
+      const analyticsRes = await fetch(BASE_URL + ENDPOINTS.adminAnalytics, { headers: { Authorization: 'Bearer ' + token } });
+      const analytics = await analyticsRes.json();
+      console.log('Admin analytics data:', analytics);
+      document.getElementById('admin-total-revenue').textContent = `₦${(analytics.totalRevenue || 0).toLocaleString()}`;
+    } catch (analyticsError) {
+      console.error('Error loading analytics:', analyticsError);
+      document.getElementById('admin-total-revenue').textContent = '₦0';
+    }
 
     // Bookings
     const bookingsRes = await fetch(BASE_URL + '/api/bookings', { headers: { Authorization: 'Bearer ' + token } });
     const bookings = await bookingsRes.json();
+    console.log('Bookings data:', bookings);
     bookingsTableBody.innerHTML = bookings.length
       ? bookings.map(b => `<tr><td>${b.email}</td><td>${b.car?.make || ''} ${b.car?.model || ''}</td><td>${new Date(b.startDate).toLocaleDateString()}</td><td>${new Date(b.endDate).toLocaleDateString()}</td><td>${b.status || 'Pending'}</td><td><button onclick="updateBookingStatus('${b._id}','approved')" class="btn btn-sm btn-success">Approve</button><button onclick="updateBookingStatus('${b._id}','rejected')" class="btn btn-sm btn-danger">Reject</button></td></tr>`).join('')
       : `<tr><td colspan="6" class="meta">No bookings found</td></tr>`;
   } catch (error) {
     console.error('Error loading admin data:', error);
+    document.getElementById('admin-total-users').textContent = '0';
+    document.getElementById('admin-total-cars').textContent = '0';
+    document.getElementById('admin-total-revenue').textContent = '₦0';
     bookingsTableBody.innerHTML = `<tr><td colspan="6" class="meta">Error loading bookings</td></tr>`;
   }
 }
