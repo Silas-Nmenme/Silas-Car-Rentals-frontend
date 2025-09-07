@@ -247,7 +247,8 @@ async function loadCars() {
   try {
     const res = await fetch(BASE_URL + ENDPOINTS.getCars, { headers: { Authorization: 'Bearer ' + token } });
     if (!res.ok) throw new Error('Failed to fetch cars');
-    const cars = await res.json();
+    const data = await res.json();
+    const cars = data.cars || [];
     carsTableBody.innerHTML = cars.length
       ? cars.map(car => `
         <tr>
@@ -344,9 +345,10 @@ carSearchInput.addEventListener('input', debounce(async (e) => {
 
   carsTableBody.innerHTML = `<tr><td colspan="7" class="text-center">Searching...</td></tr>`;
   try {
-    const res = await fetch(BASE_URL + ENDPOINTS.searchCars + `?q=${encodeURIComponent(query)}`, { headers: { Authorization: 'Bearer ' + token } });
+    const res = await fetch(BASE_URL + ENDPOINTS.searchCars + `?make=${encodeURIComponent(query)}`, { headers: { Authorization: 'Bearer ' + token } });
     if (!res.ok) throw new Error('Failed to search cars');
-    const cars = await res.json();
+    const data = await res.json();
+    const cars = data.car || [];
     carsTableBody.innerHTML = cars.length
       ? cars.map(car => `
         <tr>
