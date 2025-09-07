@@ -200,6 +200,7 @@ async function loadAdminData() {
     // Analytics
     const analyticsRes = await fetch(BASE_URL + ENDPOINTS.adminAnalytics, { headers: { Authorization: 'Bearer ' + token } });
     const analytics = await analyticsRes.json();
+    console.log('Admin analytics data:', analytics); // Added debug log
     document.getElementById('admin-total-users').textContent = analytics.totalUsers ?? 0;
     document.getElementById('admin-total-cars').textContent = analytics.totalCars ?? 0;
     document.getElementById('admin-total-revenue').textContent = `₦${(analytics.totalRevenue || 0).toLocaleString()}`;
@@ -210,7 +211,10 @@ async function loadAdminData() {
     bookingsTableBody.innerHTML = bookings.length
       ? bookings.map(b => `<tr><td>${b.email}</td><td>${b.car?.make || ''} ${b.car?.model || ''}</td><td>${new Date(b.startDate).toLocaleDateString()}</td><td>${new Date(b.endDate).toLocaleDateString()}</td><td>${b.status || 'Pending'}</td><td><button onclick="updateBookingStatus('${b._id}','approved')" class="btn btn-sm btn-success">Approve</button><button onclick="updateBookingStatus('${b._id}','rejected')" class="btn btn-sm btn-danger">Reject</button></td></tr>`).join('')
       : `<tr><td colspan="6" class="meta">No bookings found</td></tr>`;
-  } catch { bookingsTableBody.innerHTML = `<tr><td colspan="6" class="meta">Error loading bookings</td></tr>`; }
+  } catch (error) {
+    console.error('Error loading admin data:', error);
+    bookingsTableBody.innerHTML = `<tr><td colspan="6" class="meta">Error loading bookings</td></tr>`;
+  }
 }
 
 window.updateBookingStatus = async function(id, status) {
