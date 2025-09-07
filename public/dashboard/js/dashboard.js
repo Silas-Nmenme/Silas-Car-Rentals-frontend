@@ -221,7 +221,11 @@ window.updateBookingStatus = async function(id, status) {
       headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + token },
       body: JSON.stringify({ status })
     });
-    if (!res.ok) throw new Error();
+    if (!res.ok) {
+      const errorMsg = await res.text();
+      showToast(errorMsg || 'Failed to update booking', 'error');
+      return;
+    }
     showToast(`Booking ${status}`);
     loadAdminData();
   } catch { showToast('Failed to update booking'); }
@@ -319,7 +323,11 @@ window.deleteCar = async function(carId) {
       method: 'DELETE',
       headers: { Authorization: 'Bearer ' + token }
     });
-    if (!res.ok) throw new Error();
+    if (!res.ok) {
+      const errorMsg = await res.text();
+      showToast(errorMsg || 'Failed to delete car', 'error');
+      return;
+    }
     showToast('Car deleted successfully', 'success');
     loadCars(); // Refresh the car list
   } catch {
@@ -404,7 +412,11 @@ addCarForm.addEventListener('submit', async (e) => {
     }
 
     console.log('Response status:', res.status); // Debug log
-    if (!res.ok) throw new Error();
+    if (!res.ok) {
+      const errorMsg = await res.text();
+      showToast(errorMsg || 'Failed to add car', 'error');
+      return;
+    }
 
     showToast(editId ? 'Car updated successfully' : 'Car added successfully', 'success');
     addCarForm.reset();
