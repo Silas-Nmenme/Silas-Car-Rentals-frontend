@@ -254,14 +254,16 @@ async function loadCars() {
           <td>${car.model}</td>
           <td>${car.year}</td>
           <td>₦${car.price.toLocaleString()}</td>
+          <td>${car.brand}</td>
+          <td>${car.color}</td>
           <td>
             <button class="btn btn-sm btn-warning" onclick="editCar('${car._id}')">Edit</button>
             <button class="btn btn-sm btn-danger" onclick="deleteCar('${car._id}')">Delete</button>
           </td>
         </tr>
       `).join('')
-      : `<tr><td colspan="5" class="meta">No cars found</td></tr>`;
-  } catch { carsTableBody.innerHTML = `<tr><td colspan="5" class="meta">Error loading cars</td></tr>`; }
+      : `<tr><td colspan="7" class="meta">No cars found</td></tr>`;
+  } catch { carsTableBody.innerHTML = `<tr><td colspan="7" class="meta">Error loading cars</td></tr>`; }
 }
 
 // User Select Change
@@ -356,13 +358,15 @@ carSearchInput.addEventListener('input', debounce(async (e) => {
           <td>${car.model}</td>
           <td>${car.year}</td>
           <td>₦${car.price.toLocaleString()}</td>
+          <td>${car.brand}</td>
+          <td>${car.color}</td>
           <td>
             <button class="btn btn-sm btn-warning" onclick="editCar('${car._id}')">Edit</button>
             <button class="btn btn-sm btn-danger" onclick="deleteCar('${car._id}')">Delete</button>
           </td>
         </tr>
       `).join('')
-      : `<tr><td colspan="5" class="meta">No cars found for "${query}"</td></tr>`;
+      : `<tr><td colspan="7" class="meta">No cars found for "${query}"</td></tr>`;
   } catch {
     showToast('Failed to search cars', 'error');
   }
@@ -380,13 +384,14 @@ addCarForm.addEventListener('submit', async (e) => {
     price: parseFloat(document.getElementById('car-price').value),
     brand: document.getElementById('car-brand').value.trim(),
     color: document.getElementById('car-color').value.trim(),
-    description: document.getElementById('car-description').value.trim()
+    description: document.getElementById('car-description').value.trim(),
+    image: document.getElementById('car-image').value.trim()
   };
 
   console.log('Car data:', carData); // Debug log
 
   // Basic validation
-  if (!carData.make || !carData.model || !carData.year || !carData.price || !carData.brand || !carData.color || !carData.description) {
+  if (!carData.make || !carData.model || !carData.year || !carData.price || !carData.brand || !carData.color || !carData.description || !carData.image) {
     showToast('Please fill in all required fields', 'error');
     return;
   }
