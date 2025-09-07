@@ -242,28 +242,24 @@ async function loadUsers() {
 }
 
 // Load Cars for Admin
-async function loadCars() {
-  try {
-    const res = await fetch(BASE_URL + ENDPOINTS.getCars, { headers: { Authorization: 'Bearer ' + token } });
-    const data = await res.json();
-    const cars = data.cars || [];
-    carsTableBody.innerHTML = cars.length
-      ? cars.map(car => `
-        <tr>
-          <td>${car.make}</td>
-          <td>${car.model}</td>
-          <td>${car.year}</td>
-          <td>₦${car.price.toLocaleString()}</td>
-          <td>${car.brand}</td>
-          <td>${car.color}</td>
-          <td>
-            <button class="btn btn-sm btn-warning" onclick="editCar('${car._id}')">Edit</button>
-            <button class="btn btn-sm btn-danger" onclick="deleteCar('${car._id}')">Delete</button>
-          </td>
-        </tr>
-      `).join('')
-      : `<tr><td colspan="7" class="meta">No cars found</td></tr>`;
-  } catch { carsTableBody.innerHTML = `<tr><td colspan="7" class="meta">Error loading cars</td></tr>`; }
+function loadCars() {
+  const cars = JSON.parse(localStorage.getItem('cars')) || [];
+  carsTableBody.innerHTML = cars.length
+    ? cars.map(car => `
+      <tr>
+        <td>${car.make}</td>
+        <td>${car.model}</td>
+        <td>${car.year}</td>
+        <td>₦${car.price.toLocaleString()}</td>
+        <td>${car.brand}</td>
+        <td>${car.color}</td>
+        <td>
+          <button class="btn btn-sm btn-warning" onclick="editCar('${car._id}')">Edit</button>
+          <button class="btn btn-sm btn-danger" onclick="deleteCar('${car._id}')">Delete</button>
+        </td>
+      </tr>
+    `).join('')
+    : `<tr><td colspan="7" class="meta">No cars found</td></tr>`;
 }
 
 // User Select Change
@@ -284,96 +280,76 @@ userSelect.addEventListener('change', async () => {
 
 
 // Edit Car
-window.editCar = async function(carId) {
-  // Fetch current car data
-  try {
-    const res = await fetch(BASE_URL + ENDPOINTS.getCars, { headers: { Authorization: 'Bearer ' + token } });
-    const data = await res.json();
-    const car = data.cars.find(c => c._id === carId);
-    if (!car) {
-      showToast('Car not found', 'error');
-      return;
-    }
-
-    // Populate form with car data
-    document.getElementById('car-make').value = car.make;
-    document.getElementById('car-model').value = car.model;
-    document.getElementById('car-year').value = car.year;
-    document.getElementById('car-price').value = car.price;
-    document.getElementById('car-brand').value = car.brand;
-    document.getElementById('car-color').value = car.color;
-    document.getElementById('car-description').value = car.description;
-    document.getElementById('car-image').value = car.image || '';
-
-    // Change form submit to update
-    addCarForm.dataset.editId = carId;
-    document.querySelector('#add-car-form button[type="submit"]').textContent = 'Update Car';
-
-    // Scroll to form
-    document.getElementById('admin-add-car').scrollIntoView({ behavior: 'smooth' });
-  } catch {
-    showToast('Failed to load car data', 'error');
+window.editCar = function(carId) {
+  const cars = JSON.parse(localStorage.getItem('cars')) || [];
+  const car = cars.find(c => c._id === carId);
+  if (!car) {
+    showToast('Car not found', 'error');
+    return;
   }
+
+  // Populate form with car data
+  document.getElementById('car-make').value = car.make;
+  document.getElementById('car-model').value = car.model;
+  document.getElementById('car-year').value = car.year;
+  document.getElementById('car-price').value = car.price;
+  document.getElementById('car-brand').value = car.brand;
+  document.getElementById('car-color').value = car.color;
+  document.getElementById('car-description').value = car.description;
+
+  // Change form submit to update
+  addCarForm.dataset.editId = carId;
+  document.querySelector('#add-car-form button[type="submit"]').textContent = 'Update Car';
+
+  // Scroll to form
+  document.getElementById('admin-add-car').scrollIntoView({ behavior: 'smooth' });
 };
 
 // Delete Car
-window.deleteCar = async function(carId) {
+window.deleteCar = function(carId) {
   if (!confirm('Are you sure you want to delete this car?')) return;
 
-  try {
-    const res = await fetch(BASE_URL + ENDPOINTS.deleteCar.replace(':carId', carId), {
-      method: 'DELETE',
-      headers: { Authorization: 'Bearer ' + token }
-    });
-    if (!res.ok) {
-      const errorMsg = await res.text();
-      showToast(errorMsg || 'Failed to delete car', 'error');
-      return;
-    }
-    showToast('Car deleted successfully', 'success');
-    loadCars(); // Refresh the car list
-  } catch {
-    showToast('Failed to delete car', 'error');
-  }
+  const cars = JSON.parse(localStorage.getItem('cars')) || [];
+  const updatedCars = cars.filter(car => car._id !== carId);
+  localStorage.setItem('cars', JSON.stringify(updatedCars));
+  showToast('Car deleted successfully', 'success');
+  loadCars(); // Refresh the car list
 };
 
 // Search Cars
-carSearchInput.addEventListener('input', debounce(async (e) => {
-  const query = e.target.value.trim();
+carSearchInput.addEventListener('input', debounce((e) => {
+  const query = e.target.value.trim().toLowerCase();
+  const cars = JSON.parse(localStorage.getItem('cars')) || [];
   if (!query) {
     loadCars(); // Load all cars if search is empty
     return;
   }
 
-  try {
-    const res = await fetch(BASE_URL + ENDPOINTS.searchCars + `?make=${encodeURIComponent(query)}`, {
-      headers: { Authorization: 'Bearer ' + token }
-    });
-    const data = await res.json();
-    const cars = data.car || [];
-    carsTableBody.innerHTML = cars.length
-      ? cars.map(car => `
-        <tr>
-          <td>${car.make}</td>
-          <td>${car.model}</td>
-          <td>${car.year}</td>
-          <td>₦${car.price.toLocaleString()}</td>
-          <td>${car.brand}</td>
-          <td>${car.color}</td>
-          <td>
-            <button class="btn btn-sm btn-warning" onclick="editCar('${car._id}')">Edit</button>
-            <button class="btn btn-sm btn-danger" onclick="deleteCar('${car._id}')">Delete</button>
-          </td>
-        </tr>
-      `).join('')
-      : `<tr><td colspan="7" class="meta">No cars found for "${query}"</td></tr>`;
-  } catch {
-    showToast('Failed to search cars', 'error');
-  }
+  const filteredCars = cars.filter(car =>
+    car.make.toLowerCase().includes(query) ||
+    car.model.toLowerCase().includes(query) ||
+    car.brand.toLowerCase().includes(query)
+  );
+  carsTableBody.innerHTML = filteredCars.length
+    ? filteredCars.map(car => `
+      <tr>
+        <td>${car.make}</td>
+        <td>${car.model}</td>
+        <td>${car.year}</td>
+        <td>₦${car.price.toLocaleString()}</td>
+        <td>${car.brand}</td>
+        <td>${car.color}</td>
+        <td>
+          <button class="btn btn-sm btn-warning" onclick="editCar('${car._id}')">Edit</button>
+          <button class="btn btn-sm btn-danger" onclick="deleteCar('${car._id}')">Delete</button>
+        </td>
+      </tr>
+    `).join('')
+    : `<tr><td colspan="7" class="meta">No cars found for "${query}"</td></tr>`;
 }, 300));
 
 // Handle form for both add and edit
-addCarForm.addEventListener('submit', async (e) => {
+addCarForm.addEventListener('submit', (e) => {
   e.preventDefault();
   console.log('Form submitted'); // Debug log
   const editId = addCarForm.dataset.editId;
@@ -384,54 +360,42 @@ addCarForm.addEventListener('submit', async (e) => {
     price: parseFloat(document.getElementById('car-price').value),
     brand: document.getElementById('car-brand').value.trim(),
     color: document.getElementById('car-color').value.trim(),
-    description: document.getElementById('car-description').value.trim(),
-    image: document.getElementById('car-image').value.trim()
+    description: document.getElementById('car-description').value.trim()
   };
 
   console.log('Car data:', carData); // Debug log
 
   // Basic validation
-  if (!carData.make || !carData.model || !carData.year || !carData.price || !carData.brand || !carData.color || !carData.description || !carData.image) {
+  if (!carData.make || !carData.model || !carData.year || !carData.price || !carData.brand || !carData.color || !carData.description) {
     showToast('Please fill in all required fields', 'error');
     return;
   }
 
-  try {
-    let res;
-    if (editId) {
-      // Update car
-      console.log('Updating car:', editId); // Debug log
-      res = await fetch(BASE_URL + ENDPOINTS.editCar.replace(':carId', editId), {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + token },
-        body: JSON.stringify(carData)
-      });
-    } else {
-      // Add car
-      console.log('Adding car to:', BASE_URL + ENDPOINTS.addCar); // Debug log
-      res = await fetch(BASE_URL + ENDPOINTS.addCar, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + token },
-        body: JSON.stringify(carData)
-      });
-    }
+  const cars = JSON.parse(localStorage.getItem('cars')) || [];
 
-    console.log('Response status:', res.status); // Debug log
-    if (!res.ok) {
-      const errorMsg = await res.text();
-      showToast(errorMsg || 'Failed to add car', 'error');
+  if (editId) {
+    // Update car
+    const index = cars.findIndex(car => car._id === editId);
+    if (index !== -1) {
+      cars[index] = { ...cars[index], ...carData };
+      localStorage.setItem('cars', JSON.stringify(cars));
+      showToast('Car updated successfully', 'success');
+    } else {
+      showToast('Car not found', 'error');
       return;
     }
-
-    showToast(editId ? 'Car updated successfully' : 'Car added successfully', 'success');
-    addCarForm.reset();
-    delete addCarForm.dataset.editId;
-    document.querySelector('#add-car-form button[type="submit"]').textContent = 'Add Car';
-    loadCars(); // Refresh the car list
-  } catch (error) {
-    console.error('Error:', error); // Debug log
-    showToast(editId ? 'Failed to update car' : 'Failed to add car', 'error');
+  } else {
+    // Add car
+    const newCar = { ...carData, _id: Date.now().toString() };
+    cars.push(newCar);
+    localStorage.setItem('cars', JSON.stringify(cars));
+    showToast('Car added successfully', 'success');
   }
+
+  addCarForm.reset();
+  delete addCarForm.dataset.editId;
+  document.querySelector('#add-car-form button[type="submit"]').textContent = 'Add Car';
+  loadCars(); // Refresh the car list
 });
 
 // Global functions for modal buttons
