@@ -151,12 +151,7 @@
               </div>
             </div>
             <div class="col-md-6">
-              ${user.profilePicture ? `
-                <div class="text-center">
-                  <h5>Profile Picture</h5>
-                  <img src="${user.profilePicture}" alt="Profile Picture" class="profile-picture">
-                </div>
-              ` : '<p class="text-muted">No profile picture available</p>'}
+              ${user.profilePicture ? '<div class="text-center"><h5>Profile Picture</h5><img src="' + user.profilePicture + '" alt="Profile Picture" class="profile-picture"></div>' : '<p class="text-muted">No profile picture available</p>'}
             </div>
           </div>
         </div>
