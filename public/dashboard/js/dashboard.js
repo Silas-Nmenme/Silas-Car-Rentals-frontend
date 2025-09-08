@@ -92,11 +92,16 @@ function closeModal() { modalOverlay.style.display = 'none'; }
 modalOverlay.addEventListener('click', e => { if (e.target === modalOverlay) closeModal(); });
 document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
 
-// Wishlist/Saved/Carts click
-document.getElementById('wishlist-stat').addEventListener('click', () => openModal('Wishlist', JSON.parse(localStorage.getItem('wishlist')) || [], 'wishlist'));
-document.getElementById('saved-cars-stat').addEventListener('click', () => openModal('Saved Cars', JSON.parse(localStorage.getItem('savedCars')) || [], 'savedCars'));
-document.getElementById('cart-stat').addEventListener('click', () => openModal('Cart', JSON.parse(localStorage.getItem('cart')) || [], 'cart'));
-document.getElementById('cart-btn').addEventListener('click', () => openModal('Cart', JSON.parse(localStorage.getItem('cart')) || [], 'cart'));
+// Wishlist/Saved/Carts click - Only add listeners if elements exist
+const wishlistStat = document.getElementById('wishlist-stat');
+const savedCarsStat = document.getElementById('saved-cars-stat');
+const cartStat = document.getElementById('cart-stat');
+const cartBtn = document.getElementById('cart-btn');
+
+if (wishlistStat) wishlistStat.addEventListener('click', () => openModal('Wishlist', JSON.parse(localStorage.getItem('wishlist')) || [], 'wishlist'));
+if (savedCarsStat) savedCarsStat.addEventListener('click', () => openModal('Saved Cars', JSON.parse(localStorage.getItem('savedCars')) || [], 'savedCars'));
+if (cartStat) cartStat.addEventListener('click', () => openModal('Cart', JSON.parse(localStorage.getItem('cart')) || [], 'cart'));
+if (cartBtn) cartBtn.addEventListener('click', () => openModal('Cart', JSON.parse(localStorage.getItem('cart')) || [], 'cart'));
 
 // Render Previews
 function renderPreview(id, storageKey) {
