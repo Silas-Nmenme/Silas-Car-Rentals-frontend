@@ -43,7 +43,7 @@
     AOS.init({ duration: 800, easing: 'ease-in-out', once: true, mirror: false });
 
     const BASE_URL = "https://techyjaunt-auth-go43.onrender.com";
-    const ENDPOINTS = { users: "/api/users", profile: "/api/users/profile" };
+    const ENDPOINTS = { users: "/api/users/get-users", profile: "/api/users/profile" };
     const token = localStorage.getItem('token');
 
     if (!token) {
