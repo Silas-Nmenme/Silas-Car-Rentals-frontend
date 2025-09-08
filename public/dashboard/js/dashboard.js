@@ -8,6 +8,7 @@ const ENDPOINTS = {
   rentalHistory: "/api/rentals/history",
   adminAnalytics: "/api/admin/analytics",
   users: "/api/users",
+  makeAdmin: "/api/users/make-admin",
   cars: "/api/cars",
   addCar: "/api/cars/add-car",
   editCar: "/api/cars/edit-car",
@@ -299,7 +300,10 @@ async function loadCars() {
 // User Select Change
 userSelect.addEventListener('change', async () => {
   const userId = userSelect.value;
-  if (!userId) return;
+  if (!userId) {
+    document.getElementById('make-admin-btn').classList.add('d-none');
+    return;
+  }
   try {
     const res = await fetch(BASE_URL + `/api/users/${userId}`, { headers: { Authorization: 'Bearer ' + token } });
     const user = await res.json();
@@ -308,6 +312,7 @@ userSelect.addEventListener('change', async () => {
     document.getElementById('user-role').textContent = user.role;
     document.getElementById('user-registered').textContent = new Date(user.createdAt).toLocaleDateString();
     userDetails.classList.remove('d-none');
+    document.getElementById('make-admin-btn').classList.remove('d-none');
   } catch { showToast('Failed to load user details'); }
 });
 
@@ -479,10 +484,34 @@ window.removeFrom = function(type, id) {
 // Logout
 logoutBtn.addEventListener('click', () => { localStorage.removeItem('token'); location.href = 'login.html'; });
 
+async function makeUserAdmin() {
+  const userId = userSelect.value;
+  if (!userId) {
+    showToast('Please select a user first', 'error');
+    return;
+  }
+  try {
+    const res = await fetch(BASE_URL + ENDPOINTS.makeAdmin + `/${userId}`, {
+      method: 'PATCH',
+      headers: { Authorization: 'Bearer ' + token }
+    });
+    if (!res.ok) {
+      const errorMsg = await res.text();
+      showToast(errorMsg || 'Failed to make user admin', 'error');
+      return;
+    }
+    showToast('User promoted to admin successfully', 'success');
+    loadUsers();
+  } catch (error) {
+    showToast('Failed to make user admin', 'error');
+  }
+}
+
 // Init
 (async function init() {
   await fetchUserProfile();
   await fetchUserStats();
   await fetchRentalHistory();
   renderAllPreviews();
+  loadUsers();
 })();
