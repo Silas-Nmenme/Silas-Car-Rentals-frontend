@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Make Admin - Silas Car Rentals</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet" />
+  <style>
+    body {
+      font-family: 'Roboto', sans-serif;
+      background-color: #f8f9fa;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    .container {
+      max-width: 600px;
+      margin-top: 60px;
+      background: white;
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    }
+    h1 {
+      font-weight: 700;
+      margin-bottom: 30px;
+      text-align: center;
+      color: #343a40;
+    }
+    .btn-primary {
+      width: 100%;
+    }
+    .toast-container {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      z-index: 1060;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1><i class="fas fa-user-shield me-2"></i>Make User Admin</h1>
+    <form id="make-admin-form">
+      <div class="mb-3">
+        <label for="user-select" class="form-label">Select User</label>
+        <select class="form-select" id="user-select" required>
+          <option value="" disabled selected>Select a user</option>
+        </select>
+      </div>
+      <button type="submit" class="btn btn-primary">Make Admin</button>
+    </form>
+  </div>
+
+  <div class="toast-container" id="toast-container"></div>
+
+  <script>
+    const apiBaseUrl = '/api/users';
+
+    // Fetch users and populate select
+    async function fetchUsers() {
+      try {
+        const res = await fetch(apiBaseUrl);
+        if (!res.ok) throw new Error('Failed to fetch users');
+        const users = await res.json();
+        const userSelect = document.getElementById('user-select');
+        users.forEach(user => {
+          const option = document.createElement('option');
+          option.value = user._id || user.id || user.userId || user.id;
+          option.textContent = user.name || user.username || user.email || 'Unnamed User';
+          userSelect.appendChild(option);
+        });
+      } catch (error) {
+        showToast('Error loading users: ' + error.message, 'danger');
+      }
+    }
+
+    // Show toast notification
+    function showToast(message, type = 'success') {
+      const toastContainer = document.getElementById('toast-container');
+      const toast = document.createElement('div');
+      toast.className = `toast align-items-center text-bg-${type} border-0 show`;
+      toast.setAttribute('role', 'alert');
+      toast.setAttribute('aria-live', 'assertive');
+      toast.setAttribute('aria-atomic', 'true');
+      toast.style.minWidth = '250px';
+      toast.style.marginBottom = '10px';
+      toast.innerHTML = `
+        <div class="d-flex">
+          <div class="toast-body">${message}</div>
+          <button type="button" class="btn-close btn-close-white me-2 m-auto" aria-label="Close"></button>
+        </div>
+      `;
+      toast.querySelector('button').addEventListener('click', () => {
+        toast.remove();
+      });
+      toastContainer.appendChild(toast);
+      setTimeout(() => {
+        toast.remove();
+      }, 4000);
+    }
+
+    // Handle form submit
+    document.getElementById('make-admin-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const userId = document.getElementById('user-select').value;
+      if (!userId) {
+        showToast('Please select a user', 'warning');
+        return;
+      }
+      try {
+        const res = await fetch(`${apiBaseUrl}/make-admin/${userId}`, {
+          method: 'PATCH',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        });
+        const data = await res.json();
+        if (res.ok) {
+          showToast(data.message || 'User promoted to admin successfully');
+        } else {
+          showToast(data.message || 'Failed to promote user', 'danger');
+        }
+      } catch (error) {
+        showToast('Error: ' + error.message, 'danger');
+      }
+    });
+
+    // Initialize
+    fetchUsers();
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
