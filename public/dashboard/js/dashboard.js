@@ -5,7 +5,7 @@ const ENDPOINTS = {
   userStats: "/api/users/stats",
   rentalHistory: "/api/rentals/history",
   adminAnalytics: "/api/admin/analytics",
-  users: "/api/users/get-users",
+  users: "/api/users",
   makeAdmin: "/api/users/make-admin",
   cars: "/api/cars/get-cars",
   addCar: "/api/cars/add-car",
