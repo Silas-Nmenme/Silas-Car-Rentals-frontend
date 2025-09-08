@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>User Profile - Silas Car Rentals</title>
+  <title>Users Management - Silas Car Rentals</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
   <link href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" rel="stylesheet">
@@ -30,8 +30,10 @@
       <i class="fas fa-arrow-left"></i> Back to Dashboard
     </button>
 
-    <div id="profile-container" class="loading">
-      <i class="fas fa-spinner fa-spin"></i> Loading user profile...
+    <h1 class="mb-4">All Users</h1>
+
+    <div id="users-container" class="loading">
+      <i class="fas fa-spinner fa-spin"></i> Loading users...
     </div>
   </div>
 
@@ -41,7 +43,7 @@
     AOS.init({ duration: 800, easing: 'ease-in-out', once: true, mirror: false });
 
     const BASE_URL = "https://techyjaunt-auth-go43.onrender.com";
-    const ENDPOINTS = { profile: "/api/users/profile" };
+    const ENDPOINTS = { users: "/api/users", profile: "/api/users/profile" };
     const token = localStorage.getItem('token');
 
     if (!token) {
@@ -49,38 +51,75 @@
       window.location.href = '../login.html';
     }
 
-    // Get userId from URL
-    const urlParams = new URLSearchParams(window.location.search);
-    const userId = urlParams.get('userId');
+    // Fetch all users on load
+    fetchAllUsers();
 
-    if (!userId) {
-      document.getElementById('profile-container').innerHTML = '<div class="alert alert-danger">User ID not provided</div>';
-    } else {
-      fetchUserProfile(userId);
+    async function fetchAllUsers() {
+      try {
+        const res = await fetch(BASE_URL + ENDPOINTS.users, {
+          headers: { Authorization: 'Bearer ' + token }
+        });
+        if (!res.ok) throw new Error('Failed to fetch users');
+        const data = await res.json();
+        const users = data.users;
+        displayUsers(users);
+      } catch (error) {
+        console.error('Error fetching users:', error);
+        document.getElementById('users-container').innerHTML = '<div class="alert alert-danger">Failed to load users</div>';
+      }
     }
 
-    async function fetchUserProfile(userId) {
+    function displayUsers(users) {
+      const container = document.getElementById('users-container');
+      if (!users || users.length === 0) {
+        container.innerHTML = '<div class="alert alert-info">No users found</div>';
+        return;
+      }
+      container.innerHTML = users.map((user, index) => `
+        <div class="user-card mb-3">
+          <div class="d-flex justify-content-between align-items-center p-3 border rounded">
+            <div>
+              ${user.avatar ? `<img src="${user.avatar}" alt="Avatar" class="rounded-circle" style="width: 50px; height: 50px; object-fit: cover;">` : '<i class="fas fa-user-circle" style="font-size: 50px; color: #6c757d;"></i>'}
+              <span class="ms-3 fw-bold">${user.name || 'N/A'}</span>
+              <span class="ms-2 text-muted">${user.email}</span>
+              <span class="ms-2 badge ${user.isAdmin ? 'bg-danger' : 'bg-secondary'}">${user.isAdmin ? 'Admin' : 'User'}</span>
+            </div>
+            <button class="btn btn-primary btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#details-${index}" aria-expanded="false" aria-controls="details-${index}" onclick="fetchUserDetails('${user._id}', ${index})">
+              View Details
+            </button>
+          </div>
+          <div class="collapse" id="details-${index}">
+            <div class="mt-2 p-3 border rounded bg-light" id="details-content-${index}">
+              <i class="fas fa-spinner fa-spin"></i> Loading details...
+            </div>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    async function fetchUserDetails(userId, index) {
+      const detailsContainer = document.getElementById(`details-content-${index}`);
       try {
         const res = await fetch(BASE_URL + ENDPOINTS.profile + `/${userId}`, {
           headers: { Authorization: 'Bearer ' + token }
         });
-        if (!res.ok) throw new Error('Failed to fetch user profile');
+        if (!res.ok) throw new Error('Failed to fetch user details');
         const data = await res.json();
         const user = data.user;
-        displayProfile(user);
+        displayUserDetails(user, index);
       } catch (error) {
-        console.error('Error fetching user profile:', error);
-        document.getElementById('profile-container').innerHTML = '<div class="alert alert-danger">Failed to load user profile</div>';
+        console.error('Error fetching user details:', error);
+        detailsContainer.innerHTML = '<div class="alert alert-danger">Failed to load user details</div>';
       }
     }
 
-    function displayProfile(user) {
-      const container = document.getElementById('profile-container');
+    function displayUserDetails(user, index) {
+      const container = document.getElementById(`details-content-${index}`);
       container.innerHTML = `
         <div class="profile-card animate__animated animate__fadeInUp">
           <div class="profile-header">
             ${user.avatar ? `<img src="${user.avatar}" alt="Avatar" class="profile-avatar">` : '<i class="fas fa-user-circle profile-avatar" style="font-size: 120px; color: #6c757d;"></i>'}
-            <h2>${user.name || 'N/A'}</h2>
+            <h3>${user.name || 'N/A'}</h3>
             <p class="text-muted">${user.email}</p>
           </div>
           <div class="row">
