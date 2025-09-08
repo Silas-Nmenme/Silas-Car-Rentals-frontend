@@ -507,6 +507,8 @@ async function makeUserAdmin() {
   }
 }
 
+window.makeUserAdmin = makeUserAdmin;
+
 // Init
 (async function init() {
   await fetchUserProfile();
