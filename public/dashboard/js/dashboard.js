@@ -5,14 +5,15 @@ const ENDPOINTS = {
   userStats: "/api/users/stats",
   rentalHistory: "/api/rentals/history",
   adminAnalytics: "/api/admin/analytics",
-  users: "/api/users",
+  users: "/api/users/get-users",
   makeAdmin: "/api/users/make-admin",
-  cars: "/api/cars",
+  cars: "/api/cars/get-cars",
   addCar: "/api/cars/add-car",
   editCar: "/api/cars/edit-car",
   deleteCar: "/api/cars/delete-car",
   getCars: "/api/cars/get-cars",
-  searchCars: "/api/cars/search-cars"
+  searchCars: "/api/cars/search-cars",
+  searchUsers: "/api/users/search-users"
 };
 
 // Inlined utils functions
@@ -305,7 +306,7 @@ window.updateBookingStatus = async function(id, status) {
 // Load Users for Admin
 async function loadUsers() {
   try {
-    const res = await fetch(BASE_URL + '/api/users', { headers: { Authorization: 'Bearer ' + token } });
+    const res = await fetch(BASE_URL + ENDPOINTS.users, { headers: { Authorization: 'Bearer ' + token } });
     if (!res.ok) throw new Error('Failed to fetch users');
     const usersData = await res.json();
     const users = Array.isArray(usersData) ? usersData : usersData.users || [];
