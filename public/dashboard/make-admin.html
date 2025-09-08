@@ -140,22 +140,42 @@
       } else {
         userIdInput.classList.remove('is-invalid');
       }
+
+      // Get auth token from localStorage
+      const userData = localStorage.getItem('user');
+      if (!userData) {
+        showToast('Authentication required. Please log in again.', 'danger');
+        return;
+      }
+      const user = JSON.parse(userData);
+      const token = user.token;
+
       try {
         const res = await fetch(`${apiBaseUrl}/make-admin/${encodeURIComponent(userId)}`, {
           method: 'PATCH',
           headers: {
             'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`,
           },
         });
-        const data = await res.json();
+
+        let data;
+        try {
+          data = await res.json();
+        } catch (parseError) {
+          // If response is not JSON, use the text
+          const text = await res.text();
+          data = { message: text };
+        }
+
         if (res.ok) {
           showToast(data.message || 'User promoted to admin successfully');
           userIdInput.value = '';
         } else {
-          showToast(data.message || 'Failed to promote user', 'danger');
+          showToast(data.message || `Failed to promote user (${res.status})`, 'danger');
         }
       } catch (error) {
-        showToast('Error: ' + error.message, 'danger');
+        showToast('Network error: ' + error.message, 'danger');
       }
     });
   </script>
