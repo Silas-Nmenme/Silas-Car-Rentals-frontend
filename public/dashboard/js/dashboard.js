@@ -265,7 +265,7 @@ async function loadUsers() {
 
 // Load Cars for Admin
 async function loadCars() {
-  carsTableBody.innerHTML = `<tr><td colspan="7" class="text-center">Loading...</td></tr>`;
+  carsTableBody.innerHTML = `<tr><td colspan="8" class="text-center">Loading...</td></tr>`;
   try {
     const res = await fetch(BASE_URL + ENDPOINTS.getCars, { headers: { Authorization: 'Bearer ' + token } });
     if (!res.ok) throw new Error('Failed to fetch cars');
@@ -278,6 +278,7 @@ async function loadCars() {
       carsListContainer.style.display = '';
       carsTableBody.innerHTML = cars.map(car => `
         <tr>
+          <td><input type="radio" name="car-select" value="${car._id}"></td>
           <td>${car.make}</td>
           <td>${car.model}</td>
           <td>${car.year}</td>
@@ -293,7 +294,7 @@ async function loadCars() {
     }
   } catch (error) {
     console.error('Error loading cars:', error);
-    carsTableBody.innerHTML = `<tr><td colspan="7" class="text-center">Error loading cars</td></tr>`;
+    carsTableBody.innerHTML = `<tr><td colspan="8" class="text-center">Error loading cars</td></tr>`;
     showToast('Failed to load cars', 'error');
   }
 }
@@ -352,7 +353,7 @@ carSearchInput.addEventListener('input', debounce(async (e) => {
     return;
   }
 
-  carsTableBody.innerHTML = `<tr><td colspan="7" class="text-center">Searching...</td></tr>`;
+  carsTableBody.innerHTML = `<tr><td colspan="8" class="text-center">Searching...</td></tr>`;
   try {
     const res = await fetch(BASE_URL + ENDPOINTS.searchCars + `?make=${encodeURIComponent(query)}`, { headers: { Authorization: 'Bearer ' + token } });
     if (!res.ok) throw new Error('Failed to search cars');
@@ -365,6 +366,7 @@ carSearchInput.addEventListener('input', debounce(async (e) => {
       carsListContainer.style.display = '';
       carsTableBody.innerHTML = cars.map(car => `
         <tr>
+          <td><input type="radio" name="car-select" value="${car._id}"></td>
           <td>${car.make}</td>
           <td>${car.model}</td>
           <td>${car.year}</td>
@@ -380,7 +382,7 @@ carSearchInput.addEventListener('input', debounce(async (e) => {
     }
   } catch (error) {
     console.error('Error searching cars:', error);
-    carsTableBody.innerHTML = `<tr><td colspan="7" class="text-center">Error searching cars</td></tr>`;
+    carsTableBody.innerHTML = `<tr><td colspan="8" class="text-center">Error searching cars</td></tr>`;
     showToast('Failed to search cars', 'error');
   }
 }, 300));

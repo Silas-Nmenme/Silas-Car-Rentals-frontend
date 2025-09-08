@@ -393,6 +393,7 @@
           <table class="table table-striped">
             <thead>
               <tr>
+                <th>Select</th>
                 <th>Make</th>
                 <th>Model</th>
                 <th>Year</th>
@@ -403,7 +404,7 @@
               </tr>
             </thead>
             <tbody id="cars-table-body">
-              <tr><td colspan="7" class="text-center">Loading...</td></tr>
+              <tr><td colspan="8" class="text-center">Loading...</td></tr>
             </tbody>
           </table>
         </div>
@@ -531,8 +532,12 @@
   <script>
     // Add event listener for the new Edit Car button
     document.getElementById('edit-car-btn').addEventListener('click', function() {
-      // Redirect to the editcar.html page
-      window.location.href = 'editcar.html';
+      const selected = document.querySelector('input[name="car-select"]:checked');
+      if (selected) {
+        window.location.href = 'editcar.html?carId=' + selected.value;
+      } else {
+        showToast('Please select a car to edit', 'error');
+      }
     });
   </script>
 </body>
