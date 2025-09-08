@@ -129,7 +129,13 @@ const storage = {
     },
     get: (key) => {
         const item = localStorage.getItem(key);
-        return item ? JSON.parse(item) : null;
+        if (!item) return null;
+        try {
+            return JSON.parse(item);
+        } catch (e) {
+            // If it's not valid JSON, return as string (e.g., for tokens)
+            return item;
+        }
     },
     remove: (key) => {
         localStorage.removeItem(key);
@@ -141,12 +147,12 @@ const storage = {
 
 // Check if user is logged in
 function isLoggedIn() {
-    return !!storage.get('authToken');
+    return !!storage.get('token');
 }
 
 // Get auth headers for API calls
 function getAuthHeaders() {
-    const token = storage.get('authToken');
+    const token = storage.get('token');
     return {
         'Content-Type': 'application/json',
         'Authorization': token ? `Bearer ${token}` : ''
