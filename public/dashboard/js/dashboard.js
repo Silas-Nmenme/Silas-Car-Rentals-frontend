@@ -50,7 +50,6 @@ if (!token) {
 
 // Elements
 const userNameEl = document.getElementById('dash-username');
-const logoutBtn = document.getElementById('logout-btn');
 const totalRentalsEl = document.getElementById('total-rentals');
 const wishlistCountEl = document.getElementById('wishlist-count-stat');
 const savedCountEl = document.getElementById('saved-count-stat');
@@ -453,8 +452,7 @@ window.removeFrom = function(type, id) {
   else if (type === 'cart') openModal('Cart', updated, 'cart');
 };
 
-// Logout
-logoutBtn.addEventListener('click', () => { localStorage.removeItem('token'); location.href = 'login.html'; });
+
 
 async function makeUserAdmin() {
   const userId = userSelect.value;
