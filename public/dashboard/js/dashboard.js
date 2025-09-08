@@ -175,9 +175,30 @@ async function fetchUserProfile() {
 async function fetchUserStats() {
   try {
     const res = await fetch(BASE_URL + ENDPOINTS.userStats, { headers: { Authorization: 'Bearer ' + token } });
-    const stats = await res.json();
-    totalRentalsEl.textContent = stats.totalRentals ?? 0;
-  } catch { showToast('Failed to load stats'); }
+    if (res.ok) {
+      const stats = await res.json();
+      totalRentalsEl.textContent = stats.totalRentals ?? 0;
+    } else {
+      throw new Error('Stats endpoint failed');
+    }
+  } catch (error) {
+    console.error('Error loading user stats:', error);
+    // Fallback: count from rental history
+    try {
+      const res = await fetch(BASE_URL + ENDPOINTS.rentalHistory, { headers: { Authorization: 'Bearer ' + token } });
+      if (res.ok) {
+        const rentals = await res.json();
+        totalRentalsEl.textContent = rentals.length || 0;
+      } else {
+        totalRentalsEl.textContent = '0';
+        showToast('Failed to load stats', 'error');
+      }
+    } catch (fallbackError) {
+      console.error('Error loading rental history for count:', fallbackError);
+      totalRentalsEl.textContent = '0';
+      showToast('Failed to load stats', 'error');
+    }
+  }
 }
 
 // Rental History
@@ -193,43 +214,72 @@ async function fetchRentalHistory() {
 
 // Admin Data
 async function loadAdminData() {
+  // Fetch users for total count
   try {
-    // Fetch users for total count
     const usersRes = await fetch(BASE_URL + ENDPOINTS.users, { headers: { Authorization: 'Bearer ' + token } });
-    const users = await usersRes.json();
-    console.log('Users data:', users);
+    if (!usersRes.ok) throw new Error('Failed to fetch users');
+    const usersData = await usersRes.json();
+    console.log('Users data:', usersData);
+    const users = Array.isArray(usersData) ? usersData : usersData.users || [];
     document.getElementById('admin-total-users').textContent = users.length || 0;
+  } catch (error) {
+    console.error('Error loading users:', error);
+    document.getElementById('admin-total-users').textContent = '0';
+  }
 
-    // Fetch cars for total count
+  // Fetch cars for total count
+  try {
     const carsRes = await fetch(BASE_URL + ENDPOINTS.getCars, { headers: { Authorization: 'Bearer ' + token } });
+    if (!carsRes.ok) throw new Error('Failed to fetch cars');
     const carsData = await carsRes.json();
+    console.log('Cars data:', carsData);
     const cars = Array.isArray(carsData) ? carsData : carsData.cars || [];
-    console.log('Cars data:', cars);
     document.getElementById('admin-total-cars').textContent = cars.length || 0;
+  } catch (error) {
+    console.error('Error loading cars:', error);
+    document.getElementById('admin-total-cars').textContent = '0';
+  }
 
-    // Try to fetch analytics for revenue
-    try {
-      const analyticsRes = await fetch(BASE_URL + ENDPOINTS.adminAnalytics, { headers: { Authorization: 'Bearer ' + token } });
+  // Fetch analytics for revenue, fallback to calculate from bookings
+  try {
+    const analyticsRes = await fetch(BASE_URL + ENDPOINTS.adminAnalytics, { headers: { Authorization: 'Bearer ' + token } });
+    if (analyticsRes.ok) {
       const analytics = await analyticsRes.json();
       console.log('Admin analytics data:', analytics);
       document.getElementById('admin-total-revenue').textContent = `₦${(analytics.totalRevenue || 0).toLocaleString()}`;
-    } catch (analyticsError) {
-      console.error('Error loading analytics:', analyticsError);
+    } else {
+      throw new Error('Analytics endpoint failed');
+    }
+  } catch (analyticsError) {
+    console.error('Error loading analytics:', analyticsError);
+    // Fallback: calculate revenue from bookings
+    try {
+      const bookingsRes = await fetch(BASE_URL + '/api/bookings', { headers: { Authorization: 'Bearer ' + token } });
+      if (bookingsRes.ok) {
+        const bookings = await bookingsRes.json();
+        const totalRevenue = bookings.reduce((sum, b) => sum + (b.price || 0), 0);
+        document.getElementById('admin-total-revenue').textContent = `₦${totalRevenue.toLocaleString()}`;
+      } else {
+        document.getElementById('admin-total-revenue').textContent = '₦0';
+      }
+    } catch (bookingsError) {
+      console.error('Error calculating revenue from bookings:', bookingsError);
       document.getElementById('admin-total-revenue').textContent = '₦0';
     }
+  }
 
-    // Bookings
+  // Bookings
+  try {
     const bookingsRes = await fetch(BASE_URL + '/api/bookings', { headers: { Authorization: 'Bearer ' + token } });
-    const bookings = await bookingsRes.json();
-    console.log('Bookings data:', bookings);
+    if (!bookingsRes.ok) throw new Error('Failed to fetch bookings');
+    const bookingsData = await bookingsRes.json();
+    console.log('Bookings data:', bookingsData);
+    const bookings = Array.isArray(bookingsData) ? bookingsData : bookingsData.bookings || [];
     bookingsTableBody.innerHTML = bookings.length
-      ? bookings.map(b => `<tr><td>${b.email}</td><td>${b.car?.make || ''} ${b.car?.model || ''}</td><td>${new Date(b.startDate).toLocaleDateString()}</td><td>${new Date(b.endDate).toLocaleDateString()}</td><td>${b.status || 'Pending'}</td><td><button onclick="updateBookingStatus('${b._id}','approved')" class="btn btn-sm btn-success">Approve</button><button onclick="updateBookingStatus('${b._id}','rejected')" class="btn btn-sm btn-danger">Reject</button></td></tr>`).join('')
+      ? bookings.map(b => `<tr><td>${b.email || b.user?.email || ''}</td><td>${b.car?.make || ''} ${b.car?.model || ''}</td><td>${new Date(b.startDate).toLocaleDateString()}</td><td>${new Date(b.endDate).toLocaleDateString()}</td><td>${b.status || 'Pending'}</td><td><button onclick="updateBookingStatus('${b._id}','approved')" class="btn btn-sm btn-success">Approve</button><button onclick="updateBookingStatus('${b._id}','rejected')" class="btn btn-sm btn-danger">Reject</button></td></tr>`).join('')
       : `<tr><td colspan="6" class="meta">No bookings found</td></tr>`;
   } catch (error) {
-    console.error('Error loading admin data:', error);
-    document.getElementById('admin-total-users').textContent = '0';
-    document.getElementById('admin-total-cars').textContent = '0';
-    document.getElementById('admin-total-revenue').textContent = '₦0';
+    console.error('Error loading bookings:', error);
     bookingsTableBody.innerHTML = `<tr><td colspan="6" class="meta">Error loading bookings</td></tr>`;
   }
 }
@@ -256,10 +306,15 @@ window.updateBookingStatus = async function(id, status) {
 async function loadUsers() {
   try {
     const res = await fetch(BASE_URL + '/api/users', { headers: { Authorization: 'Bearer ' + token } });
-    const users = await res.json();
+    if (!res.ok) throw new Error('Failed to fetch users');
+    const usersData = await res.json();
+    const users = Array.isArray(usersData) ? usersData : usersData.users || [];
     userSelect.innerHTML = '<option selected disabled>Select a user</option>' +
       users.map(u => `<option value="${u._id}">${u.name || u.email}</option>`).join('');
-  } catch { showToast('Failed to load users'); }
+  } catch (error) {
+    console.error('Error loading users:', error);
+    showToast('Failed to load users', 'error');
+  }
 }
 
 // Load Cars for Admin
