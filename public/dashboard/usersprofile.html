@@ -97,8 +97,21 @@
       `).join('');
     }
 
-    function fetchUserDetails(user, index) {
-      displayUserDetails(user, index);
+    async function fetchUserDetails(user, index) {
+      const container = document.getElementById(`details-content-${index}`);
+      container.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Loading details...';
+      try {
+        const res = await fetch(BASE_URL + ENDPOINTS.profile + "/" + user._id, {
+          headers: { Authorization: 'Bearer ' + token }
+        });
+        if (!res.ok) throw new Error('Failed to fetch user details');
+        const data = await res.json();
+        const fullUser = data.user || data;
+        displayUserDetails(fullUser, index);
+      } catch (error) {
+        console.error('Error fetching user details:', error);
+        container.innerHTML = '<div class="alert alert-danger">Failed to load user details</div>';
+      }
     }
 
     function displayUserDetails(user, index) {
