@@ -61,8 +61,7 @@ const adminBookingsSection = document.getElementById('bookings-section');
 const bookingsTableBody = document.getElementById('bookings-table-body');
 const adminUsersSection = document.getElementById('users-section');
 const adminCarManagementSection = document.getElementById('car-management-section');
-const userSelect = document.getElementById('user-select');
-const userDetails = document.getElementById('user-details');
+const usersTableBody = document.getElementById('users-table-body');
 const addCarForm = document.getElementById('add-car-form');
 const carSearchInput = document.getElementById('car-search');
 const carsTableBody = document.getElementById('cars-table-body');
@@ -305,15 +304,35 @@ window.updateBookingStatus = async function(id, status) {
 
 // Load Users for Admin
 async function loadUsers() {
+  usersTableBody.innerHTML = `<tr><td colspan="10" class="text-center">Loading...</td></tr>`;
   try {
     const res = await fetch(BASE_URL + ENDPOINTS.users, { headers: { Authorization: 'Bearer ' + token } });
     if (!res.ok) throw new Error('Failed to fetch users');
     const usersData = await res.json();
     const users = Array.isArray(usersData) ? usersData : usersData.users || [];
-    userSelect.innerHTML = '<option selected disabled>Select a user</option>' +
-      users.map(u => `<option value="${u._id}">${u.name || u.email}</option>`).join('');
+    if (users.length === 0) {
+      usersTableBody.innerHTML = `<tr><td colspan="10" class="text-center">No users found</td></tr>`;
+    } else {
+      usersTableBody.innerHTML = users.map(u => `
+        <tr>
+          <td>${u.name || u.email}</td>
+          <td>${u.email}</td>
+          <td>${u.isAdmin ? 'Admin' : 'User'}</td>
+          <td>${u.isVerified ? 'Yes' : 'No'}</td>
+          <td>${u.provider || 'N/A'}</td>
+          <td>${u.phoneNumber || 'N/A'}</td>
+          <td>${new Date(u.createdAt).toLocaleDateString()}</td>
+          <td>${u.avatar ? `<img src="${u.avatar}" alt="Avatar" style="max-width: 50px; border-radius: 50%;">` : 'N/A'}</td>
+          <td>${u.profilePicture ? `<img src="${u.profilePicture}" alt="Profile" style="max-width: 50px; border-radius: 10px;">` : 'N/A'}</td>
+          <td>
+            ${!u.isAdmin ? `<button class="btn btn-sm btn-primary" onclick="makeUserAdmin('${u._id}')">Make Admin</button>` : ''}
+          </td>
+        </tr>
+      `).join('');
+    }
   } catch (error) {
     console.error('Error loading users:', error);
+    usersTableBody.innerHTML = `<tr><td colspan="10" class="text-center">Error loading users</td></tr>`;
     showToast('Failed to load users', 'error');
   }
 }
@@ -357,33 +376,7 @@ async function loadCars() {
 
 // Removed populateEditForm as edit is now on separate page
 
-// User Select Change
-userSelect.addEventListener('change', async () => {
-  const userId = userSelect.value;
-  if (!userId) {
-    document.getElementById('make-admin-btn').classList.add('d-none');
-    return;
-  }
-  try {
-    const res = await fetch(BASE_URL + `/api/users/${userId}`, { headers: { Authorization: 'Bearer ' + token } });
-    const data = await res.json();
-    const user = data.user || data;
-    document.getElementById('user-name').textContent = user.name || user.email;
-    document.getElementById('user-email').textContent = user.email;
-    document.getElementById('user-role').textContent = user.isAdmin ? 'Admin' : 'User';
-    document.getElementById('user-verified').textContent = user.isVerified ? 'Yes' : 'No';
-    document.getElementById('user-provider').textContent = user.provider || 'N/A';
-    document.getElementById('user-phone').textContent = user.phoneNumber || 'N/A';
-    document.getElementById('user-registered').textContent = new Date(user.createdAt).toLocaleDateString();
-    // Display avatar and profile picture if available
-    const avatarDiv = document.getElementById('user-avatar');
-    const profilePicDiv = document.getElementById('user-profile-picture');
-    avatarDiv.innerHTML = user.avatar ? `<img src="${user.avatar}" alt="Avatar" style="max-width: 100px; border-radius: 50%;">` : '';
-    profilePicDiv.innerHTML = user.profilePicture ? `<img src="${user.profilePicture}" alt="Profile Picture" style="max-width: 100px; border-radius: 10px;">` : '';
-    userDetails.classList.remove('d-none');
-    document.getElementById('make-admin-btn').classList.remove('d-none');
-  } catch { showToast('Failed to load user details'); }
-});
+
 
 
 
@@ -521,12 +514,12 @@ window.removeFrom = function(type, id) {
 
 
 
-async function makeUserAdmin() {
-  const userId = userSelect.value;
+async function makeUserAdmin(userId) {
   if (!userId) {
-    showToast('Please select a user first', 'error');
+    showToast('User ID is required', 'error');
     return;
   }
+  if (!confirm('Are you sure you want to make this user an admin?')) return;
   try {
     const res = await fetch(BASE_URL + ENDPOINTS.makeAdmin + `/${userId}`, {
       method: 'PATCH',

@@ -455,23 +455,27 @@
 
     <!-- Users Section -->
     <div id="users-section" class="hidden">
-      <div class="form-section animate__animated animate__fadeInUp">
+      <div class="table-responsive animate__animated animate__fadeInUp">
         <h4 class="animate__animated animate__fadeInDown">Users List</h4>
-        <select id="user-select" class="form-select mb-3 animate__animated animate__fadeInLeft animate__delay-1s">
-          <option selected disabled>Select a user</option>
-        </select>
-        <div id="user-details" class="card p-3 d-none animate__animated animate__fadeInUp animate__delay-2s">
-          <h5 id="user-name"></h5>
-          <p><strong>Email:</strong> <span id="user-email"></span></p>
-          <p><strong>Role:</strong> <span id="user-role"></span></p>
-          <p><strong>Verified:</strong> <span id="user-verified"></span></p>
-          <p><strong>Provider:</strong> <span id="user-provider"></span></p>
-          <p><strong>Phone Number:</strong> <span id="user-phone"></span></p>
-          <p><strong>Registered:</strong> <span id="user-registered"></span></p>
-          <div id="user-avatar" class="mb-2"></div>
-          <div id="user-profile-picture" class="mb-2"></div>
-        </div>
-        <button id="make-admin-btn" class="btn btn-primary mt-3 d-none animate__animated animate__fadeInUp animate__delay-3s" onclick="makeUserAdmin()">Make Admin</button>
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Email</th>
+              <th>Role</th>
+              <th>Verified</th>
+              <th>Provider</th>
+              <th>Phone</th>
+              <th>Registered</th>
+              <th>Avatar</th>
+              <th>Profile Picture</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="users-table-body">
+            <tr><td colspan="10" class="text-center">Loading...</td></tr>
+          </tbody>
+        </table>
       </div>
     </div>
   </div>
