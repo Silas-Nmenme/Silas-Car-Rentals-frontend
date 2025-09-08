@@ -8,6 +8,7 @@
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
   <link href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
   <link rel="stylesheet" href="css/dashboard.css">
   <style>
     body { font-family: 'Roboto', sans-serif; background-color: #f8f9fa; }
@@ -243,6 +244,16 @@
       animation-fill-mode: both; 
     }
   </style>
++
++  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
++  <script>
++    AOS.init({
++      duration: 800,
++      easing: 'ease-in-out',
++      once: true,
++      mirror: false
++    });
++  </script>
 </head>
 <body>
   <!-- Sidebar -->
@@ -312,7 +323,6 @@
           </button>
           <div class="dropdown">
             <a href="../profile.html">Profile</a>
-            <a href="#" onclick="showSettings()">Settings</a>
             <a href="#" onclick="logout()">Logout</a>
           </div>
         </div>
@@ -534,8 +544,7 @@
       localStorage.clear();
       window.location.href = '../login.html';
     }
-    // Placeholder functions for menu items
-    function showSettings() { alert('Settings page coming soon!'); }
+  
     // Initialize
     loadUserData();
   </script>
