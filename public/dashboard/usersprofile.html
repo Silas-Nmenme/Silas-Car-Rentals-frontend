@@ -84,7 +84,7 @@
               <span class="ms-2 text-muted">${user.email}</span>
               <span class="ms-2 badge ${user.isAdmin ? 'bg-danger' : 'bg-secondary'}">${user.isAdmin ? 'Admin' : 'User'}</span>
             </div>
-            <button class="btn btn-primary btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#details-${index}" aria-expanded="false" aria-controls="details-${index}" onclick="fetchUserDetails(${JSON.stringify(user)}, ${index})">
+            <button class="btn btn-primary btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#details-${index}" aria-expanded="false" aria-controls="details-${index}" onclick="fetchUserDetails('${user._id}', ${index})">
               View Details
             </button>
           </div>
