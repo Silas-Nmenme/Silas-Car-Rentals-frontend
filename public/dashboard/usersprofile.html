@@ -43,7 +43,7 @@
     AOS.init({ duration: 800, easing: 'ease-in-out', once: true, mirror: false });
 
     const BASE_URL = "https://techyjaunt-auth-go43.onrender.com";
-    const ENDPOINTS = { users: "/api/users/get-users", profile: "/api/user" };
+    const ENDPOINTS = { users: "/api/users/get-users", profile: "/api/users/profile" };
     const token = localStorage.getItem('token');
 
     if (!token) {
@@ -84,7 +84,7 @@
               <span class="ms-2 text-muted">${user.email}</span>
               <span class="ms-2 badge ${user.isAdmin ? 'bg-danger' : 'bg-secondary'}">${user.isAdmin ? 'Admin' : 'User'}</span>
             </div>
-            <button class="btn btn-primary btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#details-${index}" aria-expanded="false" aria-controls="details-${index}" onclick="fetchUserDetails('${user._id}', ${index})">
+            <button class="btn btn-primary btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#details-${index}" aria-expanded="false" aria-controls="details-${index}" onclick="fetchUserDetails(${JSON.stringify(user)}, ${index})">
               View Details
             </button>
           </div>
@@ -97,11 +97,11 @@
       `).join('');
     }
 
-    async function fetchUserDetails(id, index) {
+    async function fetchUserDetails(user, index) {
       const container = document.getElementById(`details-content-${index}`);
       container.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Loading details...';
       try {
-        const res = await fetch(BASE_URL + ENDPOINTS.profile + "/" + id, {
+        const res = await fetch(BASE_URL + ENDPOINTS.profile + "/" + user._id, {
           headers: { Authorization: 'Bearer ' + token }
         });
         if (!res.ok) throw new Error('Failed to fetch user details');
@@ -151,7 +151,12 @@
               </div>
             </div>
             <div class="col-md-6">
-              ${user.profilePicture ? '<div class="text-center"><h5>Profile Picture</h5><img src="' + user.profilePicture + '" alt="Profile Picture" class="profile-picture"></div>' : '<p class="text-muted">No profile picture available</p>'}
+              ${user.profilePicture ? `
+                <div class="text-center">
+                  <h5>Profile Picture</h5>
+                  <img src="${user.profilePicture}" alt="Profile Picture" class="profile-picture">
+                </div>
+              ` : '<p class="text-muted">No profile picture available</p>'}
             </div>
           </div>
         </div>
