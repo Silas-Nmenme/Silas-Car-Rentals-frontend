@@ -164,6 +164,45 @@
       right: 20px;
       z-index: 1060;
     }
+    .toast {
+      padding: 0.75rem 1rem;
+      margin-bottom: 0.5rem;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      font-weight: 500;
+      font-size: 0.875rem;
+      line-height: 1.4;
+      max-width: 300px;
+      word-wrap: break-word;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: all 0.3s ease;
+      border-left: 4px solid;
+    }
+    .toast.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .toast-success {
+      background-color: #d1fae5;
+      color: #065f46;
+      border-left-color: #10b981;
+    }
+    .toast-danger {
+      background-color: #fee2e2;
+      color: #991b1b;
+      border-left-color: #ef4444;
+    }
+    .toast-warning {
+      background-color: #fef3c7;
+      color: #92400e;
+      border-left-color: #f59e0b;
+    }
+    .toast-info {
+      background-color: #dbeafe;
+      color: #1e40af;
+      border-left-color: #3b82f6;
+    }
     footer {
       background: var(--primary-color);
       color: white;
