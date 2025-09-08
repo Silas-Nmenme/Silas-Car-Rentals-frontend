@@ -298,21 +298,7 @@ async function loadCars() {
   }
 }
 
-// Populate Edit Form
-function populateEditForm(car) {
-  document.getElementById('car-make').value = car.make || '';
-  document.getElementById('car-model').value = car.model || '';
-  document.getElementById('car-year').value = car.year || '';
-  document.getElementById('car-price').value = car.price || '';
-  document.getElementById('car-brand').value = car.brand || '';
-  document.getElementById('car-color').value = car.color || '';
-  document.getElementById('car-description').value = car.description || '';
-  document.getElementById('form-title').textContent = 'Edit Car';
-  document.getElementById('submit-btn').textContent = 'Update Car';
-  addCarForm.dataset.editId = car._id;
-  // Scroll to the form
-  document.getElementById('add-car-form').scrollIntoView({ behavior: 'smooth' });
-}
+// Removed populateEditForm as edit is now on separate page
 
 // User Select Change
 userSelect.addEventListener('change', async () => {
@@ -335,17 +321,9 @@ userSelect.addEventListener('change', async () => {
 
 
 
-// Edit Car
-window.editCar = async function(carId) {
-  try {
-    const res = await fetch(BASE_URL + ENDPOINTS.cars + '/' + carId, { headers: { Authorization: 'Bearer ' + token } });
-    if (!res.ok) throw new Error('Failed to fetch car');
-    const car = await res.json();
-    populateEditForm(car);
-  } catch (error) {
-    console.error('Error fetching car:', error);
-    showToast('Failed to load car for editing', 'error');
-  }
+// Edit Car - Redirect to editcar.html
+window.editCar = function(carId) {
+  window.location.href = 'editcar.html?carId=' + carId;
 };
 
 // Delete Car
@@ -407,11 +385,10 @@ carSearchInput.addEventListener('input', debounce(async (e) => {
   }
 }, 300));
 
-// Handle form for both add and edit
+// Handle form for add car
 addCarForm.addEventListener('submit', async (e) => {
   e.preventDefault();
   console.log('Form submitted'); // Debug log
-  const editId = addCarForm.dataset.editId;
   const carData = {
     make: document.getElementById('car-make').value.trim(),
     model: document.getElementById('car-model').value.trim(),
@@ -431,30 +408,16 @@ addCarForm.addEventListener('submit', async (e) => {
   }
 
   try {
-    if (editId) {
-      // Update car
-      const res = await fetch(BASE_URL + ENDPOINTS.editCar + `/${editId}`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + token },
-        body: JSON.stringify(carData)
-      });
-      if (!res.ok) throw new Error('Failed to update car');
-      showToast('Car updated successfully', 'success');
-    } else {
-      // Add car
-      const res = await fetch(BASE_URL + ENDPOINTS.addCar, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + token },
-        body: JSON.stringify(carData)
-      });
-      if (!res.ok) throw new Error('Failed to add car');
-      showToast('Car added successfully', 'success');
-    }
+    // Add car
+    const res = await fetch(BASE_URL + ENDPOINTS.addCar, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + token },
+      body: JSON.stringify(carData)
+    });
+    if (!res.ok) throw new Error('Failed to add car');
+    showToast('Car added successfully', 'success');
 
     addCarForm.reset();
-    delete addCarForm.dataset.editId;
-    document.querySelector('#add-car-form button[type="submit"]').textContent = 'Add Car';
-    document.getElementById('form-title').textContent = 'Add New Car';
     loadCars(); // Refresh the car list
   } catch (error) {
     console.error('Error saving car:', error);

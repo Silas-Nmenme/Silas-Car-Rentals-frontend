@@ -475,9 +475,6 @@
     function closeModal() { document.getElementById('modal-overlay').style.display = 'none'; }
     function resetForm() {
       document.getElementById('add-car-form').reset();
-      document.getElementById('form-title').textContent = 'Add New Car';
-      document.getElementById('submit-btn').textContent = 'Add Car';
-      delete document.getElementById('add-car-form').dataset.editId;
     }
     // Dark mode toggle
     document.getElementById('dark-mode-toggle').addEventListener('click', function() {
