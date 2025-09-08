@@ -276,7 +276,8 @@
     const ENDPOINTS = {
       authMe: "/api/auth/me",
       cars: "/api/cars",
-      editCar: "/api/cars/edit-car"
+      editCar: "/api/cars/edit-car",
+      getCars: "/api/cars/get-cars"
     };
 
     // Inlined utils
@@ -359,14 +360,17 @@
         setTimeout(() => window.location.href = 'dashboard.html', 1500);
       } else {
         // Fetch car details
-        fetch(BASE_URL + ENDPOINTS.cars + '/' + carId, {
+        fetch(BASE_URL + ENDPOINTS.getCars, {
           headers: { Authorization: 'Bearer ' + token }
         })
         .then(res => {
-          if (!res.ok) throw new Error('Failed to fetch car details');
+          if (!res.ok) throw new Error('Failed to fetch cars');
           return res.json();
         })
-        .then(car => {
+        .then(data => {
+          const cars = data.cars || [];
+          const car = cars.find(c => c._id === carId);
+          if (!car) throw new Error('Car not found');
           // Populate form
           document.getElementById('car-make').value = car.make || '';
           document.getElementById('car-model').value = car.model || '';
