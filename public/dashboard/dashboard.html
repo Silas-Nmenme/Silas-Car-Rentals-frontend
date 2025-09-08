@@ -376,9 +376,12 @@
           <div class="col-12">
             <button type="submit" class="btn btn-primary" id="submit-btn">Add Car</button>
             <button type="button" class="btn btn-secondary ms-2" onclick="resetForm()">Cancel</button>
+            <button type="button" class="btn btn-info ms-2" id="edit-car-btn">Edit Car</button>
           </div>
         </form>
       </div>
+
+    
 
       <!-- Cars List -->
       <div id="cars-list-container">
@@ -524,6 +527,13 @@
     function showSettings() { alert('Settings page coming soon!'); }
     // Initialize
     loadUserData();
+  </script>
+  <script>
+    // Add event listener for the new Edit Car button
+    document.getElementById('edit-car-btn').addEventListener('click', function() {
+      // Redirect to the editcar.html page
+      window.location.href = 'editcar.html';
+    });
   </script>
 </body>
 </html>
