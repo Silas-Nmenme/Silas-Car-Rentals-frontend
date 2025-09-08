@@ -130,10 +130,14 @@ const storage = {
     get: (key) => {
         const item = localStorage.getItem(key);
         if (!item) return null;
+        if (key === 'token') {
+            // Tokens are strings, return as is
+            return item;
+        }
         try {
             return JSON.parse(item);
         } catch (e) {
-            // If it's not valid JSON, return as string (e.g., for tokens)
+            // If it's not valid JSON, return as string
             return item;
         }
     },
