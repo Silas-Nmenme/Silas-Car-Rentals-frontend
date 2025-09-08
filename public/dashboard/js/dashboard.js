@@ -366,11 +366,20 @@ userSelect.addEventListener('change', async () => {
   }
   try {
     const res = await fetch(BASE_URL + `/api/users/${userId}`, { headers: { Authorization: 'Bearer ' + token } });
-    const user = await res.json();
+    const data = await res.json();
+    const user = data.user || data;
     document.getElementById('user-name').textContent = user.name || user.email;
     document.getElementById('user-email').textContent = user.email;
-    document.getElementById('user-role').textContent = user.role;
+    document.getElementById('user-role').textContent = user.isAdmin ? 'Admin' : 'User';
+    document.getElementById('user-verified').textContent = user.isVerified ? 'Yes' : 'No';
+    document.getElementById('user-provider').textContent = user.provider || 'N/A';
+    document.getElementById('user-phone').textContent = user.phoneNumber || 'N/A';
     document.getElementById('user-registered').textContent = new Date(user.createdAt).toLocaleDateString();
+    // Display avatar and profile picture if available
+    const avatarDiv = document.getElementById('user-avatar');
+    const profilePicDiv = document.getElementById('user-profile-picture');
+    avatarDiv.innerHTML = user.avatar ? `<img src="${user.avatar}" alt="Avatar" style="max-width: 100px; border-radius: 50%;">` : '';
+    profilePicDiv.innerHTML = user.profilePicture ? `<img src="${user.profilePicture}" alt="Profile Picture" style="max-width: 100px; border-radius: 10px;">` : '';
     userDetails.classList.remove('d-none');
     document.getElementById('make-admin-btn').classList.remove('d-none');
   } catch { showToast('Failed to load user details'); }
