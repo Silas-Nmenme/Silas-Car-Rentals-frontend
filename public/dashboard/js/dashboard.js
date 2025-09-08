@@ -59,12 +59,10 @@ const cartCountStatEl = document.getElementById('cart-count-stat');
 const rentalsTableBody = document.getElementById('rentals-table-body');
 const wishlistGrid = document.getElementById('wishlist-grid');
 const savedCarsGrid = document.getElementById('saved-cars-grid');
-const adminAnalyticsSection = document.getElementById('admin-analytics');
-const adminBookingsSection = document.getElementById('admin-bookings');
+const adminBookingsSection = document.getElementById('bookings-section');
 const bookingsTableBody = document.getElementById('bookings-table-body');
-const adminUsersSection = document.getElementById('admin-users');
-const adminAddCarSection = document.getElementById('admin-add-car');
-const adminCarManagementSection = document.getElementById('admin-car-management');
+const adminUsersSection = document.getElementById('users-section');
+const adminCarManagementSection = document.getElementById('car-management-section');
 const userSelect = document.getElementById('user-select');
 const userDetails = document.getElementById('user-details');
 const addCarForm = document.getElementById('add-car-form');
@@ -125,10 +123,8 @@ async function fetchUserProfile() {
     let firstName = fullName.split(" ")[0];
     userNameEl.textContent = firstName;
     if (storedUser.role === 'admin') {
-      adminAnalyticsSection.classList.remove('hidden');
       adminBookingsSection.classList.remove('hidden');
       adminUsersSection.classList.remove('hidden');
-      adminAddCarSection.classList.remove('hidden');
       adminCarManagementSection.classList.remove('hidden');
       loadAdminData();
       loadUsers();
@@ -147,10 +143,8 @@ async function fetchUserProfile() {
     let firstName = fullName.split(" ")[0];
     userNameEl.textContent = firstName;
     if (user.role === 'admin' || user.isAdmin) {
-      adminAnalyticsSection.classList.remove('hidden');
       adminBookingsSection.classList.remove('hidden');
       adminUsersSection.classList.remove('hidden');
-      adminAddCarSection.classList.remove('hidden');
       adminCarManagementSection.classList.remove('hidden');
       loadAdminData();
       loadUsers();
@@ -162,10 +156,8 @@ async function fetchUserProfile() {
     let firstName = mockUser.name.split(" ")[0];
     userNameEl.textContent = firstName;
     if (mockUser.role === 'admin') {
-      adminAnalyticsSection.classList.remove('hidden');
       adminBookingsSection.classList.remove('hidden');
       adminUsersSection.classList.remove('hidden');
-      adminAddCarSection.classList.remove('hidden');
       adminCarManagementSection.classList.remove('hidden');
       loadAdminData();
       loadUsers();
@@ -339,7 +331,7 @@ window.editCar = async function(carId) {
     document.querySelector('#add-car-form button[type="submit"]').textContent = 'Update Car';
 
     // Scroll to form
-    document.getElementById('admin-add-car').scrollIntoView({ behavior: 'smooth' });
+    document.getElementById('car-management-section').scrollIntoView({ behavior: 'smooth' });
   } catch (error) {
     console.error('Error fetching car:', error);
     showToast('Failed to load car details', 'error');
