@@ -2,10 +2,38 @@
 .hidden { display: none !important; }
 .clickable { cursor: pointer; }
 
+/* CSS Variables for Light Mode */
+:root {
+  --bg-color: #fff;
+  --text-color: #333;
+  --border-color: #ddd;
+  --card-bg: #f8f9fa;
+  --hover-bg: #f8f9fa;
+  --primary-color: #007bff;
+  --secondary-color: #666;
+  --modal-bg: #fff;
+  --toast-bg: #333;
+  --toast-text: #fff;
+}
+
+/* Dark Mode Variables */
+.dark-mode {
+  --bg-color: #212529;
+  --text-color: #f8f9fa;
+  --border-color: #495057;
+  --card-bg: #343a40;
+  --hover-bg: #495057;
+  --primary-color: #0d9488;
+  --secondary-color: #adb5bd;
+  --modal-bg: #343a40;
+  --toast-bg: #495057;
+  --toast-text: #f8f9fa;
+}
+
 /* Navbar */
 .navbar {
-  background: #fff;
-  border-bottom: 1px solid #ddd;
+  background: var(--bg-color);
+  border-bottom: 1px solid var(--border-color);
   padding: 1rem 0;
   box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
@@ -18,10 +46,10 @@
   display: flex;
   align-items: center;
   text-decoration: none;
-  color: #333;
+  color: var(--text-color);
 }
 .brand-mark {
-  background: #007bff;
+  background: var(--primary-color);
   color: #fff;
   padding: 0.5rem;
   border-radius: 50%;
@@ -31,6 +59,7 @@
 .brand-name {
   font-size: 1.2rem;
   font-weight: bold;
+  color: var(--text-color);
 }
 .nav-actions {
   display: flex;
@@ -44,7 +73,7 @@
 }
 .btn-ghost {
   background: transparent;
-  color: #007bff;
+  color: var(--primary-color);
 }
 
 /* Main Section */
@@ -54,9 +83,10 @@
 h1 {
   font-size: 2.5rem;
   margin-bottom: 0.5rem;
+  color: var(--text-color);
 }
 .meta {
-  color: #666;
+  color: var(--secondary-color);
   font-size: 1rem;
 }
 
@@ -68,12 +98,13 @@ h1 {
   margin: 2rem 0;
 }
 .stat-card {
-  background: #f8f9fa;
-  border: 1px solid #ddd;
+  background: var(--card-bg);
+  border: 1px solid var(--border-color);
   border-radius: 10px;
   padding: 1.5rem;
   text-align: center;
   transition: transform 0.2s;
+  color: var(--text-color);
 }
 .stat-card:hover {
   transform: translateY(-5px);
@@ -82,11 +113,11 @@ h1 {
 .stat-card h2 {
   font-size: 2rem;
   margin: 0;
-  color: #007bff;
+  color: var(--primary-color);
 }
 .stat-card p {
   margin: 0.5rem 0 0;
-  color: #666;
+  color: var(--secondary-color);
 }
 
 /* Sections */
@@ -96,7 +127,7 @@ section {
 section h2 {
   font-size: 1.8rem;
   margin-bottom: 1rem;
-  color: #333;
+  color: var(--text-color);
 }
 
 /* Data Table */
@@ -104,18 +135,20 @@ section h2 {
   width: 100%;
   border-collapse: collapse;
   margin-top: 1rem;
+  color: var(--text-color);
 }
 .data-table th, .data-table td {
-  border: 1px solid #ddd;
+  border: 1px solid var(--border-color);
   padding: 0.75rem;
   text-align: left;
 }
 .data-table th {
-  background: #f8f9fa;
+  background: var(--card-bg);
   font-weight: bold;
+  color: var(--text-color);
 }
 .data-table tbody tr:hover {
-  background: #f8f9fa;
+  background: var(--hover-bg);
 }
 
 /* Grid */
@@ -126,19 +159,20 @@ section h2 {
   margin-top: 1rem;
 }
 .card {
-  background: #fff;
-  border: 1px solid #ddd;
+  background: var(--card-bg);
+  border: 1px solid var(--border-color);
   border-radius: 10px;
   padding: 1rem;
   box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  color: var(--text-color);
 }
 .card h3 {
   margin: 0 0 0.5rem;
-  color: #333;
+  color: var(--text-color);
 }
 .card p {
   margin: 0;
-  color: #666;
+  color: var(--secondary-color);
 }
 
 /* Modal Styles */
@@ -154,7 +188,7 @@ section h2 {
 }
 
 .modal {
-  background: #fff;
+  background: var(--modal-bg);
   border-radius: 15px;
   padding: 20px;
   max-width: 600px;
@@ -162,14 +196,17 @@ section h2 {
   max-height: 80vh;
   overflow-y: auto;
   animation: slideUp 0.3s ease;
+  color: var(--text-color);
 }
 
 .modal .card {
-  border: 1px solid #ddd;
+  border: 1px solid var(--border-color);
   border-radius: 12px;
   padding: 15px;
   margin-bottom: 10px;
   text-align: center;
+  background: var(--card-bg);
+  color: var(--text-color);
 }
 
 .modal .btn {
@@ -197,8 +234,8 @@ section h2 {
   position: fixed;
   bottom: 20px;
   right: 20px;
-  background: #333;
-  color: #fff;
+  background: var(--toast-bg);
+  color: var(--toast-text);
   padding: 1rem;
   border-radius: 5px;
   z-index: 10000;

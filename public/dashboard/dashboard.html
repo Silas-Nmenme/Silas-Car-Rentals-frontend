@@ -257,37 +257,37 @@
 </head>
 <body>
   <!-- Sidebar -->
-  <nav class="sidebar">
-    <div class="brand">
+  <nav class="sidebar animate__animated animate__fadeInLeft">
+    <div class="brand animate__animated animate__fadeInDown">
       <h4><i class="fas fa-car"></i> Admin Panel</h4>
     </div>
     <ul class="nav flex-column">
-      <li class="nav-item">
+      <li class="nav-item animate__animated animate__fadeInLeft animate__delay-1s">
         <a class="nav-link" href="../home.html">
           <i class="fas fa-home"></i> Home
         </a>
       </li>
-      <li class="nav-item">
+      <li class="nav-item animate__animated animate__fadeInLeft animate__delay-2s">
         <a class="nav-link active" href="#overview" onclick="showSection('overview')">
           <i class="fas fa-tachometer-alt"></i> Overview
         </a>
       </li>
-      <li class="nav-item">
+      <li class="nav-item animate__animated animate__fadeInLeft animate__delay-3s">
         <a class="nav-link" href="#car-management" onclick="showSection('car-management')">
           <i class="fas fa-car"></i> Car Management
         </a>
       </li>
-      <li class="nav-item">
+      <li class="nav-item animate__animated animate__fadeInLeft animate__delay-4s">
         <a class="nav-link" href="#bookings" onclick="showSection('bookings')">
           <i class="fas fa-calendar-check"></i> Bookings
         </a>
       </li>
-      <li class="nav-item">
+      <li class="nav-item animate__animated animate__fadeInLeft animate__delay-5s">
         <a class="nav-link" href="#users" onclick="showSection('users')">
           <i class="fas fa-users"></i> Users
         </a>
       </li>
-      <li class="nav-item">
+      <li class="nav-item animate__animated animate__fadeInLeft animate__delay-6s">
         <a class="nav-link" href="make-admin.html">
           <i class="fas fa-user-shield"></i> Make Admin
         </a>
@@ -298,24 +298,24 @@
   <!-- Main Content -->
   <div class="main-content">
     <!-- Header -->
-    <div class="header d-flex justify-content-between align-items-center">
+    <div class="header d-flex justify-content-between align-items-center animate__animated animate__fadeInDown">
       <div class="d-flex align-items-center">
-        <div class="me-3">
+        <div class="me-3 animate__animated animate__fadeInLeft">
           <i class="fas fa-car text-primary" style="font-size: 2rem;"></i>
           <span class="fw-bold ms-2">Silas Car Rentals</span>
         </div>
-        <a href="../home.html" class="btn btn-outline-primary me-3"><i class="fas fa-home"></i> Home</a>
-        <input type="text" class="form-control search-bar me-3" placeholder="Search...">
-        <h2 id="page-title" class="mb-0">Overview</h2>
+        <a href="../home.html" class="btn btn-outline-primary me-3 animate__animated animate__fadeInLeft animate__delay-1s"><i class="fas fa-home"></i> Home</a>
+        <input type="text" class="form-control search-bar me-3 animate__animated animate__fadeInLeft animate__delay-2s" placeholder="Search...">
+        <h2 id="page-title" class="mb-0 animate__animated animate__fadeInLeft animate__delay-3s">Overview</h2>
       </div>
       <div class="d-flex align-items-center">
-        <button class="btn btn-outline-secondary me-3 toggle-btn" id="dark-mode-toggle" title="Toggle Dark Mode">
+        <button class="btn btn-outline-secondary me-3 toggle-btn animate__animated animate__fadeInRight" id="dark-mode-toggle" title="Toggle Dark Mode">
           <i class="fas fa-moon"></i>
         </button>
-        <button class="btn btn-outline-info me-3" title="Notifications">
+        <button class="btn btn-outline-info me-3 animate__animated animate__fadeInRight animate__delay-1s" title="Notifications">
           <i class="fas fa-bell"></i>
         </button>
-        <div class="user-menu">
+        <div class="user-menu animate__animated animate__fadeInRight animate__delay-2s">
           <button class="btn btn-outline-secondary d-flex align-items-center" onclick="toggleUserMenu()">
             <i class="fas fa-user-circle me-2" style="font-size: 1.5rem;"></i>
             <span id="dash-username">Admin</span>
@@ -362,53 +362,53 @@
     <!-- Car Management Section -->
     <div id="car-management-section" class="hidden">
       <!-- Add/Edit Car Form -->
-      <div class="form-section">
-        <h4 id="form-title">Add New Car</h4>
+      <div class="form-section animate__animated animate__fadeInUp">
+        <h4 id="form-title" class="animate__animated animate__fadeInDown">Add New Car</h4>
         <form id="add-car-form" class="row g-3">
-          <div class="col-md-6">
+          <div class="col-md-6 animate__animated animate__fadeInLeft">
             <label for="car-make" class="form-label">Make</label>
             <input type="text" class="form-control" id="car-make" required>
           </div>
-          <div class="col-md-6">
+          <div class="col-md-6 animate__animated animate__fadeInRight">
             <label for="car-model" class="form-label">Model</label>
             <input type="text" class="form-control" id="car-model" required>
           </div>
-          <div class="col-md-4">
+          <div class="col-md-4 animate__animated animate__fadeInLeft animate__delay-1s">
             <label for="car-year" class="form-label">Year</label>
             <input type="number" class="form-control" id="car-year" min="1900" max="2099" required>
           </div>
-          <div class="col-md-4">
+          <div class="col-md-4 animate__animated animate__fadeInUp animate__delay-1s">
             <label for="car-price" class="form-label">Price (₦)</label>
             <input type="number" class="form-control" id="car-price" min="0" step="0.01" required>
           </div>
-          <div class="col-md-4">
+          <div class="col-md-4 animate__animated animate__fadeInRight animate__delay-1s">
             <label for="car-brand" class="form-label">Brand</label>
             <input type="text" class="form-control" id="car-brand" required>
           </div>
-          <div class="col-md-6">
+          <div class="col-md-6 animate__animated animate__fadeInLeft animate__delay-2s">
             <label for="car-color" class="form-label">Color</label>
             <input type="text" class="form-control" id="car-color" required>
           </div>
-          <div class="col-md-6">
+          <div class="col-md-6 animate__animated animate__fadeInRight animate__delay-2s">
             <label for="car-description" class="form-label">Description</label>
             <textarea class="form-control" id="car-description" rows="3" required></textarea>
           </div>
-          
-          <div class="col-12">
+
+          <div class="col-12 animate__animated animate__fadeInUp animate__delay-3s">
             <button type="submit" class="btn btn-primary" id="submit-btn">Add Car</button>
             <button type="button" class="btn btn-secondary ms-2" onclick="resetForm()">Cancel</button>
           </div>
         </form>
       </div>
 
-    
+
 
       <!-- Cars List -->
       <div id="cars-list-container">
-        <div class="table-responsive">
+        <div class="table-responsive animate__animated animate__fadeInUp animate__delay-1s">
           <div class="d-flex justify-content-between align-items-center mb-3">
-            <h4>Cars List</h4>
-            <input type="text" id="car-search" class="form-control w-25" placeholder="Search by make...">
+            <h4 class="animate__animated animate__fadeInDown">Cars List</h4>
+            <input type="text" id="car-search" class="form-control w-25 animate__animated animate__fadeInRight" placeholder="Search by make...">
           </div>
           <table class="table table-striped">
             <thead>
@@ -433,8 +433,8 @@
 
     <!-- Bookings Section -->
     <div id="bookings-section" class="hidden">
-      <div class="table-responsive">
-        <h4>Manage Bookings</h4>
+      <div class="table-responsive animate__animated animate__fadeInUp">
+        <h4 class="animate__animated animate__fadeInDown">Manage Bookings</h4>
         <table class="table table-striped">
           <thead>
             <tr>
@@ -455,18 +455,18 @@
 
     <!-- Users Section -->
     <div id="users-section" class="hidden">
-      <div class="form-section">
-        <h4>Users List</h4>
-        <select id="user-select" class="form-select mb-3">
+      <div class="form-section animate__animated animate__fadeInUp">
+        <h4 class="animate__animated animate__fadeInDown">Users List</h4>
+        <select id="user-select" class="form-select mb-3 animate__animated animate__fadeInLeft animate__delay-1s">
           <option selected disabled>Select a user</option>
         </select>
-        <div id="user-details" class="card p-3 d-none">
+        <div id="user-details" class="card p-3 d-none animate__animated animate__fadeInUp animate__delay-2s">
           <h5 id="user-name"></h5>
           <p><strong>Email:</strong> <span id="user-email"></span></p>
           <p><strong>Role:</strong> <span id="user-role"></span></p>
           <p><strong>Registered:</strong> <span id="user-registered"></span></p>
         </div>
-        <button id="make-admin-btn" class="btn btn-primary mt-3 d-none" onclick="makeUserAdmin()">Make Admin</button>
+        <button id="make-admin-btn" class="btn btn-primary mt-3 d-none animate__animated animate__fadeInUp animate__delay-3s" onclick="makeUserAdmin()">Make Admin</button>
       </div>
     </div>
   </div>
