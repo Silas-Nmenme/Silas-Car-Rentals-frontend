@@ -271,8 +271,12 @@ async function loadCars() {
     if (!res.ok) throw new Error('Failed to fetch cars');
     const data = await res.json();
     const cars = data.cars || [];
-    carsTableBody.innerHTML = cars.length
-      ? cars.map(car => `
+    const carsListContainer = document.getElementById('cars-list-container');
+    if (cars.length === 0) {
+      carsListContainer.style.display = 'none';
+    } else {
+      carsListContainer.style.display = '';
+      carsTableBody.innerHTML = cars.map(car => `
         <tr>
           <td>${car.make}</td>
           <td>${car.model}</td>
@@ -285,13 +289,29 @@ async function loadCars() {
             <button class="btn btn-sm btn-danger" onclick="deleteCar('${car._id}')">Delete</button>
           </td>
         </tr>
-      `).join('')
-      : `<tr><td colspan="7" class="meta">No cars found</td></tr>`;
+      `).join('');
+    }
   } catch (error) {
     console.error('Error loading cars:', error);
     carsTableBody.innerHTML = `<tr><td colspan="7" class="text-center">Error loading cars</td></tr>`;
     showToast('Failed to load cars', 'error');
   }
+}
+
+// Populate Edit Form
+function populateEditForm(car) {
+  document.getElementById('car-make').value = car.make || '';
+  document.getElementById('car-model').value = car.model || '';
+  document.getElementById('car-year').value = car.year || '';
+  document.getElementById('car-price').value = car.price || '';
+  document.getElementById('car-brand').value = car.brand || '';
+  document.getElementById('car-color').value = car.color || '';
+  document.getElementById('car-description').value = car.description || '';
+  document.getElementById('form-title').textContent = 'Edit Car';
+  document.getElementById('submit-btn').textContent = 'Update Car';
+  addCarForm.dataset.editId = car._id;
+  // Scroll to the form
+  document.getElementById('add-car-form').scrollIntoView({ behavior: 'smooth' });
 }
 
 // User Select Change
@@ -316,8 +336,16 @@ userSelect.addEventListener('change', async () => {
 
 
 // Edit Car
-window.editCar = function(carId) {
-  window.location.href = 'editcar.html?carId=' + carId;
+window.editCar = async function(carId) {
+  try {
+    const res = await fetch(BASE_URL + ENDPOINTS.cars + '/' + carId, { headers: { Authorization: 'Bearer ' + token } });
+    if (!res.ok) throw new Error('Failed to fetch car');
+    const car = await res.json();
+    populateEditForm(car);
+  } catch (error) {
+    console.error('Error fetching car:', error);
+    showToast('Failed to load car for editing', 'error');
+  }
 };
 
 // Delete Car
@@ -352,8 +380,12 @@ carSearchInput.addEventListener('input', debounce(async (e) => {
     if (!res.ok) throw new Error('Failed to search cars');
     const data = await res.json();
     const cars = data.car || [];
-    carsTableBody.innerHTML = cars.length
-      ? cars.map(car => `
+    const carsListContainer = document.getElementById('cars-list-container');
+    if (cars.length === 0) {
+      carsListContainer.style.display = 'none';
+    } else {
+      carsListContainer.style.display = '';
+      carsTableBody.innerHTML = cars.map(car => `
         <tr>
           <td>${car.make}</td>
           <td>${car.model}</td>
@@ -366,8 +398,8 @@ carSearchInput.addEventListener('input', debounce(async (e) => {
             <button class="btn btn-sm btn-danger" onclick="deleteCar('${car._id}')">Delete</button>
           </td>
         </tr>
-      `).join('')
-      : `<tr><td colspan="7" class="meta">No cars found for "${query}"</td></tr>`;
+      `).join('');
+    }
   } catch (error) {
     console.error('Error searching cars:', error);
     carsTableBody.innerHTML = `<tr><td colspan="7" class="text-center">Error searching cars</td></tr>`;
@@ -422,6 +454,7 @@ addCarForm.addEventListener('submit', async (e) => {
     addCarForm.reset();
     delete addCarForm.dataset.editId;
     document.querySelector('#add-car-form button[type="submit"]').textContent = 'Add Car';
+    document.getElementById('form-title').textContent = 'Add New Car';
     loadCars(); // Refresh the car list
   } catch (error) {
     console.error('Error saving car:', error);
