@@ -1,5 +1,3 @@
-// public/dashboard.js
-
 // Inlined config
 const BASE_URL = "https://techyjaunt-auth-go43.onrender.com";
 const ENDPOINTS = {
@@ -110,9 +108,11 @@ function renderPreview(id, storageKey) {
     : `<p class="meta">No ${storageKey} yet.</p>`;
 }
 function renderCounts() {
-  wishlistCountEl.textContent = (JSON.parse(localStorage.getItem('wishlist')) || []).length;
-  savedCountEl.textContent = (JSON.parse(localStorage.getItem('savedCars')) || []).length;
+  const wishlistLen = (JSON.parse(localStorage.getItem('wishlist')) || []).length;
+  const savedLen = (JSON.parse(localStorage.getItem('savedCars')) || []).length;
   const cartLen = (JSON.parse(localStorage.getItem('cart')) || []).length;
+  wishlistCountEl.textContent = wishlistLen;
+  savedCountEl.textContent = savedLen;
   cartCountEl.textContent = cartLen;
   cartCountStatEl.textContent = cartLen;
 }
@@ -203,7 +203,7 @@ async function loadAdminData() {
     // Fetch cars for total count
     const carsRes = await fetch(BASE_URL + ENDPOINTS.getCars, { headers: { Authorization: 'Bearer ' + token } });
     const carsData = await carsRes.json();
-    const cars = carsData.cars || [];
+    const cars = Array.isArray(carsData) ? carsData : carsData.cars || [];
     console.log('Cars data:', cars);
     document.getElementById('admin-total-cars').textContent = cars.length || 0;
 
@@ -269,10 +269,11 @@ async function loadCars() {
     const res = await fetch(BASE_URL + ENDPOINTS.getCars, { headers: { Authorization: 'Bearer ' + token } });
     if (!res.ok) throw new Error('Failed to fetch cars');
     const data = await res.json();
-    const cars = data.cars || [];
+    const cars = Array.isArray(data) ? data : data.cars || data.car || [];
     const carsListContainer = document.getElementById('cars-list-container');
     if (cars.length === 0) {
-      carsListContainer.style.display = 'none';
+      carsListContainer.style.display = '';
+      carsTableBody.innerHTML = `<tr><td colspan="8" class="text-center">No cars found</td></tr>`;
     } else {
       carsListContainer.style.display = '';
       carsTableBody.innerHTML = cars.map(car => `
@@ -357,10 +358,11 @@ carSearchInput.addEventListener('input', debounce(async (e) => {
     const res = await fetch(BASE_URL + ENDPOINTS.searchCars + `?make=${encodeURIComponent(query)}`, { headers: { Authorization: 'Bearer ' + token } });
     if (!res.ok) throw new Error('Failed to search cars');
     const data = await res.json();
-    const cars = data.car || [];
+    const cars = Array.isArray(data) ? data : data.cars || data.car || [];
     const carsListContainer = document.getElementById('cars-list-container');
     if (cars.length === 0) {
-      carsListContainer.style.display = 'none';
+      carsListContainer.style.display = '';
+      carsTableBody.innerHTML = `<tr><td colspan="8" class="text-center">No cars found</td></tr>`;
     } else {
       carsListContainer.style.display = '';
       carsTableBody.innerHTML = cars.map(car => `

@@ -528,16 +528,6 @@
     // Initialize
     loadUserData();
   </script>
-  <script>
-    // Add event listener for the new Edit Car button
-    document.getElementById('edit-car-btn').addEventListener('click', function() {
-      const selected = document.querySelector('input[name="car-select"]:checked');
-      if (selected) {
-        window.location.href = 'editcar.html?carId=' + selected.value;
-      } else {
-        showToast('Please select a car to edit', 'error');
-      }
-    });
-  </script>
+
 </body>
 </html>
