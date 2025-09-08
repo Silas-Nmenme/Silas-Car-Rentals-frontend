@@ -6,6 +6,7 @@ const ENDPOINTS = {
   rentalHistory: "/api/rentals/history",
   adminAnalytics: "/api/admin/analytics",
   users: "/api/users/get-users",
+  profile: "/api/users/profile",
   makeAdmin: "/api/users/make-admin",
   cars: "/api/cars/get-cars",
   addCar: "/api/cars/add-car",
@@ -325,6 +326,7 @@ async function loadUsers() {
           <td>${u.avatar ? `<img src="${u.avatar}" alt="Avatar" style="max-width: 50px; border-radius: 50%;">` : 'N/A'}</td>
           <td>${u.profilePicture ? `<img src="${u.profilePicture}" alt="Profile" style="max-width: 50px; border-radius: 10px;">` : 'N/A'}</td>
           <td>
+            <button class="btn btn-sm btn-info" onclick="viewUserProfile('${u._id}')">View Profile</button>
             ${!u.isAdmin ? `<button class="btn btn-sm btn-primary" onclick="makeUserAdmin('${u._id}')">Make Admin</button>` : ''}
           </td>
         </tr>
@@ -538,6 +540,10 @@ async function makeUserAdmin(userId) {
 }
 
 window.makeUserAdmin = makeUserAdmin;
+
+window.viewUserProfile = function(userId) {
+  window.location.href = 'usersprofile.html?userId=' + userId;
+};
 
 // Init
 (async function init() {
