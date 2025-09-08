@@ -56,14 +56,19 @@
       min-height: 100vh;
       transition: margin-left 0.3s ease;
     }
+    :root {
+      --primary-color: #0d9488;
+      --primary-color-dark: #0f766e;
+    }
     .header { 
-      background: white; 
+      background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-color-dark) 100%);
       padding: 20px 30px; 
-      border-bottom: 1px solid #dee2e6; 
+      border-bottom: 3px solid rgba(13, 148, 136, 0.2);
       margin-bottom: 30px; 
-      box-shadow: 0 4px 8px rgba(0,0,0,0.1); 
+      box-shadow: 0 4px 20px rgba(0,0,0,0.08);
       transition: background 0.3s ease; 
       border-radius: 10px;
+      color: white;
     }
     .dark-mode .header { 
       background: #343a40; 
@@ -96,10 +101,16 @@
       border-radius: 25px;
       box-shadow: 0 2px 8px rgba(0,0,0,0.1);
       transition: box-shadow 0.3s ease;
+      background-color: white;
+      color: var(--text-color);
+      border: 1px solid var(--border-color);
     }
     .header .search-bar:focus {
       box-shadow: 0 4px 15px rgba(0,0,0,0.2);
       outline: none;
+      background-color: white;
+      color: var(--text-color);
+      border-color: var(--primary-color);
     }
     .header .user-menu { 
       position: relative; 
@@ -110,7 +121,7 @@
       right: 0; 
       top: 100%; 
       background: white; 
-      border: 1px solid #dee2e6; 
+      border: 1px solid var(--border-color); 
       border-radius: 5px; 
       min-width: 150px; 
       z-index: 1000; 
@@ -125,7 +136,7 @@
       display: block; 
       padding: 10px; 
       text-decoration: none; 
-      color: #333; 
+      color: var(--text-color); 
       font-weight: 500;
       transition: background 0.3s ease;
     }
@@ -133,7 +144,7 @@
       color: #f8f9fa; 
     }
     .header .user-menu .dropdown a:hover { 
-      background: #f8f9fa; 
+      background: var(--card-bg); 
     }
     .dark-mode .header .user-menu .dropdown a:hover { 
       background: #495057; 
