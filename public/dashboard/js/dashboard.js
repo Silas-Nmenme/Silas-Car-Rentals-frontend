@@ -316,31 +316,8 @@ userSelect.addEventListener('change', async () => {
 
 
 // Edit Car
-window.editCar = async function(carId) {
-  try {
-    const res = await fetch(BASE_URL + `/api/cars/${carId}`, { headers: { Authorization: 'Bearer ' + token } });
-    if (!res.ok) throw new Error('Failed to fetch car details');
-    const car = await res.json();
-
-    // Populate form with car data
-    document.getElementById('car-make').value = car.make;
-    document.getElementById('car-model').value = car.model;
-    document.getElementById('car-year').value = car.year;
-    document.getElementById('car-price').value = car.price;
-    document.getElementById('car-brand').value = car.brand;
-    document.getElementById('car-color').value = car.color;
-    document.getElementById('car-description').value = car.description;
-
-    // Change form submit to update
-    addCarForm.dataset.editId = carId;
-    document.querySelector('#add-car-form button[type="submit"]').textContent = 'Update Car';
-
-    // Scroll to form
-    document.getElementById('car-management-section').scrollIntoView({ behavior: 'smooth' });
-  } catch (error) {
-    console.error('Error fetching car:', error);
-    showToast('Failed to load car details', 'error');
-  }
+window.editCar = function(carId) {
+  window.location.href = 'editcar.html?carId=' + carId;
 };
 
 // Delete Car
