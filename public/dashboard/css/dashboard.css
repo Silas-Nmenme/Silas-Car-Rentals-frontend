@@ -114,7 +114,7 @@ body {
 .main {
   margin-left: 250px;
   margin-top: 60px;
-  padding: var(--space-2xl) var(--space-2xl);
+  padding: var(--space-md) var(--space-md);
   background: var(--bg);
   min-height: 100vh;
   transition: var(--transition);
