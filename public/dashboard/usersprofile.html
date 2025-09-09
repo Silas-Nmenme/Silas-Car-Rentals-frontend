@@ -101,7 +101,7 @@
       const container = document.getElementById(`details-content-${index}`);
       container.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Loading details...';
       try {
-        const res = await fetch(BASE_URL + "/api/users/" + user._id, {
+        const res = await fetch(BASE_URL + ENDPOINTS.profile + "?userId=" + user._id, {
           headers: { Authorization: 'Bearer ' + token }
         });
         if (!res.ok) throw new Error('Failed to fetch user details');
