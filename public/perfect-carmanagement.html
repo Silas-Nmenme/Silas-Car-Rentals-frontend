@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Car Management - Silas Car Rentals</title>
+
+  <!-- Bootstrap 5.3.2 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <!-- Font Awesome 6.4.0 -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" />
+  <!-- Animate.css -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" rel="stylesheet" />
+  <!-- AOS -->
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" />
+  <!-- Google Fonts: Inter -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --primary-color: #0d9488;
+      --primary-color-dark: #0f766e;
+      --text-color-light: #374151;
+      --text-color-dark: #e5e7eb;
+      --bg-light: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+      --bg-dark: linear-gradient(135deg, #111827 0%, #1f2937 100%);
+      --card-bg-light: #ffffff;
+      --card-bg-dark: #1f2937;
+      --shadow-light: 0 4px 20px rgba(0,0,0,0.08);
+      --shadow-dark: 0 4px 20px rgba(0,0,0,0.3);
+      --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    body[data-bs-theme="light"] {
+      background: var(--bg-light);
+      color: var(--text-color-light);
+      font-family: 'Inter', sans-serif;
+      min-height: 100vh;
+      transition: var(--transition);
+    }
+
+    body[data-bs-theme="dark"] {
+      background: var(--bg-dark);
+      color: var(--text-color-dark);
+      font-family: 'Inter', sans-serif;
+      min-height: 100vh;
+      transition: var(--transition);
+    }
+
+    /* Header */
+    header.main-header {
+      background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-color-dark) 100%);
+      padding: 1rem 0;
+      box-shadow: var(--shadow-light);
+      border-bottom: 3px solid rgba(13, 148, 136, 0.2);
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 1030;
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      transition: var(--transition);
+    }
+
+    body[data-bs-theme="dark"] header.main-header {
+      box-shadow: var(--shadow-dark);
+      border-bottom: 3px solid rgba(20, 184, 166, 0.3);
+    }
+
+    .navbar-brand.brand {
+      color: white;
+      font-weight: 700;
+      font-size: 1.5rem;
+      text-decoration: none;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      transition: var(--transition);
+    }
+
+    .navbar-brand.brand:hover {
+      transform: scale(1.05) rotate(1deg);
+      text-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    }
+
+    .nav-link {
+      color: rgba(255,255,255,0.9) !important;
+      font-weight: 600;
+      transition: var(--transition);
+      padding: 0.5rem 1rem !important;
+      border-radius: 6px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .nav-link::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: rgba(255,255,255,0.1);
+      transition: left 0.3s ease;
+    }
+
+    .nav-link:hover::before,
+    .nav-link.active::before {
+      left: 0;
+    }
+
+    .nav-link:hover,
+    .nav-link.active {
+      color: white !important;
+      transform: translateY(-2px);
+    }
+
+    /* Profile dropdown button */
+    .profile-btn {
+      background: rgba(255,255,255,0.1);
+      border: 2px solid rgba(255,255,255,0.2);
+      color: white;
+      padding: 0.5rem 1rem;
+      border-radius: 30px;
+      cursor: pointer;
+      transition: var(--transition);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-weight: 600;
+    }
+
+    .profile-btn:hover {
+      background: rgba(255,255,255,0.2);
+      border-color: white;
+      transform: translateY(-2px);
+    }
+
+    .profile-avatar {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background-color: #10b981;
+      color: white;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1rem;
+      user-select: none;
+      -webkit-user-select: none;
+    }
+
+    /* Main container */
+    main.container {
+      padding-top: 100px;
+      padding-bottom: 3rem;
+      max-width: 1200px;
+    }
+
+    /* Cars grid */
+    .cars-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.5rem;
+    }
+
+    /* Car card */
+    .car-card {
+      background: var(--card-bg-light);
+      border-radius: 12px;
+      box-shadow: var(--shadow-light);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      transition: var(--transition);
+    }
+
+    body[data-bs-theme="dark"] .car-card {
+      background: var(--card-bg-dark);
+      box-shadow: var(--shadow-dark);
+    }
+
+    .car-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    }
+
+    body[data-bs-theme="dark"] .car-card:hover {
+      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    }
+
+    .car-image {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+      border-bottom: 1px solid #ddd;
+    }
+
+    .car-details {
+      padding: 1rem;
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .car-name {
+      font-weight: 700;
+      font-size: 1.2rem;
+      margin-bottom: 0.25rem;
+      color: var(--primary-color-dark);
+    }
+
+    .car-price {
+      font-weight: 600;
+      color: #16a34a;
+      margin-bottom: 0.5rem;
+    }
+
+    .car-tags {
+      margin-bottom: 0.75rem;
+    }
+
+    .car-tag {
+      display: inline-block;
+      background: #d1fae5;
+      color: #065f46;
+      font-size: 0.8rem;
+      font-weight: 600;
+      padding: 0.2rem 0.5rem;
+      border-radius: 6px;
+      margin-right: 0.3rem;
+      margin-bottom: 0.3rem;
+    }
+
+    body[data-bs-theme="dark"] .car-tag {
+      background: #064e3b;
+      color: #a7f3d0;
+    }
+
+    .availability {
+      margin-top: auto;
+      font-weight: 600;
+      font-size: 0.9rem;
+      padding: 0.3rem 0.6rem;
+      border-radius: 6px;
+      width: fit-content;
+    }
+
+    .available {
+      background-color: #22c55e;
+      color: white;
+    }
+
+    .limited {
+      background-color: #facc15;
+      color: #333;
+    }
+
+    /* Loader */
+    .loader {
+      border: 6px solid #f3f3f3;
+      border-top: 6px solid var(--primary-color);
+      border-radius: 50%;
+      width: 50px;
+      height: 50px;
+      animation: spin 1s linear infinite;
+      margin: 3rem auto;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg);}
+      100% { transform: rotate(360deg);}
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 576px) {
+      .car-image {
+        height: 140px;
+      }
+    }
+  </style>
+</head>
+<body style="font-family: 'Inter', sans-serif;">
+
+<header class="main-header">
+  <nav class="navbar navbar-expand-lg container">
+    <a href="home.html" class="navbar-brand brand"><i class="fas fa-car me-2"></i>Silas Car Rentals</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-label="Toggle navigation" aria-expanded="false">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ms-auto align-items-center">
+        <li class="nav-item">
+          <a class="nav-link" href="home.html">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="dashboard/dashboard.html">Dashboard</a>
+        </li>
+        <li class="nav-item dropdown">
+          <button class="profile-btn dropdown-toggle" id="profileDropdown" data-bs-toggle="dropdown" aria-expanded="false" aria-label="User profile menu">
+            <div id="profile-avatar" class="profile-avatar">U</div>
+            <span id="profile-name">User</span>
+          </button>
+          <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="profileDropdown">
+            <li><a class="dropdown-item" href="profile.html"><i class="fas fa-user me-2"></i>Profile</a></li>
+            <li><button class="dropdown-item text-danger" id="logout-button"><i class="fas fa-sign-out-alt me-2"></i>Logout</button></li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+  </nav>
+</header>
+
+<main class="container" role="main" aria-label="Car management content">
+  <h1 class="mb-4 text-center">Car Management</h1>
+  <div id="cars-container" class="cars-grid" aria-live="polite" aria-busy="true" aria-label="List of cars">
+    <div class="loader" role="status" aria-label="Loading cars"></div>
+  </div>
+</main>
+
+<footer class="text-center py-3 mt-auto" style="background-color:#0d9488; color:white;">
+  &copy; 2025 Silas Car Rentals. All Rights Reserved.
+</footer>
+
+<!-- Bootstrap Bundle JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<!-- AOS JS -->
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+<script>
+  AOS.init();
+
+  const API_BASE = "https://techyjaunt-auth-go43.onrender.com"; // Use the API_BASE from dashboard.html
+
+  // Utility to get user info from localStorage or fallback
+  function getUser() {
+    const userJson = localStorage.getItem("user");
+    if (!userJson) return null;
+    try {
+      return JSON.parse(userJson);
+    } catch {
+      return null;
+    }
+  }
+
+  // Render user profile info in header
+  function renderUserProfile() {
+    const user = getUser();
+    const profileName = document.getElementById("profile-name");
+    const profileAvatar = document.getElementById("profile-avatar");
+    if (!user) {
+      profileName.textContent = "Guest";
+      profileAvatar.textContent = "G";
+      return;
+    }
+    const fullName = user.name?.trim() || user.email?.split("@")[0] || "User";
+    const initials = fullName.split(" ").map(n => n[0]).join("").substring(0, 2).toUpperCase();
+    profileName.textContent = fullName;
+    if (user.profilePicture?.url || user.avatar) {
+      const imgSrc = user.profilePicture?.url || user.avatar;
+      profileAvatar.innerHTML = `<img src="${imgSrc}" alt="User avatar" class="rounded-circle" style="width:32px; height:32px; object-fit:cover;">`;
+    } else {
+      profileAvatar.textContent = initials;
+    }
+  }
+
+  // Fetch cars from backend and render
+  async function fetchAndRenderCars() {
+    const container = document.getElementById("cars-container");
+    container.setAttribute("aria-busy", "true");
+    container.innerHTML = '<div class="loader" role="status" aria-label="Loading cars"></div>';
+    try {
+      const response = await fetch(`${API_BASE}/api/cars/get-cars`);
+      if (!response.ok) throw new Error("Failed to fetch cars");
+      const data = await response.json();
+      const cars = data.cars || [];
+      if (cars.length === 0) {
+        container.innerHTML = "<p class='text-muted text-center'>No cars available.</p>";
+        container.setAttribute("aria-busy", "false");
+        return;
+      }
+      container.innerHTML = "";
+      cars.forEach(car => {
+        const tagsHtml = (car.tags || []).map(tag => `<span class="car-tag">${tag}</span>`).join("");
+        const availabilityClass = car.available ? "available" : "limited";
+        const availabilityText = car.available ? "Available" : "Limited";
+        const carImage = car.image || "https://via.placeholder.com/400x180?text=No+Image";
+        const carCard = document.createElement("article");
+        carCard.className = "car-card animate__animated animate__fadeInUp";
+        carCard.setAttribute("tabindex", "0");
+        carCard.innerHTML = `
+          <img src="${carImage}" alt="${car.name}" class="car-image" loading="lazy" />
+          <div class="car-details">
+            <h2 class="car-name">${car.name}</h2>
+            <p class="car-price">₦${car.price.toLocaleString()}/day</p>
+            <div class="car-tags">${tagsHtml}</div>
+            <p class="availability ${availabilityClass}" aria-label="Availability status">${availabilityText}</p>
+          </div>
+        `;
+        container.appendChild(carCard);
+      });
+      container.setAttribute("aria-busy", "false");
+    } catch (error) {
+      container.innerHTML = `<p class="text-danger text-center">Error loading cars. Please try again later.</p>`;
+      container.setAttribute("aria-busy", "false");
+      console.error(error);
+    }
+  }
+
+  // Logout button handler
+  document.addEventListener("DOMContentLoaded", () => {
+    renderUserProfile();
+
+    const logoutBtn = document.getElementById("logout-button");
+    if (logoutBtn) {
+      logoutBtn.addEventListener("click", () => {
+        localStorage.clear();
+        window.location.href = "login.html";
+      });
+    }
+
+    fetchAndRenderCars();
+  });
+
+  // Theme toggle (optional)
+  const themeBtn = document.getElementById("theme-toggle");
+  if (themeBtn) {
+    themeBtn.addEventListener("click", () => {
+      const body = document.body;
+      const newTheme = body.getAttribute("data-bs-theme") === "dark" ? "light" : "dark";
+      body.setAttribute("data-bs-theme", newTheme);
+      themeBtn.innerHTML = newTheme === "dark" ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
+      localStorage.setItem("theme", newTheme);
+    });
+    const savedTheme = localStorage.getItem("theme") || "light";
+    document.body.setAttribute("data-bs-theme", savedTheme);
+    themeBtn.innerHTML = savedTheme === "dark" ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
+  }
+</script>
+</body>
+</html>
