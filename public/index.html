@@ -1930,8 +1930,8 @@
 
       <form class="contact-form">
         <div class="form-group">
-          <label for="name">Full Name</label>
-          <input type="text" id="name" name="name" required>
+          <label for="fullName">Full Name</label>
+          <input type="text" id="fullName" name="fullName" required>
         </div>
 
         <div class="form-group">
@@ -2160,7 +2160,15 @@ function initContactForm() {
     e.preventDefault();
 
     const formData = new FormData(form);
-    const data = Object.fromEntries(formData);
+    const formDataObj = Object.fromEntries(formData);
+
+    // Map form field names to API expected field names
+    const data = {
+      fullName: formDataObj.fullName,
+      email: formDataObj.email,
+      phoneNumber: formDataObj.phone,
+      message: formDataObj.message
+    };
 
     // Show loading state
     const submitBtn = form.querySelector('.btn-submit');
