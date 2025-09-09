@@ -119,6 +119,9 @@
     border-bottom: 1px solid var(--light-border);
     transition: var(--transition);
   }
+  .info-row.justify-content-center {
+    justify-content: center !important;
+  }
   body[data-theme="dark"] .info-row {
     border-bottom: 1px solid var(--dark-border);
   }
@@ -1041,28 +1044,28 @@
             <p class="text-muted">${user.email}</p>
           </div>
           <div class="row">
-            <div class="col-md-6">
-              <div class="info-row">
+            <div class="col-md-6 mx-auto">
+              <div class="info-row justify-content-center" style="gap: 10px;">
                 <span class="info-label">Role:</span>
                 <span class="info-value">${user.isAdmin ? 'Admin' : 'User'}</span>
               </div>
-              <div class="info-row">
+              <div class="info-row justify-content-center" style="gap: 10px;">
                 <span class="info-label">Verified:</span>
                 <span class="info-value">${user.isVerified ? 'Yes' : 'No'}</span>
               </div>
-              <div class="info-row">
+              <div class="info-row justify-content-center" style="gap: 10px;">
                 <span class="info-label">Provider:</span>
                 <span class="info-value">${user.provider || 'N/A'}</span>
               </div>
-              <div class="info-row">
+              <div class="info-row justify-content-center" style="gap: 10px;">
                 <span class="info-label">Phone:</span>
                 <span class="info-value">${user.phoneNumber || 'N/A'}</span>
               </div>
-              <div class="info-row">
+              <div class="info-row justify-content-center" style="gap: 10px;">
                 <span class="info-label">Registered:</span>
                 <span class="info-value">${new Date(user.createdAt).toLocaleDateString()}</span>
               </div>
-              <div class="info-row">
+              <div class="info-row justify-content-center" style="gap: 10px;">
                 <span class="info-label">Last Updated:</span>
                 <span class="info-value">${new Date(user.updatedAt).toLocaleDateString()}</span>
               </div>
