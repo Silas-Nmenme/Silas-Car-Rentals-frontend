@@ -382,16 +382,17 @@
       container.innerHTML = "";
       cars.forEach(car => {
         const tagsHtml = (car.tags || []).map(tag => `<span class="car-tag">${tag}</span>`).join("");
-        const availabilityClass = car.available ? "available" : "limited";
-        const availabilityText = car.available ? "Available" : "Limited";
+        const availabilityClass = car.isAvailable ? "available" : "limited";
+        const availabilityText = car.isAvailable ? "Available" : "Rented";
         const carImage = car.image || "https://via.placeholder.com/400x180?text=No+Image";
+        const carName = `${car.make} ${car.model}`;
         const carCard = document.createElement("article");
         carCard.className = "car-card animate__animated animate__fadeInUp";
         carCard.setAttribute("tabindex", "0");
         carCard.innerHTML = `
-          <img src="${carImage}" alt="${car.name}" class="car-image" loading="lazy" />
+          <img src="${carImage}" alt="${carName}" class="car-image" loading="lazy" />
           <div class="car-details">
-            <h2 class="car-name">${car.name}</h2>
+            <h2 class="car-name">${carName}</h2>
             <p class="car-price">₦${car.price.toLocaleString()}/day</p>
             <div class="car-tags">${tagsHtml}</div>
             <p class="availability ${availabilityClass}" aria-label="Availability status">${availabilityText}</p>
