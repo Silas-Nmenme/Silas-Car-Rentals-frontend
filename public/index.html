@@ -2175,7 +2175,12 @@ function initContactForm() {
         body: JSON.stringify(data)
       });
 
-      const result = await res.json();
+      let result;
+      try {
+        result = await res.json();
+      } catch (e) {
+        result = { success: false, message: "Server error" };
+      }
 
       if (res.ok && result.success) {
         showToast("Message sent successfully! We'll get back to you soon.");
@@ -2185,7 +2190,7 @@ function initContactForm() {
       }
     } catch (error) {
       console.error("Contact form error:", error);
-      showToast("Server error. Please try again later.");
+      showToast("Network error. Please try again later.");
     } finally {
       submitBtn.innerHTML = originalText;
       submitBtn.disabled = false;
