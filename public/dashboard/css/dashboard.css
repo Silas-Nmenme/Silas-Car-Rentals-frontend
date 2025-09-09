@@ -112,8 +112,6 @@ body {
 
 /* Main Layout */
 .main {
-  margin-left: 250px;
-  margin-top: 70px; /* slightly more than navbar height, but smaller than before */
   padding: var(--space-lg); /* reduced spacing */
   background: var(--bg);
   min-height: 100vh;
