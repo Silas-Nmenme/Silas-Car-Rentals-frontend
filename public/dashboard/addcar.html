@@ -839,6 +839,22 @@
     // Load user profile on page load
     document.addEventListener('DOMContentLoaded', function() {
       loadUserProfile();
+
+      // Logout button handler
+      const logoutBtn = document.getElementById("logout-button");
+      if (logoutBtn) {
+        logoutBtn.addEventListener("click", () => {
+          localStorage.clear();
+          window.location.href = "../login.html";
+        });
+      }
+
+      // Prevent back button navigation
+      window.history.pushState(null, null, window.location.href);
+      window.onpopstate = function() {
+        window.history.pushState(null, null, window.location.href);
+        window.location.href = "../index.html";
+      };
     });
   </script>
 </body>
