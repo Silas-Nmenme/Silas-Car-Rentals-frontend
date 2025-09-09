@@ -61,7 +61,7 @@ body {
 .navbar {
   background: var(--card-bg);
   border-bottom: 1px solid var(--border);
-  padding: var(--space-lg) 0;
+  padding: var(--space-sm) var(--space-md); /* reduced padding */
   box-shadow: var(--shadow);
 }
 
@@ -113,8 +113,8 @@ body {
 /* Main Layout */
 .main {
   margin-left: 250px;
-  margin-top: 60px;
-  padding: var(--space-md) var(--space-md);
+  margin-top: 70px; /* slightly more than navbar height, but smaller than before */
+  padding: var(--space-lg); /* reduced spacing */
   background: var(--bg);
   min-height: 100vh;
   transition: var(--transition);
@@ -550,8 +550,10 @@ section h2 {
 
 /* Mobile Responsiveness */
 @media (max-width: 768px) {
-  .sidebar {
-    transform: translateX(-100%);
+  .main {
+    margin-left: 0;
+    margin-top: 75px; /* aligns under mobile navbar */
+    padding: var(--space-md); /* smaller padding on mobile */
   }
 
   .sidebar.show {
