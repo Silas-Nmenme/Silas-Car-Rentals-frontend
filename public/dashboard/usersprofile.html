@@ -87,7 +87,7 @@
     min-height: 100vh;
     transition: var(--transition);
   }
-  body[data-theme="dark"] .main-content {
+  body[data-bs-theme="dark"] .main-content {
     background: var(--dark-card-bg);
   }
 
@@ -100,7 +100,7 @@
     margin-bottom: 30px;
     transition: var(--transition);
   }
-  body[data-theme="dark"] .profile-card {
+  body[data-bs-theme="dark"] .profile-card {
     background: var(--dark-card-bg);
     box-shadow: var(--dark-shadow);
   }
@@ -115,7 +115,7 @@
     margin-bottom: 15px;
     transition: var(--transition);
   }
-  body[data-theme="dark"] .profile-avatar {
+  body[data-bs-theme="dark"] .profile-avatar {
     border-color: var(--dark-primary);
   }
 
@@ -138,14 +138,14 @@
   .info-row.justify-content-center {
     justify-content: center !important;
   }
-  body[data-theme="dark"] .info-row {
+  body[data-bs-theme="dark"] .info-row {
     border-bottom: 1px solid var(--dark-border);
   }
 
   .info-label { font-weight: 600; color: var(--light-text); }
   .info-value { color: var(--light-muted); }
-  body[data-theme="dark"] .info-label { color: var(--dark-text); }
-  body[data-theme="dark"] .info-value { color: var(--dark-muted); }
+  body[data-bs-theme="dark"] .info-label { color: var(--dark-text); }
+  body[data-bs-theme="dark"] .info-value { color: var(--dark-muted); }
 
   .back-btn { margin-bottom: 20px; }
   .loading {
@@ -153,7 +153,7 @@
     padding: 50px;
     color: var(--light-text);
   }
-  body[data-theme="dark"] .loading { color: var(--dark-text); }
+  body[data-bs-theme="dark"] .loading { color: var(--dark-text); }
 
   /* Header */
     header.main-header {
@@ -1095,7 +1095,7 @@
 </style>
 
 </head>
-<body data-theme="dark">
+<body data-bs-theme="dark">
   <!-- Header -->
   <header class="main-header">
     <nav class="navbar navbar-expand-lg">
@@ -1273,12 +1273,12 @@
 
     // Check for saved theme preference or default to dark mode
     const currentTheme = localStorage.getItem('theme') || 'dark';
-    body.setAttribute('data-theme', currentTheme);
+    body.setAttribute('data-bs-theme', currentTheme);
 
     // Update theme toggle icon based on current theme
     function updateThemeIcon() {
       const icon = themeToggle.querySelector('i');
-      if (body.getAttribute('data-theme') === 'dark') {
+      if (body.getAttribute('data-bs-theme') === 'dark') {
         icon.className = 'fas fa-sun';
       } else {
         icon.className = 'fas fa-moon';
@@ -1288,9 +1288,9 @@
 
     // Toggle theme on button click
     themeToggle.addEventListener('click', () => {
-      const currentTheme = body.getAttribute('data-theme');
+      const currentTheme = body.getAttribute('data-bs-theme');
       const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-      body.setAttribute('data-theme', newTheme);
+      body.setAttribute('data-bs-theme', newTheme);
       localStorage.setItem('theme', newTheme);
       updateThemeIcon();
     });
