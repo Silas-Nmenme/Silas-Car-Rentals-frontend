@@ -11,7 +11,52 @@
   <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
   <link rel="stylesheet" href="css/dashboard.css">
   <style>
-    body { font-family: 'Roboto', sans-serif; background-color: #f8f9fa; }
+    :root {
+      /* Light Theme Variables */
+      --light-primary: #0d9488;
+      --light-primary-700: #0f766e;
+      --light-text: #374151;
+      --light-muted: #6b7280;
+      --light-border: #e5e7eb;
+      --light-shadow: 0 4px 20px rgba(0,0,0,0.08);
+      --light-bg: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+      --light-card-bg: #ffffff;
+      --light-accent: #f59e0b;
+
+      /* Dark Theme Variables */
+      --dark-primary: #14b8a6;
+      --dark-primary-700: #0d9488;
+      --dark-text: #e5e7eb;
+      --dark-muted: #9ca3af;
+      --dark-border: #374151;
+      --dark-shadow: 0 4px 20px rgba(0,0,0,0.3);
+      --dark-bg: linear-gradient(135deg, #111827 0%, #1f2937 100%);
+      --dark-card-bg: #1f2937;
+      --dark-accent: #fbbf24;
+
+      /* Common Variables */
+      --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      --bounce: cubic-bezier(0.68, -0.55, 0.265, 1.55);
+      --elastic: cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    /* Light theme */
+    body[data-theme="light"] {
+      background: var(--light-bg);
+      min-height: 100vh;
+      transition: var(--transition);
+      color: var(--light-text);
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    /* Dark theme */
+    body[data-theme="dark"] {
+      background: var(--dark-bg);
+      min-height: 100vh;
+      transition: var(--transition);
+      color: var(--dark-text);
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
     .main-content { margin-left: 0; padding: 30px 40px; background: #fefefe; min-height: 100vh; }
     .profile-card { background: white; border-radius: 15px; padding: 25px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); margin-bottom: 30px; }
     .profile-header { text-align: center; margin-bottom: 30px; }
@@ -22,16 +67,214 @@
     .info-value { color: #6c757d; }
     .back-btn { margin-bottom: 20px; }
     .loading { text-align: center; padding: 50px; }
+
+    /* Header Styles */
+    .main-header {
+      background: linear-gradient(135deg, var(--light-primary) 0%, var(--light-primary-700) 100%);
+      padding: 1rem 0;
+      box-shadow: var(--light-shadow);
+      border-bottom: 3px solid rgba(13, 148, 136, 0.2);
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 1000;
+      transition: var(--transition);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+    }
+
+    body[data-theme="dark"] .main-header {
+      background: linear-gradient(135deg, var(--dark-primary) 0%, var(--dark-primary-700) 100%);
+      box-shadow: var(--dark-shadow);
+      border-bottom: 3px solid rgba(20, 184, 166, 0.3);
+    }
+
+    .main-header.scrolled {
+      box-shadow: 0 4px 30px rgba(0,0,0,0.15);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      transform: translateY(0);
+    }
+
+    body[data-theme="dark"] .main-header.scrolled {
+      box-shadow: 0 4px 30px rgba(0,0,0,0.4);
+    }
+
+    .brand {
+      color: white;
+      text-decoration: none;
+      font-weight: 700;
+      font-size: 1.5rem;
+      transition: var(--transition);
+      text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    .brand:hover {
+      transform: scale(1.05) rotate(1deg);
+      text-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    }
+
+    .nav-link {
+      color: rgba(255,255,255,0.9) !important;
+      font-weight: 600;
+      transition: var(--transition);
+      padding: 0.5rem 1rem !important;
+      border-radius: 6px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .nav-link::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: rgba(255,255,255,0.1);
+      transition: left 0.3s ease;
+    }
+
+    .nav-link:hover::before,
+    .nav-link.active::before {
+      left: 0;
+    }
+
+    .nav-link:hover,
+    .nav-link.active {
+      color: white !important;
+      transform: translateY(-2px);
+    }
+
+    /* Theme Toggle */
+    .theme-toggle {
+      background: rgba(255,255,255,0.1);
+      border: 2px solid rgba(255,255,255,0.2);
+      color: white;
+      padding: 0.5rem;
+      border-radius: 50%;
+      cursor: pointer;
+      transition: var(--transition);
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .theme-toggle::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 0;
+      height: 0;
+      background: rgba(255,255,255,0.2);
+      border-radius: 50%;
+      transition: width 0.3s ease, height 0.3s ease;
+      transform: translate(-50%, -50%);
+    }
+
+    .theme-toggle:hover::before {
+      width: 100%;
+      height: 100%;
+    }
+
+    .theme-toggle:hover {
+      transform: scale(1.1) rotate(180deg);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    }
+
+    /* Buttons */
+    .btn-success {
+      background: linear-gradient(135deg, var(--light-primary) 0%, var(--light-primary-700) 100%);
+      border: none;
+      transition: var(--transition);
+      box-shadow: 0 4px 15px rgba(13, 148, 136, 0.3);
+    }
+
+    .btn-success:hover {
+      background: linear-gradient(135deg, var(--light-primary-700) 0%, var(--light-primary) 100%);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(13, 148, 136, 0.4);
+    }
+
+    body[data-theme="dark"] .btn-success {
+      background: linear-gradient(135deg, var(--dark-primary) 0%, var(--dark-primary-700) 100%);
+      box-shadow: 0 4px 15px rgba(20, 184, 166, 0.3);
+    }
+
+    body[data-theme="dark"] .btn-success:hover {
+      box-shadow: 0 8px 25px rgba(20, 184, 166, 0.4);
+    }
+
+    /* Mobile responsiveness adjustments */
+    @media (max-width: 768px) {
+      .main-header {
+        padding: 0.5rem 0;
+      }
+      .brand {
+        font-size: 1.25rem;
+      }
+      .nav-link {
+        padding: 0.25rem 0.5rem !important;
+      }
+      .theme-toggle {
+        width: 35px;
+        height: 35px;
+      }
+    }
   </style>
 </head>
-<body>
-  <header class="header">
-    <div class="container">
-      <div class="d-flex justify-content-between align-items-center">
-        <a href="../home.html" class="btn btn-primary">Home</a>
-        <a href="dashboard.html" class="btn btn-success">Dashboard</a>
+<body data-theme="dark">
+  <!-- Header -->
+  <header class="main-header">
+    <nav class="navbar navbar-expand-lg">
+      <div class="container">
+        <a class="navbar-brand brand" href="../home.html">
+          <i class="fas fa-car me-2"></i>
+          Silas Car Rentals
+        </a>
+
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" title="Toggle navigation" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav ms-auto">
+            <li class="nav-item">
+              <a class="nav-link" href="../home.html">Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="dashboard.html">Dashboard</a>
+            </li>
+          </ul>
+
+          <div class="ms-auto d-flex align-items-center gap-3">
+            <!-- Theme -->
+            <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme" title="Toggle theme">
+              <i class="fas fa-moon" aria-hidden="true"></i>
+              <span class="sr-only">Toggle theme</span>
+            </button>
+            <!-- Profile -->
+            <div class="dropdown">
+              <button class="btn btn-success dropdown-toggle d-flex align-items-center" data-bs-toggle="dropdown" aria-label="Profile menu" title="Profile menu">
+                <div id="nav-avatar" class="rounded-circle me-2 d-flex align-items-center justify-content-center bg-success text-white fw-bold" style="width:32px; height:32px; font-size:0.9rem;"></div>
+                <span id="user-name">User</span>
+              </button>
+              <ul class="dropdown-menu dropdown-menu-end">
+                <li><a class="dropdown-item" href="profile.html"><i class="fas fa-user me-2"></i>Profile</a></li>
+                <li><a class="dropdown-item" href="orders.html"><i class="fas fa-box me-2"></i>My Orders</a></li>
+                <li><button class="dropdown-item text-danger" id="logout-button"><i class="fas fa-sign-out-alt me-2"></i>Logout</button></li>
+              </ul>
+            </div>
+          </div>
+        </div>
       </div>
-    </div>
+    </nav>
   </header>
   <div class="main-content">
     <button class="btn btn-outline-primary back-btn animate__animated animate__fadeInLeft" onclick="window.location.href='dashboard.html'">
@@ -50,8 +293,7 @@
   <script>
     AOS.init({ duration: 800, easing: 'ease-in-out', once: true, mirror: false });
 
-    const BASE_URL = "https://techyjaunt-auth-go43.onrender.com";
-    const ENDPOINTS = { users: "/api/users/get-users", profile: "/api/users/profile" };
+    const API_BASE = "https://techyjaunt-auth-go43.onrender.com";
     const token = localStorage.getItem('token');
 
     if (!token) {
@@ -64,7 +306,7 @@
 
     async function fetchAllUsers() {
       try {
-        const res = await fetch(BASE_URL + ENDPOINTS.users, {
+        const res = await fetch(`${API_BASE}/api/users/get-users`, {
           headers: { Authorization: 'Bearer ' + token }
         });
         if (!res.ok) throw new Error('Failed to fetch users');
@@ -109,7 +351,7 @@
   const container = document.getElementById(`details-content-${index}`);
   container.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Loading details...';
   try {
-    const res = await fetch(BASE_URL + ENDPOINTS.profile + "?userId=" + userId, {
+    const res = await fetch(`${API_BASE}/api/users/profile?userId=${userId}`, {
       headers: { Authorization: 'Bearer ' + token }
     });
     if (!res.ok) throw new Error('Failed to fetch user details');
@@ -163,6 +405,102 @@
         </div>
       `;
     }
+
+    // Theme toggle functionality
+    const themeToggle = document.getElementById('theme-toggle');
+    const body = document.body;
+
+    // Check for saved theme preference or default to dark mode
+    const currentTheme = localStorage.getItem('theme') || 'dark';
+    body.setAttribute('data-theme', currentTheme);
+
+    // Update theme toggle icon based on current theme
+    function updateThemeIcon() {
+      const icon = themeToggle.querySelector('i');
+      if (body.getAttribute('data-theme') === 'dark') {
+        icon.className = 'fas fa-sun';
+      } else {
+        icon.className = 'fas fa-moon';
+      }
+    }
+    updateThemeIcon();
+
+    // Toggle theme on button click
+    themeToggle.addEventListener('click', () => {
+      const currentTheme = body.getAttribute('data-theme');
+      const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+      body.setAttribute('data-theme', newTheme);
+      localStorage.setItem('theme', newTheme);
+      updateThemeIcon();
+    });
+
+    // Header scroll effect
+    const header = document.querySelector('.main-header');
+    let lastScrollTop = 0;
+    window.addEventListener('scroll', () => {
+      const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+      if (scrollTop > 100) {
+        header.classList.add('scrolled');
+      } else {
+        header.classList.remove('scrolled');
+      }
+      lastScrollTop = scrollTop;
+    });
+
+    // Load user profile and render avatar
+    async function loadUserProfile() {
+      const token = localStorage.getItem("token");
+      if (!token) return;
+      try {
+        const res = await fetch(`${API_BASE}/api/users/profile`, {
+          headers: { Authorization: `Bearer ${token}` },
+          credentials: "include"
+        });
+        if (res.status === 401) {
+          localStorage.clear();
+          return;
+        }
+        const data = await res.json();
+        if (!res.ok) return;
+        const user = data.user;
+        localStorage.setItem("user", JSON.stringify(user));
+        document.getElementById("user-name").textContent = user.name;
+        renderAvatar(user);
+      } catch (err) {
+        console.error("Failed to load user profile:", err);
+      }
+    }
+
+    // Render avatar
+    function renderAvatar(user) {
+      const navAvatarDiv = document.getElementById("nav-avatar");
+      navAvatarDiv.innerHTML = "";
+      if (user.profilePicture?.url) {
+        navAvatarDiv.innerHTML = `<img src="${user.profilePicture.url}" style="width:100%;height:100%;object-fit:cover;">`;
+      } else {
+        const initials = user.name.split(" ").map(n=>n[0]).join("").substring(0,2).toUpperCase();
+        navAvatarDiv.textContent = initials;
+      }
+    }
+
+    // Load user profile on page load
+    document.addEventListener('DOMContentLoaded', function() {
+      loadUserProfile();
+      // Logout button handler
+      const logoutBtn = document.getElementById("logout-button");
+      if (logoutBtn) {
+        logoutBtn.addEventListener("click", () => {
+          localStorage.clear();
+          window.location.href = "../login.html";
+        });
+      }
+      // Prevent back button navigation
+      window.history.pushState(null, null, window.location.href);
+      window.onpopstate = function() {
+        window.history.pushState(null, null, window.location.href);
+        window.location.href = "../index.html";
+      };
+    });
   </script>
 </body>
 </html>
