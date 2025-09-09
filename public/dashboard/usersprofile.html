@@ -7,9 +7,8 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
   <link href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
   <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
-  <link rel="stylesheet" href="../header.css">
   <link rel="stylesheet" href="css/dashboard.css">
   <style>
     :root {
@@ -68,6 +67,166 @@
     .info-value { color: #6c757d; }
     .back-btn { margin-bottom: 20px; }
     .loading { text-align: center; padding: 50px; }
+
+    /* Header Styles */
+    .main-header {
+      background: linear-gradient(135deg, var(--light-primary) 0%, var(--light-primary-700) 100%);
+      padding: 1rem 0;
+      box-shadow: var(--light-shadow);
+      border-bottom: 3px solid rgba(13, 148, 136, 0.2);
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 1000;
+      transition: var(--transition);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+    }
+
+    body[data-theme="dark"] .main-header {
+      background: linear-gradient(135deg, var(--dark-primary) 0%, var(--dark-primary-700) 100%);
+      box-shadow: var(--dark-shadow);
+      border-bottom: 3px solid rgba(20, 184, 166, 0.3);
+    }
+
+    .main-header.scrolled {
+      box-shadow: 0 4px 30px rgba(0,0,0,0.15);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      transform: translateY(0);
+    }
+
+    body[data-theme="dark"] .main-header.scrolled {
+      box-shadow: 0 4px 30px rgba(0,0,0,0.4);
+    }
+
+    .brand {
+      color: white;
+      text-decoration: none;
+      font-weight: 700;
+      font-size: 1.5rem;
+      transition: var(--transition);
+      text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    .brand:hover {
+      transform: scale(1.05) rotate(1deg);
+      text-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    }
+
+    .nav-link {
+      color: rgba(255,255,255,0.9) !important;
+      font-weight: 600;
+      transition: var(--transition);
+      padding: 0.5rem 1rem !important;
+      border-radius: 6px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .nav-link::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: rgba(255,255,255,0.1);
+      transition: left 0.3s ease;
+    }
+
+    .nav-link:hover::before,
+    .nav-link.active::before {
+      left: 0;
+    }
+
+    .nav-link:hover,
+    .nav-link.active {
+      color: white !important;
+      transform: translateY(-2px);
+    }
+
+    /* Theme Toggle */
+    .theme-toggle {
+      background: rgba(255,255,255,0.1);
+      border: 2px solid rgba(255,255,255,0.2);
+      color: white;
+      padding: 0.5rem;
+      border-radius: 50%;
+      cursor: pointer;
+      transition: var(--transition);
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .theme-toggle::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 0;
+      height: 0;
+      background: rgba(255,255,255,0.2);
+      border-radius: 50%;
+      transition: width 0.3s ease, height 0.3s ease;
+      transform: translate(-50%, -50%);
+    }
+
+    .theme-toggle:hover::before {
+      width: 100%;
+      height: 100%;
+    }
+
+    .theme-toggle:hover {
+      transform: scale(1.1) rotate(180deg);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    }
+
+    /* Buttons */
+    .btn-success {
+      background: linear-gradient(135deg, var(--light-primary) 0%, var(--light-primary-700) 100%);
+      border: none;
+      transition: var(--transition);
+      box-shadow: 0 4px 15px rgba(13, 148, 136, 0.3);
+    }
+
+    .btn-success:hover {
+      background: linear-gradient(135deg, var(--light-primary-700) 0%, var(--light-primary) 100%);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(13, 148, 136, 0.4);
+    }
+
+    body[data-theme="dark"] .btn-success {
+      background: linear-gradient(135deg, var(--dark-primary) 0%, var(--dark-primary-700) 100%);
+      box-shadow: 0 4px 15px rgba(20, 184, 166, 0.3);
+    }
+
+    body[data-theme="dark"] .btn-success:hover {
+      box-shadow: 0 8px 25px rgba(20, 184, 166, 0.4);
+    }
+
+    /* Mobile responsiveness adjustments */
+    @media (max-width: 768px) {
+      .main-header {
+        padding: 0.5rem 0;
+      }
+      .brand {
+        font-size: 1.25rem;
+      }
+      .nav-link {
+        padding: 0.25rem 0.5rem !important;
+      }
+      .theme-toggle {
+        width: 35px;
+        height: 35px;
+      }
+    }
   </style>
 </head>
 <body data-theme="dark">
@@ -108,7 +267,6 @@
               </button>
               <ul class="dropdown-menu dropdown-menu-end">
                 <li><a class="dropdown-item" href="profile.html"><i class="fas fa-user me-2"></i>Profile</a></li>
-                <li><a class="dropdown-item" href="orders.html"><i class="fas fa-box me-2"></i>My Orders</a></li>
                 <li><button class="dropdown-item text-danger" id="logout-button"><i class="fas fa-sign-out-alt me-2"></i>Logout</button></li>
               </ul>
             </div>
@@ -175,7 +333,7 @@
               <span class="ms-2 text-muted">${user.email}</span>
               <span class="ms-2 badge ${user.isAdmin ? 'bg-danger' : 'bg-secondary'}">${user.isAdmin ? 'Admin' : 'User'}</span>
             </div>
-            <button class="btn btn-primary btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#details-${index}" aria-expanded="false" aria-controls="details-${index}" onclick="displayUserDetails(${JSON.stringify(user)}, ${index})">
+            <button class="btn btn-primary btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#details-${index}" aria-expanded="false" aria-controls="details-${index}" onclick="fetchUserDetails('${user._id}', ${index})">
               View Details
             </button>
           </div>
@@ -188,7 +346,22 @@
       `).join('');
     }
 
-
+    async function fetchUserDetails(userId, index) {
+  const container = document.getElementById(`details-content-${index}`);
+  container.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Loading details...';
+  try {
+    const res = await fetch(`${API_BASE}/api/users/profile?userId=${userId}`, {
+      headers: { Authorization: 'Bearer ' + token }
+    });
+    if (!res.ok) throw new Error('Failed to fetch user details');
+    const data = await res.json();
+    const fullUser = data.user || data;
+    displayUserDetails(fullUser, index);
+  } catch (error) {
+    console.error('Error fetching user details:', error);
+    container.innerHTML = '<div class="alert alert-danger">Failed to load user details</div>';
+  }
+}
 
 
     function displayUserDetails(user, index) {
