@@ -4,10 +4,11 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Admin Dashboard - Silas Car Rentals</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"/>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" rel="stylesheet"/>
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet"/>
   <link rel="stylesheet" href="css/dashboard.css">
 
   <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
@@ -21,40 +22,78 @@
   </script>
 </head>
 <body>
-  <!-- Header -->
-  <div class="header d-flex justify-content-between align-items-center">
-    <div class="d-flex align-items-center flex-wrap">
-      <button class="hamburger me-3" id="sidebar-toggle" title="Toggle Sidebar" aria-label="Toggle Sidebar">
+<!-- Header -->
+<header class="main-header">
+  <nav class="navbar navbar-expand-lg">
+    <div class="container">
+      <!-- Sidebar toggle button for mobile -->
+      <button class="btn btn-outline-success d-lg-none me-2" id="sidebar-toggle" data-bs-toggle="offcanvas" data-bs-target="#sidebarMenu" aria-label="Open menu" title="Open menu">
         <i class="fas fa-bars"></i>
       </button>
-      <div class="me-3">
-        <i class="fas fa-car text-primary" style="font-size: 2rem;"></i>
-        <span class="fw-bold ms-2">Silas Car Rentals</span>
-      </div>
-      <a href="../home.html" class="btn btn-outline-primary me-3 animate__animated animate__fadeInLeft animate__delay-1s"><i class="fas fa-home"></i> Home</a>
-      <input type="text" class="form-control search-bar me-3 animate__animated animate__fadeInLeft animate__delay-2s" placeholder="Search...">
-      <h2 id="page-title" class="mb-0 animate__animated animate__fadeInLeft animate__delay-3s">Overview</h2>
-    </div>
-    <div class="d-flex align-items-center">
-      <button class="btn btn-outline-secondary me-3 toggle-btn animate__animated animate__fadeInRight" id="dark-mode-toggle" title="Toggle Dark Mode">
-        <i class="fas fa-moon"></i>
+
+      <a href="../home.html" class="navbar-brand brand"><i class="fas fa-car me-2"></i>Silas Car Rentals</a>
+
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" title="Toggle navigation" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
       </button>
-      <button class="btn btn-outline-info me-3 animate__animated animate__fadeInRight animate__delay-1s" title="Notifications" aria-label="Notifications">
-        <i class="fas fa-bell"></i>
-      </button>
-      <div class="user-menu animate__animated animate__fadeInRight animate__delay-2s">
-        <button class="btn btn-outline-secondary d-flex align-items-center" onclick="toggleUserMenu()">
-          <i class="fas fa-user-circle me-2" style="font-size: 1.5rem;"></i>
-          <span id="dash-username">Admin</span>
-          <i class="fas fa-chevron-down ms-2"></i>
-        </button>
-        <div class="dropdown">
-          <a href="../profile.html">Profile</a>
-          <a href="#" onclick="logout()">Logout</a>
+
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="../home.html">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active" href="#overview" onclick="showSection('overview', this)">Overview</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#car-management" onclick="showSection('car-management', this)">Car Management</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#bookings" onclick="showSection('bookings', this)">Bookings</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="./usersprofile.html">Users</a>
+          </li>
+        </ul>
+
+        <div class="ms-auto d-flex align-items-center gap-3">
+          <!-- Search Bar -->
+          <input type="text" class="form-control search-bar" placeholder="Search..." id="search-input" aria-label="Search">
+
+          <!-- Notifications -->
+          <div class="dropdown">
+            <button class="btn btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-label="Notifications" title="Notifications"><i class="fas fa-bell"></i></button>
+            <ul class="dropdown-menu dropdown-menu-end" id="notifications">
+              <li class="dropdown-header fw-bold">Notifications</li>
+              <li><a class="dropdown-item" href="#">🚗 New BMW X5 added to fleet</a></li>
+              <li><a class="dropdown-item" href="#">🔥 20% off luxury rentals this week</a></li>
+              <li><a class="dropdown-item" href="#">✅ Your booking was confirmed</a></li>
+            </ul>
+          </div>
+
+          <!-- Theme Toggle -->
+          <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme" title="Toggle theme">
+            <i class="fas fa-moon" aria-hidden="true"></i>
+            <span class="sr-only">Toggle theme</span>
+          </button>
+
+          <!-- Profile -->
+          <div class="dropdown">
+            <button class="btn btn-success dropdown-toggle d-flex align-items-center" data-bs-toggle="dropdown" aria-label="Profile menu" title="Profile menu">
+              <div id="nav-avatar" class="rounded-circle me-2 d-flex align-items-center justify-content-center bg-success text-white fw-bold" style="width:32px; height:32px; font-size:0.9rem;"></div>
+              <span id="user-name">Admin</span>
+            </button>
+            <ul class="dropdown-menu dropdown-menu-end">
+              <li><a class="dropdown-item" href="../profile.html"><i class="fas fa-user me-2"></i>Profile</a></li>
+              <li><a class="dropdown-item" href="./usersprofile.html"><i class="fas fa-users me-2"></i>Users</a></li>
+              <li><button class="dropdown-item text-danger" id="logout-button"><i class="fas fa-sign-out-alt me-2"></i>Logout</button></li>
+            </ul>
+          </div>
         </div>
       </div>
     </div>
-  </div>
+  </nav>
+</header>
 
   <!-- Sidebar -->
   <nav class="sidebar" id="sidebar">
@@ -248,13 +287,12 @@
   <!-- Toast -->
   <div class="toast" id="toast"></div>
 
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
   <script src="js/dashboard.js"></script>
   <script>
     function showSection(section, element) {
       document.querySelectorAll('.nav-link').forEach(link => link.classList.remove('active'));
       element.classList.add('active');
-      document.getElementById('page-title').textContent = section.charAt(0).toUpperCase() + section.slice(1);
       document.querySelectorAll('[id$="-section"]').forEach(sec => sec.classList.add('hidden'));
       document.getElementById(section + '-section').classList.remove('hidden');
     }
@@ -262,51 +300,46 @@
     function resetForm() {
       document.getElementById('add-car-form').reset();
     }
-    // Dark mode toggle
-    document.getElementById('dark-mode-toggle').addEventListener('click', function() {
-      document.body.classList.toggle('dark-mode');
-      const icon = this.querySelector('i');
-      if (document.body.classList.contains('dark-mode')) {
-        icon.classList.remove('fa-moon');
-        icon.classList.add('fa-sun');
-        localStorage.setItem('darkMode', 'enabled');
-      } else {
-        icon.classList.remove('fa-sun');
-        icon.classList.add('fa-moon');
-        localStorage.setItem('darkMode', 'disabled');
-      }
-    });
-    // Load dark mode preference
-    if (localStorage.getItem('darkMode') === 'enabled') {
-      document.body.classList.add('dark-mode');
-      document.getElementById('dark-mode-toggle').querySelector('i').classList.replace('fa-moon', 'fa-sun');
+    // Theme toggle
+    const themeToggle = document.getElementById('theme-toggle');
+    const html = document.documentElement;
+    const icon = themeToggle.querySelector('i');
+
+    function setTheme(theme) {
+      html.setAttribute('data-bs-theme', theme);
+      localStorage.setItem('theme', theme);
+      icon.className = theme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
     }
-    // User menu toggle
-    function toggleUserMenu() {
-      const dropdown = document.querySelector('.user-menu .dropdown');
-      dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
-    }
-    // Close dropdown when clicking outside
-    document.addEventListener('click', function(event) {
-      const userMenu = document.querySelector('.user-menu');
-      if (!userMenu.contains(event.target)) {
-        document.querySelector('.user-menu .dropdown').style.display = 'none';
-      }
+
+    themeToggle.addEventListener('click', () => {
+      const currentTheme = html.getAttribute('data-bs-theme') || 'light';
+      const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+      setTheme(newTheme);
     });
+
+    // Load saved theme
+    const savedTheme = localStorage.getItem('theme') || 'light';
+    setTheme(savedTheme);
+
+    // Logout function
+    document.getElementById('logout-button').addEventListener('click', function() {
+      localStorage.clear();
+      window.location.href = '../login.html';
+    });
+
     // Load user data
     function loadUserData() {
       const userData = localStorage.getItem('user');
       if (userData) {
         const user = JSON.parse(userData);
-        document.getElementById('dash-username').textContent = user.name || 'User';
+        document.getElementById('user-name').textContent = user.name || 'Admin';
+        const avatar = document.getElementById('nav-avatar');
+        if (avatar) {
+          avatar.textContent = (user.name || 'A').charAt(0).toUpperCase();
+        }
       }
     }
-    // Logout function
-    function logout() {
-      localStorage.clear();
-      window.location.href = '../login.html';
-    }
-  
+
     // Sidebar toggle for mobile
     document.getElementById('sidebar-toggle').addEventListener('click', function() {
       const sidebar = document.getElementById('sidebar');
