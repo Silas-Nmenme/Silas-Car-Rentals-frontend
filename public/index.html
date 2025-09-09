@@ -2153,35 +2153,46 @@
     }
 
     // Contact form handling
-    function initContactForm() {
-      const form = document.querySelector('.contact-form');
+function initContactForm() {
+  const form = document.querySelector('.contact-form');
 
-      form.addEventListener('submit', async (e) => {
-        e.preventDefault();
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
 
-        const formData = new FormData(form);
-        const data = Object.fromEntries(formData);
+    const formData = new FormData(form);
+    const data = Object.fromEntries(formData);
 
-        // Show loading state
-        const submitBtn = form.querySelector('.btn-submit');
-        const originalText = submitBtn.innerHTML;
-        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Sending...';
-        submitBtn.disabled = true;
+    // Show loading state
+    const submitBtn = form.querySelector('.btn-submit');
+    const originalText = submitBtn.innerHTML;
+    submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Sending...';
+    submitBtn.disabled = true;
 
-        try {
-          // Simulate form submission (replace with actual API call)
-          await new Promise(resolve => setTimeout(resolve, 2000));
-
-          showToast('Message sent successfully! We\'ll get back to you soon.');
-          form.reset();
-        } catch (error) {
-          showToast('Failed to send message. Please try again.');
-        } finally {
-          submitBtn.innerHTML = originalText;
-          submitBtn.disabled = false;
-        }
+    try {
+      const res = await fetch("https://techyjaunt-auth-go43.onrender.com/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data)
       });
+
+      const result = await res.json();
+
+      if (res.ok && result.success) {
+        showToast("Message sent successfully! We'll get back to you soon.");
+        form.reset();
+      } else {
+        showToast(`${result.message || "Failed to send message. Please try again."}`);
+      }
+    } catch (error) {
+      console.error("Contact form error:", error);
+      showToast("Server error. Please try again later.");
+    } finally {
+      submitBtn.innerHTML = originalText;
+      submitBtn.disabled = false;
     }
+  });
+}
+
 
     // Set current year in footer
     function setCurrentYear() {
