@@ -545,6 +545,38 @@ window.viewUserProfile = function(userId) {
   window.location.href = 'usersprofile.html?userId=' + userId;
 };
 
+// Sidebar Toggle
+const hamburger = document.getElementById('hamburger');
+const sidebar = document.querySelector('.sidebar');
+const mainContent = document.querySelector('.main-content');
+
+if (hamburger) {
+  hamburger.addEventListener('click', () => {
+    sidebar.classList.toggle('show');
+    if (window.innerWidth > 768) {
+      if (sidebar.classList.contains('show')) {
+        mainContent.style.marginLeft = '250px';
+      } else {
+        mainContent.style.marginLeft = '0';
+      }
+    }
+  });
+}
+
+// Dark Mode Toggle
+const darkModeToggle = document.getElementById('dark-mode-toggle');
+if (darkModeToggle) {
+  darkModeToggle.addEventListener('click', () => {
+    document.body.classList.toggle('dark-mode');
+    localStorage.setItem('darkMode', document.body.classList.contains('dark-mode'));
+  });
+}
+
+// Load Dark Mode Preference
+if (localStorage.getItem('darkMode') === 'true') {
+  document.body.classList.add('dark-mode');
+}
+
 // Init
 (async function init() {
   await fetchUserProfile();
