@@ -546,12 +546,12 @@ window.viewUserProfile = function(userId) {
 };
 
 // Sidebar Toggle
-const hamburger = document.getElementById('hamburger');
+const sidebarToggle = document.getElementById('sidebar-toggle');
 const sidebar = document.querySelector('.sidebar');
-const mainContent = document.querySelector('.main-content');
+const mainContent = document.querySelector('.main');
 
-if (hamburger) {
-  hamburger.addEventListener('click', () => {
+if (sidebarToggle) {
+  sidebarToggle.addEventListener('click', () => {
     sidebar.classList.toggle('show');
     if (window.innerWidth > 768) {
       if (sidebar.classList.contains('show')) {
@@ -563,19 +563,7 @@ if (hamburger) {
   });
 }
 
-// Dark Mode Toggle
-const darkModeToggle = document.getElementById('dark-mode-toggle');
-if (darkModeToggle) {
-  darkModeToggle.addEventListener('click', () => {
-    document.body.classList.toggle('dark-mode');
-    localStorage.setItem('darkMode', document.body.classList.contains('dark-mode'));
-  });
-}
 
-// Load Dark Mode Preference
-if (localStorage.getItem('darkMode') === 'true') {
-  document.body.classList.add('dark-mode');
-}
 
 // Init
 (async function init() {
