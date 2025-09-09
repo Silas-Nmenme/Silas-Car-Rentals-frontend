@@ -178,12 +178,16 @@
     }
 
     .navbar-brand.brand {
-      color: rgb(5, 177, 183);
+      color: var(--primary-color);
       font-weight: 700;
       font-size: 1.5rem;
       text-decoration: none;
       text-shadow: 0 2px 4px rgba(0,0,0,0.1);
       transition: var(--transition);
+    }
+
+    body[data-bs-theme="dark"] .navbar-brand.brand {
+      text-shadow: 0 2px 4px rgba(255,255,255,0.1);
     }
 
     .navbar-brand.brand:hover {
