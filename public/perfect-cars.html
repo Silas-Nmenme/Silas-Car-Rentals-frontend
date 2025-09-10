@@ -1086,12 +1086,12 @@
 </head>
 <body data-theme="dark">
   <!-- Header -->
-  <header class="main-header">
-    <nav class="navbar navbar-expand-lg">
+  <header>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top shadow-sm">
       <div class="container">
-        <a class="navbar-brand brand" href="home.html">
+        <a class="navbar-brand d-flex align-items-center" href="home.html">
           <i class="fas fa-car me-2"></i>
-          Silas Car Rentals
+          <span>Silas Car Rentals</span>
         </a>
 
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" title="Toggle navigation" aria-label="Toggle navigation">
@@ -1117,7 +1117,7 @@
           <div class="ms-auto d-flex align-items-center gap-3">
             <!-- Notifications -->
             <div class="dropdown">
-              <button class="btn btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-label="Notifications" title="Notifications"><i class="fas fa-bell"></i></button>
+              <button class="btn btn-outline-light dropdown-toggle" data-bs-toggle="dropdown" aria-label="Notifications" title="Notifications"><i class="fas fa-bell"></i></button>
               <ul class="dropdown-menu dropdown-menu-end" id="notifications">
                 <li class="dropdown-header fw-bold">Notifications</li>
                 <li><a class="dropdown-item" href="#">🚗 New BMW X5 added to fleet</a></li>
@@ -1126,27 +1126,27 @@
               </ul>
             </div>
             <!-- Counters -->
-            <a href="cart.html" class="btn btn-outline-primary position-relative" aria-label="Cart">
+            <a href="cart.html" class="btn btn-outline-light position-relative" aria-label="Cart">
               <i class="fas fa-shopping-cart"></i>
               <span id="cart-count" class="badge bg-success position-absolute top-0 start-100 translate-middle">0</span>
             </a>
-            <a href="wishlist.html" class="btn btn-outline-danger position-relative" aria-label="Wishlist">
+            <a href="wishlist.html" class="btn btn-outline-light position-relative" aria-label="Wishlist">
               <i class="fas fa-heart"></i>
               <span id="wishlist-count" class="badge bg-danger position-absolute top-0 start-100 translate-middle">0</span>
             </a>
-            <a href="saved.html" class="btn btn-outline-warning position-relative" aria-label="Saved">
+            <a href="saved.html" class="btn btn-outline-light position-relative" aria-label="Saved">
               <i class="fas fa-bookmark"></i>
               <span id="saved-count" class="badge bg-warning position-absolute top-0 start-100 translate-middle">0</span>
             </a>
             <!-- Theme -->
-            <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme" title="Toggle theme">
+            <button class="btn btn-outline-light rounded-circle p-2" id="theme-toggle" aria-label="Toggle theme" title="Toggle theme">
               <i class="fas fa-moon" aria-hidden="true"></i>
-              <span class="sr-only">Toggle theme</span>
+              <span class="visually-hidden">Toggle theme</span>
             </button>
             <!-- Profile -->
             <div class="dropdown">
-              <button class="profile-btn dropdown-toggle" id="profileDropdown" data-bs-toggle="dropdown" aria-expanded="false" aria-label="User profile menu">
-                <div id="profile-avatar" class="profile-avatar">U</div>
+              <button class="btn btn-outline-light dropdown-toggle d-flex align-items-center gap-2" id="profileDropdown" data-bs-toggle="dropdown" aria-expanded="false" aria-label="User profile menu">
+                <div id="profile-avatar" class="rounded-circle bg-light text-primary d-flex justify-content-center align-items-center" style="width: 32px; height: 32px; font-weight: 700;">U</div>
                 <span id="profile-name">User</span>
               </button>
               <ul class="dropdown-menu dropdown-menu-end">
