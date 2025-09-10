@@ -838,13 +838,23 @@
     window.location.href = 'forgot-password.html';
   }
 
-  // Google OAuth functionality - keep as-is
-  function handleGoogleLogin() {
+  // Google OAuth functionality
+  async function handleGoogleLogin() {
     if (window.googleAuth) {
-      window.googleAuth.initiateGoogleAuth('login');
+      await window.googleAuth.initiateGoogleAuth('login');
     } else {
-      const googleAuthUrl = `${BASE_URL}/api/users/google?mode=login`;
-      window.location.href = googleAuthUrl;
+      try {
+        const response = await fetch(`${BASE_URL}/api/users/google?mode=login`);
+        const data = await response.json();
+        if (data.authUrl) {
+          window.location.href = data.authUrl;
+        } else {
+          showToast('Failed to start Google sign-in', 'error');
+        }
+      } catch (error) {
+        console.error('Failed to get Google auth URL:', error);
+        showToast('Failed to start Google sign-in', 'error');
+      }
     }
   }
   </script>

@@ -39,37 +39,57 @@ class GoogleAuthHandler {
     return window.innerWidth > 768 && !window.matchMedia('(pointer: coarse)').matches;
   }
 
-  initiatePopupFlow(mode) {
-    const width = 500, height = 600;
-    const left = (window.screenX || window.screenLeft || 0) + (window.innerWidth - width) / 2;
-    const top = (window.screenY || window.screenTop || 0) + (window.innerHeight - height) / 2;
-
-    const authUrl = `${this.baseUrl}/api/users/google?mode=${mode}`;
-    const popup = window.open(
-      authUrl,
-      'google-auth',
-      `width=${width},height=${height},left=${left},top=${top},scrollbars=yes,resizable=yes`
-    );
-
-    if (!popup || popup.closed || typeof popup.closed === 'undefined') {
-      console.log('Popup blocked, falling back to redirect');
-      this.initiateRedirectFlow(mode);
-      return;
+  async fetchAuthUrl(mode) {
+    const response = await fetch(`${this.baseUrl}/api/users/google?mode=${mode}`);
+    const data = await response.json();
+    if (data.authUrl) {
+      return data.authUrl;
+    } else {
+      throw new Error('No authUrl received from server');
     }
-
-    const checkClosed = setInterval(() => {
-      if (popup.closed) {
-        clearInterval(checkClosed);
-        console.log('Google popup closed without completion');
-      }
-    }, 1000);
-
-    return popup;
   }
 
-  initiateRedirectFlow(mode) {
-    const authUrl = `${this.baseUrl}/api/users/google?mode=${mode}`;
-    window.location.href = authUrl;
+  async initiatePopupFlow(mode) {
+    try {
+      const authUrl = await this.fetchAuthUrl(mode);
+      const width = 500, height = 600;
+      const left = (window.screenX || window.screenLeft || 0) + (window.innerWidth - width) / 2;
+      const top = (window.screenY || window.screenTop || 0) + (window.innerHeight - height) / 2;
+
+      const popup = window.open(
+        authUrl,
+        'google-auth',
+        `width=${width},height=${height},left=${left},top=${top},scrollbars=yes,resizable=yes`
+      );
+
+      if (!popup || popup.closed || typeof popup.closed === 'undefined') {
+        console.log('Popup blocked, falling back to redirect');
+        this.initiateRedirectFlow(mode);
+        return;
+      }
+
+      const checkClosed = setInterval(() => {
+        if (popup.closed) {
+          clearInterval(checkClosed);
+          console.log('Google popup closed without completion');
+        }
+      }, 1000);
+
+      return popup;
+    } catch (error) {
+      console.error('Failed to get auth URL for popup:', error);
+      this.initiateRedirectFlow(mode);
+    }
+  }
+
+  async initiateRedirectFlow(mode) {
+    try {
+      const authUrl = await this.fetchAuthUrl(mode);
+      window.location.href = authUrl;
+    } catch (error) {
+      console.error('Failed to get auth URL:', error);
+      this.showError('Failed to start Google sign-in. Please try again.');
+    }
   }
 
   handleMessage(event) {
