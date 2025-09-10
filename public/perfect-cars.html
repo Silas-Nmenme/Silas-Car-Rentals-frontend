@@ -1086,13 +1086,15 @@
 </head>
 <body data-theme="dark">
   <!-- Header -->
-  <header>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top shadow-sm">
+  <header class="main-header">
+    <nav class="navbar navbar-expand-lg">
       <div class="container">
-        <a class="navbar-brand d-flex align-items-center" href="home.html">
-          <i class="fas fa-car me-2"></i>
-          <span>Silas Car Rentals</span>
-        </a>
+        <!-- Sidebar toggle button for mobile -->
+        <button class="btn btn-outline-success d-lg-none me-2" data-bs-toggle="offcanvas" data-bs-target="#sidebarMenu" aria-label="Open menu" title="Open menu">
+          <i class="fas fa-bars"></i>
+        </button>
+
+        <a href="home.html" class="navbar-brand brand"><i class="fas fa-car me-2"></i>Silas Car Rentals</a>
 
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" title="Toggle navigation" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
@@ -1117,7 +1119,7 @@
           <div class="ms-auto d-flex align-items-center gap-3">
             <!-- Notifications -->
             <div class="dropdown">
-              <button class="btn btn-outline-light dropdown-toggle" data-bs-toggle="dropdown" aria-label="Notifications" title="Notifications"><i class="fas fa-bell"></i></button>
+              <button class="btn btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-label="Notifications" title="Notifications"><i class="fas fa-bell"></i></button>
               <ul class="dropdown-menu dropdown-menu-end" id="notifications">
                 <li class="dropdown-header fw-bold">Notifications</li>
                 <li><a class="dropdown-item" href="#">🚗 New BMW X5 added to fleet</a></li>
@@ -1126,28 +1128,28 @@
               </ul>
             </div>
             <!-- Counters -->
-            <a href="cart.html" class="btn btn-outline-light position-relative" aria-label="Cart">
+            <a href="cart.html" class="btn btn-outline-primary position-relative" aria-label="Cart">
               <i class="fas fa-shopping-cart"></i>
               <span id="cart-count" class="badge bg-success position-absolute top-0 start-100 translate-middle">0</span>
             </a>
-            <a href="wishlist.html" class="btn btn-outline-light position-relative" aria-label="Wishlist">
+            <a href="wishlist.html" class="btn btn-outline-danger position-relative" aria-label="Wishlist">
               <i class="fas fa-heart"></i>
               <span id="wishlist-count" class="badge bg-danger position-absolute top-0 start-100 translate-middle">0</span>
             </a>
-            <a href="saved.html" class="btn btn-outline-light position-relative" aria-label="Saved">
+            <a href="saved.html" class="btn btn-outline-warning position-relative" aria-label="Saved">
               <i class="fas fa-bookmark"></i>
               <span id="saved-count" class="badge bg-warning position-absolute top-0 start-100 translate-middle">0</span>
             </a>
             <!-- Theme -->
-            <button class="btn btn-outline-light rounded-circle p-2" id="theme-toggle" aria-label="Toggle theme" title="Toggle theme">
+            <button class="theme-toggle ms-3" id="theme-toggle" aria-label="Toggle theme" title="Toggle theme">
               <i class="fas fa-moon" aria-hidden="true"></i>
-              <span class="visually-hidden">Toggle theme</span>
+              <span class="sr-only">Toggle theme</span>
             </button>
             <!-- Profile -->
             <div class="dropdown">
-              <button class="btn btn-outline-light dropdown-toggle d-flex align-items-center gap-2" id="profileDropdown" data-bs-toggle="dropdown" aria-expanded="false" aria-label="User profile menu">
-                <div id="profile-avatar" class="rounded-circle bg-light text-primary d-flex justify-content-center align-items-center" style="width: 32px; height: 32px; font-weight: 700;">U</div>
-                <span id="profile-name">User</span>
+              <button class="btn btn-success dropdown-toggle d-flex align-items-center" data-bs-toggle="dropdown" aria-label="Profile menu" title="Profile menu">
+                <div id="nav-avatar" class="rounded-circle me-2 d-flex align-items-center justify-content-center bg-success text-white fw-bold" style="width:32px; height:32px; font-size:0.9rem;"></div>
+                <span id="user-name">User</span>
               </button>
               <ul class="dropdown-menu dropdown-menu-end">
                 <li><a class="dropdown-item" href="profile.html"><i class="fas fa-user me-2"></i>Profile</a></li>
@@ -2104,34 +2106,6 @@
           submitBtn.disabled = false;
         }
       });
-    }
-
-    // Toast notification
-    function showToast(msg, type = 'info', ms = 3000) {
-      const toast = document.getElementById('toast');
-
-      // Clear previous classes
-      toast.className = 'toast';
-
-      // Add type class
-      toast.classList.add(`toast-${type}`);
-
-      // Icon mapping
-      const iconMap = {
-        success: 'fas fa-check-circle',
-        error: 'fas fa-exclamation-circle',
-        warning: 'fas fa-exclamation-triangle',
-        info: 'fas fa-info-circle'
-      };
-
-      // Set content
-      toast.innerHTML = `
-        <i class="${iconMap[type]} me-2"></i>
-        <span>${msg}</span>
-      `;
-
-      toast.classList.add('show');
-      setTimeout(() => toast.classList.remove('show'), ms);
     }
 
     // Initialize contact form on DOMContentLoaded
