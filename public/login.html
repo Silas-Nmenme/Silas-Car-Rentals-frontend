@@ -841,7 +841,25 @@
   // Google OAuth functionality
   async function handleGoogleLogin() {
     if (window.googleAuth) {
-      await window.googleAuth.initiateGoogleAuth('login');
+      const popup = await window.googleAuth.initiateGoogleAuth('login');
+      if (popup) {
+        // Listen for message from popup
+        window.addEventListener('message', (event) => {
+          if (event.data.type === 'GOOGLE_AUTH_COMPLETE') {
+            const { user, token, redirectUrl } = event.data.data;
+            const userObj = {
+              id: user.id,
+              email: user.email,
+              token: token,
+              name: user.name || "",
+              role: user.role || "user"
+            };
+            localStorage.setItem("user", JSON.stringify(userObj));
+            localStorage.setItem("token", token);
+            window.location.href = redirectUrl || "home.html";
+          }
+        }, { once: true });
+      }
     } else {
       try {
         const response = await fetch(`${BASE_URL}/api/users/google?mode=login`);
@@ -870,22 +888,7 @@
     }
   }
 
-  // Listen for messages from popup
-  window.addEventListener('message', (event) => {
-    if (event.data.type === 'GOOGLE_AUTH_COMPLETE') {
-      const { user, token, redirectUrl } = event.data.data;
-      const userObj = {
-        id: user.id,
-        email: user.email,
-        token: token,
-        name: user.name || "",
-        role: user.role || "user"
-      };
-      localStorage.setItem("user", JSON.stringify(userObj));
-      localStorage.setItem("token", token);
-      window.location.href = redirectUrl;
-    }
-  });
+
   </script>
 
   <script src="js/google-auth.js"></script>

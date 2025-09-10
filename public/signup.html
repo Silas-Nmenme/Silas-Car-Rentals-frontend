@@ -845,31 +845,57 @@
     }
   });
 
-  // Google OAuth functionality - Updated implementation
-  function handleGoogleSignUp() {
-    // Redirect to backend Google OAuth endpoint
-    // The backend should handle the callback and redirect back to your frontend
-    const redirectUri = encodeURIComponent('https://silascarrentals.netlify.app/google-callback.html');
-    window.location.href = `${BASE_URL}/api/users/google?redirect_uri=${redirectUri}`;
-  }
-  
-  function storeUserData(data) {
-    try {
-      // Store token with expiration
-      const tokenData = {
-        token: data.token,
-        expiresAt: Date.now() + (24 * 60 * 60 * 1000) // 24 hours
-      };
-      localStorage.setItem('authToken', JSON.stringify(tokenData));
-      
-      // Store user data
-      localStorage.setItem('user', JSON.stringify(data.user));
-      
-      console.log('User data stored successfully');
-    } catch (error) {
-      console.error('Error storing user data:', error);
+  // Google OAuth functionality
+  async function handleGoogleSignUp() {
+    if (window.googleAuth) {
+      const popup = await window.googleAuth.initiateGoogleAuth('signup');
+      if (popup) {
+        // Listen for message from popup
+        window.addEventListener('message', (event) => {
+          if (event.data.type === 'GOOGLE_AUTH_COMPLETE') {
+            const { user, token, redirectUrl } = event.data.data;
+            const userObj = {
+              id: user.id,
+              email: user.email,
+              token: token,
+              name: user.name || "",
+              role: user.role || "user"
+            };
+            localStorage.setItem("user", JSON.stringify(userObj));
+            localStorage.setItem("token", token);
+            window.location.href = redirectUrl || "home.html";
+          }
+        }, { once: true });
+      }
+    } else {
+      try {
+        const response = await fetch(`${BASE_URL}/api/users/google?mode=signup`);
+        const data = await response.json();
+        if (data.authUrl) {
+          window.location.href = data.authUrl;
+        } else if (data.token) {
+          // Handle authentication directly
+          const userObj = {
+            id: data.user.id,
+            email: data.user.email,
+            token: data.token,
+            name: data.user.name || "",
+            role: data.user.role || "user"
+          };
+          localStorage.setItem("user", JSON.stringify(userObj));
+          localStorage.setItem("token", data.token);
+          window.location.href = "home.html";
+        } else {
+          showToast('Failed to start Google sign-up', 'error');
+        }
+      } catch (error) {
+        console.error('Failed to get Google auth URL:', error);
+        showToast('Failed to start Google sign-up', 'error');
+      }
     }
   }
+  
+
   </script>
 
 </body>
