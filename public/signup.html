@@ -846,26 +846,28 @@
   });
 
   // Google OAuth functionality
+  // Listen for message from popup for Google auth completion
+  window.addEventListener('message', (event) => {
+    if (event.data.type === 'GOOGLE_AUTH_COMPLETE') {
+      const { user, token, redirectUrl } = event.data.data;
+      const userObj = {
+        id: user.id,
+        email: user.email,
+        token: token,
+        name: user.name || "",
+        role: user.role || "user"
+      };
+      localStorage.setItem("user", JSON.stringify(userObj));
+      localStorage.setItem("token", token);
+      window.location.href = redirectUrl || "home.html";
+    }
+  }, { once: true });
+
   async function handleGoogleSignUp() {
     if (window.googleAuth) {
       const popup = await window.googleAuth.initiateGoogleAuth('signup');
       if (popup) {
-        // Listen for message from popup
-        window.addEventListener('message', (event) => {
-          if (event.data.type === 'GOOGLE_AUTH_COMPLETE') {
-            const { user, token, redirectUrl } = event.data.data;
-            const userObj = {
-              id: user.id,
-              email: user.email,
-              token: token,
-              name: user.name || "",
-              role: user.role || "user"
-            };
-            localStorage.setItem("user", JSON.stringify(userObj));
-            localStorage.setItem("token", token);
-            window.location.href = redirectUrl || "home.html";
-          }
-        }, { once: true });
+        // popup opened, message listener already added
       }
     } else {
       try {
