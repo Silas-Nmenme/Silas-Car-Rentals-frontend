@@ -59,7 +59,7 @@
                 return false;
             }
 
-            // Ensure car has all required fields
+            // Ensure car has all required fields and preserve all available details
             const enhancedCar = {
                 _id: car._id,
                 make: car.make || 'Unknown',
@@ -69,7 +69,17 @@
                 image: car.image || 'https://via.placeholder.com/300',
                 color: car.color || 'Black',
                 description: car.description || 'No description available',
-                brand: car.brand || car.make || 'Unknown'
+                brand: car.brand || car.make || 'Unknown',
+                type: car.type || 'sedan',
+                isAvailable: car.isAvailable !== undefined ? car.isAvailable : true,
+                isRented: car.isRented || false,
+                rentedBy: car.rentedBy || null,
+                startDate: car.startDate || null,
+                endDate: car.endDate || null,
+                totalPrice: car.totalPrice || 0,
+                status: car.status || 'available',
+                createdAt: car.createdAt || new Date().toISOString(),
+                updatedAt: car.updatedAt || new Date().toISOString()
             };
 
             cart.push(enhancedCar);
