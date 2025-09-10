@@ -1770,13 +1770,33 @@
 
       try {
         const res = await fetch(`${API_BASE}/api/cars/get-cars`);
-        if (!res.ok) throw new Error();
-        const cars = await res.json();
+        if (!res.ok) throw new Error("Failed to fetch cars");
+        const data = await res.json();
+        const cars = data.cars || [];
 
-        // Process car images
+        // Process car images and ensure all fields are properly handled
         allCars = cars.map(car => ({
           ...car,
-          image: car.image && car.image.trim() !== "" ? car.image : placeholderImage
+          image: car.image && car.image.trim() !== "" ? car.image : placeholderImage,
+          // Ensure all required fields have defaults
+          _id: car._id || '',
+          make: car.make || 'Unknown',
+          model: car.model || 'Unknown',
+          year: car.year || new Date().getFullYear(),
+          price: car.price || 0,
+          color: car.color || 'Unknown',
+          brand: car.brand || 'Unknown',
+          type: car.type || 'sedan',
+          description: car.description || 'No description available',
+          isAvailable: car.isAvailable !== undefined ? car.isAvailable : true,
+          isRented: car.isRented || false,
+          rentedBy: car.rentedBy || null,
+          startDate: car.startDate || null,
+          endDate: car.endDate || null,
+          totalPrice: car.totalPrice || 0,
+          status: car.status || 'available',
+          createdAt: car.createdAt || new Date().toISOString(),
+          updatedAt: car.updatedAt || new Date().toISOString()
         }));
 
         filteredCars = [...allCars];
@@ -1789,7 +1809,6 @@
         filteredCars = [...allCars];
         applyFilters();
       }
-
     }
 
     fetchCars();
