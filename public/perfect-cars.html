@@ -1392,6 +1392,7 @@
   <!-- Scripts -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
   <script src="count-updates.js"></script>
+  <script src="cart-fix.js"></script>
 
   <script>
     // Theme toggle functionality
@@ -1814,6 +1815,31 @@
       }
     });
 
+    // Helper function to enhance car data
+    function enhanceCarData(car) {
+      return {
+        _id: car._id,
+        make: car.make || 'Unknown',
+        model: car.model || 'Unknown',
+        year: car.year || new Date().getFullYear(),
+        price: car.price || 0,
+        image: car.image || 'https://via.placeholder.com/300',
+        color: car.color || 'Black',
+        description: car.description || 'No description available',
+        brand: car.brand || car.make || 'Unknown'
+      };
+    }
+
+    // Helper function to update counts and sync changes
+    function updateCountsAndSync(storageKey) {
+      if (window.CountManager && window.CountManager.updateCounts) {
+        window.CountManager.updateCounts();
+      }
+      if (window.CountManager && window.CountManager.syncLocalChanges) {
+        window.CountManager.syncLocalChanges(storageKey);
+      }
+    }
+
     // Helper functions for cart, wishlist, and saved cars
     function addToCart(car) {
       console.log("Attempting to add to cart:", car); // Debug log
@@ -1834,21 +1860,10 @@
         console.log("Car already in wishlist:", car); // Debug log
         return;
       }
-      // Enhance car data
-      const enhancedCar = {
-        _id: car._id,
-        make: car.make || 'Unknown',
-        model: car.model || 'Unknown',
-        year: car.year || new Date().getFullYear(),
-        price: car.price || 0,
-        image: car.image || 'https://via.placeholder.com/300',
-        color: car.color || 'Black',
-        description: car.description || 'No description available',
-        brand: car.brand || car.make || 'Unknown'
-      };
+      const enhancedCar = enhanceCarData(car);
       wishlist.push(enhancedCar);
       localStorage.setItem("wishlist", JSON.stringify(wishlist));
-      updateCounts();
+      updateCountsAndSync('wishlist');
       showToast("Added to wishlist", "success");
       console.log("Car added to wishlist:", car); // Debug log
     }
@@ -1861,21 +1876,10 @@
         console.log("Car already saved:", car); // Debug log
         return;
       }
-      // Enhance car data
-      const enhancedCar = {
-        _id: car._id,
-        make: car.make || 'Unknown',
-        model: car.model || 'Unknown',
-        year: car.year || new Date().getFullYear(),
-        price: car.price || 0,
-        image: car.image || 'https://via.placeholder.com/300',
-        color: car.color || 'Black',
-        description: car.description || 'No description available',
-        brand: car.brand || car.make || 'Unknown'
-      };
+      const enhancedCar = enhanceCarData(car);
       savedCars.push(enhancedCar);
       localStorage.setItem("savedCars", JSON.stringify(savedCars));
-      updateCounts();
+      updateCountsAndSync('savedCars');
       showToast("Car saved", "success");
       console.log("Car saved:", car); // Debug log
     }
@@ -1941,20 +1945,11 @@
       document.getElementById("load-more").addEventListener('click', loadMoreCars);
     });
 
-    // Update counts function
-    function updateCounts() {
-      const cart = getStorage("cart");
-      const wishlist = getStorage("wishlist");
-      const savedCars = getStorage("savedCars");
-
-      document.getElementById("cart-count").textContent = cart.length;
-      document.getElementById("wishlist-count").textContent = wishlist.length;
-      document.getElementById("saved-count").textContent = savedCars.length;
-    }
-
     // Initialize counts on page load
     document.addEventListener('DOMContentLoaded', function() {
-      updateCounts();
+      if (window.CountManager && window.CountManager.updateCounts) {
+        window.CountManager.updateCounts();
+      }
     });
 
     // Set current year in footer
