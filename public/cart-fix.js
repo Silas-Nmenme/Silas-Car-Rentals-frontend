@@ -49,16 +49,16 @@
                 console.error('Invalid car object provided to addToCart');
                 return false;
             }
-            
+
             const cart = StorageManager.get(STORAGE_KEYS.CART);
-            
+
             // Check if car already exists
             const existingIndex = cart.findIndex(item => item._id === car._id);
             if (existingIndex !== -1) {
                 console.log('Car already in cart:', car._id);
                 return false;
             }
-            
+
             // Ensure car has all required fields
             const enhancedCar = {
                 _id: car._id,
@@ -71,10 +71,16 @@
                 description: car.description || 'No description available',
                 brand: car.brand || car.make || 'Unknown'
             };
-            
+
             cart.push(enhancedCar);
             StorageManager.set(STORAGE_KEYS.CART, cart);
             this.updateDisplay();
+
+            // Sync to backend if CountManager is available
+            if (window.CountManager && window.CountManager.syncLocalChanges) {
+                window.CountManager.syncLocalChanges('cart');
+            }
+
             return true;
         },
         
@@ -83,12 +89,24 @@
             const filteredCart = cart.filter(item => item._id !== carId);
             StorageManager.set(STORAGE_KEYS.CART, filteredCart);
             this.updateDisplay();
+
+            // Sync to backend if CountManager is available
+            if (window.CountManager && window.CountManager.syncLocalChanges) {
+                window.CountManager.syncLocalChanges('cart');
+            }
+
             return true;
         },
-        
+
         clear: function() {
             StorageManager.clear(STORAGE_KEYS.CART);
             this.updateDisplay();
+
+            // Sync to backend if CountManager is available
+            if (window.CountManager && window.CountManager.syncLocalChanges) {
+                window.CountManager.syncLocalChanges('cart');
+            }
+
             return true;
         },
         

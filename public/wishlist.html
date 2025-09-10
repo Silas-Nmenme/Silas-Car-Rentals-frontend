@@ -456,6 +456,12 @@
       setStorage("wishlist", list);
       updateCounts();
       renderWishlist();
+
+      // Sync to backend if CountManager is available
+      if (window.CountManager && window.CountManager.syncLocalChanges) {
+        window.CountManager.syncLocalChanges('wishlist');
+      }
+
       showToast("Removed from wishlist", "info");
       
       // Add heart beat animation to the wishlist button
@@ -471,6 +477,12 @@
         setStorage("wishlist", []);
         updateCounts();
         renderWishlist();
+
+        // Sync to backend if CountManager is available
+        if (window.CountManager && window.CountManager.syncLocalChanges) {
+          window.CountManager.syncLocalChanges('wishlist');
+        }
+
         showToast("Wishlist cleared successfully", "success");
       }
     }

@@ -381,6 +381,12 @@
       setStorage("savedCars", list);
       updateCounts();
       renderSaved();
+
+      // Sync to backend if CountManager is available
+      if (window.CountManager && window.CountManager.syncLocalChanges) {
+        window.CountManager.syncLocalChanges('saved');
+      }
+
       showToast("🗑️ Removed from saved cars");
     }
     
@@ -389,6 +395,12 @@
         setStorage("savedCars", []);
         updateCounts();
         renderSaved();
+
+        // Sync to backend if CountManager is available
+        if (window.CountManager && window.CountManager.syncLocalChanges) {
+          window.CountManager.syncLocalChanges('saved');
+        }
+
         showToast("🧹 All saved cars cleared");
       }
     }
