@@ -2019,6 +2019,25 @@
     document.addEventListener('DOMContentLoaded', function() {
       loadUserProfile();
     });
+
+    // Logout functionality
+    document.getElementById('logout-button').addEventListener('click', function() {
+      localStorage.removeItem('user');
+      localStorage.removeItem('token');
+      showToast('Logged out successfully', 'success');
+      setTimeout(() => {
+        window.location.href = 'login.html';
+      }, 1000);
+    });
+
+    // Back button handling
+    window.addEventListener('load', () => {
+      history.pushState(null, null, location.href);
+    });
+
+    window.addEventListener('popstate', () => {
+      window.location.href = 'index.html';
+    });
   </script>
 
   <script>
