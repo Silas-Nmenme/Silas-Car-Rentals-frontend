@@ -1817,17 +1817,13 @@
     // Helper functions for cart, wishlist, and saved cars
     function addToCart(car) {
       console.log("Attempting to add to cart:", car); // Debug log
-      const cart = getStorage("cart");
-      if (cart.find((c) => c._id === car._id)) {
+      if (CartManager.add(car)) {
+        showToast("Added to cart", "success");
+        console.log("Car added to cart:", car); // Debug log
+      } else {
         showToast("Car already in cart", "warning");
         console.log("Car already in cart:", car); // Debug log
-        return;
       }
-      cart.push(car);
-      localStorage.setItem("cart", JSON.stringify(cart));
-      updateCounts();
-      showToast("Added to cart", "success");
-      console.log("Car added to cart:", car); // Debug log
     }
 
     function addToWishlist(car) {
@@ -1838,7 +1834,19 @@
         console.log("Car already in wishlist:", car); // Debug log
         return;
       }
-      wishlist.push(car);
+      // Enhance car data
+      const enhancedCar = {
+        _id: car._id,
+        make: car.make || 'Unknown',
+        model: car.model || 'Unknown',
+        year: car.year || new Date().getFullYear(),
+        price: car.price || 0,
+        image: car.image || 'https://via.placeholder.com/300',
+        color: car.color || 'Black',
+        description: car.description || 'No description available',
+        brand: car.brand || car.make || 'Unknown'
+      };
+      wishlist.push(enhancedCar);
       localStorage.setItem("wishlist", JSON.stringify(wishlist));
       updateCounts();
       showToast("Added to wishlist", "success");
@@ -1853,7 +1861,19 @@
         console.log("Car already saved:", car); // Debug log
         return;
       }
-      savedCars.push(car);
+      // Enhance car data
+      const enhancedCar = {
+        _id: car._id,
+        make: car.make || 'Unknown',
+        model: car.model || 'Unknown',
+        year: car.year || new Date().getFullYear(),
+        price: car.price || 0,
+        image: car.image || 'https://via.placeholder.com/300',
+        color: car.color || 'Black',
+        description: car.description || 'No description available',
+        brand: car.brand || car.make || 'Unknown'
+      };
+      savedCars.push(enhancedCar);
       localStorage.setItem("savedCars", JSON.stringify(savedCars));
       updateCounts();
       showToast("Car saved", "success");

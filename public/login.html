@@ -737,6 +737,17 @@
   <script>
   const BASE_URL = window.APP_CONFIG?.API_BASE_URL || "https://techyjaunt-auth-go43.onrender.com";
 
+  // Get URL parameters
+  function getUrlParameter(name) {
+    name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
+    const regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
+    const results = regex.exec(location.search);
+    return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
+  }
+
+  // Get redirect URL from URL parameters
+  const redirectUrl = getUrlParameter('redirect') || 'home.html';
+
   function showToast(msg, type = 'info', ms = 3000) {
     const toast = document.getElementById('toast');
 
@@ -827,7 +838,7 @@
       localStorage.setItem("token", data.token);
 
       showToast("Login successful!");
-      setTimeout(() => window.location.href = "home.html", 1000);
+      setTimeout(() => window.location.href = redirectUrl, 1000);
     } catch (error) {
       console.error('Login error:', error);
       showToast("Network error, try again later");
@@ -851,7 +862,7 @@
       };
       localStorage.setItem("user", JSON.stringify(userObj));
       localStorage.setItem("token", token);
-      window.location.href = redirectUrl || "home.html";
+      window.location.href = redirectUrl;
     }
   });
 
@@ -879,7 +890,7 @@
           };
           localStorage.setItem("user", JSON.stringify(userObj));
           localStorage.setItem("token", data.token);
-          window.location.href = "home.html";
+          window.location.href = redirectUrl;
         } else {
           showToast('Failed to start Google sign-in', 'error');
         }
