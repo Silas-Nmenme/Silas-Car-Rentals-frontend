@@ -108,7 +108,7 @@ class GoogleAuthHandler {
       this.storeUserData(data);
 
       const isNewUser = data.user.isNew || false;
-      const redirectUrl = isNewUser ? 'verify-email.html' : 'dashboard/index.html';
+      const redirectUrl = isNewUser ? 'verify-email.html' : 'home.html';
 
       if (this.isPopup) {
         window.opener.postMessage({ type: 'GOOGLE_AUTH_COMPLETE', data: { ...data, redirectUrl } }, '*');

@@ -93,7 +93,8 @@
           const tokenParam = data.user.verificationToken ? `?token=${data.user.verificationToken}` : "";
           window.location.href = `verify-email.html${tokenParam}`;
         } else {
-          window.location.href = "dashboard.html";
+          // Changed redirect to home.html as requested
+          window.location.href = "home.html";
         }
       } catch (error) {
         showError(error.message || "Authentication failed. Please try again.");
