@@ -853,7 +853,7 @@
       localStorage.setItem("token", token);
       window.location.href = redirectUrl || "home.html";
     }
-  }, { once: true });
+  });
 
   // Google OAuth functionality
   async function handleGoogleLogin() {

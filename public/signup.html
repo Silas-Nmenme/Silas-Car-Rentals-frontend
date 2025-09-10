@@ -861,7 +861,7 @@
       localStorage.setItem("token", token);
       window.location.href = redirectUrl || "home.html";
     }
-  }, { once: true });
+  });
 
   async function handleGoogleSignUp() {
     if (window.googleAuth) {
