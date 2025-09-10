@@ -44,38 +44,47 @@ class GoogleAuthHandler {
     const data = await response.json();
     if (data.authUrl) {
       return data.authUrl;
+    } else if (data.token) {
+      // Handle authentication directly
+      this.storeUserData(data);
+      const isNewUser = data.user.isNew || false;
+      const redirectUrl = isNewUser ? 'verify-email.html' : 'home.html';
+      window.location.href = redirectUrl;
+      return null;
     } else {
-      throw new Error('No authUrl received from server');
+      throw new Error('No authUrl or token received from server');
     }
   }
 
   async initiatePopupFlow(mode) {
     try {
       const authUrl = await this.fetchAuthUrl(mode);
-      const width = 500, height = 600;
-      const left = (window.screenX || window.screenLeft || 0) + (window.innerWidth - width) / 2;
-      const top = (window.screenY || window.screenTop || 0) + (window.innerHeight - height) / 2;
+      if (authUrl) {
+        const width = 500, height = 600;
+        const left = (window.screenX || window.screenLeft || 0) + (window.innerWidth - width) / 2;
+        const top = (window.screenY || window.screenTop || 0) + (window.innerHeight - height) / 2;
 
-      const popup = window.open(
-        authUrl,
-        'google-auth',
-        `width=${width},height=${height},left=${left},top=${top},scrollbars=yes,resizable=yes`
-      );
+        const popup = window.open(
+          authUrl,
+          'google-auth',
+          `width=${width},height=${height},left=${left},top=${top},scrollbars=yes,resizable=yes`
+        );
 
-      if (!popup || popup.closed || typeof popup.closed === 'undefined') {
-        console.log('Popup blocked, falling back to redirect');
-        this.initiateRedirectFlow(mode);
-        return;
-      }
-
-      const checkClosed = setInterval(() => {
-        if (popup.closed) {
-          clearInterval(checkClosed);
-          console.log('Google popup closed without completion');
+        if (!popup || popup.closed || typeof popup.closed === 'undefined') {
+          console.log('Popup blocked, falling back to redirect');
+          this.initiateRedirectFlow(mode);
+          return;
         }
-      }, 1000);
 
-      return popup;
+        const checkClosed = setInterval(() => {
+          if (popup.closed) {
+            clearInterval(checkClosed);
+            console.log('Google popup closed without completion');
+          }
+        }, 1000);
+
+        return popup;
+      }
     } catch (error) {
       console.error('Failed to get auth URL for popup:', error);
       this.initiateRedirectFlow(mode);
@@ -85,7 +94,9 @@ class GoogleAuthHandler {
   async initiateRedirectFlow(mode) {
     try {
       const authUrl = await this.fetchAuthUrl(mode);
-      window.location.href = authUrl;
+      if (authUrl) {
+        window.location.href = authUrl;
+      }
     } catch (error) {
       console.error('Failed to get auth URL:', error);
       this.showError('Failed to start Google sign-in. Please try again.');

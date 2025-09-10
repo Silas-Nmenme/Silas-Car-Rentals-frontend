@@ -848,6 +848,18 @@
         const data = await response.json();
         if (data.authUrl) {
           window.location.href = data.authUrl;
+        } else if (data.token) {
+          // Handle authentication directly
+          const userObj = {
+            id: data.user.id,
+            email: data.user.email,
+            token: data.token,
+            name: data.user.name || "",
+            role: data.user.role || "user"
+          };
+          localStorage.setItem("user", JSON.stringify(userObj));
+          localStorage.setItem("token", data.token);
+          window.location.href = "home.html";
         } else {
           showToast('Failed to start Google sign-in', 'error');
         }
@@ -857,6 +869,23 @@
       }
     }
   }
+
+  // Listen for messages from popup
+  window.addEventListener('message', (event) => {
+    if (event.data.type === 'GOOGLE_AUTH_COMPLETE') {
+      const { user, token, redirectUrl } = event.data.data;
+      const userObj = {
+        id: user.id,
+        email: user.email,
+        token: token,
+        name: user.name || "",
+        role: user.role || "user"
+      };
+      localStorage.setItem("user", JSON.stringify(userObj));
+      localStorage.setItem("token", token);
+      window.location.href = redirectUrl;
+    }
+  });
   </script>
 
   <script src="js/google-auth.js"></script>
