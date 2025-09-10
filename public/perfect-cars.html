@@ -1130,9 +1130,9 @@
             </button>
             <!-- Profile -->
             <div class="dropdown">
-              <button class="btn btn-success dropdown-toggle d-flex align-items-center" data-bs-toggle="dropdown" aria-label="Profile menu" title="Profile menu">
-                <div id="nav-avatar" class="rounded-circle me-2 d-flex align-items-center justify-content-center bg-success text-white fw-bold" style="width:32px; height:32px; font-size:0.9rem;"></div>
-                <span id="user-name">User</span>
+              <button class="profile-btn dropdown-toggle" id="profileDropdown" data-bs-toggle="dropdown" aria-expanded="false" aria-label="User profile menu">
+                <div id="profile-avatar" class="profile-avatar">U</div>
+                <span id="profile-name">User</span>
               </button>
               <ul class="dropdown-menu dropdown-menu-end">
                 <li><a class="dropdown-item" href="profile.html"><i class="fas fa-user me-2"></i>Profile</a></li>
@@ -1959,7 +1959,31 @@
       }
     });
 
-    // Load user profile and render avatar
+    // Render user profile
+    function renderUserProfile() {
+      const user = JSON.parse(localStorage.getItem("user"));
+      if (!user) return;
+
+      // Update profile name
+      const profileName = document.getElementById("profile-name");
+      if (profileName) {
+        profileName.textContent = user.name;
+      }
+
+      // Update profile avatar
+      const profileAvatar = document.getElementById("profile-avatar");
+      if (profileAvatar) {
+        profileAvatar.innerHTML = "";
+        if (user.profilePicture?.url) {
+          profileAvatar.innerHTML = `<img src="${user.profilePicture.url}" alt="${user.name}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;">`;
+        } else {
+          const initials = user.name.split(" ").map(n => n[0]).join("").substring(0, 2).toUpperCase();
+          profileAvatar.textContent = initials;
+        }
+      }
+    }
+
+    // Load user profile and render
     async function loadUserProfile() {
       const token = localStorage.getItem("token");
       if (!token) return;
@@ -1981,22 +2005,9 @@
         const user = data.user;
         localStorage.setItem("user", JSON.stringify(user));
 
-        document.getElementById("user-name").textContent = user.name;
-        renderAvatar(user);
+        renderUserProfile();
       } catch (err) {
         console.error("Failed to load user profile:", err);
-      }
-    }
-
-    // Render avatar
-    function renderAvatar(user) {
-      const navAvatarDiv = document.getElementById("nav-avatar");
-      navAvatarDiv.innerHTML = "";
-      if (user.profilePicture?.url) {
-        navAvatarDiv.innerHTML = `<img src="${user.profilePicture.url}" style="width:100%;height:100%;object-fit:cover;">`;
-      } else {
-        const initials = user.name.split(" ").map(n=>n[0]).join("").substring(0,2).toUpperCase();
-        navAvatarDiv.textContent = initials;
       }
     }
 
