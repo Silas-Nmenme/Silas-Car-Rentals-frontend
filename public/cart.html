@@ -154,7 +154,7 @@
 <body>
   <header class="navbar navbar-expand-lg navbar-light bg-white">
     <div class="container">
-      <a href="index.html" class="navbar-brand d-flex align-items-center">
+      <a href="#" onclick="handleHomeClick(); return false;" class="navbar-brand d-flex align-items-center">
         <div class="brand-mark">SC</div>
         <span class="brand-name ms-2 fw-bold">Silas Car Rentals</span>
       </a>
@@ -200,7 +200,7 @@
               <button class="btn btn-outline" onclick="CartManager.clear()" title="Clear all items from cart">
                 <i class="fas fa-trash"></i> Clear Cart
               </button>
-              <button class="btn btn-primary" onclick="window.location.href='cars.html'" title="Continue shopping for cars">
+              <button class="btn btn-primary" onclick="handleContinueShopping()" title="Continue shopping for cars">
                 <i class="fas fa-arrow-left"></i> Continue Shopping
               </button>
             </div>
@@ -290,6 +290,16 @@
     }
 
     function handleBookClick() {
+      const user = getCurrentUser();
+      window.location.href = user ? 'perfect-cars.html' : 'cars.html';
+    }
+
+    function handleHomeClick() {
+      const user = getCurrentUser();
+      window.location.href = user ? 'home.html' : 'index.html';
+    }
+
+    function handleContinueShopping() {
       const user = getCurrentUser();
       window.location.href = user ? 'perfect-cars.html' : 'cars.html';
     }

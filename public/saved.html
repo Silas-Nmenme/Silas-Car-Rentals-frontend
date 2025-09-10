@@ -156,12 +156,12 @@
   <!-- Navigation -->
   <nav class="navbar navbar-expand-lg navbar-dark sticky-top">
     <div class="container">
-      <a href="index.html" class="navbar-brand d-flex align-items-center">
+      <a href="#" onclick="handleHomeClick(); return false;" class="navbar-brand d-flex align-items-center">
         <div class="brand-mark me-2">SC</div>
         <span class="brand-name fw-bold">Silas Car Rentals</span>
       </a>
       
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" title="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
       
@@ -176,13 +176,13 @@
         </ul>
         
         <div class="d-flex gap-2">
-          <button class="btn btn-outline-light btn-sm" onclick="location.href='cart.html'">
+          <button class="btn btn-outline-light btn-sm" onclick="location.href='cart.html'" title="View cart">
             <i class="fas fa-receipt me-1"></i> Cart (<span id="cart-count">0</span>)
           </button>
-          <button class="btn btn-outline-light btn-sm" onclick="location.href='wishlist.html'">
+          <button class="btn btn-outline-light btn-sm" onclick="location.href='wishlist.html'" title="View wishlist">
             <i class="fas fa-heart me-1"></i> Wishlist (<span id="wishlist-count">0</span>)
           </button>
-          <button class="btn btn-primary btn-sm" onclick="location.href='saved.html'">
+          <button class="btn btn-primary btn-sm" onclick="location.href='saved.html'" title="View saved cars">
             <i class="fas fa-save me-1"></i> Saved (<span id="saved-count">0</span>)
           </button>
         </div>
@@ -198,7 +198,7 @@
           <h1 class="display-5 fw-bold">
             <i class="fas fa-save me-2"></i>My Saved Cars
           </h1>
-          <button class="btn btn-outline-custom" onclick="clearSaved()">
+          <button class="btn btn-outline-custom" onclick="clearSaved()" title="Clear all saved cars">
             <i class="fas fa-trash me-1"></i> Clear All
           </button>
         </div>
@@ -255,6 +255,11 @@
       window.location.href = user ? 'perfect-cars.html' : 'cars.html';
     }
 
+    function handleHomeClick() {
+      const user = getCurrentUser();
+      window.location.href = user ? 'home.html' : 'index.html';
+    }
+
     function showToast(msg, type = 'info', ms = 3000) {
       const toast = document.getElementById("toast");
 
@@ -292,7 +297,7 @@
           '<i class="fas fa-folder-open"></i>' +
           '<h3 class="text-muted">No Saved Cars Yet</h3>' +
           '<p class="text-muted">Start browsing and save your favorite cars for later!</p>' +
-          '<button onclick="handleBrowseClick()" class="btn btn-primary-custom mt-3">' +
+          '<button onclick="handleBrowseClick()" class="btn btn-primary-custom mt-3" title="Browse available cars">' +
           '<i class="fas fa-search me-2"></i>Browse Cars' +
           '</button>' +
           '</div>' +
@@ -311,19 +316,19 @@
           '<h5 class="fw-bold">' + car.make + ' ' + car.model + '</h5>' +
           '<p class="text-success fw-bold mb-2">₦' + car.price.toLocaleString() + ' / day</p>' +
           '<div class="action-buttons">' +
-          '<button class="btn btn-primary-custom btn-sm" ' +
+          '<button class="btn btn-primary-custom btn-sm" title="Book this car now" ' +
           'onclick="checkoutCar(' + carJson + ')">' +
           '<i class="fas fa-calendar-check me-1"></i>Book Now' +
           '</button>' +
-          '<button class="btn btn-outline-custom btn-sm" ' +
+          '<button class="btn btn-outline-custom btn-sm" title="Move to cart" ' +
           'onclick="moveToCart(\'' + car._id + '\')">' +
           '<i class="fas fa-cart-plus me-1"></i>Move to Cart' +
           '</button>' +
-          '<button class="btn btn-outline-custom btn-sm" ' +
+          '<button class="btn btn-outline-custom btn-sm" title="Move to wishlist" ' +
           'onclick="moveToWishlist(\'' + car._id + '\')">' +
           '<i class="fas fa-heart me-1"></i>Wishlist' +
           '</button>' +
-          '<button class="btn btn-outline-danger btn-sm" ' +
+          '<button class="btn btn-outline-danger btn-sm" title="Remove from saved" ' +
           'onclick="removeFromSaved(\'' + car._id + '\')">' +
           '<i class="fas fa-trash me-1"></i>Remove' +
           '</button>' +
