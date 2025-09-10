@@ -291,17 +291,17 @@
 
     function handleBookClick() {
       const user = getCurrentUser();
-      window.location.href = user ? 'perfect-cars.html' : 'cars.html';
+      window.location.href = user ? './perfect-cars.html' : './cars.html';
     }
 
     function handleHomeClick() {
       const user = getCurrentUser();
-      window.location.href = user ? 'home.html' : 'index.html';
+      window.location.href = user ? './home.html' : 'index.html';
     }
 
     function handleContinueShopping() {
       const user = getCurrentUser();
-      window.location.href = user ? 'public/perfect-cars.html' : 'public/cars.html';
+      window.location.href = user ? './perfect-cars.html' : './cars.html';
     }
 
     function showToast(msg, ms=2500) {
