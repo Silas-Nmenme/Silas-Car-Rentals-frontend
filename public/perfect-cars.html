@@ -182,21 +182,7 @@
       box-shadow: 0 4px 12px rgba(0,0,0,0.2);
     }
 
-/* Welcome Section */
-    .welcome-section {
-      background: var(--light-card-bg);
-      padding: 2rem;
-      border-radius: 16px;
-      box-shadow: var(--light-shadow);
-      margin: 2rem 0;
-      border: 1px solid var(--light-border);
-    }
 
-    body[data-bs-theme="dark"] .welcome-section {
-      background: var(--dark-card-bg);
-      box-shadow: var(--dark-shadow);
-      border-color: var(--dark-border);
-    }
 
     /* Cards */
     .card {
@@ -805,47 +791,11 @@
       }
     }
 
-    /* Search bar filters layout */
-    .search-bar-filters {
-      display: flex;
-      gap: 10px;
-      align-items: center;
-      flex-wrap: wrap;
-    }
-    @media (max-width: 768px) {
-      .search-bar-filters {
-        flex-direction: column;
-        align-items: stretch;
-      }
-      .search-bar-filters input,
-      .search-bar-filters select {
-        flex: 1;
-      }
-    }
 
-    /* Professional Section Theme Support */
-    .professional-section {
-      background: var(--light-card-bg);
-      border: 1px solid var(--light-border);
-      box-shadow: var(--light-shadow);
-    }
 
-    body[data-bs-theme="dark"] .professional-section {
-      background: var(--dark-card-bg);
-      border-color: var(--dark-border);
-      box-shadow: var(--dark-shadow);
-    }
 
-    /* Improve text visibility in dark theme for professional section */
-    body[data-bs-theme="dark"] .professional-section .text-muted {
-      color: #e2e8f0 !important;
-    }
 
-    /* Balance car images and details in Recommended section */
-    .card-img-top {
-      height: 200px;
-      object-fit: cover;
-    }
+
 
     /* About Section */
     .about-section {
@@ -2000,13 +1950,19 @@
       const user = JSON.parse(localStorage.getItem("user"));
       if (!user) return;
 
-      // Update profile name
+      // Update profile name (for profile page)
       const profileName = document.getElementById("profile-name");
       if (profileName) {
         profileName.textContent = user.name;
       }
 
-      // Update profile avatar
+      // Update header user name
+      const userName = document.getElementById("user-name");
+      if (userName) {
+        userName.textContent = user.name;
+      }
+
+      // Update profile avatar (for profile page)
       const profileAvatar = document.getElementById("profile-avatar");
       if (profileAvatar) {
         profileAvatar.innerHTML = "";
@@ -2015,6 +1971,18 @@
         } else {
           const initials = user.name.split(" ").map(n => n[0]).join("").substring(0, 2).toUpperCase();
           profileAvatar.textContent = initials;
+        }
+      }
+
+      // Update header nav avatar
+      const navAvatar = document.getElementById("nav-avatar");
+      if (navAvatar) {
+        navAvatar.innerHTML = "";
+        if (user.profilePicture?.url) {
+          navAvatar.innerHTML = `<img src="${user.profilePicture.url}" alt="${user.name}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;">`;
+        } else {
+          const initials = user.name.split(" ").map(n => n[0]).join("").substring(0, 2).toUpperCase();
+          navAvatar.textContent = initials;
         }
       }
     }
