@@ -42,11 +42,31 @@
         }
     };
     
+    // Helper function to get current user
+    function getCurrentUser() {
+        try {
+            const u = JSON.parse(localStorage.getItem('user') || 'null');
+            if (u && (u.token || u.id)) return u;
+        } catch {}
+        // Back-compat for older pages:
+        const legacyToken = localStorage.getItem('authToken') || localStorage.getItem('userToken') || localStorage.getItem('token');
+        if (legacyToken) return { token: legacyToken };
+        return null;
+    }
+
     // Enhanced cart management
     const CartManager = {
         add: function(car) {
             if (!car || !car._id) {
                 console.error('Invalid car object provided to addToCart');
+                return false;
+            }
+
+            // Check if user is logged in
+            const user = getCurrentUser();
+            if (!user) {
+                alert('Please login to add cars to cart.');
+                window.location.href = 'login.html?redirect=' + encodeURIComponent(window.location.href);
                 return false;
             }
 
@@ -148,21 +168,21 @@
         renderCartPage: function() {
             const cart = this.getItems();
             const container = document.getElementById('cart-items');
-            
+
             if (!container) return;
-            
+
             if (!cart.length) {
                 container.innerHTML = `
                     <div class="empty-cart">
                         <i class="fas fa-shopping-cart"></i>
                         <h3>Your cart is empty</h3>
                         <p>Browse our cars and add some to your cart!</p>
-                        <button class="btn btn-primary" onclick="window.location.href='cars.html'">Browse Cars</button>
+                        <button class="btn btn-primary" onclick="window.handleContinueShopping()">Browse Cars</button>
                     </div>
                 `;
                 return;
             }
-            
+
             container.innerHTML = cart.map((car, index) => `
                 <div class="cart-item d-flex flex-column flex-md-row gap-4">
                     <div class="cart-item-img-container" style="flex: 0 0 200px;">
@@ -176,7 +196,7 @@
                             ${car.description}
                         </p>
                         <div class="d-flex gap-2 flex-wrap mt-3">
-                            <button class="btn btn-primary" onclick="window.location.href='book.html?carId=${car._id}'" title="Book this car">
+                            <button class="btn btn-primary" onclick="window.handleBookNow('${car._id}')" title="Book this car">
                                 Book Now
                             </button>
                             <button class="btn btn-outline" onclick="CartManager.remove('${car._id}')" title="Remove this car from cart">

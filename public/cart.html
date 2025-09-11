@@ -269,8 +269,23 @@
   <script src="count-updates.js"></script>
   <script src="cart-fix.js"></script>
   <script>
+    function getCurrentUser() {
+      try {
+        const u = JSON.parse(localStorage.getItem('user') || 'null');
+        if (u && (u.token || u.id)) return u;
+      } catch {}
+      const legacyToken = localStorage.getItem('authToken') || localStorage.getItem('userToken') || localStorage.getItem('token');
+      if (legacyToken) return { token: legacyToken };
+      return null;
+    }
+
     // On cart page load, render the cart items from localStorage
     document.addEventListener('DOMContentLoaded', function() {
+      const user = getCurrentUser();
+      if (!user) {
+        window.location.href = 'login.html?redirect=cart.html';
+        return;
+      }
       if (window.CartManager) {
         window.CartManager.updateDisplay();
       }
@@ -312,25 +327,40 @@
       window.location.href = user ? './perfect-cars.html' : './cars.html';
     }
 
-    function showToast(msg, ms=2500) {
-      const toastEl = document.getElementById('toast');
-      const toastMessage = document.getElementById('toast-message');
-      
-      if (!toastEl || !toastMessage) return;
-      
-      toastMessage.textContent = msg;
-      const bsToast = new bootstrap.Toast(toastEl, { delay: ms });
-      bsToast.show();
+  function showToast(msg, ms=2500) {
+    const toastEl = document.getElementById('toast');
+    const toastMessage = document.getElementById('toast-message');
+
+    if (!toastEl || !toastMessage) return;
+
+    toastMessage.textContent = msg;
+    const bsToast = new bootstrap.Toast(toastEl, { delay: ms });
+    bsToast.show();
+  }
+
+  window.handleBookNow = function(carId) {
+    const user = getCurrentUser();
+    if (user) {
+      window.location.href = `book.html?carId=${encodeURIComponent(carId)}`;
+    } else {
+      showToast('Please login to continue booking.');
+      setTimeout(() => window.location.href = 'login.html?redirect=cart.html', 900);
     }
+  }
 
     // Enhanced cart page functionality
     document.addEventListener('DOMContentLoaded', function() {
+      const user = getCurrentUser();
+      if (!user) {
+        window.location.href = 'login.html?redirect=cart.html';
+        return;
+      }
       // Open booking modal instead of proceeding directly to checkout
       async function handleCartCheckout() {
         const user = getCurrentUser();
         if (!user || !user.token) {
           showToast('Please login to continue');
-          setTimeout(()=>window.location.href='login.html', 900);
+          setTimeout(()=>window.location.href='login.html?redirect=cart.html', 900);
           return;
         }
         const cart = CartManager.getItems();
