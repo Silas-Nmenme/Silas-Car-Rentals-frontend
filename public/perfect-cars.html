@@ -1612,15 +1612,8 @@
 
       count.textContent = `${cars.length} car${cars.length !== 1 ? 's' : ''} available`;
 
-      grid.innerHTML = cars.map(car => {
-        const availabilityClass = car.isAvailable ? "available" : "limited";
-        const availabilityText = car.isAvailable ? "Available" : "Rented";
-        const createdAt = new Date(car.createdAt).toLocaleDateString();
-        const updatedAt = new Date(car.updatedAt).toLocaleDateString();
-        const startDate = car.startDate ? new Date(car.startDate).toLocaleDateString() : 'N/A';
-        const endDate = car.endDate ? new Date(car.endDate).toLocaleDateString() : 'N/A';
-
-        return `
+  grid.innerHTML = cars.map(car => {
+    return `
           <div class="car-card" data-id="${car._id}">
             <img src="${car.image || placeholderImage}" alt="${car.make} ${car.model}" class="car-image" loading="lazy">
             <div class="car-details">
@@ -1631,10 +1624,8 @@
               <p><strong>Color:</strong> ${car.color}</p>
               <p><strong>Brand:</strong> ${car.brand}</p>
               <p><strong>Type:</strong> ${car.type}</p>
-              <p><strong>Description:</strong> ${car.description}</p>
-
-              <p class="availability ${availabilityClass}" aria-label="Availability status">${availabilityText}</p>
-              <div class="car-actions d-flex justify-content-between mt-3">
+          <p><strong>Description:</strong> ${car.description}</p>
+          <div class="car-actions d-flex justify-content-between mt-3">
                 <button class="btn btn-primary btn-sm" data-action="add-cart" data-id="${car._id}" title="Add to Cart">
                   <i class="fas fa-cart-plus me-1"></i>Add to Cart
                 </button>
