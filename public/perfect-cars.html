@@ -422,54 +422,89 @@
         align-items: center;
       }
 
-      /* Hero Section - Improved mobile layout */
+      /* Hero Section - Balanced mobile layout */
       .hero-section {
         padding: 2rem 1rem;
-        min-height: 50vh;
+        min-height: 45vh;
         text-align: center;
+        display: flex;
+        align-items: center;
+      }
+
+      .hero-content {
+        width: 100%;
+        max-width: 100%;
+      }
+
+      .pill {
+        font-size: 0.85rem;
+        margin-bottom: 1rem;
       }
 
       .hero-title {
-        font-size: 2.2rem;
+        font-size: 2rem;
         line-height: 1.2;
         margin-bottom: 1rem;
         word-wrap: break-word;
+        letter-spacing: -0.01em;
       }
 
       .hero-subtitle {
         font-size: 1rem;
-        line-height: 1.4;
-        margin-bottom: 2rem;
+        line-height: 1.5;
+        margin-bottom: 1.5rem;
         max-width: 100%;
+        opacity: 0.95;
       }
 
       .search-container {
-        margin-top: 1.5rem;
+        margin-top: 1rem;
         width: 100%;
+        max-width: 100%;
       }
 
       .search-input {
         max-width: 100% !important;
-        padding: 0.25rem 0.75rem;
+        padding: 0.5rem 0.75rem;
         margin: 0 auto;
         display: flex;
         gap: 0.5rem;
+        background: rgba(255,255,255,0.95);
+        border-radius: 50px;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
       }
 
       .search-input input {
         font-size: 0.9rem;
-        padding: 0.75rem;
+        padding: 0.75rem 1rem;
         border-radius: 25px;
         flex: 1;
         min-height: 44px;
+        border: none;
+        background: transparent;
+        outline: none;
+      }
+
+      .search-input input::placeholder {
+        color: rgba(0,0,0,0.6);
+        font-size: 0.85rem;
       }
 
       .search-input button {
         font-size: 0.9rem;
-        padding: 0.75rem 1.5rem;
+        padding: 0.75rem 1.25rem;
         border-radius: 25px;
         min-height: 44px;
         white-space: nowrap;
+        font-weight: 600;
+        transition: all 0.2s ease;
+      }
+
+      .search-input button:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 2px 8px rgba(0,0,0,0.15);
       }
 
       /* Filters - Enhanced mobile filters */
