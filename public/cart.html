@@ -358,7 +358,7 @@
       // Open booking modal instead of proceeding directly to checkout
       async function handleCartCheckout() {
         const user = getCurrentUser();
-        if (!user || !user.token) {
+        if (!user) {
           showToast('Please login to continue');
           setTimeout(()=>window.location.href='login.html?redirect=cart.html', 900);
           return;
