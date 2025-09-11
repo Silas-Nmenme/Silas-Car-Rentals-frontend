@@ -229,8 +229,7 @@
                     days: booking.days,
                     status: 'pending'
                 };
-                const carId = booking.isMultiCar ? booking.cars[0]._id : booking.car._id;
-                const response = await fetch(`${API_BASE}/api/payment/pay/${encodeURIComponent(carId)}`, {
+                const response = await fetch(`${API_BASE}/api/bookings`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
