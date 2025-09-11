@@ -218,18 +218,16 @@
                 return { success: false, error: 'Authentication required' };
             }
             try {
+                const carId = booking.isMultiCar ? booking.cars[0]._id : booking.car._id;
                 const bookingData = {
-                    userId: booking.userId,
-                    cars: booking.isMultiCar ? booking.cars : [booking.car],
-                    pickupDate: booking.pickupDate,
-                    returnDate: booking.returnDate,
                     email: booking.email,
-                    phoneNumber: booking.phoneNumber,
-                    totalAmount: booking.totalAmount,
-                    days: booking.days,
-                    status: 'pending'
+                    phone_number: booking.phoneNumber,
+                    startDate: booking.pickupDate,
+                    endDate: booking.returnDate,
+                    userId: booking.userId,
+                    amount: booking.totalAmount
                 };
-                const response = await fetch(`${API_BASE}/api/bookings`, {
+                const response = await fetch(`${API_BASE}/api/payment/pay/${encodeURIComponent(carId)}`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',

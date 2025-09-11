@@ -223,57 +223,13 @@ async function initiatePayment(){
   if (submitBtn){ submitBtn.disabled = true; }
 
   try {
-    // 1) Ensure booking exists in backend (get bookingId)
+    // 1) Initiate payment (creates booking and payment)
     const bookingResult = await submitBookingToBackend();
     if (!bookingResult.success) throw new Error(bookingResult.error || "Failed to submit booking");
-    const bookingId = bookingResult.data?._id || booking._id;
-    booking._id = bookingId;
 
-    // 2) Choose the carId for the route param — API expects a single :carId
-    const carId = booking.isMultiCar ? booking.cars?.[0]?._id : booking.car?._id;
-    if (!carId) throw new Error("Missing carId for payment");
-
-    // 3) POST /api/payment/pay/:carid  (Authorization: Bearer <token>)
-    console.log("Initiating payment for carId:", carId);
-    console.log("Booking data:", {
-        bookingId,
-        email: booking.email,
-        phoneNumber: booking.phoneNumber,
-        pickupDate: booking.pickupDate,
-        returnDate: booking.returnDate,
-        totalAmount: booking.totalAmount
-    });
-    const res = await fetch(`${API_BASE}/api/payment/pay/${encodeURIComponent(carId)}`, {
-      method: "POST",
-      headers: {
-        "Content-Type":"application/json",
-        "Authorization": `Bearer ${user.token}`
-      },
-      body: JSON.stringify({
-        bookingId,
-        // Optional extras your backend may accept:
-        email: booking.email,
-        phoneNumber: booking.phoneNumber,
-        pickupDate: booking.pickupDate,
-        returnDate: booking.returnDate,
-        totalAmount: booking.totalAmount
-      })
-    });
-
-    if (!res.ok) {
-      const err = await res.json().catch(()=>({}));
-      if (res.status === 401) {
-        showToast("Session expired. Please login again.", 3000, "#f44336");
-        setTimeout(()=>window.location.href="login.html", 1200);
-        return;
-      }
-      throw new Error(err.message || `Payment init failed (${res.status})`);
-    }
-
-    const data = await res.json();
-    const link = data.redirectUrl || data.paymentLink || data.data?.link || data.paymentUrl;
-    if (link) {
-      window.location.href = link; // Flutterwave checkout
+    const redirectLink = bookingResult.data.redirectLink;
+    if (redirectLink) {
+      window.location.href = redirectLink; // Flutterwave checkout
       return;
     }
     // Fallback: no link returned
