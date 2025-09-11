@@ -182,6 +182,8 @@
       box-shadow: 0 4px 12px rgba(0,0,0,0.2);
     }
 
+
+
     /* Cards */
     .card {
       background: var(--light-card-bg);
@@ -308,271 +310,492 @@
       background: var(--dark-primary) !important;
     }
 
-    /* Hero Section */
-    .hero-section {
-      padding: 6rem 0 4rem;
-      background: linear-gradient(135deg, var(--light-primary) 0%, var(--light-primary-700) 100%);
-      position: relative;
-      overflow: hidden;
+    /* Mobile responsiveness adjustments */
+    @media (max-width: 768px) {
+      .hero-title {
+        font-size: 2.5rem;
+      }
+
+      .hero-subtitle {
+        font-size: 1.1rem;
+      }
+
+      .hero-buttons {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .about-content {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+      }
+
+      .services-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .features-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .footer-content {
+        grid-template-columns: 1fr;
+      }
+
+      .car-specs {
+        gap: 0.5rem;
+      }
+
+      .spec-item {
+        font-size: 0.8rem;
+        padding: 0.2rem 0.4rem;
+      }
+
+      .car-actions {
+        flex-direction: column;
+        gap: 0.5rem;
+      }
+
+      .view-more-stats {
+        gap: 1rem;
+      }
+
+      .stat-number {
+        font-size: 1.25rem;
+      }
+
+      #welcome-avatar {
+        width: 50px !important;
+        height: 50px !important;
+        font-size: 1rem !important;
+      }
+      .card-img-top {
+        height: 200px;
+        object-fit: cover;
+      }
+      .navbar .d-flex.align-items-center.gap-3 {
+        gap: 0.25rem !important; /* Reduced gap for better balance */
+      }
+      .navbar .btn {
+        padding: 0.25rem 0.375rem; /* Smaller padding */
+        font-size: 0.8rem; /* Smaller font */
+      }
+      .navbar .badge {
+        font-size: 0.7rem; /* Smaller badge */
+        padding: 0.2em 0.4em; /* Adjust badge padding */
+      }
+      .navbar-brand {
+        font-size: 1.1rem; /* Slightly smaller brand */
+      }
+      #nav-avatar {
+        width: 28px !important;
+        height: 28px !important;
+        font-size: 0.8rem !important;
+      }
+      .dropdown-menu {
+        min-width: 150px; /* Narrower dropdown */
+      }
+      /* Balance header: Center brand, distribute right elements evenly */
+      .navbar .container-fluid {
+        flex-wrap: wrap;
+        justify-content: space-between;
+        align-items: center;
+      }
+      .navbar-brand {
+        flex: 1;
+        text-align: center;
+        order: 2;
+      }
+      .navbar .ms-auto.d-flex.align-items-center.gap-3 {
+        flex: 1;
+        justify-content: space-around;
+        order: 3;
+        gap: 0.5rem !important;
+      }
+      .navbar .d-none.d-md-flex {
+        order: 1;
+        flex: 1;
+        justify-content: flex-start;
+      }
+      .navbar .btn-outline-success.d-lg-none {
+        order: 0;
+      }
+
+      /* Home-specific mobile adjustments */
+      .welcome-section {
+        padding: 1.5rem;
+      }
+
+      .search-bar-filters {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .search-bar-filters input,
+      .search-bar-filters select {
+        flex: 1;
+        margin-bottom: 0.5rem;
+      }
+
+      .promo-carousel .carousel-item {
+        padding: 1rem;
+      }
+
+      .quick-stats .col-md-3 {
+        margin-bottom: 1rem;
+      }
+
+      .quick-booking .col-md-6 {
+        margin-bottom: 1rem;
+      }
+
+      .recommended-cars .col-md-4 {
+        margin-bottom: 1.5rem;
+      }
+
+      .testimonials .col-md-4 {
+        margin-bottom: 1.5rem;
+      }
+
+      .activity-feed .activity-item {
+        padding: 1rem 0;
+      }
+
+      .faq-accordion .accordion-item {
+        margin-bottom: 0.5rem;
+      }
+
+      .newsletter .input-group {
+        flex-direction: column;
+      }
+
+      .newsletter .input-group input {
+        margin-bottom: 0.5rem;
+      }
+
+      .social-media .btn {
+        margin-bottom: 0.5rem;
+      }
+
+      .locations .col-md-4 {
+        margin-bottom: 1rem;
+      }
+
+      .contact-widget .col-md-6 {
+        margin-bottom: 1.5rem;
+      }
+
+      .loyalty-program .col-md-8,
+      .loyalty-program .col-md-4 {
+        margin-bottom: 1rem;
+      }
+    }
+    @media (max-width: 576px) {
+      .navbar-brand {
+        font-size: 1rem;
+      }
+      #welcome-user {
+        font-size: 1.25rem;
+      }
+      .card-body.d-flex.flex-column .btn {
+        font-size: 0.875rem;
+      }
+      .quick-stats .card {
+        padding: 1rem 0.5rem;
+      }
+      .quick-stats .card i {
+        font-size: 1.5rem;
+      }
+      .navbar .d-flex.align-items-center {
+        flex-wrap: wrap; /* Allow wrapping if needed */
+        justify-content: space-around; /* Distribute evenly */
+        gap: 0.25rem !important;
+      }
+      .navbar .btn {
+        padding: 0.2rem 0.3rem;
+        font-size: 0.75rem;
+      }
+      .navbar .badge {
+        font-size: 0.65rem;
+        padding: 0.15em 0.3em;
+      }
+      #nav-avatar {
+        width: 24px !important;
+        height: 24px !important;
+        font-size: 0.7rem !important;
+      }
+      .dropdown-menu {
+        min-width: 120px;
+      }
+      /* Further balance: Stack elements if needed */
+      .navbar .container-fluid {
+        flex-direction: column;
+        align-items: stretch;
+      }
+      .navbar-brand {
+        text-align: center;
+        margin-bottom: 0.5rem;
+      }
+      .navbar .ms-auto.d-flex.align-items-center.gap-3 {
+        justify-content: center;
+        flex-wrap: wrap;
+      }
+
+      /* Home-specific mobile adjustments */
+      .welcome-section h2 {
+        font-size: 1.5rem;
+      }
+
+      .welcome-section p {
+        font-size: 0.9rem;
+      }
+
+      .search-bar-card h5 {
+        font-size: 1.1rem;
+      }
+
+      .promo-carousel h5 {
+        font-size: 1.2rem;
+      }
+
+      .promo-carousel p {
+        font-size: 0.9rem;
+      }
+
+      .stats-dashboard h6 {
+        font-size: 0.9rem;
+      }
+
+      .quick-booking h5 {
+        font-size: 1.1rem;
+      }
+
+      .recommended-cars h5 {
+        font-size: 1.1rem;
+      }
+
+      .testimonials h5 {
+        font-size: 1.1rem;
+      }
+
+      .activity-feed h5 {
+        font-size: 1.1rem;
+      }
+
+      .faq h5 {
+        font-size: 1.1rem;
+      }
+
+      .newsletter h5 {
+        font-size: 1.1rem;
+      }
+
+      .social-media h5 {
+        font-size: 1.1rem;
+      }
+
+      .locations h5 {
+        font-size: 1.1rem;
+      }
+
+      .contact-widget h5 {
+        font-size: 1.1rem;
+      }
+
+      .loyalty-program h5 {
+        font-size: 1.1rem;
+      }
+    }
+    @media (max-width: 480px) {
+      .navbar-brand {
+        font-size: 0.9rem;
+      }
+      .navbar .d-flex.align-items-center.gap-3 {
+        gap: 0.1rem !important;
+      }
+      .navbar .btn {
+        padding: 0.15rem 0.25rem;
+        font-size: 0.7rem;
+      }
+      .navbar .badge {
+        font-size: 0.6rem;
+        padding: 0.1em 0.25em;
+      }
+      #nav-avatar {
+        width: 20px !important;
+        height: 20px !important;
+        font-size: 0.6rem !important;
+      }
+      .dropdown-menu {
+        min-width: 100px;
+        font-size: 0.8rem;
+      }
+      .dropdown-item {
+        padding: 0.25rem 0.5rem;
+      }
+      /* Compact and balanced: Minimize gaps, center align */
+      .navbar .container-fluid {
+        padding: 0.5rem;
+      }
+      .navbar .ms-auto.d-flex.align-items-center.gap-3 {
+        justify-content: space-between;
+        gap: 0 !important;
+      }
+      .navbar .btn {
+        min-width: 2rem;
+      }
+
+      /* Home-specific mobile adjustments */
+      .welcome-section {
+        padding: 1rem;
+      }
+
+      .search-bar-filters input,
+      .search-bar-filters select,
+      .search-bar-filters button {
+        font-size: 0.9rem;
+        padding: 0.5rem;
+      }
+
+      .promo-carousel .card-body {
+        padding: 1rem 0.5rem;
+      }
+
+      .quick-stats .card {
+        padding: 0.75rem 0.5rem;
+      }
+
+      .quick-stats .card i {
+        font-size: 1.25rem;
+      }
+
+      .quick-stats .card h6 {
+        font-size: 0.8rem;
+      }
+
+      .quick-stats .card p {
+        font-size: 0.8rem;
+      }
+
+      .quick-booking .form-control,
+      .quick-booking .form-select {
+        font-size: 0.9rem;
+        padding: 0.5rem;
+      }
+
+      .recommended-cars .card-body h6 {
+        font-size: 0.9rem;
+      }
+
+      .recommended-cars .card-body p {
+        font-size: 0.9rem;
+      }
+
+      .recommended-cars .badge {
+        font-size: 0.7rem;
+      }
+
+      .testimonials .card-body h6 {
+        font-size: 0.9rem;
+      }
+
+      .testimonials .card-body p {
+        font-size: 0.85rem;
+      }
+
+      .activity-feed .activity-item p {
+        font-size: 0.9rem;
+      }
+
+      .activity-feed .activity-item small {
+        font-size: 0.8rem;
+      }
+
+      .faq .accordion-button {
+        font-size: 0.9rem;
+        padding: 0.75rem 1rem;
+      }
+
+      .faq .accordion-body {
+        font-size: 0.85rem;
+        padding: 0.5rem 1rem;
+      }
+
+      .newsletter .card-body h5 {
+        font-size: 1rem;
+      }
+
+      .newsletter .card-body p {
+        font-size: 0.85rem;
+      }
+
+      .newsletter .form-control {
+        font-size: 0.9rem;
+        padding: 0.5rem;
+      }
+
+      .newsletter .btn {
+        font-size: 0.9rem;
+        padding: 0.5rem;
+      }
+
+      .social-media .btn {
+        font-size: 0.8rem;
+        padding: 0.4rem 0.8rem;
+      }
+
+      .locations .card-body h6 {
+        font-size: 0.9rem;
+      }
+
+      .locations .card-body p {
+        font-size: 0.85rem;
+      }
+
+      .contact-widget .card-body h6 {
+        font-size: 0.9rem;
+      }
+
+      .contact-widget .card-body p {
+        font-size: 0.85rem;
+      }
+
+      .contact-widget .form-control {
+        font-size: 0.9rem;
+        padding: 0.5rem;
+      }
+
+      .contact-widget .btn {
+        font-size: 0.9rem;
+        padding: 0.5rem;
+      }
+
+      .loyalty-program .card-body h6 {
+        font-size: 0.9rem;
+      }
+
+      .loyalty-program .card-body p {
+        font-size: 0.85rem;
+      }
+
+      .loyalty-program .progress {
+        height: 0.5rem;
+      }
+
+      .loyalty-program small {
+        font-size: 0.8rem;
+      }
+
+      .loyalty-program h4 {
+        font-size: 1.1rem;
+      }
     }
 
-    body[data-theme="dark"] .hero-section {
-      background: linear-gradient(135deg, var(--dark-primary) 0%, var(--dark-primary-700) 100%);
-    }
 
-    .hero-bg {
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      overflow: hidden;
-    }
 
-    .floating-shape {
-      position: absolute;
-      border-radius: 50%;
-      background: rgba(255,255,255,0.1);
-      animation: float 6s ease-in-out infinite;
-    }
 
-    .floating-shape:nth-child(1) {
-      width: 80px;
-      height: 80px;
-      top: 10%;
-      left: 10%;
-      animation-delay: 0s;
-    }
 
-    .floating-shape:nth-child(2) {
-      width: 60px;
-      height: 60px;
-      top: 20%;
-      right: 10%;
-      animation-delay: 2s;
-    }
 
-    .floating-shape:nth-child(3) {
-      width: 100px;
-      height: 100px;
-      bottom: 10%;
-      left: 20%;
-      animation-delay: 4s;
-    }
-
-    .floating-shape:nth-child(4) {
-      width: 70px;
-      height: 70px;
-      bottom: 20%;
-      right: 20%;
-      animation-delay: 1s;
-    }
-
-    @keyframes float {
-      0%, 100% { transform: translateY(0px); }
-      50% { transform: translateY(-20px); }
-    }
-
-    .hero-title {
-      font-size: 3.5rem;
-      font-weight: 800;
-      color: white;
-      margin-bottom: 1rem;
-      text-shadow: 0 4px 8px rgba(0,0,0,0.3);
-      line-height: 1.1;
-    }
-
-    .hero-subtitle {
-      font-size: 1.25rem;
-      color: rgba(255,255,255,0.9);
-      margin-bottom: 2rem;
-      max-width: 600px;
-      line-height: 1.6;
-    }
-
-    .pill {
-      display: inline-block;
-      background: rgba(255,255,255,0.2);
-      color: white;
-      padding: 0.5rem 1rem;
-      border-radius: 50px;
-      font-weight: 600;
-      font-size: 0.9rem;
-      margin-bottom: 1rem;
-      backdrop-filter: blur(10px);
-    }
-
-    /* Services Section */
-    .services-section {
-      padding: 4rem 0;
-      background: var(--light-card-bg);
-    }
-
-    body[data-theme="dark"] .services-section {
-      background: var(--dark-card-bg);
-    }
-
-    .services-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      gap: 2rem;
-      margin-top: 2rem;
-    }
-
-    /* Filters Section */
-    .filters-section {
-      padding: 2rem 0;
-      background: var(--light-bg);
-      border-bottom: 1px solid var(--light-border);
-    }
-
-    body[data-theme="dark"] .filters-section {
-      background: var(--dark-bg);
-      border-color: var(--dark-border);
-    }
-
-    .filters-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 2rem;
-      margin-top: 1rem;
-    }
-
-    .filter-group {
-      background: var(--light-card-bg);
-      padding: 1.5rem;
-      border-radius: 12px;
-      box-shadow: var(--light-shadow);
-      border: 1px solid var(--light-border);
-    }
-
-    body[data-theme="dark"] .filter-group {
-      background: var(--dark-card-bg);
-      box-shadow: var(--dark-shadow);
-      border-color: var(--dark-border);
-    }
-
-    .filter-group label {
-      display: block;
-      margin-bottom: 0.5rem;
-      font-weight: 600;
-      color: var(--light-text);
-    }
-
-    body[data-theme="dark"] .filter-group label {
-      color: var(--dark-text);
-    }
-
-    .filter-group select {
-      width: 100%;
-      padding: 0.75rem;
-      border: 2px solid var(--light-border);
-      border-radius: 8px;
-      background: var(--light-card-bg);
-      color: var(--light-text);
-      font-size: 1rem;
-      transition: var(--transition);
-    }
-
-    body[data-theme="dark"] .filter-group select {
-      background: var(--dark-card-bg);
-      border-color: var(--dark-border);
-      color: var(--dark-text);
-    }
-
-    .filter-group select:focus {
-      outline: none;
-      border-color: var(--light-primary);
-      box-shadow: 0 0 0 3px rgba(13, 148, 136, 0.1);
-    }
-
-    body[data-theme="dark"] .filter-group select:focus {
-      border-color: var(--dark-primary);
-      box-shadow: 0 0 0 3px rgba(20, 184, 166, 0.1);
-    }
-
-    /* Car Cards */
-    .car-card {
-      background: var(--light-card-bg);
-      border-radius: 16px;
-      box-shadow: var(--light-shadow);
-      border: 1px solid var(--light-border);
-      overflow: hidden;
-      transition: var(--transition);
-      margin-bottom: 2rem;
-    }
-
-    body[data-theme="dark"] .car-card {
-      background: var(--dark-card-bg);
-      box-shadow: var(--dark-shadow);
-      border-color: var(--dark-border);
-    }
-
-    .car-card:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 15px 35px rgba(0,0,0,0.1);
-    }
-
-    body[data-theme="dark"] .car-card:hover {
-      box-shadow: 0 15px 35px rgba(0,0,0,0.3);
-    }
-
-    .car-image {
-      width: 100%;
-      height: 220px;
-      object-fit: cover;
-      transition: var(--transition);
-    }
-
-    .car-card:hover .car-image {
-      transform: scale(1.05);
-    }
-
-    .car-details {
-      padding: 1.5rem;
-    }
-
-    .car-name {
-      font-size: 1.25rem;
-      font-weight: 700;
-      color: var(--light-text);
-      margin-bottom: 0.5rem;
-    }
-
-    body[data-theme="dark"] .car-name {
-      color: var(--dark-text);
-    }
-
-    .car-details p {
-      margin-bottom: 0.25rem;
-      font-size: 0.9rem;
-      color: var(--light-muted);
-    }
-
-    body[data-theme="dark"] .car-details p {
-      color: var(--dark-muted);
-    }
-
-    .car-details strong {
-      color: var(--light-text);
-    }
-
-    body[data-theme="dark"] .car-details strong {
-      color: var(--dark-text);
-    }
-
-    .car-actions {
-      display: flex;
-      gap: 0.5rem;
-      margin-top: 1rem;
-    }
-
-    .car-actions .btn {
-      flex: 1;
-      padding: 0.5rem 0.75rem;
-      font-size: 0.85rem;
-      border-radius: 6px;
-    }
 
     /* About Section */
     .about-section {
@@ -760,17 +983,6 @@
       margin-bottom: 1.5rem;
     }
 
-    .form-group label {
-      display: block;
-      margin-bottom: 0.5rem;
-      font-weight: 600;
-      color: var(--light-text);
-    }
-
-    body[data-theme="dark"] .form-group label {
-      color: var(--dark-text);
-    }
-
     .form-group input,
     .form-group textarea {
       width: 100%;
@@ -808,34 +1020,6 @@
       min-height: 120px;
     }
 
-    .btn-submit {
-      background: linear-gradient(135deg, var(--light-primary) 0%, var(--light-primary-700) 100%);
-      border: none;
-      color: white;
-      padding: 1rem 2rem;
-      border-radius: 8px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: var(--transition);
-      box-shadow: 0 4px 15px rgba(13, 148, 136, 0.3);
-      width: 100%;
-    }
-
-    .btn-submit:hover {
-      background: linear-gradient(135deg, var(--light-primary-700) 0%, var(--light-primary) 100%);
-      transform: translateY(-2px);
-      box-shadow: 0 8px 25px rgba(13, 148, 136, 0.4);
-    }
-
-    body[data-theme="dark"] .btn-submit {
-      background: linear-gradient(135deg, var(--dark-primary) 0%, var(--dark-primary-700) 100%);
-      box-shadow: 0 4px 15px rgba(20, 184, 166, 0.3);
-    }
-
-    body[data-theme="dark"] .btn-submit:hover {
-      box-shadow: 0 8px 25px rgba(20, 184, 166, 0.4);
-    }
-
     /* Section Titles */
     .section-title {
       font-size: 2.5rem;
@@ -847,888 +1031,6 @@
 
     body[data-theme="dark"] .section-title {
       color: var(--dark-text);
-    }
-
-    /* Footer */
-    .main-footer {
-      background: var(--light-card-bg);
-      padding: 3rem 0 2rem;
-      border-top: 1px solid var(--light-border);
-      margin-top: 4rem;
-    }
-
-    body[data-theme="dark"] .main-footer {
-      background: var(--dark-card-bg);
-      border-color: var(--dark-border);
-    }
-
-    .footer-content {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 2rem;
-      margin-bottom: 2rem;
-    }
-
-    .footer-section h3 {
-      color: var(--light-text);
-      margin-bottom: 1rem;
-      font-size: 1.25rem;
-      font-weight: 700;
-    }
-
-    body[data-theme="dark"] .footer-section h3 {
-      color: var(--dark-text);
-    }
-
-    .footer-section p {
-      color: var(--light-muted);
-      line-height: 1.6;
-      margin-bottom: 1rem;
-    }
-
-    body[data-theme="dark"] .footer-section p {
-      color: var(--dark-muted);
-    }
-
-    .footer-section ul {
-      list-style: none;
-      padding: 0;
-    }
-
-    .footer-section li {
-      margin-bottom: 0.5rem;
-    }
-
-    .footer-section a {
-      color: var(--light-muted);
-      text-decoration: none;
-      transition: var(--transition);
-    }
-
-    .footer-section a:hover {
-      color: var(--light-primary);
-    }
-
-    body[data-theme="dark"] .footer-section a:hover {
-      color: var(--dark-primary);
-    }
-
-    /* Toast Notifications */
-    .toast {
-      position: fixed;
-      top: 100px;
-      right: 20px;
-      background: var(--light-card-bg);
-      border: 1px solid var(--light-border);
-      border-radius: 8px;
-      box-shadow: var(--light-shadow);
-      padding: 1rem;
-      z-index: 10000;
-      transform: translateX(400px);
-      transition: transform 0.3s ease;
-      max-width: 300px;
-    }
-
-    body[data-theme="dark"] .toast {
-      background: var(--dark-card-bg);
-      border-color: var(--dark-border);
-      box-shadow: var(--dark-shadow);
-    }
-
-    .toast.show {
-      transform: translateX(0);
-    }
-
-    .toast.hide {
-      transform: translateX(400px);
-    }
-
-    .toast.toast-success {
-      border-color: #10b981;
-    }
-
-    .toast.toast-error {
-      border-color: #ef4444;
-    }
-
-    .toast.toast-warning {
-      border-color: #f59e0b;
-    }
-
-    .toast.toast-info {
-      border-color: var(--light-primary);
-    }
-
-    body[data-theme="dark"] .toast.toast-info {
-      border-color: var(--dark-primary);
-    }
-
-    .toast-icon {
-      margin-right: 0.5rem;
-      font-size: 1.1rem;
-    }
-
-    .toast-message {
-      margin: 0;
-      font-weight: 500;
-    }
-
-    .toast-close {
-      position: absolute;
-      top: 0.5rem;
-      right: 0.5rem;
-      background: none;
-      border: none;
-      font-size: 1.2rem;
-      cursor: pointer;
-      color: var(--light-muted);
-    }
-
-    body[data-theme="dark"] .toast-close {
-      color: var(--dark-muted);
-    }
-
-    /* Scroll to Top */
-    .scroll-to-top {
-      position: fixed;
-      bottom: 20px;
-      right: 20px;
-      background: var(--light-primary);
-      color: white;
-      width: 50px;
-      height: 50px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      transition: var(--transition);
-      z-index: 1000;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-      opacity: 0;
-      visibility: hidden;
-    }
-
-    body[data-theme="dark"] .scroll-to-top {
-      background: var(--dark-primary);
-    }
-
-    .scroll-to-top.show {
-      opacity: 1;
-      visibility: visible;
-    }
-
-    .scroll-to-top:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 6px 16px rgba(0,0,0,0.3);
-    }
-
-    /* Loading Animation */
-    @keyframes loading {
-      0% { background-position: -200% 0; }
-      100% { background-position: 200% 0; }
-    }
-
-    .skeleton-card {
-      background: var(--light-card-bg);
-      border-radius: 16px;
-      padding: 2rem;
-      box-shadow: var(--light-shadow);
-      margin-bottom: 2rem;
-    }
-
-    body[data-theme="dark"] .skeleton-card {
-      background: var(--dark-card-bg);
-      box-shadow: var(--dark-shadow);
-    }
-
-    .skeleton {
-      background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
-      background-size: 200% 100%;
-      animation: loading 1.5s infinite;
-      border-radius: 4px;
-      margin-bottom: 1rem;
-    }
-
-    body[data-theme="dark"] .skeleton {
-      background: linear-gradient(90deg, #374151 25%, #4b5563 50%, #374151 75%);
-      background-size: 200% 100%;
-    }
-
-    /* Offcanvas Sidebar Styles */
-    .offcanvas {
-      background: var(--light-card-bg);
-      border-right: 1px solid var(--light-border);
-    }
-
-    body[data-theme="dark"] .offcanvas {
-      background: var(--dark-card-bg);
-      border-right-color: var(--dark-border);
-    }
-
-    .offcanvas-header {
-      background: var(--light-primary);
-      color: white;
-      border-bottom: 1px solid rgba(255,255,255,0.1);
-    }
-
-    body[data-theme="dark"] .offcanvas-header {
-      background: var(--dark-primary);
-    }
-
-    .offcanvas-body .nav-link {
-      color: var(--light-text) !important;
-      padding: 0.75rem 1rem;
-      border-radius: 8px;
-      margin-bottom: 0.25rem;
-      transition: var(--transition);
-    }
-
-    body[data-theme="dark"] .offcanvas-body .nav-link {
-      color: var(--dark-text) !important;
-    }
-
-    .offcanvas-body .nav-link:hover {
-      background: rgba(13, 148, 136, 0.1);
-      color: var(--light-primary) !important;
-    }
-
-    body[data-theme="dark"] .offcanvas-body .nav-link:hover {
-      background: rgba(20, 184, 166, 0.1);
-      color: var(--dark-primary) !important;
-    }
-
-    .offcanvas-body .btn {
-      min-height: 44px;
-      font-size: 0.9rem;
-      padding: 0.5rem 1rem;
-    }
-
-    /* Mobile responsiveness adjustments */
-    @media (max-width: 768px) {
-      .hero-title {
-        font-size: 2.5rem;
-      }
-
-      .hero-subtitle {
-        font-size: 1.1rem;
-      }
-
-      .hero-section {
-        padding: 4rem 0 2rem;
-      }
-
-      .search-container {
-        max-width: 100% !important;
-        margin: 1rem 0 !important;
-      }
-
-      .search-input {
-        max-width: 100% !important;
-        padding: 0.25rem 0.75rem !important;
-        flex-direction: column;
-        gap: 0.5rem;
-      }
-
-      .search-input input {
-        width: 100%;
-        margin-bottom: 0.5rem;
-      }
-
-      .filters-grid {
-        grid-template-columns: 1fr !important;
-        gap: 1rem !important;
-      }
-
-      .filter-group {
-        padding: 1rem !important;
-      }
-
-      .services-grid {
-        grid-template-columns: 1fr;
-        gap: 1.5rem;
-      }
-
-      .car-card {
-        margin-bottom: 1.5rem;
-      }
-
-      .car-image {
-        height: 200px;
-      }
-
-      .car-details {
-        padding: 1rem;
-      }
-
-      .car-name {
-        font-size: 1.1rem;
-      }
-
-      .car-actions {
-        flex-direction: column;
-        gap: 0.5rem;
-      }
-
-      .car-actions .btn {
-        font-size: 0.8rem;
-        padding: 0.5rem;
-      }
-
-      .about-content {
-        grid-template-columns: 1fr;
-        gap: 2rem;
-      }
-
-      .about-stats {
-        grid-template-columns: 1fr;
-        gap: 1.5rem;
-      }
-
-      .stat-item {
-        padding: 1.5rem;
-      }
-
-      .stat-item h3 {
-        font-size: 2rem;
-      }
-
-      .contact-content {
-        grid-template-columns: 1fr;
-        gap: 2rem;
-      }
-
-      .contact-item {
-        flex-direction: column;
-        text-align: center;
-        gap: 1rem;
-      }
-
-      .contact-item i {
-        font-size: 2rem;
-        margin-top: 0;
-      }
-
-      .contact-form {
-        padding: 1.5rem;
-      }
-
-      .form-group input,
-      .form-group textarea {
-        font-size: 0.9rem;
-        padding: 0.75rem;
-      }
-
-      .btn-submit {
-        font-size: 0.9rem;
-        padding: 0.75rem;
-      }
-
-      .footer-content {
-        grid-template-columns: 1fr;
-        gap: 1.5rem;
-      }
-
-      .footer-section {
-        text-align: center;
-      }
-
-      .navbar .d-flex.align-items-center.gap-3 {
-        gap: 0.25rem !important;
-      }
-
-      .navbar .btn {
-        padding: 0.25rem 0.375rem;
-        font-size: 0.8rem;
-      }
-
-      .navbar .badge {
-        font-size: 0.7rem;
-        padding: 0.2em 0.4em;
-      }
-
-      .navbar-brand {
-        font-size: 1.1rem;
-      }
-
-      #nav-avatar {
-        width: 28px !important;
-        height: 28px !important;
-        font-size: 0.8rem !important;
-      }
-
-      .dropdown-menu {
-        min-width: 150px;
-      }
-
-      .navbar .container-fluid {
-        flex-wrap: wrap;
-        justify-content: space-between;
-        align-items: center;
-      }
-
-      .navbar-brand {
-        flex: 1;
-        text-align: center;
-        order: 2;
-      }
-
-      .navbar .ms-auto.d-flex.align-items-center.gap-3 {
-        flex: 1;
-        justify-content: space-around;
-        order: 3;
-        gap: 0.5rem !important;
-      }
-
-      .navbar .d-none.d-md-flex {
-        order: 1;
-        flex: 1;
-        justify-content: flex-start;
-      }
-
-      .navbar .btn-outline-success.d-lg-none {
-        order: 0;
-      }
-    }
-
-    @media (max-width: 576px) {
-      .hero-title {
-        font-size: 2rem;
-      }
-
-      .hero-subtitle {
-        font-size: 1rem;
-      }
-
-      .hero-section {
-        padding: 3rem 0 1rem;
-      }
-
-      .search-input {
-        padding: 0.25rem 0.5rem !important;
-      }
-
-      .search-input input {
-        font-size: 0.9rem;
-        padding: 0.5rem;
-      }
-
-      .search-input button {
-        font-size: 0.8rem;
-        padding: 0.5rem 1rem;
-      }
-
-      .filters-grid {
-        gap: 0.75rem !important;
-      }
-
-      .filter-group {
-        padding: 0.75rem !important;
-      }
-
-      .services-grid {
-        gap: 1rem;
-      }
-
-      .car-card {
-        margin-bottom: 1rem;
-      }
-
-      .car-image {
-        height: 180px;
-      }
-
-      .car-details {
-        padding: 0.75rem;
-      }
-
-      .car-name {
-        font-size: 1rem;
-      }
-
-      .car-details p {
-        font-size: 0.85rem;
-      }
-
-      .car-actions .btn {
-        font-size: 0.75rem;
-        padding: 0.4rem 0.5rem;
-      }
-
-      .about-section {
-        padding: 2rem 0;
-      }
-
-      .about-content {
-        gap: 1.5rem;
-      }
-
-      .about-stats {
-        gap: 1rem;
-      }
-
-      .stat-item {
-        padding: 1rem;
-      }
-
-      .stat-item h3 {
-        font-size: 1.5rem;
-      }
-
-      .contact-section {
-        padding: 2rem 0;
-      }
-
-      .contact-content {
-        gap: 1.5rem;
-      }
-
-      .contact-item {
-        padding: 1rem;
-        gap: 0.75rem;
-      }
-
-      .contact-item i {
-        font-size: 1.5rem;
-      }
-
-      .contact-item h4 {
-        font-size: 1rem;
-      }
-
-      .contact-item p {
-        font-size: 0.85rem;
-      }
-
-      .contact-form {
-        padding: 1rem;
-      }
-
-      .form-group {
-        margin-bottom: 1rem;
-      }
-
-      .form-group label {
-        font-size: 0.9rem;
-      }
-
-      .form-group input,
-      .form-group textarea {
-        font-size: 0.85rem;
-        padding: 0.5rem;
-      }
-
-      .btn-submit {
-        font-size: 0.85rem;
-        padding: 0.6rem;
-      }
-
-      .main-footer {
-        padding: 2rem 0 1rem;
-      }
-
-      .footer-content {
-        gap: 1rem;
-      }
-
-      .footer-section h3 {
-        font-size: 1rem;
-      }
-
-      .footer-section p {
-        font-size: 0.85rem;
-      }
-
-      .navbar-brand {
-        font-size: 1rem;
-      }
-
-      .navbar .btn {
-        padding: 0.2rem 0.3rem;
-        font-size: 0.75rem;
-      }
-
-      .navbar .badge {
-        font-size: 0.65rem;
-        padding: 0.15em 0.3em;
-      }
-
-      #nav-avatar {
-        width: 24px !important;
-        height: 24px !important;
-        font-size: 0.7rem !important;
-      }
-
-      .dropdown-menu {
-        min-width: 120px;
-        font-size: 0.8rem;
-      }
-
-      .dropdown-item {
-        padding: 0.25rem 0.5rem;
-      }
-
-      .section-title {
-        font-size: 2rem;
-      }
-
-      .toast {
-        max-width: 250px;
-        padding: 0.75rem;
-      }
-
-      .toast-message {
-        font-size: 0.9rem;
-      }
-
-      .scroll-to-top {
-        width: 45px;
-        height: 45px;
-        font-size: 1.2rem;
-      }
-    }
-
-    @media (max-width: 480px) {
-      .hero-title {
-        font-size: 1.75rem;
-      }
-
-      .hero-subtitle {
-        font-size: 0.9rem;
-      }
-
-      .hero-section {
-        padding: 2rem 0 1rem;
-      }
-
-      .pill {
-        font-size: 0.8rem;
-        padding: 0.4rem 0.8rem;
-      }
-
-      .search-input {
-        padding: 0.25rem 0.5rem !important;
-      }
-
-      .search-input input {
-        font-size: 0.85rem;
-        padding: 0.4rem;
-      }
-
-      .search-input button {
-        font-size: 0.75rem;
-        padding: 0.4rem 0.8rem;
-      }
-
-      .filters-grid {
-        gap: 0.5rem !important;
-      }
-
-      .filter-group {
-        padding: 0.5rem !important;
-      }
-
-      .filter-group label {
-        font-size: 0.9rem;
-        margin-bottom: 0.25rem;
-      }
-
-      .filter-group select {
-        font-size: 0.85rem;
-        padding: 0.5rem;
-      }
-
-      .services-grid {
-        gap: 0.75rem;
-      }
-
-      .car-card {
-        margin-bottom: 0.75rem;
-        border-radius: 12px;
-      }
-
-      .car-image {
-        height: 160px;
-      }
-
-      .car-details {
-        padding: 0.5rem;
-      }
-
-      .car-name {
-        font-size: 0.95rem;
-      }
-
-      .car-details p {
-        font-size: 0.8rem;
-        margin-bottom: 0.2rem;
-      }
-
-      .car-actions {
-        gap: 0.25rem;
-        margin-top: 0.75rem;
-      }
-
-      .car-actions .btn {
-        font-size: 0.7rem;
-        padding: 0.35rem 0.4rem;
-      }
-
-      .about-section {
-        padding: 1.5rem 0;
-      }
-
-      .about-content {
-        gap: 1rem;
-      }
-
-      .about-text p {
-        font-size: 0.9rem;
-        line-height: 1.5;
-      }
-
-      .about-stats {
-        gap: 0.75rem;
-      }
-
-      .stat-item {
-        padding: 0.75rem;
-      }
-
-      .stat-item h3 {
-        font-size: 1.25rem;
-      }
-
-      .stat-item p {
-        font-size: 0.85rem;
-      }
-
-      .contact-section {
-        padding: 1.5rem 0;
-      }
-
-      .contact-content {
-        gap: 1rem;
-      }
-
-      .contact-item {
-        padding: 0.75rem;
-        gap: 0.5rem;
-      }
-
-      .contact-item i {
-        font-size: 1.25rem;
-      }
-
-      .contact-item h4 {
-        font-size: 0.9rem;
-      }
-
-      .contact-item p {
-        font-size: 0.85rem;
-      }
-
-      .contact-form {
-        padding: 0.75rem;
-      }
-
-      .form-group {
-        margin-bottom: 1rem;
-      }
-
-      .form-group label {
-        font-size: 0.9rem;
-      }
-
-      .form-group input,
-      .form-group textarea {
-        font-size: 0.85rem;
-        padding: 0.5rem;
-      }
-
-      .btn-submit {
-        font-size: 0.85rem;
-        padding: 0.6rem;
-      }
-
-      .main-footer {
-        padding: 1.5rem 0 1rem;
-        margin-top: 2rem;
-      }
-
-      .footer-content {
-        gap: 0.75rem;
-      }
-
-      .footer-section h3 {
-        font-size: 1rem;
-      }
-
-      .footer-section p {
-        font-size: 0.85rem;
-      }
-
-      .navbar-brand {
-        font-size: 0.9rem;
-      }
-
-      .navbar .d-flex.align-items-center.gap-3 {
-        gap: 0.1rem !important;
-      }
-
-      .navbar .btn {
-        padding: 0.15rem 0.25rem;
-        font-size: 0.7rem;
-      }
-
-      .navbar .badge {
-        font-size: 0.6rem;
-        padding: 0.1em 0.25em;
-      }
-
-      #nav-avatar {
-        width: 20px !important;
-        height: 20px !important;
-        font-size: 0.6rem !important;
-      }
-
-      .dropdown-menu {
-        min-width: 100px;
-        font-size: 0.75rem;
-      }
-
-      .dropdown-item {
-        padding: 0.2rem 0.4rem;
-      }
-
-      .section-title {
-        font-size: 1.75rem;
-        margin-bottom: 1.5rem;
-      }
-
-      .toast {
-        max-width: 200px;
-        padding: 0.5rem;
-        top: 80px;
-        right: 10px;
-      }
-
-      .toast-message {
-        font-size: 0.8rem;
-      }
-
-      .toast-icon {
-        font-size: 1rem;
-        margin-right: 0.25rem;
-      }
-
-      .scroll-to-top {
-        width: 40px;
-        height: 40px;
-        font-size: 1rem;
-        bottom: 15px;
-        right: 15px;
-      }
     }
   </style>
 </head>
@@ -1811,37 +1113,6 @@
     </nav>
   </header>
 
-  <!-- Offcanvas Sidebar Menu for Mobile -->
-  <div class="offcanvas offcanvas-start" tabindex="-1" id="sidebarMenu" aria-labelledby="sidebarMenuLabel">
-    <div class="offcanvas-header">
-      <h5 class="offcanvas-title" id="sidebarMenuLabel"><i class="fas fa-car me-2"></i>Silas Car Rentals</h5>
-      <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-    </div>
-    <div class="offcanvas-body">
-      <ul class="navbar-nav">
-        <li class="nav-item">
-          <a class="nav-link" href="home.html"><i class="fas fa-home me-2"></i>Home</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link active" href="#cars-collection"><i class="fas fa-car me-2"></i>Cars</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#about"><i class="fas fa-info-circle me-2"></i>About</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#contact"><i class="fas fa-envelope me-2"></i>Contact</a>
-        </li>
-      </ul>
-      <hr>
-      <div class="d-flex flex-column gap-2">
-        <a href="cart.html" class="btn btn-outline-primary"><i class="fas fa-shopping-cart me-2"></i>Cart <span id="cart-count-mobile" class="badge bg-success ms-1">0</span></a>
-        <a href="wishlist.html" class="btn btn-outline-danger"><i class="fas fa-heart me-2"></i>Wishlist <span id="wishlist-count-mobile" class="badge bg-danger ms-1">0</span></a>
-        <a href="saved.html" class="btn btn-outline-warning"><i class="fas fa-bookmark me-2"></i>Saved <span id="saved-count-mobile" class="badge bg-warning ms-1">0</span></a>
-        <button class="btn btn-outline-secondary" id="theme-toggle-mobile"><i class="fas fa-moon me-2"></i>Toggle Theme</button>
-      </div>
-    </div>
-  </div>
-
   <!-- Hero Section -->
   <section class="hero-section" id="home">
     <div class="hero-bg">
@@ -1872,17 +1143,17 @@
   </section>
 
   <!-- Filters Section -->
-  <section class="filters-section" id="filters">
+  <section class="services-section" id="filters">
     <div class="container">
       <div class="filters-header" style="text-align: center; margin-bottom: 2rem;">
         <h2 style="color: var(--light-text); margin-bottom: 1rem;">Filter & Sort</h2>
         <button class="btn btn-outline" id="clear-filters" style="border-color: var(--light-primary); color: var(--light-primary);">Clear All</button>
       </div>
 
-      <div class="filters-grid">
-        <div class="filter-group">
-          <label for="price-filter">Price Range</label>
-          <select id="price-filter" title="Filter by price range">
+      <div class="filters-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem; margin-bottom: 2rem;">
+        <div class="filter-group" style="background: var(--light-card-bg); padding: 1.5rem; border-radius: 12px; box-shadow: var(--light-shadow);">
+          <label for="price-filter" style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: var(--light-text);">Price Range</label>
+          <select id="price-filter" title="Filter by price range" style="width: 100%; padding: 0.75rem; border: 2px solid var(--light-border); border-radius: 8px; background: var(--light-card-bg); color: var(--light-text);">
             <option value="">All Prices</option>
             <option value="0-20000">Under ₦20,000</option>
             <option value="20000-40000">₦20,000 - ₦40,000</option>
@@ -1891,9 +1162,9 @@
           </select>
         </div>
 
-        <div class="filter-group">
-          <label for="type-filter">Car Type</label>
-          <select id="type-filter" title="Filter by car type">
+        <div class="filter-group" style="background: var(--light-card-bg); padding: 1.5rem; border-radius: 12px; box-shadow: var(--light-shadow);">
+          <label for="type-filter" style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: var(--light-text);">Car Type</label>
+          <select id="type-filter" title="Filter by car type" style="width: 100%; padding: 0.75rem; border: 2px solid var(--light-border); border-radius: 8px; background: var(--light-card-bg); color: var(--light-text);">
             <option value="">All Types</option>
             <option value="sedan">Sedan</option>
             <option value="suv">SUV</option>
@@ -1902,9 +1173,9 @@
           </select>
         </div>
 
-        <div class="filter-group">
-          <label for="sort-filter">Sort By</label>
-          <select id="sort-filter" title="Sort cars by">
+        <div class="filter-group" style="background: var(--light-card-bg); padding: 1.5rem; border-radius: 12px; box-shadow: var(--light-shadow);">
+          <label for="sort-filter" style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: var(--light-text);">Sort By</label>
+          <select id="sort-filter" title="Sort cars by" style="width: 100%; padding: 0.75rem; border: 2px solid var(--light-border); border-radius: 8px; background: var(--light-card-bg); color: var(--light-text);">
             <option value="price-asc">Price: Low to High</option>
             <option value="price-desc">Price: High to Low</option>
             <option value="year-desc">Newest First</option>
@@ -1926,21 +1197,21 @@
 
       <div class="services-grid" id="cars-grid" aria-live="polite">
         <!-- Skeleton loaders will be shown here initially -->
-        <div class="skeleton-card">
+        <div class="skeleton-card" style="background: var(--light-card-bg); border-radius: 16px; padding: 2rem; box-shadow: var(--light-shadow);">
           <div class="skeleton-media" style="height: 200px; background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%); background-size: 200% 100%; animation: loading 1.5s infinite; border-radius: 8px; margin-bottom: 1rem;"></div>
           <div class="skeleton" style="width: 70%; height: 20px; background: #e0e0e0; border-radius: 4px; margin-bottom: 0.5rem;"></div>
           <div class="skeleton" style="width: 50%; height: 16px; background: #e0e0e0; border-radius: 4px; margin-bottom: 0.5rem;"></div>
           <div class="skeleton" style="width: 60%; height: 24px; background: #e0e0e0; border-radius: 4px; margin-bottom: 1rem;"></div>
           <div class="skeleton" style="width: 100%; height: 40px; background: #e0e0e0; border-radius: 8px;"></div>
         </div>
-        <div class="skeleton-card">
+        <div class="skeleton-card" style="background: var(--light-card-bg); border-radius: 16px; padding: 2rem; box-shadow: var(--light-shadow);">
           <div class="skeleton-media" style="height: 200px; background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%); background-size: 200% 100%; animation: loading 1.5s infinite; border-radius: 8px; margin-bottom: 1rem;"></div>
           <div class="skeleton" style="width: 70%; height: 20px; background: #e0e0e0; border-radius: 4px; margin-bottom: 0.5rem;"></div>
           <div class="skeleton" style="width: 50%; height: 16px; background: #e0e0e0; border-radius: 4px; margin-bottom: 0.5rem;"></div>
           <div class="skeleton" style="width: 60%; height: 24px; background: #e0e0e0; border-radius: 4px; margin-bottom: 1rem;"></div>
           <div class="skeleton" style="width: 100%; height: 40px; background: #e0e0e0; border-radius: 8px;"></div>
         </div>
-        <div class="skeleton-card">
+        <div class="skeleton-card" style="background: var(--light-card-bg); border-radius: 16px; padding: 2rem; box-shadow: var(--light-shadow);">
           <div class="skeleton-media" style="height: 200px; background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%); background-size: 200% 100%; animation: loading 1.5s infinite; border-radius: 8px; margin-bottom: 1rem;"></div>
           <div class="skeleton" style="width: 70%; height: 20px; background: #e0e0e0; border-radius: 4px; margin-bottom: 0.5rem;"></div>
           <div class="skeleton" style="width: 50%; height: 16px; background: #e0e0e0; border-radius: 4px; margin-bottom: 0.5rem;"></div>
@@ -2029,37 +1300,37 @@
             </div>
           </div>
         </div>
-        <div class="contact-form">
-          <form class="contact-form">
-            <div class="form-group">
-              <label for="fullName">Full Name</label>
-              <input type="text" id="fullName" name="fullName" required>
-            </div>
-
-            <div class="form-group">
-              <label for="email">Email Address</label>
-              <input type="email" id="email" name="email" required>
-            </div>
-
-            <div class="form-group">
-              <label for="phone">Phone Number</label>
-              <input type="tel" id="phone" name="phone" required>
-            </div>
-
-            <div class="form-group">
-              <label for="message">Message</label>
-              <textarea id="message" name="message" rows="5" required></textarea>
-            </div>
-
-            <button type="submit" class="btn-submit" title="Send your message">
-              <i class="fas fa-paper-plane me-2"></i>
-              Send Message
-            </button>
-          </form>
+    <div class="contact-form">
+      <form class="contact-form">
+        <div class="form-group">
+          <label for="fullName">Full Name</label>
+          <input type="text" id="fullName" name="fullName" required>
         </div>
-      </div>
+
+        <div class="form-group">
+          <label for="email">Email Address</label>
+          <input type="email" id="email" name="email" required>
+        </div>
+
+        <div class="form-group">
+          <label for="phone">Phone Number</label>
+          <input type="tel" id="phone" name="phone" required>
+        </div>
+
+        <div class="form-group">
+          <label for="message">Message</label>
+          <textarea id="message" name="message" rows="5" required></textarea>
+        </div>
+
+        <button type="submit" class="btn-submit" title="Send your message">
+          <i class="fas fa-paper-plane me-2"></i>
+          Send Message
+        </button>
+      </form>
     </div>
-  </section>
+  </div>
+</div>
+</section>
 
   <!-- Footer -->
   <footer class="main-footer" id="footer">
@@ -2199,325 +1470,624 @@
     });
 
     // API and data handling
-    window.API_BASE = "https://car-rental-backend.onrender.com/api";
+    window.API_BASE = "https://techyjaunt-auth-go43.onrender.com";
+    const placeholderImage = "https://vehicle-images.dealerinspire.com/a1a7-11002896/W1KAF4GB4SR252999/00f2d6ad30e089cb5c02791d58c3af6a.jpg";
 
-    // Car data and filtering functionality
+    // Sample car data for offline/fallback use
+    const sampleCars = [
+      {
+        _id: "1",
+        make: "Mercedes-Benz",
+        model: "C300",
+        year: 2025,
+        price: 40000,
+        color: "Black",
+        brand: "Mercedes-Benz",
+        type: "luxury",
+        description: "Brand new luxury sedan with premium features",
+        image: placeholderImage
+      },
+      {
+        _id: "2",
+        make: "Toyota",
+        model: "Camry",
+        year: 2024,
+        price: 25000,
+        color: "White",
+        brand: "Toyota",
+        type: "sedan",
+        description: "Reliable and fuel-efficient sedan",
+        image: "https://images.unsplash.com/photo-1549399812-5e82e1517600?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+      },
+      {
+        _id: "3",
+        make: "Honda",
+        model: "CR-V",
+        year: 2024,
+        price: 35000,
+        color: "Blue",
+        brand: "Honda",
+        type: "suv",
+        description: "Spacious and versatile SUV for family trips",
+        image: "https://images.unsplash.com/photo-1544636331-e26879cd4d9b?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+      },
+      {
+        _id: "4",
+        make: "BMW",
+        model: "X5",
+        year: 2024,
+        price: 55000,
+        color: "Gray",
+        brand: "BMW",
+        type: "suv",
+        description: "Luxury SUV with advanced technology",
+        image: "https://images.unsplash.com/photo-1555215274-0766a9e744c5?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+      },
+      {
+        _id: "5",
+        make: "Audi",
+        model: "A4",
+        year: 2024,
+        price: 38000,
+        color: "Red",
+        brand: "Audi",
+        type: "sedan",
+        description: "Premium sedan with quattro all-wheel drive",
+        image: "https://images.unsplash.com/photo-1606664515524-ed2f786a0bd6?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+      },
+      {
+        _id: "6",
+        make: "Ford",
+        model: "Mustang",
+        year: 2024,
+        price: 45000,
+        color: "Yellow",
+        brand: "Ford",
+        type: "sports",
+        description: "Iconic American sports car",
+        image: "https://images.unsplash.com/photo-1542362567-b07e54358753?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+      }
+    ];
+
     let allCars = [];
     let filteredCars = [];
     let currentPage = 1;
-    const carsPerPage = 9;
+    const carsPerPage = 6;
 
-    // DOM elements
-    const carsGrid = document.getElementById('cars-grid');
-    const carCount = document.getElementById('car-count');
-    const loadMoreBtn = document.getElementById('load-more');
-    const searchInput = document.getElementById('search-input');
-    const searchBtn = document.getElementById('search-btn');
-    const priceFilter = document.getElementById('price-filter');
-    const typeFilter = document.getElementById('type-filter');
-    const sortFilter = document.getElementById('sort-filter');
-    const clearFiltersBtn = document.getElementById('clear-filters');
+    function showToast(msg, type = 'info', ms = 3000) {
+      const toast = document.getElementById("toast");
 
-    // Initialize the page
-    document.addEventListener('DOMContentLoaded', function() {
-      // Set current year in footer
-      document.getElementById('year').textContent = new Date().getFullYear();
+      // Clear previous classes
+      toast.className = 'toast';
 
-      // Initialize theme toggle for mobile sidebar
-      const themeToggleMobile = document.getElementById('theme-toggle-mobile');
-      if (themeToggleMobile) {
-        themeToggleMobile.addEventListener('click', () => {
-          const currentTheme = body.getAttribute('data-theme');
-          const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-          body.setAttribute('data-theme', newTheme);
-          localStorage.setItem('theme', newTheme);
-          updateThemeIcon();
-        });
-      }
+      // Add type class
+      toast.classList.add(`toast-${type}`);
 
-      // Load cars data
-      loadCars();
+      // Icon mapping
+      const iconMap = {
+        success: 'fas fa-check-circle',
+        error: 'fas fa-exclamation-circle',
+        warning: 'fas fa-exclamation-triangle',
+        info: 'fas fa-info-circle'
+      };
 
-      // Set up event listeners
-      setupEventListeners();
-    });
+      // Set content
+      toast.innerHTML = `
+        <i class="${iconMap[type]} toast-icon"></i>
+        <span class="toast-message">${msg}</span>
+        <button class="toast-close" onclick="hideToast()">&times;</button>
+      `;
 
-    // Load cars from API
-    async function loadCars() {
-      try {
-        const response = await fetch(`${window.API_BASE}/cars`);
-        if (!response.ok) {
-          throw new Error('Failed to fetch cars');
-        }
-        allCars = await response.json();
-        filteredCars = [...allCars];
-        displayCars(filteredCars.slice(0, carsPerPage));
-        updateCarCount(filteredCars.length);
-      } catch (error) {
-        console.error('Error loading cars:', error);
-        showToast('Failed to load cars. Please try again later.', 'error');
-        // Show error state
-        carsGrid.innerHTML = `
-          <div class="col-12 text-center py-5">
-            <i class="fas fa-exclamation-triangle fa-3x text-warning mb-3"></i>
-            <h3>Unable to Load Cars</h3>
-            <p>Please check your internet connection and try again.</p>
-            <button class="btn btn-primary" onclick="loadCars()">Retry</button>
-          </div>
-        `;
-      }
-    }
+      // Show toast
+      toast.classList.add("show");
 
-    // Display cars in the grid
-    function displayCars(cars) {
-      if (cars.length === 0) {
-        carsGrid.innerHTML = `
-          <div class="col-12 text-center py-5">
-            <i class="fas fa-search fa-3x text-muted mb-3"></i>
-            <h3>No Cars Found</h3>
-            <p>Try adjusting your filters or search terms.</p>
-          </div>
-        `;
-        return;
-      }
-
-      carsGrid.innerHTML = cars.map(car => `
-        <div class="car-card">
-          <img src="${car.image || 'https://via.placeholder.com/400x220?text=No+Image'}" alt="${car.name}" class="car-image" onerror="this.src='https://via.placeholder.com/400x220?text=No+Image'">
-          <div class="car-details">
-            <h3 class="car-name">${car.name}</h3>
-            <p><strong>Price:</strong> ₦${car.price?.toLocaleString() || 'N/A'}/day</p>
-            <p><strong>Type:</strong> ${car.type || 'N/A'}</p>
-            <p><strong>Year:</strong> ${car.year || 'N/A'}</p>
-            <p><strong>Seats:</strong> ${car.seats || 'N/A'}</p>
-            <div class="car-actions">
-              <button class="btn btn-primary" onclick="viewCarDetails(${car.id})">View Details</button>
-              <button class="btn btn-success" onclick="addToCart(${car.id})">Add to Cart</button>
-            </div>
-          </div>
-        </div>
-      `).join('');
-
-      // Show/hide load more button
-      if (cars.length >= currentPage * carsPerPage && filteredCars.length > cars.length) {
-        loadMoreBtn.style.display = 'inline-block';
-      } else {
-        loadMoreBtn.style.display = 'none';
-      }
-    }
-
-    // Update car count display
-    function updateCarCount(count) {
-      carCount.textContent = `Showing ${count} available car${count !== 1 ? 's' : ''}`;
-    }
-
-    // Set up event listeners
-    function setupEventListeners() {
-      // Search functionality
-      searchBtn.addEventListener('click', performSearch);
-      searchInput.addEventListener('keypress', (e) => {
-        if (e.key === 'Enter') {
-          performSearch();
-        }
-      });
-
-      // Filter functionality
-      priceFilter.addEventListener('change', applyFilters);
-      typeFilter.addEventListener('change', applyFilters);
-      sortFilter.addEventListener('change', applyFilters);
-
-      // Clear filters
-      clearFiltersBtn.addEventListener('click', clearFilters);
-
-      // Load more
-      loadMoreBtn.addEventListener('click', loadMoreCars);
-
-      // Scroll to top
-      const scrollToTopBtn = document.getElementById('scroll-to-top');
-      window.addEventListener('scroll', () => {
-        if (window.pageYOffset > 300) {
-          scrollToTopBtn.classList.add('show');
-        } else {
-          scrollToTopBtn.classList.remove('show');
-        }
-      });
-
-      scrollToTopBtn.addEventListener('click', () => {
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-      });
-
-      // Contact form
-      const contactForm = document.querySelector('.contact-form');
-      contactForm.addEventListener('submit', handleContactForm);
-    }
-
-    // Perform search
-    function performSearch() {
-      const query = searchInput.value.toLowerCase().trim();
-      if (query) {
-        filteredCars = allCars.filter(car =>
-          car.name.toLowerCase().includes(query) ||
-          car.type.toLowerCase().includes(query) ||
-          car.make.toLowerCase().includes(query) ||
-          car.model.toLowerCase().includes(query)
-        );
-      } else {
-        filteredCars = [...allCars];
-      }
-      applyFilters();
-    }
-
-    // Apply filters
-    function applyFilters() {
-      let filtered = [...filteredCars];
-
-      // Price filter
-      const priceRange = priceFilter.value;
-      if (priceRange) {
-        const [min, max] = priceRange.split('-').map(v => parseInt(v) || Infinity);
-        filtered = filtered.filter(car => {
-          const price = car.price || 0;
-          return price >= min && (max === Infinity || price <= max);
-        });
-      }
-
-      // Type filter
-      const type = typeFilter.value;
-      if (type) {
-        filtered = filtered.filter(car => car.type?.toLowerCase() === type.toLowerCase());
-      }
-
-      // Sort
-      const sortBy = sortFilter.value;
-      if (sortBy) {
-        filtered.sort((a, b) => {
-          switch (sortBy) {
-            case 'price-asc':
-              return (a.price || 0) - (b.price || 0);
-            case 'price-desc':
-              return (b.price || 0) - (a.price || 0);
-            case 'year-desc':
-              return (b.year || 0) - (a.year || 0);
-            case 'name-asc':
-              return a.name.localeCompare(b.name);
-            default:
-              return 0;
-          }
-        });
-      }
-
-      filteredCars = filtered;
-      currentPage = 1;
-      displayCars(filteredCars.slice(0, carsPerPage));
-      updateCarCount(filteredCars.length);
-    }
-
-    // Clear filters
-    function clearFilters() {
-      searchInput.value = '';
-      priceFilter.value = '';
-      typeFilter.value = '';
-      sortFilter.value = 'price-asc';
-      filteredCars = [...allCars];
-      currentPage = 1;
-      displayCars(filteredCars.slice(0, carsPerPage));
-      updateCarCount(filteredCars.length);
-    }
-
-    // Load more cars
-    function loadMoreCars() {
-      currentPage++;
-      const start = 0;
-      const end = currentPage * carsPerPage;
-      displayCars(filteredCars.slice(start, end));
-    }
-
-    // View car details
-    function viewCarDetails(carId) {
-      // This would typically navigate to a car details page
-      showToast('Car details feature coming soon!', 'info');
-    }
-
-    // Add to cart
-    function addToCart(carId) {
-      // This would typically add the car to cart
-      showToast('Car added to cart!', 'success');
-      // Update cart count (this would be handled by cart management system)
-      const cartCount = document.getElementById('cart-count');
-      const currentCount = parseInt(cartCount.textContent) || 0;
-      cartCount.textContent = currentCount + 1;
-    }
-
-    // Handle contact form
-    function handleContactForm(e) {
-      e.preventDefault();
-      const formData = new FormData(e.target);
-      const data = Object.fromEntries(formData);
-
-      // This would typically send the data to a server
-      showToast('Thank you for your message! We\'ll get back to you soon.', 'success');
-      e.target.reset();
-    }
-
-    // Toast notification functions
-    function showToast(message, type = 'info') {
-      const toast = document.getElementById('toast');
-      const toastMessage = toast.querySelector('.toast-message');
-      const toastIcon = toast.querySelector('.toast-icon');
-
-      toastMessage.textContent = message;
-      toast.className = `toast toast-${type}`;
-
-      // Update icon based on type
-      switch (type) {
-        case 'success':
-          toastIcon.className = 'fas fa-check-circle toast-icon';
-          break;
-        case 'error':
-          toastIcon.className = 'fas fa-exclamation-circle toast-icon';
-          break;
-        case 'warning':
-          toastIcon.className = 'fas fa-exclamation-triangle toast-icon';
-          break;
-        default:
-          toastIcon.className = 'fas fa-info-circle toast-icon';
-      }
-
-      toast.classList.add('show');
-      setTimeout(() => {
-        hideToast();
-      }, 5000);
+      // Auto hide
+      setTimeout(() => hideToast(), ms);
     }
 
     function hideToast() {
-      const toast = document.getElementById('toast');
-      toast.classList.remove('show');
-      toast.classList.add('hide');
+      const toast = document.getElementById("toast");
+      toast.classList.remove("show");
+      toast.classList.add("hide");
       setTimeout(() => {
-        toast.classList.remove('hide');
-      }, 300);
+        toast.classList.remove("hide");
+      }, 400); // Match transition duration
     }
 
+    function renderCars(cars) {
+      const grid = document.getElementById("cars-grid");
+      const count = document.getElementById("car-count");
+
+      if (cars.length === 0) {
+        grid.innerHTML = `
+          <div class="no-cars">
+            <i class="fas fa-car"></i>
+            <h3>No cars found</h3>
+            <p>Try adjusting your search or filter criteria.</p>
+          </div>
+        `;
+        count.textContent = "No cars available";
+        return;
+      }
+
+      count.textContent = `${cars.length} car${cars.length !== 1 ? 's' : ''} available`;
+
+  grid.innerHTML = cars.map(car => {
+    return `
+          <div class="car-card" data-id="${car._id}">
+            <img src="${car.image || placeholderImage}" alt="${car.make} ${car.model}" class="car-image" loading="lazy">
+            <div class="car-details">
+              <h2 class="car-name">${car.make} ${car.model}</h2>
+              <p><strong>ID:</strong> ${car._id}</p>
+              <p><strong>Year:</strong> ${car.year}</p>
+              <p><strong>Price:</strong> ₦${car.price.toLocaleString()}/day</p>
+              <p><strong>Color:</strong> ${car.color}</p>
+              <p><strong>Brand:</strong> ${car.brand}</p>
+              <p><strong>Type:</strong> ${car.type}</p>
+          <p><strong>Description:</strong> ${car.description}</p>
+          <div class="car-actions d-flex justify-content-between mt-3">
+                <button class="btn btn-primary btn-sm" data-action="add-cart" data-id="${car._id}" title="Add to Cart">
+                  <i class="fas fa-cart-plus me-1"></i>Add to Cart
+                </button>
+                <button class="btn btn-danger btn-sm" data-action="add-wishlist" data-id="${car._id}" title="Add to Wishlist">
+                  <i class="fas fa-heart me-1"></i>Wishlist
+                </button>
+                <button class="btn btn-success btn-sm" data-action="add-saved" data-id="${car._id}" title="Save Car">
+                  <i class="fas fa-bookmark me-1"></i>Save
+                </button>
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function applyFilters() {
+      const searchTerm = document.getElementById("search-input").value.toLowerCase();
+      const priceFilter = document.getElementById("price-filter").value;
+      const typeFilter = document.getElementById("type-filter").value;
+      const sortFilter = document.getElementById("sort-filter").value;
+
+      filteredCars = allCars.filter(car => {
+        // Search filter
+        const matchesSearch = car.make.toLowerCase().includes(searchTerm) ||
+                             car.model.toLowerCase().includes(searchTerm) ||
+                             car.type.toLowerCase().includes(searchTerm);
+
+        // Price filter
+        let matchesPrice = true;
+        if (priceFilter) {
+          if (priceFilter === "0-20000") {
+            matchesPrice = car.price <= 20000;
+          } else if (priceFilter === "20000-40000") {
+            matchesPrice = car.price > 20000 && car.price <= 40000;
+          } else if (priceFilter === "40000-60000") {
+            matchesPrice = car.price > 40000 && car.price <= 60000;
+          } else if (priceFilter === "60000+") {
+            matchesPrice = car.price > 60000;
+          }
+        }
+
+        // Type filter
+        const matchesType = !typeFilter || car.type === typeFilter;
+
+        return matchesSearch && matchesPrice && matchesType;
+      });
+
+      // Sort cars
+      filteredCars.sort((a, b) => {
+        switch (sortFilter) {
+          case "price-asc":
+            return a.price - b.price;
+          case "price-desc":
+            return b.price - a.price;
+          case "year-desc":
+            return b.year - a.year;
+          case "name-asc":
+            return a.make.localeCompare(b.make);
+          default:
+            return 0;
+        }
+      });
+
+      renderCars(filteredCars);
+      updateLoadMoreButton();
+    }
+
+    function updateLoadMoreButton() {
+      const loadMoreBtn = document.getElementById("load-more");
+      const totalPages = Math.ceil(filteredCars.length / carsPerPage);
+
+      if (currentPage < totalPages) {
+        loadMoreBtn.style.display = "block";
+      } else {
+        loadMoreBtn.style.display = "none";
+      }
+    }
+
+    function loadMoreCars() {
+      currentPage++;
+      const startIndex = (currentPage - 1) * carsPerPage;
+      const endIndex = startIndex + carsPerPage;
+      const carsToShow = filteredCars.slice(0, endIndex);
+
+      renderCars(carsToShow);
+      updateLoadMoreButton();
+    }
+
+    async function fetchCars() {
+      // Show skeleton loaders
+      document.getElementById("car-count").textContent = "Loading available cars...";
+
+      try {
+        const res = await fetch(`${API_BASE}/api/cars/get-cars`);
+        if (!res.ok) throw new Error("Failed to fetch cars");
+        const data = await res.json();
+        const cars = data.cars || [];
+
+        // Process car images and ensure all fields are properly handled
+        allCars = cars.map(car => ({
+          ...car,
+          image: car.image && car.image.trim() !== "" ? car.image : placeholderImage,
+          // Ensure all required fields have defaults
+          _id: car._id || '',
+          make: car.make || 'Unknown',
+          model: car.model || 'Unknown',
+          year: car.year || new Date().getFullYear(),
+          price: car.price || 0,
+          color: car.color || 'Unknown',
+          brand: car.brand || 'Unknown',
+          type: car.type || 'sedan',
+          description: car.description || 'No description available',
+        }));
+
+        filteredCars = [...allCars];
+        applyFilters();
+
+      } catch (err) {
+        console.warn("Using offline car data - backend unreachable", err);
+        // Use sample cars as fallback
+        allCars = sampleCars;
+        filteredCars = [...allCars];
+        applyFilters();
+      }
+    }
+
+    fetchCars();
+
+    // Add event listeners for car action buttons using event delegation
+    document.addEventListener('click', (e) => {
+      const action = e.target.dataset.action;
+      const carId = e.target.dataset.id;
+
+      if (!action || !carId) return;
+
+      // Find the car in our local data (allCars or filteredCars)
+      const car = allCars.find(c => c._id === carId) || filteredCars.find(c => c._id === carId);
+
+      if (!car) {
+        console.error("Car not found:", carId);
+        showToast("Car not found", "error");
+        return;
+      }
+
+      console.log("Button clicked:", action, "Car ID:", carId);
+      console.log("Car details:", car);
+
+      switch (action) {
+        case 'add-cart':
+          addToCart(car);
+          break;
+
+        case 'add-wishlist':
+          addToWishlist(car);
+          break;
+
+        case 'add-saved':
+          addToSaved(car);
+          break;
+      }
+    });
+
+    // Helper function to enhance car data
+    function enhanceCarData(car) {
+      return {
+        _id: car._id,
+        make: car.make || 'Unknown',
+        model: car.model || 'Unknown',
+        year: car.year || new Date().getFullYear(),
+        price: car.price || 0,
+        image: car.image || 'https://via.placeholder.com/300',
+        color: car.color || 'Black',
+        description: car.description || 'No description available',
+        brand: car.brand || car.make || 'Unknown'
+      };
+    }
+
+    // Helper function to update counts and sync changes
+    function updateCountsAndSync(storageKey) {
+      if (window.CountManager && window.CountManager.updateCounts) {
+        window.CountManager.updateCounts();
+      }
+      if (window.CountManager && window.CountManager.syncLocalChanges) {
+        window.CountManager.syncLocalChanges(storageKey);
+      }
+    }
+
+    // Helper functions for cart, wishlist, and saved cars
+    function addToCart(car) {
+      console.log("Attempting to add to cart:", car); // Debug log
+      if (CartManager.add(car)) {
+        showToast("Added to cart", "success");
+        console.log("Car added to cart:", car); // Debug log
+      } else {
+        showToast("Car already in cart", "warning");
+        console.log("Car already in cart:", car); // Debug log
+      }
+    }
+
+    function addToWishlist(car) {
+      console.log("Attempting to add to wishlist:", car); // Debug log
+      const wishlist = getStorage("wishlist");
+      if (wishlist.find((c) => c._id === car._id)) {
+        showToast("Car already in wishlist", "warning");
+        console.log("Car already in wishlist:", car); // Debug log
+        return;
+      }
+      const enhancedCar = enhanceCarData(car);
+      wishlist.push(enhancedCar);
+      localStorage.setItem("wishlist", JSON.stringify(wishlist));
+      updateCountsAndSync('wishlist');
+      showToast("Added to wishlist", "success");
+      console.log("Car added to wishlist:", car); // Debug log
+    }
+
+    function addToSaved(car) {
+      console.log("Attempting to save car:", car); // Debug log
+      const savedCars = getStorage("savedCars");
+      if (savedCars.find((c) => c._id === car._id)) {
+        showToast("Car already saved", "warning");
+        console.log("Car already saved:", car); // Debug log
+        return;
+      }
+      const enhancedCar = enhanceCarData(car);
+      savedCars.push(enhancedCar);
+      localStorage.setItem("savedCars", JSON.stringify(savedCars));
+      updateCountsAndSync('savedCars');
+      showToast("Car saved", "success");
+      console.log("Car saved:", car); // Debug log
+    }
+
+    // Scroll to top functionality
+    const scrollToTopBtn = document.getElementById('scroll-to-top');
+
+    function getStorage(key) {
+      try {
+        const item = localStorage.getItem(key);
+        return item ? JSON.parse(item) : [];
+      } catch (e) {
+        console.error("Error parsing localStorage for", key, e);
+        return [];
+      }
+    }
+
+    // Show/hide scroll button based on scroll position
+    window.addEventListener('scroll', () => {
+      const scrollHeight = document.documentElement.scrollHeight;
+      const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+      const clientHeight = document.documentElement.clientHeight;
+
+      // Show button when scrolled near the bottom (within 200px of bottom)
+      const isNearBottom = scrollTop + clientHeight >= scrollHeight - 200;
+
+      if (isNearBottom && scrollTop > 300) {
+        scrollToTopBtn.classList.add('show');
+      } else {
+        scrollToTopBtn.classList.remove('show');
+      }
+    });
+
+    // Scroll to top when button is clicked
+    scrollToTopBtn.addEventListener('click', () => {
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      });
+    });
+
+    // Add event listeners for filter functionality
+    document.addEventListener('DOMContentLoaded', function() {
+      // Filter event listeners
+      document.getElementById("search-input").addEventListener('input', applyFilters);
+      document.getElementById("price-filter").addEventListener('change', applyFilters);
+      document.getElementById("type-filter").addEventListener('change', applyFilters);
+      document.getElementById("sort-filter").addEventListener('change', applyFilters);
+
+      // Search button
+      document.getElementById("search-btn").addEventListener('click', applyFilters);
+
+      // Clear filters
+      document.getElementById("clear-filters").addEventListener('click', function() {
+        document.getElementById("search-input").value = "";
+        document.getElementById("price-filter").value = "";
+        document.getElementById("type-filter").value = "";
+        document.getElementById("sort-filter").value = "price-asc";
+        applyFilters();
+      });
+
+      // Load more button
+      document.getElementById("load-more").addEventListener('click', loadMoreCars);
+    });
+
+    // Initialize counts on page load
+    document.addEventListener('DOMContentLoaded', function() {
+      if (window.CountManager && window.CountManager.updateCounts) {
+        window.CountManager.updateCounts();
+      }
+    });
+
+    // Set current year in footer
+    document.addEventListener('DOMContentLoaded', function() {
+      const yearElement = document.getElementById('year');
+      if (yearElement) {
+        yearElement.textContent = new Date().getFullYear();
+      }
+    });
+
+    // Render user profile
+    function renderUserProfile() {
+      const user = JSON.parse(localStorage.getItem("user"));
+      if (!user) return;
+
+      // Update profile name (for profile page)
+      const profileName = document.getElementById("profile-name");
+      if (profileName) {
+        profileName.textContent = user.name;
+      }
+
+      // Update header user name
+      const userName = document.getElementById("user-name");
+      if (userName) {
+        userName.textContent = user.name;
+      }
+
+      // Update profile avatar (for profile page)
+      const profileAvatar = document.getElementById("profile-avatar");
+      if (profileAvatar) {
+        profileAvatar.innerHTML = "";
+        if (user.profilePicture?.url) {
+          profileAvatar.innerHTML = `<img src="${user.profilePicture.url}" alt="${user.name}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;">`;
+        } else {
+          const initials = user.name.split(" ").map(n => n[0]).join("").substring(0, 2).toUpperCase();
+          profileAvatar.textContent = initials;
+        }
+      }
+
+      // Update header nav avatar
+      const navAvatar = document.getElementById("nav-avatar");
+      if (navAvatar) {
+        navAvatar.innerHTML = "";
+        if (user.profilePicture?.url) {
+          navAvatar.innerHTML = `<img src="${user.profilePicture.url}" alt="${user.name}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;">`;
+        } else {
+          const initials = user.name.split(" ").map(n => n[0]).join("").substring(0, 2).toUpperCase();
+          navAvatar.textContent = initials;
+        }
+      }
+    }
+
+    // Load user profile and render
+    async function loadUserProfile() {
+      const token = localStorage.getItem("token");
+      if (!token) return;
+
+      try {
+        const res = await fetch(`${API_BASE}/api/users/profile`, {
+          headers: { Authorization: `Bearer ${token}` },
+          credentials: "include"
+        });
+
+        if (res.status === 401) {
+          localStorage.clear();
+          return;
+        }
+
+        const data = await res.json();
+        if (!res.ok) return;
+
+        const user = data.user;
+        localStorage.setItem("user", JSON.stringify(user));
+
+        renderUserProfile();
+      } catch (err) {
+        console.error("Failed to load user profile:", err);
+      }
+    }
+
+    // Load user profile on page load
+    document.addEventListener('DOMContentLoaded', function() {
+      loadUserProfile();
+    });
+
     // Logout functionality
-    const logoutButton = document.getElementById('logout-button');
-    if (logoutButton) {
-      logoutButton.addEventListener('click', () => {
-        // This would typically clear user session
-        showToast('Logged out successfully!', 'success');
-        // Redirect to login page or update UI
+    document.getElementById('logout-button').addEventListener('click', function() {
+      localStorage.removeItem('user');
+      localStorage.removeItem('token');
+      showToast('Logged out successfully', 'success');
+      setTimeout(() => {
+        window.location.href = 'login.html';
+      }, 1000);
+    });
+
+    // Back button handling
+    window.addEventListener('load', () => {
+      history.pushState(null, null, location.href);
+    });
+
+    window.addEventListener('popstate', () => {
+      window.location.href = 'index.html';
+    });
+  </script>
+
+  <script>
+    // Contact form handling
+    function initContactForm() {
+      const form = document.querySelector('form.contact-form');
+
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        const formData = new FormData(form);
+        const formDataObj = Object.fromEntries(formData);
+
+        // Map form field names to API expected field names
+        const data = {
+          fullName: formDataObj.fullName,
+          email: formDataObj.email,
+          phoneNumber: formDataObj.phone,
+          message: formDataObj.message
+        };
+
+        // Show loading state
+        const submitBtn = form.querySelector('.btn-submit');
+        const originalText = submitBtn.innerHTML;
+        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Sending...';
+        submitBtn.disabled = true;
+
+        try {
+          const res = await fetch("https://techyjaunt-auth-go43.onrender.com/api/contact", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(data)
+          });
+
+          let result;
+          try {
+            result = await res.json();
+          } catch (e) {
+            result = { success: false, message: "Server error" };
+          }
+
+          if (res.ok && result.success) {
+            showToast("Message sent successfully! We'll get back to you soon.");
+            form.reset();
+          } else {
+            showToast(`${result.message || "Failed to send message. Please try again."}`);
+          }
+        } catch (error) {
+          console.error("Contact form error:", error);
+          showToast("Network error. Please try again later.");
+        } finally {
+          submitBtn.innerHTML = originalText;
+          submitBtn.disabled = false;
+        }
       });
     }
 
-    // Update user name and avatar (this would come from user data)
-    const userName = document.getElementById('user-name');
-    const navAvatar = document.getElementById('nav-avatar');
-
-    // This is just for demo - in a real app, this would come from user authentication
-    if (userName && navAvatar) {
-      // You could set user name and avatar based on logged in user
-      // userName.textContent = 'John Doe';
-      // navAvatar.textContent = 'JD';
-    }
+    // Initialize contact form on DOMContentLoaded
+    document.addEventListener('DOMContentLoaded', () => {
+      initContactForm();
+    });
   </script>
 </body>
 </html>
