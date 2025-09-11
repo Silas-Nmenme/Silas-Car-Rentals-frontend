@@ -310,520 +310,816 @@
       background: var(--dark-primary) !important;
     }
 
+    /* Global mobile fixes */
+    * {
+      box-sizing: border-box;
+    }
+
+    html, body {
+      overflow-x: hidden;
+      width: 100%;
+      margin: 0;
+      padding: 0;
+    }
+
+    .container, .container-fluid {
+      width: 100%;
+      max-width: 100%;
+      padding-left: 15px;
+      padding-right: 15px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
     /* Mobile responsiveness adjustments */
     @media (max-width: 768px) {
-      .hero-section {
-        padding: 1.5rem 1rem;
+      /* Global mobile spacing and layout */
+      .container {
+        padding-left: 1rem;
+        padding-right: 1rem;
+        max-width: 100%;
       }
 
-      .hero-title {
-        font-size: 2.5rem;
+      /* Header/Navbar - Enhanced mobile navigation */
+      .main-header {
+        padding: 0.75rem 0;
+        position: relative;
+        z-index: 1050;
       }
 
-      .hero-subtitle {
-        font-size: 1.1rem;
+      .navbar-brand {
+        font-size: 1.25rem;
+        flex: 1;
+        text-align: center;
+        margin: 0;
+        padding: 0.5rem 0;
       }
 
-      .hero-buttons {
-        flex-direction: column;
+      .navbar-toggler {
+        border: none;
+        padding: 0.5rem;
+        background: rgba(255,255,255,0.1);
+        border-radius: 6px;
+        width: 44px;
+        height: 44px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .navbar-toggler:focus {
+        box-shadow: 0 0 0 2px rgba(255,255,255,0.3);
+      }
+
+      .navbar .d-flex.align-items-center.gap-3 {
+        gap: 0.5rem !important;
+        flex-wrap: wrap;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+      }
+
+      .navbar .btn {
+        padding: 0.375rem 0.5rem;
+        font-size: 0.8rem;
+        min-width: auto;
+        min-height: 44px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .navbar .badge {
+        font-size: 0.7rem;
+        padding: 0.2em 0.4em;
+        min-width: 20px;
+        height: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      #nav-avatar {
+        width: 36px !important;
+        height: 36px !important;
+        font-size: 0.9rem !important;
+        min-width: 36px;
+        min-height: 36px;
+      }
+
+      .dropdown-menu {
+        min-width: 180px;
+        font-size: 0.9rem;
+        border-radius: 8px;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+        margin-top: 0.5rem;
+      }
+
+      .dropdown-item {
+        padding: 0.75rem 1rem;
+        min-height: 44px;
+        display: flex;
         align-items: center;
       }
 
+      /* Hero Section - Improved mobile layout */
+      .hero-section {
+        padding: 2rem 1rem;
+        min-height: 50vh;
+        text-align: center;
+      }
+
+      .hero-title {
+        font-size: 2.2rem;
+        line-height: 1.2;
+        margin-bottom: 1rem;
+        word-wrap: break-word;
+      }
+
+      .hero-subtitle {
+        font-size: 1rem;
+        line-height: 1.4;
+        margin-bottom: 2rem;
+        max-width: 100%;
+      }
+
       .search-container {
-        flex-direction: column;
-        align-items: stretch;
+        margin-top: 1.5rem;
+        width: 100%;
       }
 
-      .search-container input,
-      .search-container button {
-        flex: 1;
-        margin-bottom: 0.5rem;
-      }
-
-      .filters-grid {
+      .search-input {
+        max-width: 100% !important;
+        padding: 0.25rem 0.75rem;
+        margin: 0 auto;
         display: flex;
-        flex-direction: column;
-        gap: 1rem;
-      }
-
-      .about-content {
-        grid-template-columns: 1fr;
-        gap: 2rem;
-      }
-
-      .services-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .features-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .footer-content {
-        grid-template-columns: 1fr;
-      }
-
-      .contact-content {
-        grid-template-columns: 1fr;
-        gap: 2rem;
-      }
-
-      .contact-form {
-        padding: 1.5rem;
-      }
-
-      .car-specs {
         gap: 0.5rem;
       }
 
-      .spec-item {
-        font-size: 0.8rem;
-        padding: 0.2rem 0.4rem;
+      .search-input input {
+        font-size: 0.9rem;
+        padding: 0.75rem;
+        border-radius: 25px;
+        flex: 1;
+        min-height: 44px;
+      }
+
+      .search-input button {
+        font-size: 0.9rem;
+        padding: 0.75rem 1.5rem;
+        border-radius: 25px;
+        min-height: 44px;
+        white-space: nowrap;
+      }
+
+      /* Filters - Enhanced mobile filters */
+      .filters-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 1rem;
+        margin-bottom: 2rem;
+      }
+
+      .filter-group {
+        padding: 1.25rem;
+        border-radius: 12px;
+        background: var(--light-card-bg);
+        border: 1px solid var(--light-border);
+      }
+
+      .filter-group label {
+        font-size: 0.9rem;
+        margin-bottom: 0.75rem;
+        font-weight: 600;
+        display: block;
+      }
+
+      .filter-group select {
+        font-size: 0.9rem;
+        padding: 0.75rem;
+        border-radius: 8px;
+        width: 100%;
+        min-height: 44px;
+      }
+
+      /* Sections - Better mobile spacing */
+      .section-title {
+        font-size: 2rem;
+        margin-bottom: 1.5rem;
+        text-align: center;
+        word-wrap: break-word;
+      }
+
+      .services-section {
+        padding: 3rem 0;
+      }
+
+      .about-section,
+      .contact-section {
+        padding: 3rem 0;
+      }
+
+      /* Car Cards - Enhanced mobile cards */
+      .services-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+      }
+
+      .car-card {
+        margin-bottom: 0;
+        max-width: 100%;
+        border-radius: 16px;
+        overflow: hidden;
+        background: var(--light-card-bg);
+        border: 1px solid var(--light-border);
+        box-shadow: var(--light-shadow);
+      }
+
+      .car-image {
+        height: 220px;
+        width: 100%;
+        object-fit: cover;
+        transition: transform 0.3s ease;
+      }
+
+      .car-details {
+        padding: 1.25rem;
+      }
+
+      .car-name {
+        font-size: 1.25rem;
+        margin-bottom: 0.75rem;
+        line-height: 1.3;
+        word-wrap: break-word;
+      }
+
+      .car-details p {
+        font-size: 0.85rem;
+        margin-bottom: 0.5rem;
+        line-height: 1.4;
       }
 
       .car-actions {
         flex-direction: column;
         gap: 0.5rem;
+        margin-top: 1rem;
       }
 
-      .view-more-stats {
+      .car-actions .btn {
+        flex: 1;
+        font-size: 0.85rem;
+        padding: 0.625rem;
+        min-width: 0;
+        min-height: 44px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 8px;
+      }
+
+      .car-actions .btn i {
+        margin-right: 0.5rem;
+      }
+
+      /* About Section - Improved mobile layout */
+      .about-content {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+        text-align: center;
+      }
+
+      .about-text p {
+        font-size: 0.95rem;
+        line-height: 1.6;
+        text-align: left;
+      }
+
+      .about-stats {
+        grid-template-columns: 1fr 1fr;
         gap: 1rem;
       }
 
-      .stat-number {
-        font-size: 1.25rem;
+      .stat-item {
+        padding: 1.5rem 1rem;
+        text-align: center;
+        border-radius: 12px;
+        min-height: 120px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
       }
 
-      #welcome-avatar {
-        width: 50px !important;
-        height: 50px !important;
-        font-size: 1rem !important;
+      .stat-item h3 {
+        font-size: 2rem;
+        margin-bottom: 0.5rem;
       }
-      .card-img-top {
-        height: 200px;
-        object-fit: cover;
+
+      .stat-item p {
+        font-size: 0.9rem;
+        margin: 0;
       }
-      .car-image {
-        height: 200px;
+
+      /* Contact Section - Enhanced mobile contact */
+      .contact-content {
+        grid-template-columns: 1fr;
+        gap: 2rem;
       }
-      .floating-shape {
-        display: none;
+
+      .contact-info {
+        gap: 1.5rem;
       }
-      .navbar .d-flex.align-items-center.gap-3 {
-        gap: 0.25rem !important; /* Reduced gap for better balance */
+
+      .contact-item {
+        padding: 1.25rem;
+        flex-direction: row;
+        align-items: flex-start;
+        gap: 1rem;
+        border-radius: 12px;
+        min-height: 80px;
       }
-      .navbar .btn {
-        padding: 0.25rem 0.375rem; /* Smaller padding */
-        font-size: 0.8rem; /* Smaller font */
+
+      .contact-item i {
+        font-size: 1.25rem;
+        margin-top: 0.25rem;
+        flex-shrink: 0;
+        min-width: 24px;
+        text-align: center;
       }
-      .navbar .badge {
-        font-size: 0.7rem; /* Smaller badge */
-        padding: 0.2em 0.4em; /* Adjust badge padding */
+
+      .contact-item h4 {
+        font-size: 1rem;
+        margin-bottom: 0.25rem;
+        flex: 1;
       }
-      .navbar-brand {
-        font-size: 1.1rem; /* Slightly smaller brand */
+
+      .contact-item p {
+        font-size: 0.9rem;
+        line-height: 1.4;
+        margin: 0;
+        flex: 1;
       }
-      #nav-avatar {
-        width: 28px !important;
-        height: 28px !important;
-        font-size: 0.8rem !important;
+
+      .contact-form {
+        padding: 1.5rem;
+        border-radius: 12px;
+        background: var(--light-card-bg);
+        border: 1px solid var(--light-border);
       }
-      .dropdown-menu {
-        min-width: 150px; /* Narrower dropdown */
+
+      .form-group {
+        margin-bottom: 1.25rem;
       }
-      /* Balance header: Center brand, distribute right elements evenly */
-      .navbar .container-fluid {
-        flex-wrap: wrap;
-        justify-content: space-between;
+
+      .form-group label {
+        font-size: 0.9rem;
+        margin-bottom: 0.5rem;
+        font-weight: 600;
+        display: block;
+      }
+
+      .form-group input,
+      .form-group textarea {
+        font-size: 0.9rem;
+        padding: 0.875rem;
+        border-radius: 8px;
+        width: 100%;
+        min-height: 44px;
+        border: 2px solid var(--light-border);
+      }
+
+      .form-group textarea {
+        min-height: 100px;
+        resize: vertical;
+      }
+
+      .btn-submit {
+        width: 100%;
+        padding: 0.875rem;
+        font-size: 1rem;
+        min-height: 48px;
+        border-radius: 8px;
+        font-weight: 600;
+      }
+
+      /* Footer - Better mobile footer */
+      .main-footer {
+        padding: 3rem 0 2rem;
+        text-align: center;
+      }
+
+      .footer-content {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+      }
+
+      .footer-section h3 {
+        font-size: 1.1rem;
+        margin-bottom: 1rem;
+      }
+
+      .footer-section p,
+      .footer-section li {
+        font-size: 0.9rem;
+        line-height: 1.5;
+      }
+
+      .footer-section ul {
+        list-style: none;
+        padding: 0;
+        text-align: center;
+      }
+
+      .footer-section li {
+        margin-bottom: 0.5rem;
+      }
+
+      /* Toast - Improved mobile toast */
+      .toast {
+        left: 1rem;
+        right: 1rem;
+        max-width: none;
+        width: auto;
+        border-radius: 8px;
+        font-size: 0.9rem;
+        padding: 1rem 1.25rem;
+        min-height: 60px;
+        display: flex;
         align-items: center;
       }
-      .navbar-brand {
-        flex: 1;
+
+      /* Scroll to top - Better mobile positioning */
+      .scroll-to-top {
+        bottom: 1rem;
+        right: 1rem;
+        width: 48px;
+        height: 48px;
+        font-size: 1rem;
+        border-radius: 50%;
+        min-width: 48px;
+        min-height: 48px;
+      }
+
+      /* Load More - Enhanced mobile button */
+      .load-more-container {
+        padding: 0 1rem;
+        margin-top: 2rem;
+      }
+
+      .load-more-container .btn {
+        width: 100%;
+        max-width: 300px;
+        margin: 0 auto;
+        padding: 0.875rem 2rem;
+        font-size: 1rem;
+        min-height: 48px;
+        border-radius: 25px;
+      }
+
+      /* No cars state - Better mobile layout */
+      .no-cars {
         text-align: center;
-        order: 2;
-      }
-      .navbar .ms-auto.d-flex.align-items-center.gap-3 {
-        flex: 1;
-        justify-content: space-around;
-        order: 3;
-        gap: 0.5rem !important;
-      }
-      .navbar .d-none.d-md-flex {
-        order: 1;
-        flex: 1;
-        justify-content: flex-start;
-      }
-      .navbar .btn-outline-success.d-lg-none {
-        order: 0;
+        padding: 4rem 2rem;
+        border-radius: 12px;
+        margin: 2rem 0;
       }
 
-      /* Home-specific mobile adjustments */
-      .welcome-section {
-        padding: 1.5rem;
-      }
-
-      .search-bar-filters {
-        flex-direction: column;
-        align-items: stretch;
-      }
-
-      .search-bar-filters input,
-      .search-bar-filters select {
-        flex: 1;
-        margin-bottom: 0.5rem;
-      }
-
-      .promo-carousel .carousel-item {
-        padding: 1rem;
-      }
-
-      .quick-stats .col-md-3 {
+      .no-cars i {
+        font-size: 4rem;
         margin-bottom: 1rem;
       }
 
-      .quick-booking .col-md-6 {
-        margin-bottom: 1rem;
-      }
-
-      .recommended-cars .col-md-4 {
-        margin-bottom: 1.5rem;
-      }
-
-      .testimonials .col-md-4 {
-        margin-bottom: 1.5rem;
-      }
-
-      .activity-feed .activity-item {
-        padding: 1rem 0;
-      }
-
-      .faq-accordion .accordion-item {
+      .no-cars h3 {
+        font-size: 1.5rem;
         margin-bottom: 0.5rem;
-      }
-
-      .newsletter .input-group {
-        flex-direction: column;
-      }
-
-      .newsletter .input-group input {
-        margin-bottom: 0.5rem;
-      }
-
-      .social-media .btn {
-        margin-bottom: 0.5rem;
-      }
-
-      .locations .col-md-4 {
-        margin-bottom: 1rem;
-      }
-
-      .contact-widget .col-md-6 {
-        margin-bottom: 1.5rem;
-      }
-
-      .loyalty-program .col-md-8,
-      .loyalty-program .col-md-4 {
-        margin-bottom: 1rem;
       }
     }
+
     @media (max-width: 576px) {
+      /* Extra small screens */
+      .container {
+        padding-left: 0.75rem;
+        padding-right: 0.75rem;
+      }
+
+      .main-header {
+        padding: 0.5rem 0;
+      }
+
       .navbar-brand {
-        font-size: 1rem;
+        font-size: 1.1rem;
       }
-      #welcome-user {
-        font-size: 1.25rem;
-      }
-      .card-body.d-flex.flex-column .btn {
-        font-size: 0.875rem;
-      }
-      .quick-stats .card {
-        padding: 1rem 0.5rem;
-      }
-      .quick-stats .card i {
-        font-size: 1.5rem;
-      }
-      .navbar .d-flex.align-items-center {
-        flex-wrap: wrap; /* Allow wrapping if needed */
-        justify-content: space-around; /* Distribute evenly */
-        gap: 0.25rem !important;
-      }
+
       .navbar .btn {
-        padding: 0.2rem 0.3rem;
+        padding: 0.25rem 0.375rem;
         font-size: 0.75rem;
       }
+
       .navbar .badge {
         font-size: 0.65rem;
         padding: 0.15em 0.3em;
       }
+
+      #nav-avatar {
+        width: 28px !important;
+        height: 28px !important;
+        font-size: 0.75rem !important;
+      }
+
+      .dropdown-menu {
+        min-width: 140px;
+        font-size: 0.85rem;
+      }
+
+      .hero-section {
+        padding: 1.5rem 0.75rem;
+        min-height: 45vh;
+      }
+
+      .hero-title {
+        font-size: 1.8rem;
+      }
+
+      .hero-subtitle {
+        font-size: 0.95rem;
+      }
+
+      .search-input {
+        padding: 0.25rem 0.5rem;
+      }
+
+      .search-input input {
+        font-size: 0.85rem;
+        padding: 0.5rem 0.75rem;
+      }
+
+      .search-input button {
+        font-size: 0.85rem;
+        padding: 0.5rem 0.75rem;
+      }
+
+      .section-title {
+        font-size: 1.75rem;
+      }
+
+      .services-section {
+        padding: 2.5rem 0;
+      }
+
+      .about-section,
+      .contact-section {
+        padding: 2.5rem 0;
+      }
+
+      .car-image {
+        height: 200px;
+      }
+
+      .car-name {
+        font-size: 1.1rem;
+      }
+
+      .car-details p {
+        font-size: 0.8rem;
+      }
+
+      .car-actions .btn {
+        font-size: 0.75rem;
+        padding: 0.4rem;
+      }
+
+      .about-stats {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+      }
+
+      .stat-item {
+        padding: 1.25rem 0.75rem;
+      }
+
+      .stat-item h3 {
+        font-size: 1.75rem;
+      }
+
+      .contact-item {
+        padding: 0.75rem;
+        gap: 0.75rem;
+      }
+
+      .contact-item i {
+        font-size: 1.1rem;
+      }
+
+      .contact-item h4 {
+        font-size: 0.9rem;
+      }
+
+      .contact-item p {
+        font-size: 0.85rem;
+      }
+
+      .contact-form {
+        padding: 1.25rem;
+      }
+
+      .main-footer {
+        padding: 2.5rem 0 1.5rem;
+      }
+
+      .footer-section h3 {
+        font-size: 1rem;
+      }
+
+      .footer-section p,
+      .footer-section li {
+        font-size: 0.85rem;
+      }
+
+      .toast {
+        left: 0.75rem;
+        right: 0.75rem;
+      }
+
+      .scroll-to-top {
+        bottom: 0.75rem;
+        right: 0.75rem;
+        width: 40px;
+        height: 40px;
+        font-size: 0.9rem;
+      }
+    }
+
+    @media (max-width: 480px) {
+      /* Very small screens */
+      .container {
+        padding-left: 0.5rem;
+        padding-right: 0.5rem;
+      }
+
+      .main-header {
+        padding: 0.375rem 0;
+      }
+
+      .navbar-brand {
+        font-size: 1rem;
+      }
+
+      .navbar .btn {
+        padding: 0.2rem 0.3rem;
+        font-size: 0.7rem;
+      }
+
+      .navbar .badge {
+        font-size: 0.6rem;
+        padding: 0.1em 0.25em;
+      }
+
       #nav-avatar {
         width: 24px !important;
         height: 24px !important;
         font-size: 0.7rem !important;
       }
+
       .dropdown-menu {
         min-width: 120px;
-      }
-      /* Further balance: Stack elements if needed */
-      .navbar .container-fluid {
-        flex-direction: column;
-        align-items: stretch;
-      }
-      .navbar-brand {
-        text-align: center;
-        margin-bottom: 0.5rem;
-      }
-      .navbar .ms-auto.d-flex.align-items-center.gap-3 {
-        justify-content: center;
-        flex-wrap: wrap;
+        font-size: 0.8rem;
       }
 
-      /* Home-specific mobile adjustments */
-      .welcome-section h2 {
+      .dropdown-item {
+        padding: 0.375rem 0.75rem;
+      }
+
+      .hero-section {
+        padding: 1.25rem 0.5rem;
+        min-height: 40vh;
+      }
+
+      .hero-title {
+        font-size: 1.6rem;
+      }
+
+      .hero-subtitle {
+        font-size: 0.9rem;
+      }
+
+      .search-input {
+        padding: 0.2rem 0.4rem;
+      }
+
+      .search-input input {
+        font-size: 0.8rem;
+        padding: 0.4rem 0.6rem;
+      }
+
+      .search-input button {
+        font-size: 0.8rem;
+        padding: 0.4rem 0.6rem;
+      }
+
+      .section-title {
         font-size: 1.5rem;
       }
 
-      .welcome-section p {
-        font-size: 0.9rem;
+      .services-section {
+        padding: 2rem 0;
       }
 
-      .search-bar-card h5 {
-        font-size: 1.1rem;
+      .about-section,
+      .contact-section {
+        padding: 2rem 0;
       }
 
-      .promo-carousel h5 {
-        font-size: 1.2rem;
+      .car-image {
+        height: 180px;
       }
 
-      .promo-carousel p {
-        font-size: 0.9rem;
-      }
-
-      .stats-dashboard h6 {
-        font-size: 0.9rem;
-      }
-
-      .quick-booking h5 {
-        font-size: 1.1rem;
-      }
-
-      .recommended-cars h5 {
-        font-size: 1.1rem;
-      }
-
-      .testimonials h5 {
-        font-size: 1.1rem;
-      }
-
-      .activity-feed h5 {
-        font-size: 1.1rem;
-      }
-
-      .faq h5 {
-        font-size: 1.1rem;
-      }
-
-      .newsletter h5 {
-        font-size: 1.1rem;
-      }
-
-      .social-media h5 {
-        font-size: 1.1rem;
-      }
-
-      .locations h5 {
-        font-size: 1.1rem;
-      }
-
-      .contact-widget h5 {
-        font-size: 1.1rem;
-      }
-
-      .loyalty-program h5 {
-        font-size: 1.1rem;
-      }
-    }
-    @media (max-width: 480px) {
-      .navbar-brand {
-        font-size: 0.9rem;
-      }
-      .navbar .d-flex.align-items-center.gap-3 {
-        gap: 0.1rem !important;
-      }
-      .navbar .btn {
-        padding: 0.15rem 0.25rem;
-        font-size: 0.7rem;
-      }
-      .navbar .badge {
-        font-size: 0.6rem;
-        padding: 0.1em 0.25em;
-      }
-      #nav-avatar {
-        width: 20px !important;
-        height: 20px !important;
-        font-size: 0.6rem !important;
-      }
-      .dropdown-menu {
-        min-width: 100px;
-        font-size: 0.8rem;
-      }
-      .dropdown-item {
-        padding: 0.25rem 0.5rem;
-      }
-      /* Compact and balanced: Minimize gaps, center align */
-      .navbar .container-fluid {
-        padding: 0.5rem;
-      }
-      .navbar .ms-auto.d-flex.align-items-center.gap-3 {
-        justify-content: space-between;
-        gap: 0 !important;
-      }
-      .navbar .btn {
-        min-width: 2rem;
-      }
-
-      /* Home-specific mobile adjustments */
-      .welcome-section {
-        padding: 1rem;
-      }
-
-      .search-bar-filters input,
-      .search-bar-filters select,
-      .search-bar-filters button {
-        font-size: 0.9rem;
-        padding: 0.5rem;
-      }
-
-      .promo-carousel .card-body {
-        padding: 1rem 0.5rem;
-      }
-
-      .quick-stats .card {
-        padding: 0.75rem 0.5rem;
-      }
-
-      .quick-stats .card i {
-        font-size: 1.25rem;
-      }
-
-      .quick-stats .card h6 {
-        font-size: 0.8rem;
-      }
-
-      .quick-stats .card p {
-        font-size: 0.8rem;
-      }
-
-      .quick-booking .form-control,
-      .quick-booking .form-select {
-        font-size: 0.9rem;
-        padding: 0.5rem;
-      }
-
-      .recommended-cars .card-body h6 {
-        font-size: 0.9rem;
-      }
-
-      .recommended-cars .card-body p {
-        font-size: 0.9rem;
-      }
-
-      .recommended-cars .badge {
-        font-size: 0.7rem;
-      }
-
-      .testimonials .card-body h6 {
-        font-size: 0.9rem;
-      }
-
-      .testimonials .card-body p {
-        font-size: 0.85rem;
-      }
-
-      .activity-feed .activity-item p {
-        font-size: 0.9rem;
-      }
-
-      .activity-feed .activity-item small {
-        font-size: 0.8rem;
-      }
-
-      .faq .accordion-button {
-        font-size: 0.9rem;
-        padding: 0.75rem 1rem;
-      }
-
-      .faq .accordion-body {
-        font-size: 0.85rem;
-        padding: 0.5rem 1rem;
-      }
-
-      .newsletter .card-body h5 {
+      .car-name {
         font-size: 1rem;
       }
 
-      .newsletter .card-body p {
-        font-size: 0.85rem;
+      .car-details p {
+        font-size: 0.75rem;
       }
 
-      .newsletter .form-control {
-        font-size: 0.9rem;
-        padding: 0.5rem;
+      .car-actions .btn {
+        font-size: 0.7rem;
+        padding: 0.35rem;
       }
 
-      .newsletter .btn {
-        font-size: 0.9rem;
-        padding: 0.5rem;
+      .stat-item {
+        padding: 1rem 0.5rem;
       }
 
-      .social-media .btn {
-        font-size: 0.8rem;
-        padding: 0.4rem 0.8rem;
+      .stat-item h3 {
+        font-size: 1.5rem;
       }
 
-      .locations .card-body h6 {
-        font-size: 0.9rem;
-      }
-
-      .locations .card-body p {
-        font-size: 0.85rem;
-      }
-
-      .contact-widget .card-body h6 {
-        font-size: 0.9rem;
-      }
-
-      .contact-widget .card-body p {
-        font-size: 0.85rem;
-      }
-
-      .contact-widget .form-control {
-        font-size: 0.9rem;
-        padding: 0.5rem;
-      }
-
-      .contact-widget .btn {
-        font-size: 0.9rem;
-        padding: 0.5rem;
-      }
-
-      .loyalty-program .card-body h6 {
-        font-size: 0.9rem;
-      }
-
-      .loyalty-program .card-body p {
-        font-size: 0.85rem;
-      }
-
-      .loyalty-program .progress {
-        height: 0.5rem;
-      }
-
-      .loyalty-program small {
+      .stat-item p {
         font-size: 0.8rem;
       }
 
-      .loyalty-program h4 {
-        font-size: 1.1rem;
+      .contact-item {
+        padding: 0.6rem;
+        gap: 0.6rem;
+      }
+
+      .contact-item i {
+        font-size: 1rem;
+      }
+
+      .contact-item h4 {
+        font-size: 0.85rem;
+      }
+
+      .contact-item p {
+        font-size: 0.8rem;
+      }
+
+      .contact-form {
+        padding: 1rem;
+      }
+
+      .form-group input,
+      .form-group textarea {
+        font-size: 0.85rem;
+        padding: 0.6rem;
+      }
+
+      .btn-submit {
+        padding: 0.6rem;
+        font-size: 0.9rem;
+      }
+
+      .main-footer {
+        padding: 2rem 0 1rem;
+      }
+
+      .footer-section h3 {
+        font-size: 0.95rem;
+      }
+
+      .footer-section p,
+      .footer-section li {
+        font-size: 0.8rem;
+      }
+
+      .toast {
+        left: 0.5rem;
+        right: 0.5rem;
+        font-size: 0.85rem;
+      }
+
+      .scroll-to-top {
+        bottom: 0.5rem;
+        right: 0.5rem;
+        width: 38px;
+        height: 38px;
+        font-size: 0.8rem;
+      }
+
+      .load-more-container .btn {
+        font-size: 0.9rem;
+        padding: 0.6rem 1.2rem;
       }
     }
 
