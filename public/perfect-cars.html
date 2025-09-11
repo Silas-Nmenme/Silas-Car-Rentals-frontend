@@ -1632,15 +1632,7 @@
               <p><strong>Brand:</strong> ${car.brand}</p>
               <p><strong>Type:</strong> ${car.type}</p>
               <p><strong>Description:</strong> ${car.description}</p>
-              <p><strong>Available:</strong> ${car.isAvailable ? 'Yes' : 'No'}</p>
-              <p><strong>Is Rented:</strong> ${car.isRented ? 'Yes' : 'No'}</p>
-              <p><strong>Rented By:</strong> ${car.rentedBy || 'N/A'}</p>
-              <p><strong>Start Date:</strong> ${startDate}</p>
-              <p><strong>End Date:</strong> ${endDate}</p>
-              <p><strong>Total Price:</strong> ₦${car.totalPrice ? car.totalPrice.toLocaleString() : 'N/A'}</p>
-              <p><strong>Status:</strong> ${car.status || 'N/A'}</p>
-              <p><strong>Created At:</strong> ${createdAt}</p>
-              <p><strong>Updated At:</strong> ${updatedAt}</p>
+
               <p class="availability ${availabilityClass}" aria-label="Availability status">${availabilityText}</p>
               <div class="car-actions d-flex justify-content-between mt-3">
                 <button class="btn btn-primary btn-sm" data-action="add-cart" data-id="${car._id}" title="Add to Cart">
@@ -1756,15 +1748,6 @@
           brand: car.brand || 'Unknown',
           type: car.type || 'sedan',
           description: car.description || 'No description available',
-          isAvailable: car.isAvailable !== undefined ? car.isAvailable : true,
-          isRented: car.isRented || false,
-          rentedBy: car.rentedBy || null,
-          startDate: car.startDate || null,
-          endDate: car.endDate || null,
-          totalPrice: car.totalPrice || 0,
-          status: car.status || 'available',
-          createdAt: car.createdAt || new Date().toISOString(),
-          updatedAt: car.updatedAt || new Date().toISOString()
         }));
 
         filteredCars = [...allCars];
