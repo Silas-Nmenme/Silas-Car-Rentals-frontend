@@ -228,9 +228,12 @@
                     email: booking.email,
                     phone_number: booking.phoneNumber,
                     startDate: booking.pickupDate,
-                    endDate: booking.returnDate
+                    endDate: booking.returnDate,
+                    totalAmount: booking.totalAmount,
+                    days: booking.days,
+                    userId: booking.userId
                 };
-                const url = `${API_BASE}/api/payment/pay/${carId}`;
+                const url = `${API_BASE}/api/payments/pay/${carId}`;
                 console.log('Submitting booking to:', url);
                 console.log('Booking data:', bookingData);
                 console.log('Token present:', !!token);
