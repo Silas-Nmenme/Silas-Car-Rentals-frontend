@@ -197,7 +197,7 @@
                 this.showError(validation.errors[0]);
                 return { success: false, error: validation.errors[0] };
             }
-            const token = localStorage.getItem('token');
+            const token = localStorage.getItem('token') || localStorage.getItem('authToken') || localStorage.getItem('userToken');
             if (!token) {
                 this.showError('Please login first');
                 return { success: false, error: 'Authentication required' };
@@ -206,9 +206,10 @@
                 const carId = booking.car._id;
                 const paymentData = {
                     email: booking.email,
-                    phone_number: booking.phoneNumber,
-                    startDate: booking.pickupDate,
-                    endDate: booking.returnDate
+                    phone: booking.phoneNumber,
+                    start_date: booking.pickupDate,
+                    end_date: booking.returnDate,
+                    amount: booking.totalAmount
                 };
                 const url = `${API_BASE}/api/payment/pay/${carId}`;
                 console.log('Initiating payment to:', url);
