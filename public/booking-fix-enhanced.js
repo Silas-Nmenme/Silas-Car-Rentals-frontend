@@ -204,26 +204,24 @@
             }
             try {
                 const carId = booking.car._id;
-                const paymentData = {
-                    email: booking.email,
-                    phone: booking.phoneNumber,
-                    start_date: booking.pickupDate,
-                    end_date: booking.returnDate,
-                    amount: booking.totalAmount * 100, // Convert to kobo for Flutterwave
-                    userId: booking.userId,
-                    tx_ref: `tx_${Date.now()}_${carId}_${booking.userId}`
-                };
+                const formData = new FormData();
+                formData.append('email', booking.email);
+                formData.append('phone_number', booking.phoneNumber);
+                formData.append('startDate', booking.pickupDate);
+                formData.append('endDate', booking.returnDate);
+                formData.append('amount', booking.totalAmount * 100); // Convert to kobo for Flutterwave
+                formData.append('userId', booking.userId);
+                formData.append('tx_ref', `tx_${Date.now()}_${carId}_${booking.userId}`);
                 const url = `${API_BASE}/api/payment/pay/${carId}`;
                 console.log('Initiating payment to:', url);
-                console.log('Payment data:', paymentData);
+                console.log('Form data entries:', Array.from(formData.entries()));
                 console.log('Token present:', !!token);
                 const response = await fetch(url, {
                     method: 'POST',
                     headers: {
-                        'Content-Type': 'application/json',
                         'Authorization': `Bearer ${token}`
                     },
-                    body: JSON.stringify(paymentData)
+                    body: formData
                 });
                 console.log('Response status:', response.status);
                 if (!response.ok) {
