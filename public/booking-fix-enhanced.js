@@ -209,7 +209,8 @@
                     phone: booking.phoneNumber,
                     start_date: booking.pickupDate,
                     end_date: booking.returnDate,
-                    amount: booking.totalAmount
+                    amount: booking.totalAmount,
+                    userId: booking.userId
                 };
                 const url = `${API_BASE}/api/payment/pay/${carId}`;
                 console.log('Initiating payment to:', url);
