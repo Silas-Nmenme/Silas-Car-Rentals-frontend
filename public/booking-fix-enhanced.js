@@ -228,7 +228,15 @@
                     userId: booking.userId,
                     amount: booking.totalAmount
                 };
-                const response = await fetch(`${API_BASE}/api/payment/pay`, {
+                // For single car booking, append carId to URL
+                let url = '';
+                if (booking.isMultiCar) {
+                    // For multi-car, currently backend does not support multiple carIds in URL, so fallback to first carId or handle differently
+                    url = `${API_BASE}/api/payment/pay/${carIds[0]}`;
+                } else {
+                    url = `${API_BASE}/api/payment/pay/${carIds[0]}`;
+                }
+                const response = await fetch(url, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
