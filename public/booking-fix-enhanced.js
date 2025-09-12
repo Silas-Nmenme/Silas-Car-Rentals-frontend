@@ -209,8 +209,9 @@
                     phone: booking.phoneNumber,
                     start_date: booking.pickupDate,
                     end_date: booking.returnDate,
-                    amount: booking.totalAmount,
-                    userId: booking.userId
+                    amount: booking.totalAmount * 100, // Convert to kobo for Flutterwave
+                    userId: booking.userId,
+                    tx_ref: `tx_${Date.now()}_${carId}_${booking.userId}`
                 };
                 const url = `${API_BASE}/api/payment/pay/${carId}`;
                 console.log('Initiating payment to:', url);
