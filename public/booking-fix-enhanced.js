@@ -40,6 +40,7 @@
                 }
 
                 const booking = {
+                    bookingId: 'BK' + Date.now(),
                     userId: bookingData.userId || this.getUserId(),
                     car: this.enhanceCarData(bookingData.car),
                     pickupDate,

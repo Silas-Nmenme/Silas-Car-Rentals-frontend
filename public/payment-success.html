@@ -1,462 +1,373 @@
-<!doctype html>
-<html lang="en">
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Payment Successful — Silas Car Rentals</title>
-  <link rel="stylesheet" href="style.css" />
-  <!-- Google Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Silas Car Rentals - Booking Receipt</title>
+
+  <!-- Bootstrap 5.3.2 (Responsive & Mobile-first) -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
   <!-- Font Awesome -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <!-- Bootstrap CSS CDN -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-  <!-- Bootstrap Icons -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-  <script src="booking-fix-enhanced.js"></script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"/>
+  <!-- Animate.css -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" rel="stylesheet"/>
+  <!-- AOS -->
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet"/>
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet"/>
+
   <style>
+    :root {
+      --light-primary: #0d9488;
+      --light-primary-700: #0f766e;
+      --light-text: #374151;
+      --light-muted: #6b7280;
+      --light-border: #e5e7eb;
+      --light-shadow: 0 4px 20px rgba(0,0,0,0.08);
+      --light-bg: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+      --light-card-bg: #ffffff;
+      --light-accent: #f59e0b;
+    }
+
     body {
       font-family: 'Inter', sans-serif;
-      background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+      background: var(--light-bg);
       min-height: 100vh;
-      margin: 0;
+      color: var(--light-text);
     }
 
-    .success-container {
-      text-align: center;
-      padding: 3rem 1rem;
-      max-width: 600px;
-      margin: 0 auto;
-      background: white;
-      border-radius: 20px;
-      box-shadow: 0 20px 40px rgba(0,0,0,0.1);
-      position: relative;
+    .receipt-container {
+      max-width: 650px;
+      margin: 2rem auto;
+      background: var(--light-card-bg);
+      border-radius: 16px;
+      box-shadow: var(--light-shadow);
       overflow: hidden;
+      border: 1px solid var(--light-border);
     }
 
-    .success-container::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 4px;
-      background: linear-gradient(90deg, #48dbfb, #0abde3, #10ac84);
-    }
-
-    .success-icon {
-      font-size: 4rem;
-      margin-bottom: 1rem;
-      color: #10ac84;
-      animation: bounce 1s ease infinite;
-    }
-
-    .success-container h1 {
-      color: #2d3748;
-      margin-bottom: 1rem;
-      font-size: 2.5rem;
-      font-weight: 700;
-    }
-
-    .success-message {
-      color: #718096;
-      margin-bottom: 2rem;
-      font-size: 1.1rem;
-      line-height: 1.6;
-    }
-
-    .booking-card {
-      background: #f7fafc;
-      border: 1px solid #e2e8f0;
-      border-radius: 12px;
+    .header {
+      background: linear-gradient(135deg, var(--light-primary) 0%, var(--light-primary-700) 100%);
+      color: white;
       padding: 2rem;
-      margin-bottom: 2rem;
-      text-align: left;
-      box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+      text-align: center;
     }
 
-    .booking-detail {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 0.75rem;
-      padding-bottom: 0.75rem;
-      border-bottom: 1px solid #e2e8f0;
+    .header h1 {
+      margin: 0;
+      font-size: 2rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 1px;
     }
 
-    .booking-detail:last-child {
-      border-bottom: none;
-      margin-bottom: 0;
-      padding-bottom: 0;
+    .header p {
+      margin: 0.5rem 0 0;
+      opacity: 0.9;
     }
 
-    .detail-label {
+    .content {
+      padding: 2rem;
+    }
+
+    .booking-details .row {
+      margin-bottom: 1rem;
+    }
+
+    .booking-details .col-6 {
       font-weight: 600;
-      color: #718096;
-      font-size: 0.9rem;
+      color: var(--light-muted);
+      font-size: 0.875rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
     }
 
-    .detail-value {
+    .booking-details .col-6:last-child {
       font-weight: 700;
-      color: #2d3748;
-      font-size: 1rem;
+      color: var(--light-text);
+      text-align: right;
+    }
+
+    .total-section {
+      background: #f8f9fa;
+      border: 2px solid var(--light-primary);
+      border-radius: 12px;
+      padding: 1.5rem;
+      text-align: center;
+      margin: 1.5rem 0;
     }
 
     .total-amount {
       font-size: 1.5rem;
-      color: #10ac84;
-      margin-top: 1rem;
-      padding-top: 1rem;
-      border-top: 2px solid #e2e8f0;
+      font-weight: 800;
+      color: var(--light-primary);
+      margin: 0;
+    }
+
+    .footer {
+      background: #2c3e50;
+      color: white;
+      padding: 2rem;
+      text-align: center;
+    }
+
+    .footer h3 {
+      margin-bottom: 0.75rem;
       font-weight: 700;
+    }
+
+    .contact-info {
+      display: flex;
+      justify-content: center;
+      gap: 2rem;
+      margin: 1.5rem 0;
+      flex-wrap: wrap;
+    }
+
+    .contact-item {
+      text-align: center;
+    }
+
+    .contact-item i {
+      font-size: 1.25rem;
+      margin-bottom: 0.5rem;
+      color: var(--light-primary);
+    }
+
+    .terms {
+      margin-top: 2rem;
+      padding-top: 1rem;
+      border-top: 1px solid #444;
+      font-size: 0.75rem;
+      color: #ccc;
+      text-align: left;
+    }
+
+    .terms ul {
+      margin: 0.5rem 0 0 1.25rem;
+      padding: 0;
     }
 
     .action-buttons {
       display: flex;
       gap: 1rem;
       justify-content: center;
-      flex-wrap: wrap;
       margin: 2rem 0;
+      flex-wrap: wrap;
     }
 
-    .btn-success-custom {
-      background: linear-gradient(135deg, #10ac84 0%, #0abde3 100%);
-      color: white;
-      padding: 1rem 2rem;
-      border-radius: 12px;
-      text-decoration: none;
+    .btn-custom {
+      padding: 0.75rem 1.5rem;
+      border-radius: 8px;
       font-weight: 600;
       transition: all 0.3s ease;
-      border: none;
-      cursor: pointer;
-      font-size: 1rem;
-    }
-
-    .btn-success-custom:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 8px 25px rgba(16, 172, 132, 0.3);
-    }
-
-    .btn-outline-custom {
-      background: transparent;
-      border: 2px solid #e2e8f0;
-      color: #4a5568;
-      padding: 1rem 2rem;
-      border-radius: 12px;
-      text-decoration: none;
-      font-weight: 600;
-      transition: all 0.3s ease;
-      font-size: 1rem;
-    }
-
-    .btn-outline-custom:hover {
-      background: #f7fafc;
-      border-color: #10ac84;
-      color: #10ac84;
-    }
-
-    .success-section {
-      background: rgba(16, 172, 132, 0.1);
-      border: 1px solid rgba(16, 172, 132, 0.2);
-      border-radius: 12px;
-      padding: 1rem;
-      margin-top: 1.5rem;
-    }
-
-    .success-title {
-      color: #10ac84;
-      font-weight: 600;
-      margin-bottom: 0.5rem;
-    }
-
-    .success-message {
-      color: #718096;
-      font-size: 0.9rem;
-    }
-
-    canvas {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      pointer-events: none;
-      z-index: 9999;
-    }
-
-    @keyframes bounce {
-      0%, 20%, 50%, 80%, 100% {
-        transform: translateY(0);
-      }
-      40% {
-        transform: translateY(-20px);
-      }
-      60% {
-        transform: translateY(-10px);
-      }
     }
 
     @media (max-width: 768px) {
-      .success-container {
-        padding: 2rem 1rem;
+      .receipt-container {
         margin: 1rem;
+        border-radius: 12px;
       }
 
-      .success-icon {
-        font-size: 3rem;
-      }
-
-      .success-container h1 {
-        font-size: 2rem;
-      }
-
-      .booking-card {
+      .header, .content, .footer {
         padding: 1.5rem;
+      }
+
+      .header h1 {
+        font-size: 1.5rem;
+      }
+
+      .booking-details .row {
+        text-align: center;
+      }
+
+      .booking-details .col-6:last-child {
+        text-align: center;
+        margin-top: 0.25rem;
+      }
+
+      .contact-info {
+        gap: 1rem;
       }
 
       .action-buttons {
         flex-direction: column;
+        align-items: stretch;
       }
 
-      .btn-success-custom, .btn-outline-custom {
+      .action-buttons .btn {
         width: 100%;
-        text-align: center;
       }
     }
   </style>
 </head>
 <body>
-  <canvas id="confetti"></canvas>
-
-  <main class="container section success-container">
-    <div class="success-icon">
-      <i class="fas fa-check-circle"></i>
-    </div>
-    <h1>Payment Successful!</h1>
-    <p class="success-message">Your car rental has been confirmed. You'll receive a confirmation email shortly.</p>
-
-    <div class="booking-card" id="booking-details">
-      <h3 style="margin: 0 0 1.5rem 0; color: #2d3748; text-align: center; font-weight: 600;">Booking Details</h3>
-      <!-- Content will be populated by JavaScript -->
+  <div class="receipt-container animate__animated animate__fadeInUp">
+    <!-- Header -->
+    <div class="header">
+      <h1>SILAS CAR RENTALS</h1>
+      <p>Premium Car Rental Services | Professional & Reliable</p>
     </div>
 
-    <div class="action-buttons">
-      <a href="./dashboard/dashboard.html" class="btn-success-custom">
-        <i class="fas fa-tachometer-alt me-2"></i>Go to Dashboard
-      </a>
-      <a href="perfect-cars.html" class="btn-outline-custom">
-        <i class="fas fa-plus-circle me-2"></i>Book Another Car
-      </a>
-    </div>
+    <!-- Content -->
+    <div class="content">
+      <div class="booking-details">
+        <div class="row">
+          <div class="col-6">Booking ID</div>
+          <div class="col-6" id="booking-id"></div>
+        </div>
+        <div class="row">
+          <div class="col-6">Vehicle</div>
+          <div class="col-6" id="vehicle"></div>
+        </div>
+        <div class="row">
+          <div class="col-6">Pickup Date</div>
+          <div class="col-6" id="pickup-date"></div>
+        </div>
+        <div class="row">
+          <div class="col-6">Return Date</div>
+          <div class="col-6" id="return-date"></div>
+        </div>
+        <div class="row">
+          <div class="col-6">Duration</div>
+          <div class="col-6" id="duration"></div>
+        </div>
+        <div class="row">
+          <div class="col-6">Payment Status</div>
+          <div class="col-6 text-success fw-bold" id="payment-status"></div>
+        </div>
+        <div class="row">
+          <div class="col-6">Payment Time</div>
+          <div class="col-6" id="payment-time"></div>
+        </div>
+      </div>
 
-    <div class="success-section">
-      <div class="success-title">What's Next?</div>
-      <div class="success-message">
-        Your booking is confirmed and your car will be ready for pickup at the specified date and time.
-        Please bring a valid ID and your booking confirmation when you arrive.
+      <div class="total-section">
+        <h2 class="total-amount" id="total-amount">Total Amount: </h2>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="action-buttons">
+        <a href="home.html" class="btn btn-outline-primary btn-custom">
+          <i class="fas fa-home me-2"></i>Back to Home
+        </a>
+        <a href="perfect-cars.html" class="btn btn-primary btn-custom">
+          <i class="fas fa-car me-2"></i>Book Another Car
+        </a>
+        <button onclick="downloadReceipt()" class="btn btn-success btn-custom">
+          <i class="fas fa-download me-2"></i>Download Receipt
+        </button>
       </div>
     </div>
-  </main>
 
-  <!-- Bootstrap JS CDN -->
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <!-- Footer -->
+    <div class="footer">
+      <h3>Thank You for Choosing Silas Car Rentals!</h3>
+      <p>Your satisfaction is our priority. Safe travels!</p>
 
+      <div class="contact-info">
+        <div class="contact-item">
+          <i class="fas fa-phone"></i>
+          <p>+234 810 758 6167</p>
+        </div>
+        <div class="contact-item">
+          <i class="fas fa-envelope"></i>
+          <p>silasonyekachi15@gmail.com</p>
+        </div>
+        <div class="contact-item">
+          <i class="fas fa-map-marker-alt"></i>
+          <p>ikeja, Lagos State</p>
+        </div>
+      </div>
+
+      <div class="terms">
+        <p><strong>Terms & Conditions:</strong></p>
+        <ul>
+          <li>Vehicles must be returned in the same condition as received.</li>
+          <li>Late returns may incur additional charges.</li>
+          <li>Valid driver's license and ID required for pickup.</li>
+          <li>Insurance coverage included per booking terms.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- AOS JS -->
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+  <!-- Booking Manager -->
+  <script src="booking-fix-enhanced.js"></script>
   <script>
-    // Enhanced payment success handling with BookingManager integration
-    document.addEventListener('DOMContentLoaded', function() {
-      const booking = BookingManager.getBooking();
-      
-      if (booking) {
-        displayBookingDetails(booking);
-        startConfettiAnimation();
-        
-        // Clean up after successful payment
-        cleanupAfterPayment(booking);
-      } else {
-        // Fallback: try to get booking from URL parameters or show generic message
-        const urlParams = new URLSearchParams(window.location.search);
-        const bookingId = urlParams.get('bookingId');
-        
-        if (bookingId) {
-          displayFallbackDetails(bookingId);
-        } else {
-          document.getElementById('booking-details').innerHTML = `
-            <p style="text-align: center; color: var(--muted);">
-              Booking details not available. Please check your email for confirmation.
-            </p>
-          `;
-        }
-      }
-    });
+    AOS.init();
 
-    function displayBookingDetails(booking) {
-      const detailsEl = document.getElementById('booking-details');
-
-      let carDetailsHtml = '';
-      if (booking.isMultiCar && booking.cars && booking.cars.length > 0) {
-        booking.cars.forEach(car => {
-          carDetailsHtml += `
-            <div class="booking-detail">
-              <span class="detail-label">Car:</span>
-              <span class="detail-value">${car.make} ${car.model} (${car.year})</span>
-            </div>
-            <div class="booking-detail">
-              <span class="detail-label">Daily Rate:</span>
-              <span class="detail-value">₦${car.price.toLocaleString()}/day</span>
-            </div>
-          `;
-        });
-      } else if (booking.car) {
-        carDetailsHtml = `
-          <div class="booking-detail">
-            <span class="detail-label">Car:</span>
-            <span class="detail-value">${booking.car.make} ${booking.car.model} (${booking.car.year})</span>
-          </div>
-          <div class="booking-detail">
-            <span class="detail-label">Daily Rate:</span>
-            <span class="detail-value">₦${booking.car.price.toLocaleString()}/day</span>
-          </div>
-        `;
-      }
-
-      const days = booking.days || 1;
-      const totalAmount = booking.totalAmount || 0;
-
-      detailsEl.innerHTML = `
-        ${carDetailsHtml}
-        <div class="booking-detail">
-          <span class="detail-label">Pickup Date:</span>
-          <span class="detail-value">${new Date(booking.pickupDate).toLocaleDateString()}</span>
-        </div>
-        <div class="booking-detail">
-          <span class="detail-label">Return Date:</span>
-          <span class="detail-value">${new Date(booking.returnDate).toLocaleDateString()}</span>
-        </div>
-        <div class="booking-detail">
-          <span class="detail-label">Duration:</span>
-          <span class="detail-value">${days} day${days > 1 ? 's' : ''}</span>
-        </div>
-        <div class="booking-detail">
-          <span class="detail-label">Booking ID:</span>
-          <span class="detail-value">${booking._id || 'N/A'}</span>
-        </div>
-        <div class="booking-detail">
-          <span class="detail-label">Payment Status:</span>
-          <span class="detail-value" style="color: #10ac84;"><i class="fas fa-check-circle"></i> Paid</span>
-        </div>
-        <div class="total-amount">
-          <span>Total Amount:</span>
-          <span>₦${totalAmount.toLocaleString()}</span>
-        </div>
-      `;
+    function downloadReceipt() {
+      window.print();
     }
 
-    function cleanupAfterPayment(booking) {
-      // Remove booked cars from cart
-      const cart = JSON.parse(localStorage.getItem('cart') || '[]');
-      let updatedCart = cart;
-      
-      if (booking.isMultiCar && booking.cars) {
-        updatedCart = cart.filter(cartCar => 
-          !booking.cars.some(bookedCar => bookedCar._id === cartCar._id)
-        );
-      } else if (booking.car) {
-        updatedCart = cart.filter(cartCar => cartCar._id !== booking.car._id);
-      }
-      
-      localStorage.setItem('cart', JSON.stringify(updatedCart));
-      
-      // Update cart count display
-      if (typeof CartManager !== 'undefined') {
-        CartManager.updateDisplay();
-      }
-      
-      // Clear booking after display (with delay to ensure user sees it)
-      setTimeout(() => {
-        BookingManager.clearBooking();
-      }, 5000);
+    // Utility functions
+    function formatDate(d) {
+      const date = new Date(d);
+      return date.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
     }
 
-    function displayFallbackDetails(bookingId) {
-      const detailsEl = document.getElementById('booking-details');
-      detailsEl.innerHTML = `
-        <p style="text-align: center; color: var(--muted);">
-          Booking #${bookingId} confirmed successfully.<br>
-          Please check your email for detailed confirmation.
-        </p>
-      `;
+    function formatDateTime(d) {
+      const date = new Date(d);
+      return date.toLocaleString('en-US', { year: 'numeric', month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit', hour12: true });
     }
 
-    function startConfettiAnimation() {
-      const canvas = document.getElementById('confetti');
-      const ctx = canvas.getContext('2d');
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
-
-      const confettiPieces = [];
-      const colors = ['#fce18a', '#ff726d', '#b48def', '#f4306d', '#16a34a', '#3b82f6'];
-
-      function ConfettiPiece() {
-        this.x = Math.random() * canvas.width;
-        this.y = Math.random() * canvas.height - canvas.height;
-        this.size = Math.random() * 12 + 8;
-        this.color = colors[Math.floor(Math.random() * colors.length)];
-        this.speed = Math.random() * 4 + 3;
-        this.rotation = Math.random() * 360;
-        this.rotationSpeed = Math.random() * 5 + 2;
-        this.shape = Math.random() > 0.5 ? 'circle' : 'square';
+    function getBookingSafe() {
+      // Try BookingManager first
+      if (typeof BookingManager !== 'undefined' && BookingManager.getBooking) {
+        const b = BookingManager.getBooking();
+        if (b) return b;
       }
-
-      ConfettiPiece.prototype.update = function() {
-        this.y += this.speed;
-        this.rotation += this.rotationSpeed;
-        
-        if (this.y > canvas.height) {
-          this.y = -20;
-          this.x = Math.random() * canvas.width;
-        }
-      }
-
-      ConfettiPiece.prototype.draw = function() {
-        ctx.save();
-        ctx.translate(this.x, this.y);
-        ctx.rotate(this.rotation * Math.PI / 180);
-        ctx.fillStyle = this.color;
-        
-        if (this.shape === 'circle') {
-          ctx.beginPath();
-          ctx.arc(0, 0, this.size / 2, 0, Math.PI * 2);
-          ctx.fill();
-        } else {
-          ctx.fillRect(-this.size / 2, -this.size / 2, this.size, this.size);
-        }
-        
-        ctx.restore();
-      }
-
-      function initConfetti() {
-        for (let i = 0; i < 200; i++) {
-          confettiPieces.push(new ConfettiPiece());
-        }
-      }
-
-      function animateConfetti() {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        confettiPieces.forEach(p => {
-          p.update();
-          p.draw();
-        });
-        requestAnimationFrame(animateConfetti);
-      }
-
-      initConfetti();
-      animateConfetti();
-
-      // Stop confetti after 8 seconds
-      setTimeout(() => {
-        confettiPieces.length = 0;
-      }, 8000);
+      // Fallbacks
+      try {
+        const b = JSON.parse(sessionStorage.getItem('booking') || sessionStorage.getItem('bookingSummary') || 'null');
+        if (b) return b;
+      } catch {}
+      return null;
     }
+
+    // Populate booking details
+    function populateBookingDetails() {
+      const booking = getBookingSafe();
+      if (!booking) {
+        console.warn('No booking data found');
+        return;
+      }
+
+      // Booking ID
+      document.getElementById('booking-id').textContent = booking.bookingId || '#N/A';
+
+      // Vehicle
+      if (booking.car) {
+        const car = booking.car;
+        document.getElementById('vehicle').textContent = `${car.make || ''} ${car.model || ''} (${car.year || ''})`.trim();
+      }
+
+      // Pickup Date
+      document.getElementById('pickup-date').textContent = booking.pickupDate ? formatDate(booking.pickupDate) : 'Not set';
+
+      // Return Date
+      document.getElementById('return-date').textContent = booking.returnDate ? formatDate(booking.returnDate) : 'Not set';
+
+      // Duration
+      document.getElementById('duration').textContent = `${booking.days || 1} Day${(booking.days || 1) > 1 ? 's' : ''}`;
+
+      // Payment Status
+      document.getElementById('payment-status').textContent = '✔ Paid';
+
+      // Total Amount
+      document.getElementById('total-amount').textContent = `Total Amount: ₦${Number(booking.totalAmount || 0).toLocaleString()}`;
+
+      // Payment Time
+      document.getElementById('payment-time').textContent = formatDateTime(booking.createdAt || new Date());
+    }
+
+    // Run on load
+    document.addEventListener('DOMContentLoaded', populateBookingDetails);
   </script>
 </body>
 </html>
