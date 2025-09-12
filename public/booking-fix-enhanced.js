@@ -203,21 +203,16 @@
                 return { success: false, error: 'Authentication required' };
             }
             try {
-                // Prepare booking data for backend
-                const bookingPayload = {
-                    carId: booking.car._id,
-                    userId: booking.userId || this.getUserId(),
-                    pickupDate: booking.pickupDate,
-                    returnDate: booking.returnDate,
+                const carId = booking.car._id;
+                const paymentData = {
                     email: booking.email,
-                    phoneNumber: booking.phoneNumber,
-                    totalAmount: booking.totalAmount,
-                    days: booking.days,
-                    status: 'pending'
+                    phone_number: booking.phoneNumber,
+                    startDate: booking.pickupDate,
+                    endDate: booking.returnDate
                 };
-                const url = `${API_BASE}/api/payment/pay`;
-                console.log('Submitting booking to:', url);
-                console.log('Booking payload:', bookingPayload);
+                const url = `${API_BASE}/api/payment/pay/${carId}`;
+                console.log('Initiating payment to:', url);
+                console.log('Payment data:', paymentData);
                 console.log('Token present:', !!token);
                 const response = await fetch(url, {
                     method: 'POST',
@@ -225,7 +220,7 @@
                         'Content-Type': 'application/json',
                         'Authorization': `Bearer ${token}`
                     },
-                    body: JSON.stringify(bookingPayload)
+                    body: JSON.stringify(paymentData)
                 });
                 console.log('Response status:', response.status);
                 if (!response.ok) {
@@ -240,12 +235,12 @@
                 }
                 const result = await response.json();
                 console.log('Success response:', result);
-                this.showSuccess('Booking submitted successfully!');
-                this.clearBooking();
+                this.showSuccess('Payment initiated successfully!');
+                // Do not clear booking until payment is confirmed
                 return { success: true, data: result };
             } catch (error) {
-                console.error('Booking submission error:', error);
-                this.showError(error.message || 'Failed to submit booking. Please try again.');
+                console.error('Payment initiation error:', error);
+                this.showError(error.message || 'Failed to initiate payment. Please try again.');
                 return { success: false, error: error.message };
             }
         },

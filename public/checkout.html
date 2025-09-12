@@ -196,7 +196,7 @@ async function submitBookingToBackend(){
   if (typeof BookingManager !== 'undefined' && BookingManager.submitBooking) {
     return BookingManager.submitBooking();
   }
-  // If your BookingManager isn't available here, implement your fetch to /api/bookings ...
+  // If your BookingManager isn't available here, implement your fetch to /api/payments/pay ...
   return { success:false, error:'BookingManager not available' };
 }
 
