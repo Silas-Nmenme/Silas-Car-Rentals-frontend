@@ -196,11 +196,11 @@ async function submitBookingToBackend(){
   if (typeof BookingManager !== 'undefined' && BookingManager.submitBooking) {
     return BookingManager.submitBooking();
   }
-  // If your BookingManager isn't available here, implement your fetch to /api/payments/pay ...
+  // If your BookingManager isn't available here, implement your fetch to /api/payment/pay ...
   return { success:false, error:'BookingManager not available' };
 }
 
-// ---------- Payment flow (matches /api/payments/pay/:carId) ----------
+// ---------- Payment flow (matches /api/payment/pay/:carId) ----------
 async function initiatePayment(){
   const user = getCurrentUser();
   if (!user) {
