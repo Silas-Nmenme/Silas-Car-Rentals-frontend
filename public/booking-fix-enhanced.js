@@ -204,15 +204,26 @@
             }
             try {
                 const carId = booking.car._id;
-                const bookingData = {
-                    email: booking.email,
-                    phone_number: booking.phoneNumber,
-                    startDate: booking.pickupDate,
-                    endDate: booking.returnDate
+                const paymentData = {
+                    bookingId: booking._id || `booking_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
+                    amount: booking.totalAmount,
+                    currency: 'NGN',
+                    paymentMethod: 'card',
+                    customer: {
+                        email: booking.email,
+                        phone: booking.phoneNumber,
+                        userId: booking.userId
+                    },
+                    metadata: {
+                        carIds: carId,
+                        pickupDate: booking.pickupDate,
+                        returnDate: booking.returnDate,
+                        days: booking.days
+                    }
                 };
-                const url = `${API_BASE}/api/payment/pay/${carId}`;
+                const url = `${API_BASE}/api/payment/pay`;
                 console.log('Submitting booking to:', url);
-                console.log('Booking data:', bookingData);
+                console.log('Payment data:', paymentData);
                 console.log('Token present:', !!token);
                 const response = await fetch(url, {
                     method: 'POST',
@@ -220,7 +231,7 @@
                         'Content-Type': 'application/json',
                         'Authorization': `Bearer ${token}`
                     },
-                    body: JSON.stringify(bookingData)
+                    body: JSON.stringify(paymentData)
                 });
                 console.log('Response status:', response.status);
                 if (!response.ok) {
