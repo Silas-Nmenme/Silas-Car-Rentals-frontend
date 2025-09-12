@@ -228,10 +228,7 @@
                     email: booking.email,
                     phone_number: booking.phoneNumber,
                     startDate: booking.pickupDate,
-                    endDate: booking.returnDate,
-                    totalAmount: booking.totalAmount,
-                    days: booking.days,
-                    userId: booking.userId
+                    endDate: booking.returnDate
                 };
                 const url = `${API_BASE}/api/payment/pay/${carId}`;
                 console.log('Submitting booking to:', url);
