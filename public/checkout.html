@@ -183,7 +183,7 @@ function renderBooking(booking){
         <div class="btn-group">
           <button onclick="window.history.back()" class="btn btn-outline-secondary">← Back to Booking</button>
           <button id="pay-btn" class="btn btn-primary">Proceed to Payment</button>
-          <button id="submit-booking-btn" class="btn btn-outline-secondary">Submit Booking Only</button>
+          <button id="submit-booking-btn" class="btn btn-outline-secondary" style="display:none;">Submit Booking Only</button>
         </div>
       </div>
     </div>
@@ -280,7 +280,8 @@ document.addEventListener("DOMContentLoaded", () => {
   // Wire buttons (event delegation optional)
   document.addEventListener("click", (e)=>{
     if (e.target && e.target.id === "pay-btn") initiatePayment();
-    if (e.target && e.target.id === "submit-booking-btn") submitBookingOnly();
+    // Disabled submit booking only button as payment is mandatory
+    // if (e.target && e.target.id === "submit-booking-btn") submitBookingOnly();
   });
 });
 </script>

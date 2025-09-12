@@ -15,25 +15,10 @@
                 const pickupDate = bookingData.pickupDate || '';
                 const returnDate = bookingData.returnDate || '';
 
-                // Handle multiple cars from cart
+                // Handle multiple cars from cart - disabled for payment integration
                 if (bookingData.cars && Array.isArray(bookingData.cars) && bookingData.cars.length > 0) {
-                    const booking = {
-                        userId: bookingData.userId || this.getUserId(),
-                        cars: bookingData.cars.map(car => this.enhanceCarData(car)),
-                        pickupDate,
-                        returnDate,
-                        email,
-                        phoneNumber: phone,
-                        days: pickupDate && returnDate ? this.calculateDays(pickupDate, returnDate) : 1,
-                        totalAmount: bookingData.cars.reduce((total, car) =>
-                            total + this.calculateTotal(car.price, pickupDate, returnDate), 0),
-                        createdAt: new Date().toISOString(),
-                        source: bookingData.source || 'cart',
-                        isMultiCar: true,
-                        status: 'pending'
-                    };
-                    localStorage.setItem(BOOKING_STORAGE_KEY, JSON.stringify(booking));
-                    return booking;
+                    this.showError('Multi-car bookings are not supported with payment integration. Please book one car at a time.');
+                    return null;
                 }
 
                 // Single car booking
@@ -218,11 +203,6 @@
                 return { success: false, error: 'Authentication required' };
             }
             try {
-                // For multi-car bookings, currently not fully supported; fallback to single car or show error
-                if (booking.isMultiCar) {
-                    this.showError('Multi-car bookings are not yet supported. Please book one car at a time.');
-                    return { success: false, error: 'Multi-car booking not supported' };
-                }
                 const carId = booking.car._id;
                 const bookingData = {
                     email: booking.email,
