@@ -220,13 +220,10 @@
             try {
                 const carIds = booking.isMultiCar ? booking.cars.map(c => c._id) : [booking.car._id];
                 const bookingData = {
-                    carIds,
                     email: booking.email,
                     phone_number: booking.phoneNumber,
                     startDate: booking.pickupDate,
-                    endDate: booking.returnDate,
-                    userId: booking.userId,
-                    amount: booking.totalAmount
+                    endDate: booking.returnDate
                 };
                 // For single car booking, append carId to URL
                 let url = '';
