@@ -218,21 +218,22 @@
                 return { success: false, error: 'Authentication required' };
             }
             try {
-                const carIds = booking.isMultiCar ? booking.cars.map(c => c._id) : [booking.car._id];
+                // For multi-car bookings, currently not fully supported; fallback to single car or show error
+                if (booking.isMultiCar) {
+                    this.showError('Multi-car bookings are not yet supported. Please book one car at a time.');
+                    return { success: false, error: 'Multi-car booking not supported' };
+                }
+                const carId = booking.car._id;
                 const bookingData = {
                     email: booking.email,
                     phone_number: booking.phoneNumber,
                     startDate: booking.pickupDate,
                     endDate: booking.returnDate
                 };
-                // For single car booking, append carId to URL
-                let url = '';
-                if (booking.isMultiCar) {
-                    // For multi-car, currently backend does not support multiple carIds in URL, so fallback to first carId or handle differently
-                    url = `${API_BASE}/api/payment/pay/${carIds[0]}`;
-                } else {
-                    url = `${API_BASE}/api/payment/pay/${carIds[0]}`;
-                }
+                const url = `${API_BASE}/api/payment/pay/${carId}`;
+                console.log('Submitting booking to:', url);
+                console.log('Booking data:', bookingData);
+                console.log('Token present:', !!token);
                 const response = await fetch(url, {
                     method: 'POST',
                     headers: {
@@ -241,11 +242,19 @@
                     },
                     body: JSON.stringify(bookingData)
                 });
+                console.log('Response status:', response.status);
                 if (!response.ok) {
-                    const errorData = await response.json().catch(() => ({}));
-                    throw new Error(errorData.message || `Server error: ${response.status}`);
+                    let errorData = {};
+                    try {
+                        errorData = await response.json();
+                    } catch (e) {
+                        console.error('Failed to parse error response:', e);
+                    }
+                    console.error('Error data:', errorData);
+                    throw new Error(errorData.message || `Server error: ${response.status} ${response.statusText}`);
                 }
                 const result = await response.json();
+                console.log('Success response:', result);
                 this.showSuccess('Booking submitted successfully!');
                 this.clearBooking();
                 return { success: true, data: result };
