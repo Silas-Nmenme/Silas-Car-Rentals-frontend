@@ -333,6 +333,12 @@
           <div class="error-message" id="return-date-error"></div>
         </div>
       </div>
+
+      <!-- Price Summary -->
+      <div id="price-summary" class="price-summary" style="display:none; margin-top:2rem; padding:1.5rem; background:#f8f9fa; border-radius:10px; border:1px solid #dee2e6;">
+        <h4>Booking Summary</h4>
+        <div id="summary-content"></div>
+      </div>
       
       <button type="submit" class="btn btn-primary btn-lg w-100" id="submitBtn">
         <span id="submit-text">Proceed to Payment</span>
@@ -393,17 +399,7 @@ document.addEventListener('DOMContentLoaded', function() {
   document.getElementById('email').value = user.email || '';
   document.getElementById('phone').value = user.phone || '';
 
-  // Auto-set return date to 1 day after pickup
-  document.getElementById('pickup-date').addEventListener('change', function() {
-    const returnDate = document.getElementById('return-date');
-    const pickup = new Date(this.value);
-    const nextDay = new Date(pickup);
-    nextDay.setDate(nextDay.getDate() + 1);
-    returnDate.min = this.value;
-    if (!returnDate.value || new Date(returnDate.value) <= pickup) {
-      returnDate.value = nextDay.toISOString().split('T')[0];
-    }
-  });
+
 
   // Form submission
   document.getElementById('bookingForm').addEventListener('submit', function(e) {
@@ -507,6 +503,86 @@ document.addEventListener('DOMContentLoaded', function() {
   });
 });
 
+// Variables for price calculation
+let selectedCarPrice = 0;
+let selectedCarDetails = null;
+
+// Function to calculate days between dates
+function calcDays(pickup, ret) {
+  const ms = (new Date(ret)) - (new Date(pickup));
+  return Math.max(1, Math.ceil(ms / (1000 * 60 * 60 * 24)));
+}
+
+// Function to update price summary
+function updatePriceSummary() {
+  const summaryDiv = document.getElementById('price-summary');
+  const contentDiv = document.getElementById('summary-content');
+
+  if (!selectedCarDetails) {
+    summaryDiv.style.display = 'none';
+    return;
+  }
+
+  const pickup = document.getElementById('pickup-date').value;
+  const ret = document.getElementById('return-date').value;
+
+  let summaryHtml = `
+    <p><strong>Car:</strong> ${selectedCarDetails.make} ${selectedCarDetails.model} (${selectedCarDetails.year})</p>
+    <p><strong>Price per day:</strong> ₦${selectedCarDetails.price.toLocaleString()}</p>
+  `;
+
+  if (pickup && ret) {
+    const days = calcDays(pickup, ret);
+    const total = selectedCarDetails.price * days;
+    summaryHtml += `
+      <p><strong>Pickup Date:</strong> ${new Date(pickup).toLocaleDateString()}</p>
+      <p><strong>Return Date:</strong> ${new Date(ret).toLocaleDateString()}</p>
+      <p><strong>Duration:</strong> ${days} day${days > 1 ? 's' : ''}</p>
+      <p><strong>Total Amount:</strong> ₦${total.toLocaleString()}</p>
+    `;
+  } else {
+    summaryHtml += `<p>Please select pickup and return dates to see the total price.</p>`;
+  }
+
+  contentDiv.innerHTML = summaryHtml;
+  summaryDiv.style.display = 'block';
+}
+
+// Event listener for car selection
+document.getElementById('car-select').addEventListener('change', function() {
+  const selectedOption = this.options[this.selectedIndex];
+  if (selectedOption.value) {
+    selectedCarPrice = parseInt(selectedOption.dataset.price) || 0;
+    selectedCarDetails = {
+      make: selectedOption.dataset.make,
+      model: selectedOption.dataset.model,
+      year: selectedOption.dataset.year,
+      price: selectedCarPrice
+    };
+    document.getElementById('carId').value = selectedOption.value;
+    updatePriceSummary();
+  } else {
+    selectedCarPrice = 0;
+    selectedCarDetails = null;
+    document.getElementById('price-summary').style.display = 'none';
+  }
+});
+
+// Event listeners for date changes
+document.getElementById('pickup-date').addEventListener('change', function() {
+  const returnDate = document.getElementById('return-date');
+  const pickup = new Date(this.value);
+  const nextDay = new Date(pickup);
+  nextDay.setDate(nextDay.getDate() + 1);
+  returnDate.min = this.value;
+  if (!returnDate.value || new Date(returnDate.value) <= pickup) {
+    returnDate.value = nextDay.toISOString().split('T')[0];
+  }
+  updatePriceSummary();
+});
+
+document.getElementById('return-date').addEventListener('change', updatePriceSummary);
+
 // Function to validate email
 function isValidEmail(email) {
   const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -556,6 +632,14 @@ async function loadCarsFromCartAndAPI() {
       if (firstCartCar) {
         firstCartCar.selected = true;
         document.getElementById('carId').value = cartItems[0]._id;
+        selectedCarPrice = parseInt(firstCartCar.dataset.price) || 0;
+        selectedCarDetails = {
+          make: firstCartCar.dataset.make,
+          model: firstCartCar.dataset.model,
+          year: firstCartCar.dataset.year,
+          price: selectedCarPrice
+        };
+        updatePriceSummary();
       }
     }
     
@@ -629,6 +713,14 @@ function loadCarsFromCart() {
       if (firstCartCar) {
         firstCartCar.selected = true;
         document.getElementById('carId').value = cartItems[0]._id;
+        selectedCarPrice = parseInt(firstCartCar.dataset.price) || 0;
+        selectedCarDetails = {
+          make: firstCartCar.dataset.make,
+          model: firstCartCar.dataset.model,
+          year: firstCartCar.dataset.year,
+          price: selectedCarPrice
+        };
+        updatePriceSummary();
       }
     }
     
@@ -645,6 +737,14 @@ function selectCarFromCart(carId) {
   const option = carSelect.querySelector(`option[value="${carId}"]`);
   if (option) {
     option.selected = true;
+    selectedCarPrice = parseInt(option.dataset.price) || 0;
+    selectedCarDetails = {
+      make: option.dataset.make,
+      model: option.dataset.model,
+      year: option.dataset.year,
+      price: selectedCarPrice
+    };
+    updatePriceSummary();
   }
   alert('Car selected! Click "Proceed to Payment" to continue.');
 }
