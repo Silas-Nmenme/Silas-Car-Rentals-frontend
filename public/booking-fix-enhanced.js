@@ -223,17 +223,24 @@
                     this.showError('Multi-car bookings are not yet supported. Please book one car at a time.');
                     return { success: false, error: 'Multi-car booking not supported' };
                 }
-                const carId = booking.car._id;
                 const bookingData = {
-                    email: booking.email,
-                    phone_number: booking.phoneNumber,
-                    startDate: booking.pickupDate,
-                    endDate: booking.returnDate,
-                    totalAmount: booking.totalAmount,
-                    days: booking.days,
-                    userId: booking.userId
+                    bookingId: booking._id || `booking_${Date.now()}`,
+                    amount: booking.totalAmount,
+                    currency: 'NGN',
+                    paymentMethod: 'card',
+                    customer: {
+                        email: booking.email,
+                        phone: booking.phoneNumber,
+                        userId: booking.userId
+                    },
+                    metadata: {
+                        carIds: booking.car._id,
+                        pickupDate: booking.pickupDate,
+                        returnDate: booking.returnDate,
+                        days: booking.days
+                    }
                 };
-                const url = `${API_BASE}/api/payments/pay/${carId}`;
+                const url = `${API_BASE}/api/payment/pay`;
                 console.log('Submitting booking to:', url);
                 console.log('Booking data:', bookingData);
                 console.log('Token present:', !!token);
