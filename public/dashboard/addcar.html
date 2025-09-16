@@ -500,31 +500,35 @@
         <form id="add-car-form" class="row g-3">
           <div class="col-md-6 animate__animated animate__fadeInLeft">
             <label for="car-make" class="form-label">Make</label>
-            <input type="text" class="form-control" id="car-make" required>
+            <input type="text" class="form-control" id="car-make" name="make" required>
           </div>
           <div class="col-md-6 animate__animated animate__fadeInRight">
             <label for="car-model" class="form-label">Model</label>
-            <input type="text" class="form-control" id="car-model" required>
+            <input type="text" class="form-control" id="car-model" name="model" required>
           </div>
           <div class="col-md-4 animate__animated animate__fadeInLeft animate__delay-1s">
             <label for="car-year" class="form-label">Year</label>
-            <input type="number" class="form-control" id="car-year" min="1900" max="2099" required>
+            <input type="number" class="form-control" id="car-year" name="year" min="1900" max="2099" required>
           </div>
           <div class="col-md-4 animate__animated animate__fadeInUp animate__delay-1s">
             <label for="car-price" class="form-label">Price (₦)</label>
-            <input type="number" class="form-control" id="car-price" min="0" step="0.01" required>
+            <input type="number" class="form-control" id="car-price" name="price" min="0" step="0.01" required>
           </div>
           <div class="col-md-4 animate__animated animate__fadeInRight animate__delay-1s">
             <label for="car-brand" class="form-label">Brand</label>
-            <input type="text" class="form-control" id="car-brand" required>
+            <input type="text" class="form-control" id="car-brand" name="brand" required>
           </div>
           <div class="col-md-6 animate__animated animate__fadeInLeft animate__delay-2s">
             <label for="car-color" class="form-label">Color</label>
-            <input type="text" class="form-control" id="car-color" required>
+            <input type="text" class="form-control" id="car-color" name="color" required>
           </div>
           <div class="col-md-6 animate__animated animate__fadeInRight animate__delay-2s">
             <label for="car-description" class="form-label">Description</label>
-            <textarea class="form-control" id="car-description" rows="3" required></textarea>
+            <textarea class="form-control" id="car-description" name="description" rows="3" required></textarea>
+          </div>
+          <div class="col-12 animate__animated animate__fadeInUp animate__delay-3s">
+            <label for="car-image" class="form-label">Car Image</label>
+            <input type="file" class="form-control" id="car-image" name="file" accept="image/*" required>
           </div>
           <div class="col-12 animate__animated animate__fadeInUp animate__delay-3s">
             <button type="submit" class="btn btn-success" id="submit-btn">Add Car</button>
@@ -628,31 +632,23 @@
     document.getElementById('add-car-form').addEventListener('submit', async function(e) {
       e.preventDefault();
 
-      const formData = {
-        make: document.getElementById('car-make').value,
-        model: document.getElementById('car-model').value,
-        year: parseInt(document.getElementById('car-year').value),
-        price: parseFloat(document.getElementById('car-price').value),
-        brand: document.getElementById('car-brand').value,
-        color: document.getElementById('car-color').value,
-        description: document.getElementById('car-description').value
-      };
+      const formData = new FormData(e.target);
 
       try {
         const response = await fetch(`${API_BASE}/api/cars/add-car`, {
           method: 'POST',
           headers: {
-            'Content-Type': 'application/json',
             Authorization: `Bearer ${localStorage.getItem('token')}`
           },
-          body: JSON.stringify(formData)
+          body: formData
         });
 
         if (response.ok) {
           showToast('Car added successfully!', 'success');
           resetForm();
         } else {
-          showToast('Failed to add car', 'error');
+          const errorData = await response.json();
+          showToast(errorData.message || 'Failed to add car', 'error');
         }
       } catch (error) {
         console.error('Error adding car:', error);
