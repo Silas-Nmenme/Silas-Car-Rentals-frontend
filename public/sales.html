@@ -1,0 +1,479 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Sales & Promotions - Silas Car Rentals | Special Offers & Deals</title>
+  <meta name="description" content="Exclusive sales and promotions on premium car rentals in Nigeria. Get the best deals on luxury sedans, SUVs, and economy cars with up to 30% off." />
+  <meta name="keywords" content="car rental sales Nigeria, rental deals Lagos, discount car hire, promotional offers, luxury car rental deals" />
+  <meta name="author" content="Silas Car Rentals" />
+  <meta name="robots" content="index, follow" />
+  <meta name="theme-color" content="#16a34a">
+
+  <!-- Bootstrap 5 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+
+  <!-- Font Awesome for icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
+  <!-- Animate.css for animations -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+
+  <!-- AOS (Animate On Scroll) -->
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+
+  <!-- Custom Styles -->
+  <style>
+    :root {
+      --primary: #0d9488;
+      --primary-700: #0f766e;
+      --text: #374151;
+      --muted: #6b7280;
+      --border: #e5e7eb;
+      --shadow: 0 4px 20px rgba(0,0,0,0.08);
+      --bg: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+      --card-bg: #ffffff;
+      --accent: #f59e0b;
+      --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    body {
+      background: var(--bg);
+      min-height: 100vh;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      color: var(--text);
+    }
+
+    .sales-hero {
+      background: linear-gradient(135deg, var(--primary) 0%, var(--primary-700) 100%);
+      padding: 120px 0 80px;
+      text-align: center;
+      color: white;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .sales-hero::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: url('https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=1200&h=600&fit=crop') center/cover;
+      opacity: 0.1;
+    }
+
+    .sales-hero-content {
+      position: relative;
+      z-index: 2;
+    }
+
+    .sales-title {
+      font-size: 3.5rem;
+      font-weight: 800;
+      margin-bottom: 1rem;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+    }
+
+    .sales-subtitle {
+      font-size: 1.3rem;
+      margin-bottom: 2rem;
+      opacity: 0.9;
+    }
+
+    .promo-banner {
+      background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+      padding: 2rem;
+      border-radius: 16px;
+      text-align: center;
+      margin: 3rem 0;
+      box-shadow: 0 8px 32px rgba(245, 158, 11, 0.3);
+      animation: pulse 2s infinite;
+    }
+
+    .promo-title {
+      font-size: 2rem;
+      font-weight: 700;
+      color: white;
+      margin-bottom: 1rem;
+    }
+
+    .promo-description {
+      color: rgba(255,255,255,0.9);
+      font-size: 1.1rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .promo-code {
+      background: rgba(255,255,255,0.2);
+      padding: 0.5rem 1rem;
+      border-radius: 8px;
+      font-weight: 600;
+      color: white;
+      display: inline-block;
+      margin-bottom: 1rem;
+    }
+
+    .deals-section {
+      padding: 5rem 0;
+      background: var(--card-bg);
+      margin: 2rem;
+      border-radius: 20px;
+      box-shadow: var(--shadow);
+    }
+
+    .deal-card {
+      background: var(--card-bg);
+      padding: 2rem;
+      border-radius: 16px;
+      box-shadow: var(--shadow);
+      text-align: center;
+      transition: var(--transition);
+      border: 1px solid var(--border);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .deal-card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+    }
+
+    .deal-badge {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      background: var(--accent);
+      color: white;
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      font-weight: 600;
+    }
+
+    .deal-icon {
+      font-size: 3rem;
+      color: var(--primary);
+      margin-bottom: 1rem;
+    }
+
+    .deal-title {
+      font-size: 1.3rem;
+      font-weight: 600;
+      margin-bottom: 1rem;
+    }
+
+    .deal-price {
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--primary);
+      margin-bottom: 1rem;
+    }
+
+    .deal-features {
+      list-style: none;
+      padding: 0;
+      margin-bottom: 1.5rem;
+    }
+
+    .deal-features li {
+      padding: 0.5rem 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .deal-features li:last-child {
+      border-bottom: none;
+    }
+
+    .btn-deal {
+      background: linear-gradient(135deg, var(--primary) 0%, var(--primary-700) 100%);
+      border: none;
+      padding: 1rem 2rem;
+      border-radius: 50px;
+      color: white;
+      font-weight: 600;
+      text-decoration: none;
+      transition: var(--transition);
+      display: inline-block;
+    }
+
+    .btn-deal:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 25px rgba(13, 148, 136, 0.4);
+    }
+
+    .testimonials-section {
+      padding: 5rem 0;
+      background: var(--bg);
+    }
+
+    .testimonial-card {
+      background: var(--card-bg);
+      padding: 2rem;
+      border-radius: 16px;
+      box-shadow: var(--shadow);
+      margin-bottom: 2rem;
+    }
+
+    .testimonial-text {
+      font-style: italic;
+      margin-bottom: 1rem;
+      color: var(--muted);
+    }
+
+    .testimonial-author {
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    .cta-section {
+      background: linear-gradient(135deg, var(--primary) 0%, var(--primary-700) 100%);
+      padding: 5rem 0;
+      text-align: center;
+      color: white;
+    }
+
+    .cta-title {
+      font-size: 2.5rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+    }
+
+    .cta-subtitle {
+      font-size: 1.2rem;
+      margin-bottom: 2rem;
+      opacity: 0.9;
+    }
+
+    .btn-cta {
+      background: white;
+      color: var(--primary);
+      border: none;
+      padding: 1.5rem 3rem;
+      border-radius: 50px;
+      font-weight: 600;
+      font-size: 1.2rem;
+      text-decoration: none;
+      transition: var(--transition);
+      display: inline-block;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    }
+
+    .btn-cta:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+    }
+
+    @keyframes pulse {
+      0%, 100% {
+        transform: scale(1);
+      }
+      50% {
+        transform: scale(1.02);
+      }
+    }
+
+    @media (max-width: 768px) {
+      .sales-title {
+        font-size: 2.5rem;
+      }
+
+      .promo-title {
+        font-size: 1.5rem;
+      }
+
+      .cta-title {
+        font-size: 2rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Navigation -->
+  <nav class="navbar navbar-expand-lg navbar-dark" style="background: linear-gradient(135deg, var(--primary) 0%, var(--primary-700) 100%);">
+    <div class="container">
+      <a class="navbar-brand" href="index.html">
+        <i class="fas fa-car me-2"></i>
+        Silas Car Rentals
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="index.html">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active" href="sales.html">Sales</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="index.html#services">Services</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="index.html#contact">Contact</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Sales Hero -->
+  <section class="sales-hero">
+    <div class="container">
+      <div class="sales-hero-content">
+        <h1 class="sales-title">Exclusive Sales & Promotions</h1>
+        <p class="sales-subtitle">
+          Unlock unbeatable deals on premium car rentals. Save up to 30% on your next adventure!
+        </p>
+<a href="#deals" class="btn btn-light btn-lg" title="View Deals Button">View Deals</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Promo Banner -->
+  <div class="container">
+    <div class="promo-banner">
+      <h2 class="promo-title">🎉 Flash Sale Alert!</h2>
+      <p class="promo-description">
+        Book any luxury vehicle today and get 25% off your first rental!
+      </p>
+      <div class="promo-code">Use Code: RENT25</div>
+      <p style="color: white; margin: 0;">Valid until December 31st, 2024</p>
+    </div>
+  </div>
+
+  <!-- Deals Section -->
+  <section class="deals-section" id="deals">
+    <div class="container">
+      <h2 class="text-center mb-5" style="color: var(--text); font-weight: 700;">Hot Deals & Packages</h2>
+
+      <div class="row g-4">
+        <div class="col-lg-4 col-md-6">
+          <div class="deal-card">
+            <div class="deal-badge">25% OFF</div>
+            <div class="deal-icon">
+              <i class="fas fa-car"></i>
+            </div>
+            <h3 class="deal-title">Luxury Sedan Package</h3>
+            <div class="deal-price">₦37,500 <small>/day</small></div>
+            <ul class="deal-features">
+              <li>Mercedes-Benz E-Class or similar</li>
+              <li>Unlimited mileage</li>
+              <li>24/7 roadside assistance</li>
+              <li>Free airport pickup</li>
+            </ul>
+            <a href="index.html#contact" class="btn-deal">Book Now</a>
+          </div>
+        </div>
+
+        <div class="col-lg-4 col-md-6">
+          <div class="deal-card">
+            <div class="deal-badge">30% OFF</div>
+            <div class="deal-icon">
+              <i class="fas fa-suv"></i>
+            </div>
+            <h3 class="deal-title">SUV Adventure Package</h3>
+            <div class="deal-price">₦52,500 <small>/day</small></div>
+            <ul class="deal-features">
+              <li>Toyota Prado or similar</li>
+              <li>All-wheel drive</li>
+              <li>7 seats capacity</li>
+              <li>GPS navigation included</li>
+            </ul>
+            <a href="index.html#contact" class="btn-deal">Book Now</a>
+          </div>
+        </div>
+
+        <div class="col-lg-4 col-md-6">
+          <div class="deal-card">
+            <div class="deal-badge">20% OFF</div>
+            <div class="deal-icon">
+              <i class="fas fa-calendar-alt"></i>
+            </div>
+            <h3 class="deal-title">Weekly Rental Special</h3>
+            <div class="deal-price">₦150,000 <small>/week</small></div>
+            <ul class="deal-features">
+              <li>Any vehicle from our fleet</li>
+              <li>Free vehicle exchange</li>
+              <li>Complimentary cleaning</li>
+              <li>Priority customer support</li>
+            </ul>
+            <a href="index.html#contact" class="btn-deal">Book Now</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Testimonials Section -->
+  <section class="testimonials-section">
+    <div class="container">
+      <h2 class="text-center mb-5" style="color: var(--text); font-weight: 700;">What Our Customers Say</h2>
+
+      <div class="row">
+        <div class="col-lg-4">
+          <div class="testimonial-card">
+            <p class="testimonial-text">
+              "The sales promotion saved me a lot on my business trip. Excellent service and premium vehicles!"
+            </p>
+            <p class="testimonial-author">- Adebayo Johnson, Lagos</p>
+          </div>
+        </div>
+
+        <div class="col-lg-4">
+          <div class="testimonial-card">
+            <p class="testimonial-text">
+              "Booked during the flash sale and got 25% off. The car was immaculate and the pickup was seamless."
+            </p>
+            <p class="testimonial-author">- Chioma Okwu, Abuja</p>
+          </div>
+        </div>
+
+        <div class="col-lg-4">
+          <div class="testimonial-card">
+            <p class="testimonial-text">
+              "The weekly rental deal was perfect for my family vacation. Highly recommend their sales offers!"
+            </p>
+            <p class="testimonial-author">- Emeka Nwosu, Port Harcourt</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Section -->
+  <section class="cta-section">
+    <div class="container">
+      <h2 class="cta-title">Don't Miss Out on These Amazing Deals!</h2>
+      <p class="cta-subtitle">
+        Limited time offers. Book now and save big on your next car rental.
+      </p>
+      <a href="index.html#contact" class="btn-cta">Claim Your Deal Today</a>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer style="background: #333; color: white; padding: 3rem 0; text-align: center;">
+    <div class="container">
+      <p>&copy; 2024 Silas Car Rentals. All rights reserved.</p>
+      <p>Contact: +234 810 758 6167 | Email: silasonyekachi15@gmail.com</p>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+  <script>
+    // Initialize AOS
+    AOS.init({
+      duration: 800,
+      easing: 'ease-in-out',
+      once: true,
+      offset: 100
+    });
+  </script>
+</body>
+</html>

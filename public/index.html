@@ -2323,7 +2323,6 @@ function initContactForm() {
             </div>
           </div>
           <div class="car-actions">
-            <button class="btn-book-now" onclick="bookCar('${car._id}')"><i class="fas fa-calendar-check"></i> Book Now</button>
             <button class="btn-details" onclick="viewDetails('${car._id}')"><i class="fas fa-info-circle"></i> Details</button>
           </div>
         </div>
@@ -2336,8 +2335,50 @@ function initContactForm() {
       showToast('Booking feature coming soon!', 'info');
     }
 
+    // Function to show car details in a popup modal
     function viewDetails(carId) {
-      showToast('Details view coming soon!', 'info');
+      const car = allCars.find(c => c._id === carId);
+      if (!car) {
+        showToast('Car details not found.', 'error');
+        return;
+      }
+
+      // Create modal content
+      const modalContent = `
+        <div class="modal fade" id="carDetailsModal" tabindex="-1" aria-labelledby="carDetailsModalLabel" aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content" style="color: black;">
+              <div class="modal-header">
+                <h5 class="modal-title" id="carDetailsModalLabel">${car.name} Details</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body" style="text-align: left; font-size: 1rem;">
+                <p><strong>ID:</strong> ${car._id}</p>
+                <p><strong>Year:</strong> ${car.year || 'N/A'}</p>
+                <p><strong>Price:</strong> ₦${car.price || 0}/day</p>
+                <p><strong>Color:</strong> ${car.color || 'N/A'}</p>
+                <p><strong>Brand:</strong> ${car.brand || 'N/A'}</p>
+                <p><strong>Type:</strong> ${car.type || 'N/A'}</p>
+                <p><strong>Description:</strong> ${car.description || 'No description available.'}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      `;
+
+      // Remove existing modal if any
+      const existingModal = document.getElementById('carDetailsModal');
+      if (existingModal) {
+        existingModal.remove();
+      }
+
+      // Append modal to body
+      document.body.insertAdjacentHTML('beforeend', modalContent);
+
+      // Show modal using Bootstrap's modal API
+      const modalElement = document.getElementById('carDetailsModal');
+      const modal = new bootstrap.Modal(modalElement);
+      modal.show();
     }
 
     // Initialize all functionality
@@ -2372,6 +2413,23 @@ function initContactForm() {
           showToast("Failed to subscribe. Please try again.", "error");
         }
       });
+
+      // Filter event listeners
+      document.getElementById('price-filter').addEventListener('change', applyFiltersAndSort);
+      document.getElementById('type-filter').addEventListener('change', applyFiltersAndSort);
+      document.getElementById('sort-filter').addEventListener('change', applyFiltersAndSort);
+      document.getElementById('clear-filters').addEventListener('click', clearFilters);
+
+      // Display CSR name below hero title
+      const heroContent = document.querySelector('.hero-content');
+      if (heroContent) {
+        const csrNameElement = document.createElement('p');
+        csrNameElement.textContent = 'Customer Service Representative: Silas Car Rentals';
+        csrNameElement.style.fontWeight = '600';
+        csrNameElement.style.marginTop = '1rem';
+        csrNameElement.style.color = 'var(--light-primary)';
+        heroContent.appendChild(csrNameElement);
+      }
     });
 
     // Add loading animation to page
