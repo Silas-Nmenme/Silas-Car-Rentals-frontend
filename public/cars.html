@@ -321,82 +321,6 @@
 
 const placeholderImage = "https://vehicle-images.dealerinspire.com/a1a7-11002896/W1KAF4GB4SR252999/00f2d6ad30e089cb5c02791d58c3af6a.jpg";
 
-// Sample car data for offline/fallback use
-const sampleCars = [
-  {
-    _id: "1",
-    make: "Mercedes-Benz",
-    model: "C300",
-    year: 2025,
-    price: 40000,
-    color: "Black",
-    brand: "Mercedes-Benz",
-    type: "luxury",
-    description: "Brand new luxury sedan with premium features",
-    image: placeholderImage
-  },
-  {
-    _id: "2",
-    make: "Toyota",
-    model: "Camry",
-    year: 2024,
-    price: 25000,
-    color: "White",
-    brand: "Toyota",
-    type: "sedan",
-    description: "Reliable and fuel-efficient sedan",
-    image: "https://images.unsplash.com/photo-1549399812-5e82e1517600?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
-  },
-  {
-    _id: "3",
-    make: "Honda",
-    model: "CR-V",
-    year: 2024,
-    price: 35000,
-    color: "Blue",
-    brand: "Honda",
-    type: "suv",
-    description: "Spacious and versatile SUV for family trips",
-    image: "https://images.unsplash.com/photo-1544636331-e26879cd4d9b?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
-  },
-  {
-    _id: "4",
-    make: "BMW",
-    model: "X5",
-    year: 2024,
-    price: 55000,
-    color: "Gray",
-    brand: "BMW",
-    type: "suv",
-    description: "Luxury SUV with advanced technology",
-    image: "https://images.unsplash.com/photo-1555215274-0766a9e744c5?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
-  },
-  {
-    _id: "5",
-    make: "Audi",
-    model: "A4",
-    year: 2024,
-    price: 38000,
-    color: "Red",
-    brand: "Audi",
-    type: "sedan",
-    description: "Premium sedan with quattro all-wheel drive",
-    image: "https://images.unsplash.com/photo-1606664515524-ed2f786a0bd6?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
-  },
-  {
-    _id: "6",
-    make: "Ford",
-    model: "Mustang",
-    year: 2024,
-    price: 45000,
-    color: "Yellow",
-    brand: "Ford",
-    type: "sports",
-    description: "Iconic American sports car",
-    image: "https://images.unsplash.com/photo-1542362567-b07e54358753?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
-  }
-];
-
 let allCars = [];
 let filteredCars = [];
 let currentPage = 1;
@@ -555,29 +479,29 @@ function loadMoreCars() {
 async function fetchCars() {
   // Show skeleton loaders
   document.getElementById("car-count").textContent = "Loading available cars...";
-  
+
   try {
     const res = await fetch(`${API_BASE}/api/cars/get-cars`);
     if (!res.ok) throw new Error();
-    const cars = await res.json();
-    
+    const data = await res.json();
+
     // Process car images
-    allCars = cars.map(car => ({
+    allCars = data.cars.map(car => ({
       ...car,
       image: car.image && car.image.trim() !== "" ? car.image : placeholderImage
     }));
-    
+
     filteredCars = [...allCars];
     applyFilters();
-    
+
   } catch (err) {
-    console.warn("Using offline car data - backend unreachable", err);
-    // Use sample cars as fallback
-    allCars = sampleCars;
-    filteredCars = [...allCars];
+    console.warn("Backend unreachable - no cars available", err);
+    // No fallback data, show empty state
+    allCars = [];
+    filteredCars = [];
     applyFilters();
   }
-  
+
 }
 
 fetchCars();
