@@ -319,7 +319,6 @@
       });
     });
 
-const API_BASE = "https://techyjaunt-auth-go43.onrender.com";
 const placeholderImage = "https://vehicle-images.dealerinspire.com/a1a7-11002896/W1KAF4GB4SR252999/00f2d6ad30e089cb5c02791d58c3af6a.jpg";
 
 // Sample car data for offline/fallback use
@@ -472,9 +471,9 @@ function renderCars(cars) {
       <p><strong>₦${car.price.toLocaleString()}</strong> / day</p>
       <p class="car-description">${car.description}</p>
       <div class="car-actions">
-        <button class="btn btn-outline" data-action="add-cart" data-id="${car._id}">Add to Cart</button>
-        <button class="btn btn-outline" data-action="add-wishlist" data-id="${car._id}">Wishlist</button>
-        <button class="btn btn-outline" data-action="add-saved" data-id="${car._id}">Save</button>
+        <button class="btn btn-outline" data-action="add-cart" data-id="${car._id}"><i class="fas fa-shopping-cart"></i> Add to Cart</button>
+        <button class="btn btn-outline" data-action="add-wishlist" data-id="${car._id}"><i class="fas fa-heart"></i> Wishlist</button>
+        <button class="btn btn-outline" data-action="add-saved" data-id="${car._id}"><i class="fas fa-bookmark"></i> Save</button>
       </div>
     </div>
   `).join('');
@@ -616,6 +615,11 @@ document.addEventListener('click', (e) => {
       break;
   }
 });
+
+// Helper function to get storage data
+function getStorage(key) {
+  return JSON.parse(localStorage.getItem(key) || '[]');
+}
 
 // Helper functions for cart, wishlist, and saved cars
 function addToCart(car) {
