@@ -1387,18 +1387,88 @@
 
     .stat {
       text-align: center;
+      background: linear-gradient(135deg, var(--light-primary) 0%, var(--light-primary-700) 100%);
+      color: white;
+      padding: 1.5rem 2rem;
+      border-radius: 16px;
+      box-shadow: 0 8px 25px rgba(13, 148, 136, 0.3);
+      transition: var(--transition);
+      position: relative;
+      overflow: hidden;
+      min-width: 150px;
+      animation: statPulse 2s ease-in-out infinite;
+    }
+
+    .stat::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+      transition: left 0.6s ease;
+    }
+
+    .stat:hover::before {
+      left: 100%;
+    }
+
+    .stat:hover {
+      transform: translateY(-5px) scale(1.05);
+      box-shadow: 0 12px 35px rgba(13, 148, 136, 0.4);
+    }
+
+    body[data-theme="dark"] .stat {
+      background: linear-gradient(135deg, var(--dark-primary) 0%, var(--dark-primary-700) 100%);
+      box-shadow: 0 8px 25px rgba(20, 184, 166, 0.3);
+      animation: statPulseDark 2s ease-in-out infinite;
+      box-shadow: 0 8px 25px rgba(20, 184, 166, 0.3);
+    }
+
+    body[data-theme="dark"] .stat:hover {
+      box-shadow: 0 12px 35px rgba(20, 184, 166, 0.4);
     }
 
     .stat .stat-number {
-      font-size: 2rem;
-      font-weight: 700;
+      font-size: 3rem;
+      font-weight: 800;
       margin-bottom: 0.5rem;
       display: block;
+      color: #ffffff;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+      position: relative;
+      z-index: 1;
     }
+
     .stat .stat-label {
-      font-size: 0.9rem;
-      opacity: 0.9;
+      font-size: 1.2rem;
+      font-weight: 600;
+      opacity: 1;
+      color: #ffffffcc;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      position: relative;
+      z-index: 1;
     }
+
+    @keyframes statPulse {
+      0%, 100% {
+        box-shadow: 0 8px 25px var(--light-shadow);
+      }
+      50% {
+        box-shadow: 0 8px 35px var(--light-shadow-strong);
+      }
+    }
+
+@keyframes statPulseDark {
+  0%, 100% {
+    box-shadow: 0 8px 25px rgba(20, 184, 166, 0.3);
+  }
+  50% {
+    box-shadow: 0 8px 35px rgba(20, 184, 166, 0.5);
+  }
+}
     .btn-view-more-enhanced {
       display: inline-flex;
       align-items: center;
@@ -1771,14 +1841,17 @@
           <p>Discover more premium vehicles including vans, trucks, and specialty vehicles for all your transportation needs.</p>
           <div class="view-more-stats">
             <div class="stat">
+              <div class="stat-icon"><i class="fas fa-car"></i></div>
               <span class="stat-number" id="vehicle-model-count">50+</span>
               <span class="stat-label">Vehicle Models</span>
             </div>
             <div class="stat">
+              <div class="stat-icon"><i class="fas fa-tools"></i></div>
               <span class="stat-number">100%</span>
               <span class="stat-label">Well Maintained</span>
             </div>
             <div class="stat">
+              <div class="stat-icon"><i class="fas fa-clock"></i></div>
               <span class="stat-number">24/7</span>
               <span class="stat-label">Support</span>
             </div>
