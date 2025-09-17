@@ -2208,6 +2208,10 @@ function initContactForm() {
       }
     }
 
+    // Global variables for cars data
+    let allCars = [];
+    let filteredCars = [];
+
     // Load cars from API
     async function loadCars() {
       try {
@@ -2216,19 +2220,84 @@ function initContactForm() {
           throw new Error('Failed to fetch cars');
         }
         const data = await response.json();
-        const cars = data.cars;
-        const carsGrid = document.getElementById('cars-grid');
-        const carCount = document.getElementById('car-count');
-        carCount.textContent = `Showing ${cars.length} available cars`;
-        carsGrid.innerHTML = '';
-        cars.forEach(car => {
-          const carCard = createCarCard(car);
-          carsGrid.appendChild(carCard);
-        });
+        allCars = data.cars;
+        applyFiltersAndSort();
       } catch (error) {
         console.error('Error loading cars:', error);
         showToast('Failed to load cars. Please try again later.', 'error');
       }
+    }
+
+    // Apply filters and sorting
+    function applyFiltersAndSort() {
+      let cars = [...allCars];
+
+      // Apply price filter
+      const priceFilter = document.getElementById('price-filter').value;
+      if (priceFilter) {
+        const [min, max] = priceFilter.split('-').map(p => p === '+' ? Infinity : parseInt(p));
+        cars = cars.filter(car => {
+          const price = car.price || 0;
+          return price >= min && (max === Infinity ? true : price <= max);
+        });
+      }
+
+      // Apply type filter
+      const typeFilter = document.getElementById('type-filter').value;
+      if (typeFilter) {
+        cars = cars.filter(car => car.type && car.type.toLowerCase() === typeFilter.toLowerCase());
+      }
+
+      // Apply sorting
+      const sortFilter = document.getElementById('sort-filter').value;
+      switch (sortFilter) {
+        case 'price-asc':
+          cars.sort((a, b) => (a.price || 0) - (b.price || 0));
+          break;
+        case 'price-desc':
+          cars.sort((a, b) => (b.price || 0) - (a.price || 0));
+          break;
+        case 'year-desc':
+          cars.sort((a, b) => (b.year || 0) - (a.year || 0));
+          break;
+        case 'name-asc':
+          cars.sort((a, b) => (a.name || '').localeCompare(b.name || ''));
+          break;
+        default:
+          // No sorting
+          break;
+      }
+
+      filteredCars = cars;
+      displayCars(cars);
+    }
+
+    // Display cars in the grid
+    function displayCars(cars) {
+      const carsGrid = document.getElementById('cars-grid');
+      const carCount = document.getElementById('car-count');
+
+      carCount.textContent = `Showing ${cars.length} of ${allCars.length} available cars`;
+      carsGrid.innerHTML = '';
+
+      if (cars.length === 0) {
+        carsGrid.innerHTML = '<div class="col-12 text-center"><p>No cars match your filters. Try adjusting your criteria.</p></div>';
+        return;
+      }
+
+      cars.forEach(car => {
+        const carCard = createCarCard(car);
+        carsGrid.appendChild(carCard);
+      });
+    }
+
+    // Clear all filters
+    function clearFilters() {
+      document.getElementById('price-filter').value = '';
+      document.getElementById('type-filter').value = '';
+      document.getElementById('sort-filter').value = 'price-asc'; // Reset to default sort
+      applyFiltersAndSort();
+      showToast('Filters cleared', 'info');
     }
 
     // Create car card element
@@ -2279,6 +2348,7 @@ function initContactForm() {
       initSmoothScrolling();
       initContactForm();
       setCurrentYear();
+      loadCars(); // Load cars on page load
 
       // Newsletter subscription event listener
       document.getElementById("newsletter-subscribe").addEventListener("click", async () => {
