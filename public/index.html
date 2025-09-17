@@ -1771,7 +1771,7 @@
           <p>Discover more premium vehicles including vans, trucks, and specialty vehicles for all your transportation needs.</p>
           <div class="view-more-stats">
             <div class="stat">
-              <span class="stat-number">50+</span>
+              <span class="stat-number" id="vehicle-model-count">50+</span>
               <span class="stat-label">Vehicle Models</span>
             </div>
             <div class="stat">
@@ -2222,6 +2222,12 @@ function initContactForm() {
         const data = await response.json();
         allCars = data.cars;
         applyFiltersAndSort();
+
+        // Update the vehicle model count in the stats section
+        const vehicleCountElement = document.getElementById('vehicle-model-count');
+        if (vehicleCountElement) {
+          vehicleCountElement.textContent = allCars.length.toString();
+        }
       } catch (error) {
         console.error('Error loading cars:', error);
         showToast('Failed to load cars. Please try again later.', 'error');
