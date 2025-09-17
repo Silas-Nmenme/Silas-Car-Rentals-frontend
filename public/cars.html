@@ -391,7 +391,7 @@ function renderCars(cars) {
       <img src="${car.image || placeholderImage}" alt="${car.make} ${car.model}" loading="lazy"
            style="width:100%; height:200px; object-fit: cover; border-radius:8px;">
       <h3>${car.make} ${car.model} (${car.year})</h3>
-      <p class="car-meta">${car.color} • ${car.type}</p>
+      <p class="car-meta">${car.color}${car.type ? ' • ' + car.type : ''}</p>
       <p><strong>₦${car.price.toLocaleString()}</strong> / day</p>
       <p class="car-description">${car.description}</p>
       <div class="car-actions">
