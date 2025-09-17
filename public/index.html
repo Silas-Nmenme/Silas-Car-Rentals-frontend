@@ -2306,11 +2306,11 @@ function initContactForm() {
       card.className = 'service-card car-card';
       card.innerHTML = `
         <div class="car-image-container">
-          <img src="${car.image || 'https://via.placeholder.com/400x200?text=No+Image'}" alt="${car.name}" loading="lazy">
+          <img src="${car.image || 'https://via.placeholder.com/400x200?text=No+Image'}" alt="${car.name || `${car.brand || 'Unknown'} ${car.model || 'Vehicle'}`.trim()}" loading="lazy">
           <div class="car-badge">Available</div>
         </div>
         <div class="car-details">
-          <h3 class="car-title">${car.name}</h3>
+          <h3 class="car-title">${car.name || `${car.brand || 'Unknown'} ${car.model || 'Vehicle'}`.trim()}</h3>
           <div class="car-specs">
             <span class="spec-item"><i class="fas fa-users"></i> ${car.seats || 5} seats</span>
             <span class="spec-item"><i class="fas fa-cogs"></i> ${car.transmission || 'Auto'}</span>
