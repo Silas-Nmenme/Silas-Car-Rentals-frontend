@@ -205,6 +205,7 @@ body[data-theme="dark"] .main-header.scrolled {
   display: flex;
   gap: 0.5rem;
   align-items: center;
+  flex-shrink: 0;
 }
 
 .user-actions .btn {
@@ -248,7 +249,17 @@ body[data-theme="dark"] .user-actions .btn {
   }
 }
 
+@media (max-width: 768px) {
+  .user-actions {
+    gap: 0.25rem;
+  }
+}
+
 @media (max-width: 576px) {
+  .user-actions {
+    gap: 0.25rem;
+  }
+
   .user-actions .btn span:not(.sr-only) {
     display: none;
   }
