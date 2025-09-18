@@ -1385,6 +1385,39 @@
 <!-- Toast -->
 <div class="toast position-fixed bottom-0 end-0 m-3" id="toast"><div class="toast-body"></div></div>
 
+<!-- Car Details Modal -->
+<div class="modal fade" id="carDetailModal" tabindex="-1" aria-labelledby="carDetailModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="carDetailModalLabel">Car Details</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-md-6">
+            <img id="car-detail-image" src="" alt="Car Image" class="img-fluid rounded mb-3" style="max-height: 300px; object-fit: cover;">
+          </div>
+          <div class="col-md-6">
+            <h4 id="car-detail-title"></h4>
+            <p><strong>ID:</strong> <span id="car-detail-id"></span></p>
+            <p><strong>Year:</strong> <span id="car-detail-year"></span></p>
+            <p><strong>Price:</strong> <span id="car-detail-price"></span></p>
+            <p><strong>Color:</strong> <span id="car-detail-color"></span></p>
+            <p><strong>Brand:</strong> <span id="car-detail-brand"></span></p>
+            <p><strong>Type:</strong> <span id="car-detail-type"></span></p>
+            <p><strong>Description:</strong> <span id="car-detail-description"></span></p>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" id="book-now-btn">Book Now</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <!-- Footer -->
 <footer class="bg-dark text-light text-center py-3">&copy; 2025 Silas Car Rentals. All Rights Reserved.</footer>
 
@@ -1421,7 +1454,7 @@ function renderSidebar() {
 
 // Create car card for carousel
 function createCarCard(car) {
-  const carName = `${car.make} ${car.model}`;
+  const carName = `${car.make || 'N/A'} ${car.model || 'N/A'}`;
   const wishlist = get("wishlist");
   const saved = get("savedCars");
   const wishlistClass = wishlist.includes(carName) ? "btn-danger" : "btn-outline-danger";
@@ -1436,12 +1469,12 @@ function createCarCard(car) {
       <div class="car-details">
         <h6 class="car-title">${carName}</h6>
         <div class="car-specs">
-          <span class="spec-item"><i class="fas fa-calendar-alt"></i> ${car.year}</span>
-          <span class="spec-item"><i class="fas fa-car"></i> ${car.type}</span>
+          <span class="spec-item"><i class="fas fa-calendar-alt"></i> ${car.year || 'N/A'}</span>
+          <span class="spec-item"><i class="fas fa-car"></i> ${car.type || 'N/A'}</span>
           <span class="spec-item"><i class="fas fa-gas-pump"></i> Petrol</span>
         </div>
         <div class="car-pricing">
-          <span class="car-price">₦${car.price.toLocaleString()}/day</span>
+          <span class="car-price">₦${car.price ? car.price.toLocaleString() : 'N/A'}/day</span>
         </div>
       </div>
       <div class="car-actions">
@@ -1454,7 +1487,7 @@ function createCarCard(car) {
         <button class="btn ${savedClass} btn-sm" data-action="add-saved" data-name="${carName}" title="Save Car">
           <i class="fas fa-bookmark me-1"></i>Save
         </button>
-        <button class="btn btn-outline-success btn-sm" data-action="view-details" data-name="${carName}" title="View Details">
+        <button class="btn btn-outline-success btn-sm" data-action="view-details" data-car-id="${car._id}" data-name="${carName}" title="View Details">
           <i class="fas fa-eye me-1"></i>Details
         </button>
       </div>
@@ -1496,8 +1529,8 @@ async function fetchAndRenderCars() {
     const res = await fetch(`${API_BASE}/api/cars/get-cars`);
     if (!res.ok) throw new Error("Failed to fetch cars");
     const data = await res.json();
-    const cars = data.cars || [];
-    const firstThreeCars = cars.slice(0, 3).map(car => ({
+    window.cars = data.cars || [];
+    const firstThreeCars = window.cars.slice(0, 3).map(car => ({
       _id: car._id,
       make: car.make,
       model: car.model,
