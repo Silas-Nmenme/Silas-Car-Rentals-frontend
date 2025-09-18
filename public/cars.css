@@ -719,10 +719,13 @@ body[data-theme="dark"] .spec-item i {
   background-image: linear-gradient(var(--light-card-bg), var(--light-card-bg)), linear-gradient(135deg, var(--light-primary) 0%, var(--light-primary-700) 100%);
   background-origin: border-box;
   background-clip: content-box, border-box;
+  /* Make price more visible */
+  filter: drop-shadow(0 0 2px rgba(0,0,0,0.3));
 }
 
 body[data-theme="dark"] .car-price {
   background-image: linear-gradient(var(--dark-card-bg), var(--dark-card-bg)), linear-gradient(135deg, var(--dark-primary) 0%, var(--dark-primary-700) 100%);
+  filter: drop-shadow(0 0 3px rgba(0,0,0,0.6));
 }
 
 .car-actions {
@@ -731,6 +734,13 @@ body[data-theme="dark"] .car-price {
   gap: 0.5rem;
   justify-content: center;
   margin-top: 1rem;
+}
+
+.car-actions button {
+  min-height: 36px;
+  font-size: 0.8rem;
+  flex: 1;
+  min-width: 80px;
 }
 
 .car-actions button {
