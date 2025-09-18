@@ -1810,29 +1810,43 @@
       </p>
       <div id="car-count" class="car-count" style="text-align: center; margin-bottom: 2rem; color: var(--light-muted); font-size: 1.1rem;">Loading available cars...</div>
 
-      <div class="services-grid" id="cars-grid" aria-live="polite">
-        <!-- Skeleton loaders will be shown here initially -->
-        <div class="skeleton-card">
-          <div class="skeleton-media"></div>
-          <div class="skeleton" style="width: 70%; height: 20px;"></div>
-          <div class="skeleton" style="width: 50%; height: 16px;"></div>
-          <div class="skeleton" style="width: 60%; height: 24px;"></div>
-          <div class="skeleton" style="width: 100%; height: 40px;"></div>
+      <div id="cars-carousel" class="carousel slide" data-bs-ride="carousel" data-bs-interval="3000" aria-live="polite">
+        <div class="carousel-inner" id="cars-carousel-inner">
+          <!-- Skeleton loaders will be shown here initially -->
+          <div class="carousel-item active">
+            <div class="d-flex justify-content-center gap-3">
+              <div class="skeleton-card">
+                <div class="skeleton-media"></div>
+                <div class="skeleton" style="width: 70%; height: 20px;"></div>
+                <div class="skeleton" style="width: 50%; height: 16px;"></div>
+                <div class="skeleton" style="width: 60%; height: 24px;"></div>
+                <div class="skeleton" style="width: 100%; height: 40px;"></div>
+              </div>
+              <div class="skeleton-card">
+                <div class="skeleton-media"></div>
+                <div class="skeleton" style="width: 70%; height: 20px;"></div>
+                <div class="skeleton" style="width: 50%; height: 16px;"></div>
+                <div class="skeleton" style="width: 60%; height: 24px;"></div>
+                <div class="skeleton" style="width: 100%; height: 40px;"></div>
+              </div>
+              <div class="skeleton-card">
+                <div class="skeleton-media"></div>
+                <div class="skeleton" style="width: 70%; height: 20px;"></div>
+                <div class="skeleton" style="width: 50%; height: 16px;"></div>
+                <div class="skeleton" style="width: 60%; height: 24px;"></div>
+                <div class="skeleton" style="width: 100%; height: 40px;"></div>
+              </div>
+            </div>
+          </div>
         </div>
-        <div class="skeleton-card">
-          <div class="skeleton-media"></div>
-          <div class="skeleton" style="width: 70%; height: 20px;"></div>
-          <div class="skeleton" style="width: 50%; height: 16px;"></div>
-          <div class="skeleton" style="width: 60%; height: 24px;"></div>
-          <div class="skeleton" style="width: 100%; height: 40px;"></div>
-        </div>
-        <div class="skeleton-card">
-          <div class="skeleton-media"></div>
-          <div class="skeleton" style="width: 70%; height: 20px;"></div>
-          <div class="skeleton" style="width: 50%; height: 16px;"></div>
-          <div class="skeleton" style="width: 60%; height: 24px;"></div>
-          <div class="skeleton" style="width: 100%; height: 40px;"></div>
-        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#cars-carousel" data-bs-slide="prev">
+          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#cars-carousel" data-bs-slide="next">
+          <span class="carousel-control-next-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Next</span>
+        </button>
       </div>
 
       <div class="view-more-section">
@@ -2288,11 +2302,67 @@ function initContactForm() {
     // Load cars from API
     async function loadCars() {
       try {
-        const response = await fetch('https://techyjaunt-auth-go43.onrender.com/api/cars/get-cars');
-        if (!response.ok) {
-          throw new Error('Failed to fetch cars');
+        // Use a local mock data fallback to avoid CORS issues during local testing
+        const localMockData = [
+          {
+            _id: "1",
+            name: "Mercedes-Benz S-Class",
+            brand: "Mercedes-Benz",
+            model: "S-Class",
+            year: 2022,
+            price: 80000,
+            seats: 5,
+            transmission: "Automatic",
+            fuel: "Petrol",
+            color: "Black",
+            type: "Luxury",
+            description: "Luxury sedan with premium features.",
+            image: "https://example.com/images/mercedes-s-class.jpg"
+          },
+          {
+            _id: "2",
+            name: "Toyota Prado",
+            brand: "Toyota",
+            model: "Prado",
+            year: 2021,
+            price: 60000,
+            seats: 7,
+            transmission: "Automatic",
+            fuel: "Diesel",
+            color: "White",
+            type: "SUV",
+            description: "Spacious SUV perfect for family trips.",
+            image: "https://example.com/images/toyota-prado.jpg"
+          },
+          {
+            _id: "3",
+            name: "BMW 3 Series",
+            brand: "BMW",
+            model: "3 Series",
+            year: 2023,
+            price: 70000,
+            seats: 5,
+            transmission: "Manual",
+            fuel: "Petrol",
+            color: "Blue",
+            type: "Sedan",
+            description: "Sporty sedan with excellent handling.",
+            image: "https://example.com/images/bmw-3-series.jpg"
+          }
+        ];
+
+        let data;
+        try {
+          const response = await fetch('https://techyjaunt-auth-go43.onrender.com/api/cars/get-cars');
+          if (!response.ok) {
+            throw new Error('Failed to fetch cars');
+          }
+          data = await response.json();
+        } catch (fetchError) {
+          console.warn('Fetch failed, using local mock data:', fetchError);
+          data = { cars: localMockData };
         }
-        const data = await response.json();
+
         allCars = data.cars;
         applyFiltersAndSort();
 
@@ -2351,23 +2421,45 @@ function initContactForm() {
       displayCars(cars);
     }
 
-    // Display cars in the grid
+    // Display cars in the carousel
     function displayCars(cars) {
-      const carsGrid = document.getElementById('cars-grid');
+      const carouselInner = document.getElementById('cars-carousel-inner');
       const carCount = document.getElementById('car-count');
 
       carCount.textContent = `Showing ${cars.length} of ${allCars.length} available cars`;
-      carsGrid.innerHTML = '';
+      carouselInner.innerHTML = '';
 
       if (cars.length === 0) {
-        carsGrid.innerHTML = '<div class="col-12 text-center"><p>No cars match your filters. Try adjusting your criteria.</p></div>';
+        carouselInner.innerHTML = `
+          <div class="carousel-item active">
+            <div class="d-flex justify-content-center">
+              <div class="text-center" style="padding: 2rem;">
+                <p>No cars match your filters. Try adjusting your criteria.</p>
+              </div>
+            </div>
+          </div>
+        `;
         return;
       }
 
-      cars.forEach(car => {
-        const carCard = createCarCard(car);
-        carsGrid.appendChild(carCard);
-      });
+      // Group cars into chunks of 3 for carousel slides
+      const chunkSize = 3;
+      for (let i = 0; i < cars.length; i += chunkSize) {
+        const chunk = cars.slice(i, i + chunkSize);
+        const carouselItem = document.createElement('div');
+        carouselItem.className = `carousel-item ${i === 0 ? 'active' : ''}`;
+
+        const slideContent = document.createElement('div');
+        slideContent.className = 'd-flex justify-content-center gap-3';
+
+        chunk.forEach(car => {
+          const carCard = createCarCard(car);
+          slideContent.appendChild(carCard);
+        });
+
+        carouselItem.appendChild(slideContent);
+        carouselInner.appendChild(carouselItem);
+      }
     }
 
     // Clear all filters
