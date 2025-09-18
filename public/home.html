@@ -16,6 +16,7 @@
   <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet"/>
   <link rel="stylesheet" href="header.css">
+  <link rel="stylesheet" href="cars.css">
   <style>
     :root {
       /* Light Theme Variables */
@@ -1068,10 +1069,47 @@
 
 
 
-      <!-- Recommended -->
+      <!-- Recommended Cars Collection -->
       <div class="mb-4" data-aos="fade-up">
         <h5 class="fw-bold section-title">Recommended for You</h5>
-        <div class="row g-3" id="recommended-cars"></div>
+        <div id="recommended-cars-carousel" class="carousel slide" data-bs-ride="carousel" data-bs-interval="3000" aria-live="polite">
+          <div class="carousel-inner" id="recommended-cars-carousel-inner">
+            <!-- Skeleton loaders will be shown here initially -->
+            <div class="carousel-item active">
+              <div class="d-flex justify-content-center gap-3">
+                <div class="skeleton-card">
+                  <div class="skeleton-media"></div>
+                  <div class="skeleton" style="width: 70%; height: 20px;"></div>
+                  <div class="skeleton" style="width: 50%; height: 16px;"></div>
+                  <div class="skeleton" style="width: 60%; height: 24px;"></div>
+                  <div class="skeleton" style="width: 100%; height: 40px;"></div>
+                </div>
+                <div class="skeleton-card">
+                  <div class="skeleton-media"></div>
+                  <div class="skeleton" style="width: 70%; height: 20px;"></div>
+                  <div class="skeleton" style="width: 50%; height: 16px;"></div>
+                  <div class="skeleton" style="width: 60%; height: 24px;"></div>
+                  <div class="skeleton" style="width: 100%; height: 40px;"></div>
+                </div>
+                <div class="skeleton-card">
+                  <div class="skeleton-media"></div>
+                  <div class="skeleton" style="width: 70%; height: 20px;"></div>
+                  <div class="skeleton" style="width: 50%; height: 16px;"></div>
+                  <div class="skeleton" style="width: 60%; height: 24px;"></div>
+                  <div class="skeleton" style="width: 100%; height: 40px;"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <button class="carousel-control-prev" type="button" data-bs-target="#recommended-cars-carousel" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+          </button>
+          <button class="carousel-control-next" type="button" data-bs-target="#recommended-cars-carousel" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+          </button>
+        </div>
         <div class="text-center mt-3">
           <a href="perfect-cars.html" class="btn btn-primary">View More Cars</a>
         </div>
@@ -1381,43 +1419,71 @@ function renderSidebar() {
 }
 
 
-// Render Recommended Cars
+// Create car card for carousel
+function createCarCard(car) {
+  const carName = `${car.make} ${car.model}`;
+  const wishlist = get("wishlist");
+  const saved = get("savedCars");
+  const wishlistClass = wishlist.includes(carName) ? "btn-danger" : "btn-outline-danger";
+  const savedClass = saved.includes(carName) ? "btn-warning" : "btn-outline-warning";
+
+  return `
+    <div class="car-card">
+      <div class="car-image-container">
+        <img src="${car.image || 'https://vehicle-images.dealerinspire.com/a1a7-11002896/W1KAF4GB4SR252999/00f2d6ad30e089cb5c02791d58c3af6a.jpg'}" alt="${carName}" class="car-image" loading="lazy">
+        <div class="car-badge bg-success">Available</div>
+      </div>
+      <div class="car-details">
+        <h6 class="car-title">${carName}</h6>
+        <div class="car-specs">
+          <span class="spec-item"><i class="fas fa-calendar-alt"></i> ${car.year}</span>
+          <span class="spec-item"><i class="fas fa-car"></i> ${car.type}</span>
+          <span class="spec-item"><i class="fas fa-gas-pump"></i> Petrol</span>
+        </div>
+        <div class="car-pricing">
+          <span class="car-price">₦${car.price.toLocaleString()}/day</span>
+        </div>
+      </div>
+      <div class="car-actions">
+        <button class="btn btn-primary btn-sm" data-action="add-cart" data-name="${carName}" title="Add to Cart">
+          <i class="fas fa-cart-plus me-1"></i>Add to Cart
+        </button>
+        <button class="btn ${wishlistClass} btn-sm" data-action="add-wishlist" data-name="${carName}" title="Add to Wishlist">
+          <i class="fas fa-heart me-1"></i>Wishlist
+        </button>
+        <button class="btn ${savedClass} btn-sm" data-action="add-saved" data-name="${carName}" title="Save Car">
+          <i class="fas fa-bookmark me-1"></i>Save
+        </button>
+        <button class="btn btn-outline-success btn-sm" data-action="view-details" data-name="${carName}" title="View Details">
+          <i class="fas fa-eye me-1"></i>Details
+        </button>
+      </div>
+    </div>
+  `;
+}
+
+// Render Recommended Cars in Carousel
 function renderRecommendedCars(filteredCars) {
-  const container = document.getElementById("recommended-cars");
-  container.innerHTML = "";
+  const carouselInner = document.getElementById("recommended-cars-carousel-inner");
+  carouselInner.innerHTML = "";
   if (!filteredCars || filteredCars.length === 0) {
-    container.innerHTML = "<div class='col-12'><p class='text-muted text-center'>No cars available.</p></div>";
+    carouselInner.innerHTML = "<div class='carousel-item active'><div class='d-flex justify-content-center'><p class='text-muted'>No cars available.</p></div></div>";
     return;
   }
 
-  filteredCars.forEach((car, i) => {
-    const carName = `${car.make} ${car.model}`;
-    const wishlist = get("wishlist");
-    const saved = get("savedCars");
-    const wishlistClass = wishlist.includes(carName) ? "btn-danger" : "btn-outline-danger";
-    const savedClass = saved.includes(carName) ? "btn-warning" : "btn-outline-warning";
-    container.innerHTML += `
-      <div class="col-md-4 mb-3" data-aos="fade-up" data-aos-delay="${i * 100}">
-        <div class="card h-100 shadow-sm">
-          <img src="${car.image || 'https://vehicle-images.dealerinspire.com/a1a7-11002896/W1KAF4GB4SR252999/00f2d6ad30e089cb5c02791d58c3af6a.jpg'}" class="card-img-top" alt="${carName}" loading="lazy">
-          <div class="card-body d-flex flex-column">
-            <h6 class="card-title">${carName}</h6>
-            <p class="card-text"><strong>Year:</strong> ${car.year}</p>
-            <p class="card-text"><strong>Price:</strong> ₦${car.price.toLocaleString()}/day</p>
-            <p class="card-text"><strong>Type:</strong> ${car.type}</p>
-            <p class="card-text">${car.description || 'No description available'}</p>
-            <div class="car-actions d-flex justify-content-between mt-auto">
-              <button class="btn btn-primary btn-sm" data-action="add-cart" data-name="${carName}" title="Add to Cart">
-                <i class="fas fa-cart-plus me-1"></i>Add to Cart
-              </button>
-              <button class="btn ${wishlistClass} btn-sm" data-action="add-wishlist" data-name="${carName}" title="Add to Wishlist">
-                <i class="fas fa-heart me-1"></i>Wishlist
-              </button>
-              <button class="btn ${savedClass} btn-sm" data-action="add-saved" data-name="${carName}" title="Save Car">
-                <i class="fas fa-bookmark me-1"></i>Save
-              </button>
-            </div>
-          </div>
+  // Group cars into chunks of 3
+  const chunks = [];
+  for (let i = 0; i < filteredCars.length; i += 3) {
+    chunks.push(filteredCars.slice(i, i + 3));
+  }
+
+  chunks.forEach((chunk, index) => {
+    const isActive = index === 0 ? "active" : "";
+    const carsHtml = chunk.map(car => createCarCard(car)).join("");
+    carouselInner.innerHTML += `
+      <div class="carousel-item ${isActive}">
+        <div class="d-flex justify-content-center gap-3">
+          ${carsHtml}
         </div>
       </div>
     `;
