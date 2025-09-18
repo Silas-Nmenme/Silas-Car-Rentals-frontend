@@ -631,7 +631,7 @@
       }
 
       .about-stats {
-        grid-template-columns: 1fr 1fr;
+        grid-template-columns: 1fr;
         gap: 1rem;
       }
 
@@ -2078,35 +2078,35 @@
             </div>
           </div>
         </div>
-    <div class="contact-form">
-      <form class="contact-form">
-        <div class="form-group">
-          <label for="fullName">Full Name</label>
-          <input type="text" id="fullName" name="fullName" required>
-        </div>
+        <div class="contact-form">
+          <form class="contact-form">
+            <div class="form-group">
+              <label for="fullName">Full Name</label>
+              <input type="text" id="fullName" name="fullName" required>
+            </div>
 
-        <div class="form-group">
-          <label for="email">Email Address</label>
-          <input type="email" id="email" name="email" required>
-        </div>
+            <div class="form-group">
+              <label for="email">Email Address</label>
+              <input type="email" id="email" name="email" required>
+            </div>
 
-        <div class="form-group">
-          <label for="phone">Phone Number</label>
-          <input type="tel" id="phone" name="phone" required>
-        </div>
+            <div class="form-group">
+              <label for="phone">Phone Number</label>
+              <input type="tel" id="phone" name="phone" required>
+            </div>
 
-        <div class="form-group">
-          <label for="message">Message</label>
-          <textarea id="message" name="message" rows="5" required></textarea>
-        </div>
+            <div class="form-group">
+              <label for="message">Message</label>
+              <textarea id="message" name="message" rows="5" required></textarea>
+            </div>
 
-        <button type="submit" class="btn-submit" title="Send your message">
-          <i class="fas fa-paper-plane me-2"></i>
-          Send Message
-        </button>
-      </form>
-    </div>
-  </div>
+            <button type="submit" class="btn-submit" title="Send your message">
+              <i class="fas fa-paper-plane me-2"></i>
+              Send Message
+            </button>
+          </form>
+        </div>
+      </div>
 </section>
 
   <!-- Footer -->
@@ -2807,64 +2807,7 @@
   </script>
 
   <script>
-    // Contact form handling
-    function initContactForm() {
-      const form = document.querySelector('form.contact-form');
 
-      form.addEventListener('submit', async (e) => {
-        e.preventDefault();
-
-        const formData = new FormData(form);
-        const formDataObj = Object.fromEntries(formData);
-
-        // Map form field names to API expected field names
-        const data = {
-          fullName: formDataObj.fullName,
-          email: formDataObj.email,
-          phoneNumber: formDataObj.phone,
-          message: formDataObj.message
-        };
-
-        // Show loading state
-        const submitBtn = form.querySelector('.btn-submit');
-        const originalText = submitBtn.innerHTML;
-        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Sending...';
-        submitBtn.disabled = true;
-
-        try {
-          const res = await fetch("https://techyjaunt-auth-go43.onrender.com/api/contact", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(data)
-          });
-
-          let result;
-          try {
-            result = await res.json();
-          } catch (e) {
-            result = { success: false, message: "Server error" };
-          }
-
-          if (res.ok && result.success) {
-            showToast("Message sent successfully! We'll get back to you soon.");
-            form.reset();
-          } else {
-            showToast(`${result.message || "Failed to send message. Please try again."}`);
-          }
-        } catch (error) {
-          console.error("Contact form error:", error);
-          showToast("Network error. Please try again later.");
-        } finally {
-          submitBtn.innerHTML = originalText;
-          submitBtn.disabled = false;
-        }
-      });
-    }
-
-    // Initialize contact form on DOMContentLoaded
-    document.addEventListener('DOMContentLoaded', () => {
-      initContactForm();
-    });
   </script>
 </body>
 </html>
