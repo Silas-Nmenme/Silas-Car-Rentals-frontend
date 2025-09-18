@@ -850,47 +850,183 @@
       object-fit: cover;
     }
 
-    /* Toast styling */
+    /* Toast Notification */
     .toast {
-      max-width: 200px;
-      font-size: 0.8rem;
-      border-radius: 6px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-      border: none;
+      position: fixed;
+      top: 2rem;
+      left: 50%;
+      transform: translateX(-50%) translateY(-100%);
+      background: var(--light-card-bg);
+      color: var(--light-text);
+      padding: 1rem 1.5rem;
+      border-radius: 12px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.15);
+      z-index: 1001;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+      max-width: 400px;
+      font-size: 0.95rem;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      border-left: 4px solid var(--light-primary);
       backdrop-filter: blur(10px);
       -webkit-backdrop-filter: blur(10px);
     }
 
     body[data-bs-theme="dark"] .toast {
-      background: rgba(31, 41, 55, 0.95);
-      color: #e5e7eb;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+      background: var(--dark-card-bg);
+      color: var(--dark-text);
+      box-shadow: 0 8px 32px rgba(0,0,0,0.4);
     }
 
-    body[data-bs-theme="light"] .toast {
-      background: rgba(255, 255, 255, 0.95);
-      color: #374151;
+    .toast.show {
+      opacity: 1;
+      visibility: visible;
+      transform: translateX(-50%) translateY(0);
     }
 
-    .toast-header {
-      font-size: 0.75rem;
-      padding: 0.5rem 0.75rem;
-      border-bottom: 1px solid rgba(0,0,0,0.1);
+    .toast.hide {
+      opacity: 0;
+      transform: translateX(-50%) translateY(-100%);
     }
 
-    body[data-bs-theme="dark"] .toast-header {
-      border-bottom-color: rgba(255,255,255,0.1);
+    /* Toast Types */
+    .toast-success {
+      border-left-color: #10b981;
+      background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%);
+      color: #065f46;
     }
 
-    .toast-body {
-      padding: 0.5rem 0.75rem;
-      font-weight: 500;
+    body[data-bs-theme="dark"] .toast-success {
+      background: linear-gradient(135deg, #064e3b 0%, #065f46 100%);
+      color: #d1fae5;
     }
 
-    .toast .btn-close {
-      width: 0.75rem;
-      height: 0.75rem;
-      margin-left: auto;
+    .toast-error {
+      border-left-color: #ef4444;
+      background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%);
+      color: #991b1b;
+    }
+
+    body[data-bs-theme="dark"] .toast-error {
+      background: linear-gradient(135deg, #7f1d1d 0%, #991b1b 100%);
+      color: #fecaca;
+    }
+
+    .toast-warning {
+      border-left-color: #f59e0b;
+      background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%);
+      color: #92400e;
+    }
+
+    body[data-bs-theme="dark"] .toast-warning {
+      background: linear-gradient(135deg, #78350f 0%, #92400e 100%);
+      color: #fed7aa;
+    }
+
+    .toast-info {
+      border-left-color: var(--light-primary);
+      background: linear-gradient(135deg, #f0fdfa 0%, #ccfbf1 100%);
+      color: #0f766e;
+    }
+
+    body[data-bs-theme="dark"] .toast-info {
+      background: linear-gradient(135deg, #134e4a 0%, #0f766e 100%);
+      color: #a7f3d0;
+    }
+
+    /* Toast Icon */
+    .toast-icon {
+      font-size: 1.2rem;
+      flex-shrink: 0;
+    }
+
+    .toast-success .toast-icon {
+      color: #10b981;
+    }
+
+    .toast-error .toast-icon {
+      color: #ef4444;
+    }
+
+    .toast-warning .toast-icon {
+      color: #f59e0b;
+    }
+
+    .toast-info .toast-icon {
+      color: var(--light-primary);
+    }
+
+    body[data-bs-theme="dark"] .toast-success .toast-icon {
+      color: #34d399;
+    }
+
+    body[data-bs-theme="dark"] .toast-error .toast-icon {
+      color: #f87171;
+    }
+
+    body[data-bs-theme="dark"] .toast-warning .toast-icon {
+      color: #fbbf24;
+    }
+
+    body[data-bs-theme="dark"] .toast-info .toast-icon {
+      color: var(--dark-primary);
+    }
+
+    /* Toast Message */
+    .toast-message {
+      flex: 1;
+      line-height: 1.4;
+    }
+
+    /* Toast Close Button */
+    .toast-close {
+      background: none;
+      border: none;
+      color: inherit;
+      font-size: 1.2rem;
+      cursor: pointer;
+      padding: 0;
+      width: 24px;
+      height: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      transition: background-color 0.2s ease;
+      flex-shrink: 0;
+      opacity: 0.7;
+    }
+
+    .toast-close:hover {
+      background-color: rgba(0,0,0,0.1);
+      opacity: 1;
+    }
+
+    body[data-bs-theme="dark"] .toast-close:hover {
+      background-color: rgba(255,255,255,0.1);
+    }
+
+    /* Responsive Toast */
+    @media (max-width: 768px) {
+      .toast {
+        max-width: 90vw;
+        left: 50%;
+        transform: translateX(-50%) translateY(-100%);
+        font-size: 0.9rem;
+        padding: 0.875rem 1.25rem;
+      }
+
+      .toast.show {
+        transform: translateX(-50%) translateY(0);
+      }
+
+      .toast.hide {
+        transform: translateX(-50%) translateY(-100%);
+      }
     }
 
     /* Car actions styling */
@@ -1439,7 +1575,7 @@
 </div>
 
 <!-- Toast -->
-<div class="toast position-fixed bottom-0 end-0 m-3" id="toast"><div class="toast-body"></div></div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
 
 <!-- Car Details Modal -->
 <div class="modal fade" id="carDetailModal" tabindex="-1" aria-labelledby="carDetailModalLabel" aria-hidden="true">
@@ -1652,7 +1788,7 @@ function addToCart(carName){
   updateCounts();
   addRecentRental(carName);
   pulseBadge("cart-count");
-  showToast(`${carName} added to cart`);
+  showToast(`${carName} added to cart`, "success");
 }
 
 // Toggle wishlist
@@ -1661,11 +1797,11 @@ function toggleWishlist(carName, btn){
   if(wishlist.includes(carName)){
     wishlist=wishlist.filter(c=>c!==carName);
     btn.classList.replace("btn-danger","btn-outline-danger");
-    showToast(`${carName} removed from wishlist`);
+    showToast(`${carName} removed from wishlist`, "info");
   } else {
     wishlist.push(carName);
     btn.classList.replace("btn-outline-danger","btn-danger");
-    showToast(`${carName} added to wishlist`);
+    showToast(`${carName} added to wishlist`, "success");
     pulseBadge("wishlist-count");
   }
   localStorage.setItem("wishlist",JSON.stringify(wishlist));
@@ -1678,11 +1814,11 @@ function toggleSaved(carName, btn){
   if(saved.includes(carName)){
     saved=saved.filter(c=>c!==carName);
     btn.classList.replace("btn-warning","btn-outline-warning");
-    showToast(`${carName} removed from saved`);
+    showToast(`${carName} removed from saved`, "info");
   } else {
     saved.push(carName);
     btn.classList.replace("btn-outline-warning","btn-warning");
-    showToast(`${carName} saved`);
+    showToast(`${carName} saved`, "success");
     pulseBadge("saved-count");
   }
   localStorage.setItem("savedCars",JSON.stringify(saved));
@@ -1697,10 +1833,32 @@ function pulseBadge(id){
 }
 
 // Show toast
-function showToast(msg){
-  const toast=document.getElementById("toast");
-  toast.querySelector(".toast-body").textContent=msg;
-  new bootstrap.Toast(toast).show();
+function showToast(message, type = 'info') {
+  const toast = document.getElementById('toast');
+  const icons = {
+    success: 'fas fa-check-circle',
+    error: 'fas fa-exclamation-circle',
+    warning: 'fas fa-exclamation-triangle',
+    info: 'fas fa-info-circle'
+  };
+  toast.innerHTML = `
+    <i class="fas fa-${icons[type] || icons.info} toast-icon"></i>
+    <div class="toast-message">${message}</div>
+    <button class="toast-close" onclick="hideToast()">&times;</button>
+  `;
+  toast.className = `toast toast-${type} show`;
+  setTimeout(() => {
+    hideToast();
+  }, 5000);
+}
+
+function hideToast() {
+  const toast = document.getElementById('toast');
+  toast.classList.remove('show');
+  toast.classList.add('hide');
+  setTimeout(() => {
+    toast.className = 'toast';
+  }, 400);
 }
 
 // Recent Rentals
@@ -1805,11 +1963,11 @@ function updateCounts(){
     document.getElementById("home-newsletter-subscribe").addEventListener("click", async () => {
       const email = document.getElementById("home-newsletter-email").value.trim();
       if (!email) {
-        showToast("Please enter a valid email address.");
+        showToast("Please enter a valid email address.", "error");
         return;
       }
       if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-        showToast("Please enter a valid email address.");
+        showToast("Please enter a valid email address.", "error");
         return;
       }
       try {
@@ -1822,15 +1980,15 @@ function updateCounts(){
         });
 
         if (response.status === 409) {
-          showToast("This email is already subscribed to our newsletter.");
+          showToast("This email is already subscribed to our newsletter.", "warning");
         } else if (response.ok) {
-          showToast("Successfully subscribed to newsletter!");
+          showToast("Successfully subscribed to newsletter!", "success");
         } else {
           throw new Error('Subscription failed');
         }
       } catch (error) {
         console.error('Newsletter subscription error:', error);
-        showToast("Failed to subscribe. Please try again.");
+        showToast("Failed to subscribe. Please try again.", "error");
       }
     });
 
