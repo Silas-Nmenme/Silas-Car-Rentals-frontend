@@ -1777,10 +1777,44 @@ function updateCounts(){
         showToast("Failed to subscribe. Please try again.");
       }
     });
+
+    // Event delegation for car actions
+    document.getElementById("recommended-cars-carousel-inner").addEventListener("click", (e) => {
+      const btn = e.target.closest("button");
+      if (!btn) return;
+      const action = btn.dataset.action;
+      const carName = btn.dataset.name;
+      const carId = btn.dataset.carId;
+      if (action === "add-cart") {
+        addToCart(carName);
+      } else if (action === "add-wishlist") {
+        toggleWishlist(carName, btn);
+      } else if (action === "add-saved") {
+        toggleSaved(carName, btn);
+      } else if (action === "view-details") {
+        viewDetails(carId);
+      }
+    });
   });
 
 
 
+
+// View car details
+function viewDetails(carId) {
+  const car = window.cars.find(c => c._id === carId);
+  if (!car) return;
+  document.getElementById("car-detail-image").src = car.image || 'https://vehicle-images.dealerinspire.com/a1a7-11002896/W1KAF4GB4SR252999/00f2d6ad30e089cb5c02791d58c3af6a.jpg';
+  document.getElementById("car-detail-title").textContent = `${car.make} ${car.model}`;
+  document.getElementById("car-detail-id").textContent = car._id;
+  document.getElementById("car-detail-year").textContent = car.year;
+  document.getElementById("car-detail-price").textContent = `₦${car.price ? car.price.toLocaleString() : 'N/A'}/day`;
+  document.getElementById("car-detail-color").textContent = car.color || 'N/A';
+  document.getElementById("car-detail-brand").textContent = car.make;
+  document.getElementById("car-detail-type").textContent = car.type;
+  document.getElementById("car-detail-description").textContent = car.description;
+  new bootstrap.Modal(document.getElementById("carDetailModal")).show();
+}
 
 // Logout
 document.getElementById("logout-button").addEventListener("click",()=>{
