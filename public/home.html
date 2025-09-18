@@ -1560,11 +1560,10 @@ function searchCars() {
   const typeFilter = document.getElementById("type-filter").value;
   const locationFilter = document.getElementById("location-filter").value;
 
-  let filteredCars = cars.filter(car => {
-    // Search by name or tags
+  let filteredCars = window.cars.filter(car => {
+    // Search by make and model
     const matchesSearch = !searchInput ||
-      car.name.toLowerCase().includes(searchInput) ||
-      car.tags.some(tag => tag.toLowerCase().includes(searchInput));
+      `${car.make || ''} ${car.model || ''}`.toLowerCase().includes(searchInput);
 
     // Price filter
     let matchesPrice = true;
@@ -1579,7 +1578,7 @@ function searchCars() {
 
     // Type filter
     const matchesType = !typeFilter ||
-      car.tags.some(tag => tag.toLowerCase().includes(typeFilter.toLowerCase()));
+      (car.type || '').toLowerCase() === typeFilter.toLowerCase();
 
     // Location filter (assuming all cars are available in all locations for now)
     const matchesLocation = !locationFilter || true;
@@ -1605,11 +1604,11 @@ function toggleWishlist(carName, btn){
   let wishlist=get("wishlist");
   if(wishlist.includes(carName)){
     wishlist=wishlist.filter(c=>c!==carName);
-    btn.classList.replace("text-danger","text-muted");
+    btn.classList.replace("btn-danger","btn-outline-danger");
     showToast(`${carName} removed from wishlist`);
   } else {
     wishlist.push(carName);
-    btn.classList.replace("text-muted","text-danger");
+    btn.classList.replace("btn-outline-danger","btn-danger");
     showToast(`${carName} added to wishlist`);
     pulseBadge("wishlist-count");
   }
@@ -1622,11 +1621,11 @@ function toggleSaved(carName, btn){
   let saved=get("savedCars");
   if(saved.includes(carName)){
     saved=saved.filter(c=>c!==carName);
-    btn.classList.replace("text-warning","text-muted");
+    btn.classList.replace("btn-warning","btn-outline-warning");
     showToast(`${carName} removed from saved`);
   } else {
     saved.push(carName);
-    btn.classList.replace("text-muted","text-warning");
+    btn.classList.replace("btn-outline-warning","btn-warning");
     showToast(`${carName} saved`);
     pulseBadge("saved-count");
   }
