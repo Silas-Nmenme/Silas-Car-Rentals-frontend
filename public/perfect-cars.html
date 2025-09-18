@@ -1253,6 +1253,107 @@
       color: var(--dark-muted);
     }
 
+    /* Enhanced Mobile Responsiveness for About Section */
+    @media (max-width: 768px) {
+      .about-section {
+        padding: 3rem 0;
+      }
+
+      .about-content {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+        text-align: center;
+      }
+
+      .about-text p {
+        text-align: left;
+        font-size: 0.95rem;
+        line-height: 1.6;
+      }
+
+      .about-stats {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+      }
+
+      .stat-item {
+        padding: 1.5rem 1rem;
+        min-height: 120px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+      }
+
+      .stat-item h3 {
+        font-size: 2rem;
+        margin-bottom: 0.5rem;
+      }
+
+      .stat-item p {
+        font-size: 0.9rem;
+      }
+    }
+
+    @media (max-width: 576px) {
+      .about-section {
+        padding: 2.5rem 0;
+      }
+
+      .about-content {
+        gap: 1.5rem;
+      }
+
+      .about-text p {
+        font-size: 0.9rem;
+      }
+
+      .about-stats {
+        gap: 0.75rem;
+      }
+
+      .stat-item {
+        padding: 1.25rem 0.75rem;
+        min-height: 100px;
+      }
+
+      .stat-item h3 {
+        font-size: 1.75rem;
+      }
+
+      .stat-item p {
+        font-size: 0.85rem;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .about-section {
+        padding: 2rem 0;
+      }
+
+      .about-content {
+        gap: 1rem;
+      }
+
+      .about-text p {
+        font-size: 0.85rem;
+        margin-bottom: 1rem;
+      }
+
+      .stat-item {
+        padding: 1rem 0.5rem;
+        min-height: 90px;
+        border-radius: 8px;
+      }
+
+      .stat-item h3 {
+        font-size: 1.5rem;
+      }
+
+      .stat-item p {
+        font-size: 0.8rem;
+      }
+    }
+
     /* Contact Section */
     .contact-section {
       background: var(--light-card-bg);
