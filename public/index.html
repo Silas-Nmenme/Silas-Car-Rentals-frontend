@@ -2442,8 +2442,8 @@ function initContactForm() {
         return;
       }
 
-      // Group cars into chunks of 3 for carousel slides
-      const chunkSize = 3;
+      // Group cars into chunks based on screen size for mobile responsiveness
+      const chunkSize = window.innerWidth < 768 ? 1 : window.innerWidth < 1024 ? 2 : 3;
       for (let i = 0; i < cars.length; i += chunkSize) {
         const chunk = cars.slice(i, i + chunkSize);
         const carouselItem = document.createElement('div');
@@ -2597,6 +2597,13 @@ function initContactForm() {
       document.getElementById('type-filter').addEventListener('change', applyFiltersAndSort);
       document.getElementById('sort-filter').addEventListener('change', applyFiltersAndSort);
       document.getElementById('clear-filters').addEventListener('click', clearFilters);
+
+      // Add resize listener for dynamic carousel responsiveness
+      window.addEventListener('resize', () => {
+        if (filteredCars.length > 0) {
+          displayCars(filteredCars);
+        }
+      });
 
       // Display CSR name below hero title
       const heroContent = document.querySelector('.hero-content');
