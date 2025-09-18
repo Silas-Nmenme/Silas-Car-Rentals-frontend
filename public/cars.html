@@ -113,13 +113,26 @@
       <div class="filters-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem; margin-bottom: 2rem;">
         <div class="filter-group" style="background: var(--light-card-bg); padding: 1.5rem; border-radius: 12px; box-shadow: var(--light-shadow);">
           <label for="price-filter" style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: var(--light-text);">Price Range</label>
-          <select id="price-filter" title="Filter by price range" style="width: 100%; padding: 0.75rem; border: 2px solid var(--light-border); border-radius: 8px; background: var(--light-card-bg); color: var(--light-text);">
+          <select id="price-filter" title="Filter by price range" style="width: 100%; padding: 0.75rem; border: 2px solid var(--light-border); border-radius: 8px; background: var(--light-card-bg); color: var(--light-text); margin-bottom: 1rem;">
             <option value="">All Prices</option>
             <option value="0-20000">Under ₦20,000</option>
             <option value="20000-40000">₦20,000 - ₦40,000</option>
             <option value="40000-60000">₦40,000 - ₦60,000</option>
             <option value="60000+">Over ₦60,000</option>
+            <option value="custom">Custom Range</option>
           </select>
+          <div id="custom-price-range" style="display: none; margin-top: 0.5rem;">
+            <div style="display: flex; gap: 0.5rem; align-items: center;">
+              <div style="flex: 1;">
+                <label for="min-price" style="display: block; font-size: 0.8rem; margin-bottom: 0.25rem; color: var(--light-muted);">Min Price (₦)</label>
+                <input type="number" id="min-price" placeholder="0" min="0" style="width: 100%; padding: 0.5rem; border: 2px solid var(--light-border); border-radius: 6px; background: var(--light-card-bg); color: var(--light-text);">
+              </div>
+              <div style="flex: 1;">
+                <label for="max-price" style="display: block; font-size: 0.8rem; margin-bottom: 0.25rem; color: var(--light-muted);">Max Price (₦)</label>
+                <input type="number" id="max-price" placeholder="No limit" min="0" style="width: 100%; padding: 0.5rem; border: 2px solid var(--light-border); border-radius: 6px; background: var(--light-card-bg); color: var(--light-text);">
+              </div>
+            </div>
+          </div>
         </div>
 
         <div class="filter-group" style="background: var(--light-card-bg); padding: 1.5rem; border-radius: 12px; box-shadow: var(--light-shadow);">
@@ -411,14 +424,18 @@ function applyFilters() {
 
   filteredCars = allCars.filter(car => {
     // Search filter
-    const matchesSearch = car.make.toLowerCase().includes(searchTerm) || 
+    const matchesSearch = car.make.toLowerCase().includes(searchTerm) ||
                          car.model.toLowerCase().includes(searchTerm) ||
                          car.type.toLowerCase().includes(searchTerm);
-    
+
     // Price filter
     let matchesPrice = true;
     if (priceFilter) {
-      if (priceFilter === "0-20000") {
+      if (priceFilter === "custom") {
+        const minPrice = parseInt(document.getElementById("min-price").value) || 0;
+        const maxPrice = parseInt(document.getElementById("max-price").value) || Infinity;
+        matchesPrice = car.price >= minPrice && (maxPrice === Infinity || car.price <= maxPrice);
+      } else if (priceFilter === "0-20000") {
         matchesPrice = car.price <= 20000;
       } else if (priceFilter === "20000-40000") {
         matchesPrice = car.price > 20000 && car.price <= 40000;
@@ -428,10 +445,10 @@ function applyFilters() {
         matchesPrice = car.price > 60000;
       }
     }
-    
+
     // Type filter
     const matchesType = !typeFilter || car.type === typeFilter;
-    
+
     return matchesSearch && matchesPrice && matchesType;
   });
 
@@ -622,22 +639,37 @@ scrollToTopBtn.addEventListener('click', () => {
 document.addEventListener('DOMContentLoaded', function() {
   // Filter event listeners
   document.getElementById("search-input").addEventListener('input', applyFilters);
-  document.getElementById("price-filter").addEventListener('change', applyFilters);
+  document.getElementById("price-filter").addEventListener('change', function() {
+    const customRange = document.getElementById("custom-price-range");
+    if (this.value === "custom") {
+      customRange.style.display = "block";
+    } else {
+      customRange.style.display = "none";
+    }
+    applyFilters();
+  });
   document.getElementById("type-filter").addEventListener('change', applyFilters);
   document.getElementById("sort-filter").addEventListener('change', applyFilters);
-  
+
+  // Custom price inputs event listeners
+  document.getElementById("min-price").addEventListener('input', applyFilters);
+  document.getElementById("max-price").addEventListener('input', applyFilters);
+
   // Search button
   document.getElementById("search-btn").addEventListener('click', applyFilters);
-  
+
   // Clear filters
   document.getElementById("clear-filters").addEventListener('click', function() {
     document.getElementById("search-input").value = "";
     document.getElementById("price-filter").value = "";
     document.getElementById("type-filter").value = "";
     document.getElementById("sort-filter").value = "price-asc";
+    document.getElementById("min-price").value = "";
+    document.getElementById("max-price").value = "";
+    document.getElementById("custom-price-range").style.display = "none";
     applyFilters();
   });
-  
+
   // Load more button
   document.getElementById("load-more").addEventListener('click', loadMoreCars);
 });
