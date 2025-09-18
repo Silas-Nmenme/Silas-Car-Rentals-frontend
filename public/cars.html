@@ -230,12 +230,7 @@
 
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
-  <!-- Scroll to top button -->
-  <button id="scroll-to-top" class="scroll-to-top" aria-label="Scroll to top">
-    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-      <path d="M12 19V5M5 12l7-7 7 7"/>
-    </svg>
-  </button>
+
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
 
@@ -389,7 +384,7 @@ function renderCars(cars) {
            style="width:100%; height:200px; object-fit: cover; border-radius:8px;">
       <h3>${car.make} ${car.model} (${car.year})</h3>
       <p class="car-meta">${car.color}${car.type ? ' • ' + car.type : ''}</p>
-      <p><strong>₦${car.price.toLocaleString()}</strong> / day</p>
+  <p class="car-price"><strong>₦${car.price.toLocaleString()}</strong> / day</p>
       <p class="car-description">${car.description}</p>
       <div class="car-actions">
         <button class="btn btn-outline" data-action="add-cart" data-id="${car._id}"><i class="fas fa-shopping-cart"></i> Add to Cart</button>

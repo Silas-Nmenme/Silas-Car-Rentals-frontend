@@ -709,18 +709,10 @@ body[data-theme="dark"] .spec-item i {
   color: var(--light-primary);
   display: block;
   text-align: center;
-  background: linear-gradient(135deg, var(--light-primary) 0%, var(--light-primary-700) 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
   padding: 0.5rem 0;
   border-radius: 8px;
-  border: 2px solid transparent;
-  background-image: linear-gradient(var(--light-card-bg), var(--light-card-bg)), linear-gradient(135deg, var(--light-primary) 0%, var(--light-primary-700) 100%);
-  background-origin: border-box;
-  background-clip: content-box, border-box;
-  /* Make price more visible */
-  filter: drop-shadow(0 0 2px rgba(0,0,0,0.3));
+  background: var(--light-card-bg);
+  border: 2px solid var(--light-primary);
 }
 
 body[data-theme="dark"] .car-price {
