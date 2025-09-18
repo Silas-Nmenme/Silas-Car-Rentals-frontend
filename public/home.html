@@ -852,9 +852,45 @@
 
     /* Toast styling */
     .toast {
-      max-width: 250px;
-      font-size: 0.875rem;
-      border-radius: 8px;
+      max-width: 200px;
+      font-size: 0.8rem;
+      border-radius: 6px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      border: none;
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+    }
+
+    body[data-bs-theme="dark"] .toast {
+      background: rgba(31, 41, 55, 0.95);
+      color: #e5e7eb;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+    }
+
+    body[data-bs-theme="light"] .toast {
+      background: rgba(255, 255, 255, 0.95);
+      color: #374151;
+    }
+
+    .toast-header {
+      font-size: 0.75rem;
+      padding: 0.5rem 0.75rem;
+      border-bottom: 1px solid rgba(0,0,0,0.1);
+    }
+
+    body[data-bs-theme="dark"] .toast-header {
+      border-bottom-color: rgba(255,255,255,0.1);
+    }
+
+    .toast-body {
+      padding: 0.5rem 0.75rem;
+      font-weight: 500;
+    }
+
+    .toast .btn-close {
+      width: 0.75rem;
+      height: 0.75rem;
+      margin-left: auto;
     }
 
     /* Car actions styling */
