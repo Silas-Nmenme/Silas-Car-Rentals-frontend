@@ -1380,58 +1380,79 @@ function renderSidebar() {
   document.getElementById("sidebar-links-desktop").innerHTML=linksHtml;
 }
 
-// Cars array
-const cars = [
-  { name:"Mercedes-Benz C300", price:45000, image:"https://vehicle-images.dealerinspire.com/a1a7-11002896/W1KAF4GB4SR252999/00f2d6ad30e089cb5c02791d58c3af6a.jpg", tags:["Automatic","Premium","4 Seats"], available:true },
-  { name:"Toyota Camry 2023", price:25000, image:"https://images.unsplash.com/photo-1549399542-7e3f8b79c341?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80", tags:["Automatic","Executive","5 Seats"], available:true },
-  { name:"BMW X5 Luxury", price:65000, image:"https://images.unsplash.com/photo-1544636331-e26879cd4d9b?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80", tags:["Automatic","Luxury","7 Seats"], available:false }
-];
 
 // Render Recommended Cars
-function renderRecommendedCars(filteredCars = cars) {
-  const container=document.getElementById("recommended-cars");
-  container.innerHTML="";
-  if(!filteredCars.length){
-    container.innerHTML="<p class='text-muted'>No cars match your search criteria.</p>";
+function renderRecommendedCars(filteredCars) {
+  const container = document.getElementById("recommended-cars");
+  container.innerHTML = "";
+  if (!filteredCars || filteredCars.length === 0) {
+    container.innerHTML = "<div class='col-12'><p class='text-muted text-center'>No cars available.</p></div>";
     return;
   }
 
-  let wishlist=get("wishlist");
-  let savedCars=get("savedCars");
-
-  filteredCars.forEach((car,i)=>{
-    const badge=car.available?`<span class="badge bg-success">Available</span>`:`<span class="badge bg-warning">Limited</span>`;
-    const tags=car.tags.map(t=>`<span class="badge bg-light text-dark me-1">${t}</span>`).join("");
-    const wishActive=wishlist.includes(car.name)?"text-danger":"text-muted";
-    const saveActive=savedCars.includes(car.name)?"text-warning":"text-muted";
-
-    container.innerHTML+=`
-      <div class="col-md-4" data-aos="fade-up" data-aos-delay="${i*100}">
+  filteredCars.forEach((car, i) => {
+    const carName = `${car.make} ${car.model}`;
+    const wishlist = get("wishlist");
+    const saved = get("savedCars");
+    const wishlistClass = wishlist.includes(carName) ? "btn-danger" : "btn-outline-danger";
+    const savedClass = saved.includes(carName) ? "btn-warning" : "btn-outline-warning";
+    container.innerHTML += `
+      <div class="col-md-4 mb-3" data-aos="fade-up" data-aos-delay="${i * 100}">
         <div class="card h-100 shadow-sm">
-          <div class="position-relative">
-            <img src="${car.image}" class="card-img-top" alt="${car.name}" loading="lazy">
-            <div class="position-absolute top-0 end-0 m-2">${badge}</div>
-          </div>
+          <img src="${car.image || 'https://vehicle-images.dealerinspire.com/a1a7-11002896/W1KAF4GB4SR252999/00f2d6ad30e089cb5c02791d58c3af6a.jpg'}" class="card-img-top" alt="${carName}" loading="lazy">
           <div class="card-body d-flex flex-column">
-            <h6 class="fw-bold">${car.name}</h6>
-            <p class="text-success fw-bold">₦${car.price.toLocaleString()}/day</p>
-            <div class="mb-2">${tags}</div>
-            <div class="d-flex justify-content-between mt-auto">
-              <button class="btn btn-sm btn-success flex-grow-1 me-2" onclick="addToCart('${car.name}')" aria-label="Add to cart">
-                <i class="fas fa-shopping-cart me-1"></i> Cart
+            <h6 class="card-title">${carName}</h6>
+            <p class="card-text"><strong>Year:</strong> ${car.year}</p>
+            <p class="card-text"><strong>Price:</strong> ₦${car.price.toLocaleString()}/day</p>
+            <p class="card-text"><strong>Type:</strong> ${car.type}</p>
+            <p class="card-text">${car.description || 'No description available'}</p>
+            <div class="car-actions d-flex justify-content-between mt-auto">
+              <button class="btn btn-primary btn-sm" data-action="add-cart" data-name="${carName}" title="Add to Cart">
+                <i class="fas fa-cart-plus me-1"></i>Add to Cart
               </button>
-              <button class="btn btn-sm ${wishActive}" onclick="toggleWishlist('${car.name}', this)" aria-label="Toggle wishlist">
-                <i class="fas fa-heart"></i>
+              <button class="btn ${wishlistClass} btn-sm" data-action="add-wishlist" data-name="${carName}" title="Add to Wishlist">
+                <i class="fas fa-heart me-1"></i>Wishlist
               </button>
-              <button class="btn btn-sm ${saveActive}" onclick="toggleSaved('${car.name}', this)" aria-label="Toggle saved">
-                <i class="fas fa-bookmark"></i>
+              <button class="btn ${savedClass} btn-sm" data-action="add-saved" data-name="${carName}" title="Save Car">
+                <i class="fas fa-bookmark me-1"></i>Save
               </button>
             </div>
           </div>
         </div>
-      </div>`;
+      </div>
+    `;
   });
 }
+
+// Fetch and render first 3 cars from API
+async function fetchAndRenderCars() {
+  try {
+    const res = await fetch(`${API_BASE}/api/cars/get-cars`);
+    if (!res.ok) throw new Error("Failed to fetch cars");
+    const data = await res.json();
+    const cars = data.cars || [];
+    const firstThreeCars = cars.slice(0, 3).map(car => ({
+      _id: car._id,
+      make: car.make,
+      model: car.model,
+      year: car.year,
+      price: car.price,
+      type: car.type,
+      description: car.description,
+      image: car.image || 'https://vehicle-images.dealerinspire.com/a1a7-11002896/W1KAF4GB4SR252999/00f2d6ad30e089cb5c02791d58c3af6a.jpg'
+    }));
+    renderRecommendedCars(firstThreeCars);
+  } catch (err) {
+    console.error("Error fetching cars:", err);
+    // fallback: clear recommended cars or show message
+    document.getElementById("recommended-cars").innerHTML = "<p class='text-muted'>Unable to load cars.</p>";
+  }
+}
+
+// Remove old renderRecommendedCars call and call fetchAndRenderCars on DOMContentLoaded
+document.addEventListener("DOMContentLoaded", () => {
+  fetchAndRenderCars();
+});
 
 // Search and Filter Cars
 function searchCars() {
@@ -1618,7 +1639,8 @@ function updateCounts(){
     }
 
     renderSidebar();
-    renderRecommendedCars();
+  // Remove old call to renderRecommendedCars with hardcoded cars
+  // renderRecommendedCars();
     renderRecentRentals();
     updateCounts();
 
