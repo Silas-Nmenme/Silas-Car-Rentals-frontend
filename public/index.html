@@ -97,6 +97,7 @@
       --light-muted: #6b7280;
       --light-border: #e5e7eb;
       --light-shadow: 0 4px 20px rgba(0,0,0,0.08);
+      --light-shadow-strong: 0 8px 35px rgba(0,0,0,0.12);
       --light-bg: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
       --light-card-bg: #ffffff;
       --light-accent: #f59e0b;
@@ -108,6 +109,7 @@
       --dark-muted: #9ca3af;
       --dark-border: #374151;
       --dark-shadow: 0 4px 20px rgba(0,0,0,0.3);
+      --dark-shadow-strong: 0 8px 35px rgba(0,0,0,0.5);
       --dark-bg: linear-gradient(135deg, #111827 0%, #1f2937 100%);
       --dark-card-bg: #1f2937;
       --dark-accent: #fbbf24;
@@ -486,9 +488,9 @@
 
     /* Services Section */
     .services-section {
-      padding: 5rem 0;
+      padding: 3rem 0;
       background: var(--light-card-bg);
-      margin: 2rem;
+      margin: 1rem;
       border-radius: 20px;
       box-shadow: var(--light-shadow);
       position: relative;
@@ -1389,13 +1391,13 @@
       text-align: center;
       background: linear-gradient(135deg, var(--light-primary) 0%, var(--light-primary-700) 100%);
       color: white;
-      padding: 1.5rem 2rem;
+      padding: 1rem 1.5rem;
       border-radius: 16px;
       box-shadow: 0 8px 25px rgba(13, 148, 136, 0.3);
       transition: var(--transition);
       position: relative;
       overflow: hidden;
-      min-width: 150px;
+      min-width: 120px;
       animation: statPulse 2s ease-in-out infinite;
     }
 
