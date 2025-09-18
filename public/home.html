@@ -849,6 +849,26 @@
       height: 200px;
       object-fit: cover;
     }
+
+    /* Toast styling */
+    .toast {
+      max-width: 250px;
+      font-size: 0.875rem;
+      border-radius: 8px;
+    }
+
+    /* Car actions styling */
+    .car-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      justify-content: center;
+    }
+
+    .car-actions button {
+      min-height: 36px;
+      font-size: 0.8rem;
+    }
   </style>
 </head>
 <body style="font-family:'Inter',sans-serif;">
@@ -1072,7 +1092,7 @@
       <!-- Recommended Cars Collection -->
       <div class="mb-4" data-aos="fade-up">
         <h5 class="fw-bold section-title">Recommended for You</h5>
-        <div id="recommended-cars-carousel" class="carousel slide" data-bs-ride="carousel" data-bs-interval="3000" aria-live="polite">
+        <div id="recommended-cars-carousel" class="carousel slide" data-bs-ride="carousel" data-bs-interval="3000" data-bs-pause="hover" aria-live="polite">
           <div class="carousel-inner" id="recommended-cars-carousel-inner">
             <!-- Skeleton loaders will be shown here initially -->
             <div class="carousel-item active">
@@ -1111,7 +1131,7 @@
           </button>
         </div>
         <div class="text-center mt-3">
-          <a href="perfect-cars.html" class="btn btn-primary">View More Cars</a>
+          <a href="cars.html" class="btn btn-primary">View More Cars</a>
         </div>
       </div>
 
