@@ -744,6 +744,12 @@ function renderBooking(booking){
     booking.totalAmount = totalAmount;
   }
 
+  // Calculate service fee (25% of total rental price) and taxes (2.5%)
+  const serviceFee = totalAmount * 0.25;
+  const taxes = totalAmount * 0.025;
+  const grandTotal = totalAmount + serviceFee + taxes;
+  booking.totalAmount = grandTotal; // Update total amount to include fees and taxes
+
   let carContent='';
   if (booking.isMultiCar && Array.isArray(booking.cars)) {
     carContent = booking.cars.map(car => `
@@ -817,9 +823,9 @@ function renderBooking(booking){
         <div class="price-breakdown">
           <h4>Price Breakdown</h4>
           ${prices}
-          <div class="price-row"><span>Service fee:</span><span>₦0</span></div>
-          <div class="price-row"><span>Taxes:</span><span>₦0</span></div>
-          <div class="price-row total"><span>Total Amount:</span><span>₦${Number(booking.totalAmount||0).toLocaleString()}</span></div>
+          <div class="price-row"><span>Service fee (25%):</span><span>₦${serviceFee.toLocaleString()}</span></div>
+          <div class="price-row"><span>Taxes (2.5%):</span><span>₦${taxes.toLocaleString()}</span></div>
+          <div class="price-row total"><span>Total Amount:</span><span>₦${grandTotal.toLocaleString()}</span></div>
         </div>
         <div class="btn-group">
           <button onclick="window.history.back()" class="btn btn-outline-secondary">← Back to Booking</button>
