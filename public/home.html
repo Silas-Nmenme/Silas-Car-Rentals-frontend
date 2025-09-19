@@ -1057,52 +1057,115 @@
     }
   </style>
   <style>
-    /* Contact Section Styles */
-    #contact-form label {
+    /* Contact Section */
+    .contact-form {
+      background: var(--light-card-bg);
+      padding: 2rem;
+      border-radius: 16px;
+      box-shadow: var(--light-shadow);
+      border: 1px solid var(--light-border);
+    }
+
+    body[data-bs-theme="dark"] .contact-form {
+      background: var(--dark-card-bg);
+      box-shadow: var(--dark-shadow);
+      border-color: var(--dark-border);
+    }
+
+    .form-group {
+      margin-bottom: 1.5rem;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 0.5rem;
       font-weight: 600;
       color: var(--light-text);
-      transition: color 0.3s ease;
     }
-    body[data-bs-theme="dark"] #contact-form label {
+
+    body[data-bs-theme="dark"] .form-group label {
       color: var(--dark-text);
     }
-    #contact-form input,
-    #contact-form textarea {
-      border: 1px solid var(--light-border);
+
+    .form-group input,
+    .form-group textarea {
+      width: 100%;
+      padding: 1rem;
+      border: 2px solid var(--light-border);
+      border-radius: 8px;
       background: var(--light-card-bg);
       color: var(--light-text);
-      transition: border-color 0.3s ease, background 0.3s ease, color 0.3s ease;
+      transition: var(--transition);
+      font-size: 1rem;
     }
-    body[data-bs-theme="dark"] #contact-form input,
-    body[data-bs-theme="dark"] #contact-form textarea {
-      border: 1px solid var(--dark-border);
+
+    body[data-bs-theme="dark"] .form-group input,
+    body[data-bs-theme="dark"] .form-group textarea {
       background: var(--dark-card-bg);
+      border-color: var(--dark-border);
       color: var(--dark-text);
     }
-    #contact-form input:focus,
-    #contact-form textarea:focus {
-      border-color: var(--light-primary);
+
+    .form-group input:focus,
+    .form-group textarea:focus {
       outline: none;
-      box-shadow: 0 0 5px var(--light-primary);
+      border-color: var(--light-primary);
+      box-shadow: 0 0 0 3px rgba(13, 148, 136, 0.1);
+      transform: translateY(-2px);
     }
-    body[data-bs-theme="dark"] #contact-form input:focus,
-    body[data-bs-theme="dark"] #contact-form textarea:focus {
+
+    body[data-bs-theme="dark"] .form-group input:focus,
+    body[data-bs-theme="dark"] .form-group textarea:focus {
       border-color: var(--dark-primary);
-      box-shadow: 0 0 5px var(--dark-primary);
+      box-shadow: 0 0 0 3px rgba(20, 184, 166, 0.1);
     }
-    #contact-submit-btn {
-      background: var(--light-primary);
+
+    .form-group textarea {
+      resize: vertical;
+      min-height: 120px;
+    }
+
+    .btn-submit {
+      width: 100%;
+      padding: 1rem;
+      background: linear-gradient(135deg, var(--light-primary) 0%, var(--light-primary-700) 100%);
       border: none;
-      transition: background 0.3s ease;
+      border-radius: 8px;
+      color: white;
+      font-weight: 600;
+      font-size: 1.1rem;
+      cursor: pointer;
+      transition: var(--transition);
+      position: relative;
+      overflow: hidden;
     }
-    #contact-submit-btn:hover {
-      background: var(--light-primary-700);
+
+    .btn-submit::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+      transition: left 0.5s ease;
     }
-    body[data-bs-theme="dark"] #contact-submit-btn {
-      background: var(--dark-primary);
+
+    .btn-submit:hover::before {
+      left: 100%;
     }
-    body[data-bs-theme="dark"] #contact-submit-btn:hover {
-      background: var(--dark-primary-700);
+
+    .btn-submit:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(13, 148, 136, 0.3);
+    }
+
+    body[data-bs-theme="dark"] .btn-submit {
+      background: linear-gradient(135deg, var(--dark-primary) 0%, var(--dark-primary-700) 100%);
+    }
+
+    body[data-bs-theme="dark"] .btn-submit:hover {
+      box-shadow: 0 8px 20px rgba(20, 184, 166, 0.3);
     }
   </style>
 </head>
@@ -1586,33 +1649,27 @@
             </div>
           </div>
       <div class="col-md-6">
-        <div class="card">
-          <div class="card-body">
-            <h6>Send Message</h6>
-            <form id="contact-form" novalidate>
-              <div class="mb-3">
-                <label for="fullName" class="form-label">Full Name</label>
-                <input type="text" class="form-control" id="fullName" name="fullName" placeholder="Enter your full name" required>
-                <div class="invalid-feedback">Please enter your full name.</div>
-              </div>
-              <div class="mb-3">
-                <label for="email" class="form-label">Email address</label>
-                <input type="email" class="form-control" id="email" name="email" placeholder="Enter your email" required>
-                <div class="invalid-feedback">Please enter a valid email address.</div>
-              </div>
-              <div class="mb-3">
-                <label for="phone" class="form-label">Phone Number</label>
-                <input type="tel" class="form-control" id="phone" name="phone" placeholder="Enter your phone number" required>
-                <div class="invalid-feedback">Please enter your phone number.</div>
-              </div>
-              <div class="mb-3">
-                <label for="message" class="form-label">Message</label>
-                <textarea class="form-control" id="message" name="message" rows="3" placeholder="Enter your message" required></textarea>
-                <div class="invalid-feedback">Please enter a message.</div>
-              </div>
-              <button type="submit" class="btn btn-primary" id="contact-submit-btn">Send</button>
-            </form>
-          </div>
+        <div class="contact-form">
+          <h6>Send Message</h6>
+          <form id="contact-form" novalidate>
+            <div class="form-group">
+              <label for="fullName">Full Name</label>
+              <input type="text" id="fullName" name="fullName" placeholder="Enter your full name" required>
+            </div>
+            <div class="form-group">
+              <label for="email">Email address</label>
+              <input type="email" id="email" name="email" placeholder="Enter your email" required>
+            </div>
+            <div class="form-group">
+              <label for="phone">Phone Number</label>
+              <input type="tel" id="phone" name="phone" placeholder="Enter your phone number" required>
+            </div>
+            <div class="form-group">
+              <label for="message">Message</label>
+              <textarea id="message" name="message" rows="3" placeholder="Enter your message" required></textarea>
+            </div>
+            <button type="submit" class="btn-submit" id="contact-submit-btn">Send</button>
+          </form>
         </div>
       </div>
         </div>
@@ -2154,7 +2211,7 @@ function initContactForm() {
     const formData = {
       fullName: form.fullName.value.trim(),
       email: form.email.value.trim(),
-      phone: form.phone.value.trim(),
+      phoneNumber: form.phone.value.trim(),
       message: form.message.value.trim(),
     };
 
