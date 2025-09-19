@@ -4,32 +4,451 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Booking Summary - Silas Car Rentals</title>
-  <link rel="stylesheet" href="style.css" />
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
+  <!-- Bootstrap 5.3.2 (Responsive & Mobile-first) -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Font Awesome -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"/>
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet"/>
   <style>
-    .checkout-container{max-width:800px;margin:0 auto;padding:2rem 0}
-    .summary-card{background:white;border-radius:15px;box-shadow:0 10px 30px rgba(0,0,0,.1);overflow:hidden;margin-bottom:2rem}
-    .summary-header{background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);color:white;padding:2rem;text-align:center}
-    .summary-body{padding:2rem}
-    .car-details{display:flex;gap:2rem;margin-bottom:2rem;padding-bottom:2rem;border-bottom:1px solid #eee}
-    .car-image{width:200px;height:150px;object-fit:cover;border-radius:8px}
-    .car-info h3{margin:0 0 .5rem 0;color:#333}
-    .booking-details{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;margin-bottom:2rem}
-    .detail-item{padding:1rem;background:#f8f9fa;border-radius:8px}
-    .detail-item label{font-weight:600;color:#666;font-size:.875rem;text-transform:uppercase;letter-spacing:.5px}
-    .detail-item p{margin:.5rem 0 0 0;font-size:1.125rem;color:#333}
-    .price-breakdown{background:#f8f9fa;padding:1.5rem;border-radius:8px;margin-bottom:2rem}
-    .price-row{display:flex;justify-content:space-between;margin-bottom:.5rem}
-    .price-row.total{font-size:1.25rem;font-weight:bold;border-top:2px solid #ddd;padding-top:.5rem;margin-top:.5rem}
-    .contact-info{background:#f8f9fa;padding:1.5rem;border-radius:8px;margin-bottom:2rem}
-    .btn-group{display:flex;gap:1rem;justify-content:center}
-    .btn-secondary{background:#6c757d;color:white}
-    .btn-secondary:hover{background:#5a6268}
-    .error-message{text-align:center;padding:2rem;color:#dc3545}
-    @media (max-width:600px){
-      .car-details{flex-direction:column}
-      .car-image{width:100%;height:200px}
-      .booking-details{grid-template-columns:1fr}
+    :root {
+      --primary: #0d9488;
+      --primary-700: #0f766e;
+      --text: #374151;
+      --muted: #6b7280;
+      --border: #e5e7eb;
+      --shadow: 0 4px 20px rgba(0,0,0,0.08);
+      --bg: #ffffff;
+      --card-bg: #f8f9fa;
+      --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+      min-height: 100vh;
+      color: var(--text);
+    }
+
+    .checkout-container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 2rem 1rem;
+    }
+
+    .summary-card {
+      background: var(--bg);
+      border-radius: 16px;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      margin-bottom: 2rem;
+      border: 1px solid var(--border);
+    }
+
+    .summary-header {
+      background: linear-gradient(135deg, var(--primary) 0%, var(--primary-700) 100%);
+      color: white;
+      padding: 2rem;
+      text-align: center;
+    }
+
+    .summary-header h2 {
+      margin: 0;
+      font-weight: 700;
+      font-size: 2rem;
+    }
+
+    .summary-header p {
+      margin: 0.5rem 0 0 0;
+      opacity: 0.9;
+    }
+
+    .summary-body {
+      padding: 2rem;
+    }
+
+    .car-details {
+      display: flex;
+      gap: 2rem;
+      margin-bottom: 2rem;
+      padding-bottom: 2rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .car-image {
+      width: 250px;
+      height: 180px;
+      object-fit: cover;
+      border-radius: 12px;
+      flex-shrink: 0;
+    }
+
+    .car-info h3 {
+      margin: 0 0 0.5rem 0;
+      color: var(--text);
+      font-weight: 600;
+    }
+
+    .car-info p {
+      color: var(--primary);
+      font-size: 1.25rem;
+      font-weight: bold;
+      margin: 0 0 0.5rem 0;
+    }
+
+    .car-info p:last-child {
+      color: var(--muted);
+      font-size: 0.9rem;
+      font-weight: normal;
+    }
+
+    .booking-details {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+    }
+
+    .detail-item {
+      padding: 1.25rem;
+      background: var(--card-bg);
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      transition: var(--transition);
+    }
+
+    .detail-item:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+    }
+
+    .detail-item label {
+      font-weight: 600;
+      color: var(--muted);
+      font-size: 0.875rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 0.5rem;
+      display: block;
+    }
+
+    .detail-item p {
+      margin: 0;
+      font-size: 1.125rem;
+      color: var(--text);
+      font-weight: 500;
+    }
+
+    .price-breakdown {
+      background: var(--card-bg);
+      padding: 1.5rem;
+      border-radius: 12px;
+      margin-bottom: 2rem;
+      border: 1px solid var(--border);
+    }
+
+    .price-breakdown h4 {
+      margin: 0 0 1rem 0;
+      color: var(--text);
+      font-weight: 600;
+    }
+
+    .price-row {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 0.5rem;
+      font-size: 1rem;
+    }
+
+    .price-row.total {
+      font-size: 1.25rem;
+      font-weight: bold;
+      border-top: 2px solid var(--border);
+      padding-top: 0.5rem;
+      margin-top: 0.5rem;
+      color: var(--primary);
+    }
+
+    .contact-info {
+      background: var(--card-bg);
+      padding: 1.5rem;
+      border-radius: 12px;
+      margin-bottom: 2rem;
+      border: 1px solid var(--border);
+    }
+
+    .contact-info h4 {
+      margin: 0 0 1rem 0;
+      color: var(--text);
+      font-weight: 600;
+    }
+
+    .contact-info div {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+
+    .contact-info label {
+      font-weight: 600;
+      color: var(--muted);
+      font-size: 0.875rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 0.25rem;
+    }
+
+    .contact-info p {
+      margin: 0;
+      font-size: 1rem;
+      color: var(--text);
+    }
+
+    .btn-group {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      padding: 0.75rem 1.5rem;
+      border-radius: 8px;
+      font-weight: 600;
+      transition: var(--transition);
+      border: none;
+      cursor: pointer;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--primary) 0%, var(--primary-700) 100%);
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background: linear-gradient(135deg, var(--primary-700) 0%, var(--primary) 100%);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(13, 148, 136, 0.3);
+    }
+
+    .btn-outline-secondary {
+      background: transparent;
+      border: 2px solid #6c757d;
+      color: #6c757d;
+    }
+
+    .btn-outline-secondary:hover {
+      background: #6c757d;
+      color: white;
+      transform: translateY(-2px);
+    }
+
+    .error-message {
+      text-align: center;
+      padding: 2rem;
+      color: #dc3545;
+      background: var(--card-bg);
+      border-radius: 12px;
+      border: 1px solid var(--border);
+    }
+
+    /* Mobile responsiveness */
+    @media (max-width: 768px) {
+      .checkout-container {
+        padding: 1.5rem 1rem;
+      }
+
+      .summary-header {
+        padding: 1.5rem;
+      }
+
+      .summary-header h2 {
+        font-size: 1.75rem;
+      }
+
+      .summary-body {
+        padding: 1.5rem;
+      }
+
+      .car-details {
+        flex-direction: column;
+        gap: 1.5rem;
+      }
+
+      .car-image {
+        width: 100%;
+        height: 200px;
+      }
+
+      .booking-details {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+      }
+
+      .detail-item {
+        padding: 1rem;
+      }
+
+      .contact-info div {
+        grid-template-columns: 1fr;
+        gap: 0.5rem;
+      }
+
+      .btn-group {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .btn {
+        width: 100%;
+        margin-bottom: 0.5rem;
+      }
+    }
+
+    @media (max-width: 576px) {
+      .checkout-container {
+        padding: 1rem 0.5rem;
+      }
+
+      .summary-header {
+        padding: 1.25rem;
+      }
+
+      .summary-header h2 {
+        font-size: 1.5rem;
+      }
+
+      .summary-header p {
+        font-size: 0.9rem;
+      }
+
+      .summary-body {
+        padding: 1.25rem;
+      }
+
+      .car-info h3 {
+        font-size: 1.25rem;
+      }
+
+      .car-info p:first-child {
+        font-size: 1.1rem;
+      }
+
+      .detail-item label {
+        font-size: 0.8rem;
+      }
+
+      .detail-item p {
+        font-size: 1rem;
+      }
+
+      .price-breakdown h4,
+      .contact-info h4 {
+        font-size: 1.1rem;
+      }
+
+      .price-row {
+        font-size: 0.9rem;
+      }
+
+      .price-row.total {
+        font-size: 1.1rem;
+      }
+
+      .contact-info label {
+        font-size: 0.8rem;
+      }
+
+      .contact-info p {
+        font-size: 0.9rem;
+      }
+
+      .btn {
+        padding: 0.625rem 1.25rem;
+        font-size: 0.9rem;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .checkout-container {
+        padding: 0.75rem 0.25rem;
+      }
+
+      .summary-header {
+        padding: 1rem;
+      }
+
+      .summary-header h2 {
+        font-size: 1.25rem;
+      }
+
+      .summary-header p {
+        font-size: 0.85rem;
+      }
+
+      .summary-body {
+        padding: 1rem;
+      }
+
+      .car-image {
+        height: 150px;
+      }
+
+      .car-info h3 {
+        font-size: 1.1rem;
+      }
+
+      .car-info p:first-child {
+        font-size: 1rem;
+      }
+
+      .car-info p:last-child {
+        font-size: 0.8rem;
+      }
+
+      .detail-item {
+        padding: 0.75rem;
+      }
+
+      .detail-item label {
+        font-size: 0.75rem;
+      }
+
+      .detail-item p {
+        font-size: 0.9rem;
+      }
+
+      .price-breakdown,
+      .contact-info {
+        padding: 1rem;
+      }
+
+      .price-breakdown h4,
+      .contact-info h4 {
+        font-size: 1rem;
+      }
+
+      .price-row {
+        font-size: 0.85rem;
+      }
+
+      .price-row.total {
+        font-size: 1rem;
+      }
+
+      .contact-info label {
+        font-size: 0.75rem;
+      }
+
+      .contact-info p {
+        font-size: 0.85rem;
+      }
+
+      .btn {
+        padding: 0.5rem 1rem;
+        font-size: 0.85rem;
+      }
     }
   </style>
 </head>
