@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Newsletter Subscribers - Silas Car Rentals</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"/>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" rel="stylesheet"/>
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="css/dashboard.css">
+</head>
+<body>
+<!-- Header -->
+<header class="main-header">
+  <nav class="navbar navbar-expand-lg">
+    <div class="container">
+      <a href="../home.html" class="navbar-brand brand"><i class="fas fa-car me-2"></i>Silas Car Rentals</a>
+
+      <div class="ms-auto d-flex align-items-center gap-3">
+        <a href="../home.html" class="btn btn-outline-success">Home</a>
+        <a href="dashboard.html" class="btn btn-success">Dashboard</a>
+
+        <!-- Theme Toggle -->
+        <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme" title="Toggle theme">
+          <i class="fas fa-moon" aria-hidden="true"></i>
+          <span class="sr-only">Toggle theme</span>
+        </button>
+      </div>
+    </div>
+  </nav>
+</header>
+
+<div class="container-fluid p-4">
+  <h2 class="mb-4">Newsletter Subscribers</h2>
+  <div class="table-responsive">
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>Email</th>
+          <th>Subscribed At</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody id="subscribers-table-body">
+        <tr><td colspan="3" class="text-center">Loading...</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- Update Email Modal -->
+<div class="modal fade" id="updateModal" tabindex="-1" aria-labelledby="updateModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="updateModalLabel">Update Subscriber Email</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form id="update-form">
+          <div class="mb-3">
+            <label for="update-email" class="form-label">New Email</label>
+            <input type="email" class="form-control" id="update-email" required>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-primary" id="update-btn">Update</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Confirm Unsubscribe Modal -->
+<div class="modal fade" id="unsubscribeModal" tabindex="-1" aria-labelledby="unsubscribeModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="unsubscribeModalLabel">Confirm Unsubscribe</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <p>Are you sure you want to unsubscribe <strong id="unsubscribe-email"></strong> from the newsletter?</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-danger" id="confirm-unsubscribe-btn">Unsubscribe</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+const API_BASE = "https://techyjaunt-auth-go43.onrender.com";
+
+// Theme toggle
+const themeToggle = document.getElementById('theme-toggle');
+const html = document.documentElement;
+const icon = themeToggle.querySelector('i');
+
+function setTheme(theme) {
+  html.setAttribute('data-bs-theme', theme);
+  localStorage.setItem('theme', theme);
+  icon.className = theme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
+}
+
+themeToggle.addEventListener('click', () => {
+  const currentTheme = html.getAttribute('data-bs-theme') || 'light';
+  const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+  setTheme(newTheme);
+});
+
+const savedTheme = localStorage.getItem('theme') || 'light';
+setTheme(savedTheme);
+
+// Show toast
+function showToast(message, type = 'info') {
+  const toast = document.getElementById('toast');
+  const icons = {
+    success: 'fas fa-check-circle',
+    error: 'fas fa-exclamation-circle',
+    warning: 'fas fa-exclamation-triangle',
+    info: 'fas fa-info-circle'
+  };
+  toast.innerHTML = `
+    <i class="fas fa-${icons[type] || icons.info} toast-icon"></i>
+    <div class="toast-message">${message}</div>
+    <button class="toast-close" onclick="hideToast()">&times;</button>
+  `;
+  toast.className = `toast toast-${type} show`;
+  setTimeout(() => {
+    hideToast();
+  }, 5000);
+}
+
+function hideToast() {
+  const toast = document.getElementById('toast');
+  toast.classList.remove('show');
+  toast.classList.add('hide');
+  setTimeout(() => {
+    toast.className = 'toast';
+  }, 400);
+}
+
+// Load subscribers
+async function loadSubscribers() {
+  try {
+    const response = await fetch(`${API_BASE}/api/newsletter/subscribers`, {
+      credentials: 'include'
+    });
+    if (!response.ok) {
+      if (response.status === 401) {
+        showToast('Unauthorized access. Please login as admin.', 'error');
+        setTimeout(() => window.location.href = '../login.html', 2000);
+        return;
+      }
+      throw new Error('Failed to fetch subscribers');
+    }
+    const data = await response.json();
+    renderSubscribers(data.subscribers);
+  } catch (error) {
+    console.error('Error loading subscribers:', error);
+    showToast('Failed to load subscribers.', 'error');
+    document.getElementById('subscribers-table-body').innerHTML = '<tr><td colspan="3" class="text-center text-danger">Error loading subscribers</td></tr>';
+  }
+}
+
+// Render subscribers table
+function renderSubscribers(subscribers) {
+  const tbody = document.getElementById('subscribers-table-body');
+  if (!subscribers || subscribers.length === 0) {
+    tbody.innerHTML = '<tr><td colspan="3" class="text-center">No subscribers found</td></tr>';
+    return;
+  }
+  tbody.innerHTML = subscribers.map(sub => `
+    <tr>
+      <td>${sub.email}</td>
+      <td>${new Date(sub.createdAt).toLocaleDateString()}</td>
+      <td>
+        <button class="btn btn-sm btn-warning me-2" onclick="openUpdateModal('${sub._id}', '${sub.email}')">Update</button>
+        <button class="btn btn-sm btn-danger" onclick="openUnsubscribeModal('${sub._id}', '${sub.email}')">Unsubscribe</button>
+      </td>
+    </tr>
+  `).join('');
+}
+
+// Update modal
+let currentSubscriberId = null;
+function openUpdateModal(id, email) {
+  currentSubscriberId = id;
+  document.getElementById('update-email').value = email;
+  new bootstrap.Modal(document.getElementById('updateModal')).show();
+}
+
+document.getElementById('update-btn').addEventListener('click', async () => {
+  const newEmail = document.getElementById('update-email').value.trim();
+  if (!newEmail) {
+    showToast('Please enter a valid email.', 'warning');
+    return;
+  }
+  try {
+    const response = await fetch(`${API_BASE}/api/newsletter/update/${currentSubscriberId}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      credentials: 'include',
+      body: JSON.stringify({ email: newEmail })
+    });
+    if (!response.ok) throw new Error('Failed to update');
+    const data = await response.json();
+    showToast(data.message || 'Subscriber updated successfully.', 'success');
+    bootstrap.Modal.getInstance(document.getElementById('updateModal')).hide();
+    loadSubscribers();
+  } catch (error) {
+    console.error('Error updating subscriber:', error);
+    showToast('Failed to update subscriber.', 'error');
+  }
+});
+
+// Unsubscribe modal
+function openUnsubscribeModal(id, email) {
+  currentSubscriberId = id;
+  document.getElementById('unsubscribe-email').textContent = email;
+  new bootstrap.Modal(document.getElementById('unsubscribeModal')).show();
+}
+
+document.getElementById('confirm-unsubscribe-btn').addEventListener('click', async () => {
+  try {
+    const response = await fetch(`${API_BASE}/api/newsletter/unsubscribe/${currentSubscriberId}`, {
+      method: 'DELETE',
+      credentials: 'include'
+    });
+    if (!response.ok) throw new Error('Failed to unsubscribe');
+    const data = await response.json();
+    showToast(data.message || 'Subscriber unsubscribed successfully.', 'success');
+    bootstrap.Modal.getInstance(document.getElementById('unsubscribeModal')).hide();
+    loadSubscribers();
+  } catch (error) {
+    console.error('Error unsubscribing:', error);
+    showToast('Failed to unsubscribe.', 'error');
+  }
+});
+
+// Initialize
+document.addEventListener('DOMContentLoaded', () => {
+  // Check if user is admin
+  const userData = localStorage.getItem('user');
+  if (!userData) {
+    window.location.href = '../login.html';
+    return;
+  }
+  const user = JSON.parse(userData);
+  if (!user.isAdmin && user.role !== 'admin') {
+    showToast('Access denied. Admin privileges required.', 'error');
+    setTimeout(() => window.location.href = '../home.html', 2000);
+    return;
+  }
+  loadSubscribers();
+});
+</script>
+</body>
+</html>
