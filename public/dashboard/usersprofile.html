@@ -1393,6 +1393,10 @@
         window.location.href = "../index.html";
       };
     });
+
+    // Make functions global for inline onclick
+    window.fetchUserDetails = fetchUserDetails;
+    window.makeAdmin = makeAdmin;
   </script>
   <div class="toast-container" id="toast-container"></div>
 </body>
