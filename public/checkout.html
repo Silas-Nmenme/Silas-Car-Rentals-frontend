@@ -12,31 +12,75 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet"/>
   <style>
     :root {
-      --primary: #0d9488;
-      --primary-700: #0f766e;
-      --text: #374151;
-      --muted: #6b7280;
-      --border: #e5e7eb;
-      --shadow: 0 4px 20px rgba(0,0,0,0.08);
-      --bg: #ffffff;
-      --card-bg: #f8f9fa;
+      /* Light Theme Variables */
+      --light-primary: #0d9488;
+      --light-primary-700: #0f766e;
+      --light-text: #374151;
+      --light-muted: #6b7280;
+      --light-border: #e5e7eb;
+      --light-shadow: 0 4px 20px rgba(0,0,0,0.08);
+      --light-shadow-strong: 0 8px 35px rgba(0,0,0,0.12);
+      --light-bg: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+      --light-card-bg: #ffffff;
+      --light-accent: #f59e0b;
+
+      /* Dark Theme Variables */
+      --dark-primary: #14b8a6;
+      --dark-primary-700: #0d9488;
+      --dark-text: #e5e7eb;
+      --dark-muted: #9ca3af;
+      --dark-border: #374151;
+      --dark-shadow: 0 4px 20px rgba(0,0,0,0.3);
+      --dark-shadow-strong: 0 8px 35px rgba(0,0,0,0.5);
+      --dark-bg: linear-gradient(135deg, #111827 0%, #1f2937 100%);
+      --dark-card-bg: #1f2937;
+      --dark-accent: #fbbf24;
+
+      /* Common Variables */
       --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      --bounce: cubic-bezier(0.68, -0.55, 0.265, 1.55);
+      --elastic: cubic-bezier(0.175, 0.885, 0.32, 1.275);
     }
 
-    body {
-      font-family: 'Inter', sans-serif;
-      background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    /* Light theme */
+    body[data-bs-theme="light"] {
+      background: var(--light-bg);
       min-height: 100vh;
-      color: var(--text);
-      margin: 0;
-      padding: 0;
+      transition: var(--transition);
+      color: var(--light-text);
+      font-family: 'Inter', sans-serif;
+      --bg: var(--light-bg);
+      --card-bg: var(--light-card-bg);
+      --shadow: var(--light-shadow);
+      --border: var(--light-border);
+      --text: var(--light-text);
+      --muted: var(--light-muted);
+      --primary: var(--light-primary);
+      --primary-700: var(--light-primary-700);
+    }
+
+    /* Dark theme */
+    body[data-bs-theme="dark"] {
+      background: var(--dark-bg);
+      min-height: 100vh;
+      transition: var(--transition);
+      color: var(--dark-text);
+      font-family: 'Inter', sans-serif;
+      --bg: var(--dark-bg);
+      --card-bg: var(--dark-card-bg);
+      --shadow: var(--dark-shadow);
+      --border: var(--dark-border);
+      --text: var(--dark-text);
+      --muted: var(--dark-muted);
+      --primary: var(--dark-primary);
+      --primary-700: var(--dark-primary-700);
     }
 
     /* Header Styles */
     .main-header {
-      background: linear-gradient(135deg, var(--primary) 0%, var(--primary-700) 100%);
+      background: linear-gradient(135deg, var(--light-primary) 0%, var(--light-primary-700) 100%);
       padding: 1rem 0;
-      box-shadow: var(--shadow);
+      box-shadow: var(--light-shadow);
       border-bottom: 3px solid rgba(13, 148, 136, 0.2);
       position: fixed;
       top: 0;
@@ -48,15 +92,25 @@
       -webkit-backdrop-filter: blur(10px);
     }
 
+    body[data-bs-theme="dark"] .main-header {
+      background: linear-gradient(135deg, var(--dark-primary) 0%, var(--dark-primary-700) 100%);
+      box-shadow: var(--dark-shadow);
+      border-bottom: 3px solid rgba(20, 184, 166, 0.2);
+    }
+
     .main-header.scrolled {
-      box-shadow: 0 4px 30px rgba(0,0,0,0.15);
+      box-shadow: var(--light-shadow-strong);
       backdrop-filter: blur(20px);
       -webkit-backdrop-filter: blur(20px);
       transform: translateY(0);
     }
 
-    .brand {
-      color: white;
+    body[data-bs-theme="dark"] .main-header.scrolled {
+      box-shadow: var(--dark-shadow-strong);
+    }
+
+    .navbar-brand {
+      color: white !important;
       text-decoration: none;
       font-weight: 700;
       font-size: 1.5rem;
@@ -64,26 +118,112 @@
       text-shadow: 0 2px 4px rgba(0,0,0,0.1);
     }
 
-    .brand:hover {
+    .navbar-brand:hover {
       transform: scale(1.05) rotate(1deg);
       text-shadow: 0 4px 8px rgba(0,0,0,0.2);
     }
 
-    .btn-outline-secondary {
-      background: rgba(255,255,255,0.1);
-      border: 2px solid rgba(255,255,255,0.2);
-      color: white;
-      padding: 0.5rem 1rem;
-      border-radius: 6px;
+    .nav-link {
+      color: rgba(255,255,255,0.9) !important;
+      font-weight: 500;
       transition: var(--transition);
+      position: relative;
+    }
+
+    .nav-link:hover {
+      color: white !important;
+      transform: translateY(-2px);
+    }
+
+    .nav-link.active {
+      color: white !important;
       font-weight: 600;
     }
 
-    .btn-outline-secondary:hover {
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      bottom: -5px;
+      left: 50%;
+      width: 0;
+      height: 2px;
+      background: white;
+      transition: var(--transition);
+      transform: translateX(-50%);
+    }
+
+    .nav-link:hover::after,
+    .nav-link.active::after {
+      width: 100%;
+    }
+
+    .dropdown-menu {
+      background: rgba(255,255,255,0.95);
+      backdrop-filter: blur(10px);
+      border: none;
+      box-shadow: var(--light-shadow);
+      border-radius: 8px;
+    }
+
+    body[data-bs-theme="dark"] .dropdown-menu {
+      background: rgba(31, 41, 55, 0.95);
+      box-shadow: var(--dark-shadow);
+    }
+
+    .dropdown-item {
+      color: var(--light-text) !important;
+      transition: var(--transition);
+    }
+
+    body[data-bs-theme="dark"] .dropdown-item {
+      color: var(--dark-text) !important;
+    }
+
+    .dropdown-item:hover {
+      background: var(--light-primary);
+      color: white !important;
+    }
+
+    body[data-bs-theme="dark"] .dropdown-item:hover {
+      background: var(--dark-primary);
+    }
+
+    .theme-toggle {
+      background: rgba(255,255,255,0.1);
+      border: 2px solid rgba(255,255,255,0.2);
+      color: white;
+      padding: 0.5rem;
+      border-radius: 50%;
+      transition: var(--transition);
+      cursor: pointer;
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+    }
+
+    .theme-toggle:hover {
       background: rgba(255,255,255,0.2);
       border-color: rgba(255,255,255,0.3);
-      color: white;
-      transform: translateY(-2px);
+      transform: scale(1.1);
+    }
+
+    .theme-toggle .fa-moon {
+      display: block;
+    }
+
+    .theme-toggle .fa-sun {
+      display: none;
+    }
+
+    body[data-bs-theme="dark"] .theme-toggle .fa-moon {
+      display: none;
+    }
+
+    body[data-bs-theme="dark"] .theme-toggle .fa-sun {
+      display: block;
     }
 
     /* Adjust body padding for fixed header */
@@ -513,13 +653,52 @@
     }
   </style>
 </head>
-<body>
-<header class="navbar">
-  <div class="container nav-inner">
-    <a href="index.html" class="brand"><div class="brand-mark">SC</div><span>Silas Car Rentals</span></a>
-    <button onclick="window.history.back()" class="btn btn-outline-secondary">← Back</button>
-  </div>
-</header>
+<body data-bs-theme="dark">
+<header class="main-header">
+    <nav class="navbar navbar-expand-lg">
+      <div class="container">
+        <a class="navbar-brand brand" href="index.html">
+          <i class="fas fa-car me-2"></i>
+          Silas Car Rentals
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" title="Toggle navigation" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav ms-auto">
+            <li class="nav-item">
+              <a class="nav-link" href="index.html">Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="cars.html">Cars</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="about.html">About</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="contact.html">Contact</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" onclick="window.history.back()">← Back</a>
+            </li>
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="accountDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                Account
+              </a>
+              <ul class="dropdown-menu" aria-labelledby="accountDropdown">
+                <li><a class="dropdown-item" href="login.html">Login</a></li>
+                <li><a class="dropdown-item" href="signup.html">Signup</a></li>
+              </ul>
+            </li>
+          </ul>
+          <button class="theme-toggle ms-3" id="theme-toggle" aria-label="Toggle theme" title="Toggle theme">
+            <i class="fas fa-moon" aria-hidden="true"></i>
+            <span class="sr-only">Toggle theme</span>
+          </button>
+        </div>
+      </div>
+    </nav>
+  </header>
 
 <main class="section">
   <div class="checkout-container">
@@ -744,8 +923,23 @@ async function submitBookingOnly(){
   }
 }
 
+// ---------- Theme Toggle ----------
+function initThemeToggle() {
+  const themeToggle = document.getElementById('theme-toggle');
+  if (!themeToggle) return;
+  const currentTheme = localStorage.getItem('theme') || 'dark';
+  document.body.setAttribute('data-bs-theme', currentTheme);
+  themeToggle.addEventListener('click', () => {
+    const currentTheme = document.body.getAttribute('data-bs-theme');
+    const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+    document.body.setAttribute('data-bs-theme', newTheme);
+    localStorage.setItem('theme', newTheme);
+  });
+}
+
 // ---------- Init (do NOT auto-redirect to login; render summary first) ----------
 document.addEventListener("DOMContentLoaded", () => {
+  initThemeToggle();
   const booking = getBookingSafe();
   if (booking) {
     renderBooking(booking);
