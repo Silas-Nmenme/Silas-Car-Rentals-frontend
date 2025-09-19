@@ -1056,6 +1056,55 @@
       }
     }
   </style>
+  <style>
+    /* Contact Section Styles */
+    #contact-form label {
+      font-weight: 600;
+      color: var(--light-text);
+      transition: color 0.3s ease;
+    }
+    body[data-bs-theme="dark"] #contact-form label {
+      color: var(--dark-text);
+    }
+    #contact-form input,
+    #contact-form textarea {
+      border: 1px solid var(--light-border);
+      background: var(--light-card-bg);
+      color: var(--light-text);
+      transition: border-color 0.3s ease, background 0.3s ease, color 0.3s ease;
+    }
+    body[data-bs-theme="dark"] #contact-form input,
+    body[data-bs-theme="dark"] #contact-form textarea {
+      border: 1px solid var(--dark-border);
+      background: var(--dark-card-bg);
+      color: var(--dark-text);
+    }
+    #contact-form input:focus,
+    #contact-form textarea:focus {
+      border-color: var(--light-primary);
+      outline: none;
+      box-shadow: 0 0 5px var(--light-primary);
+    }
+    body[data-bs-theme="dark"] #contact-form input:focus,
+    body[data-bs-theme="dark"] #contact-form textarea:focus {
+      border-color: var(--dark-primary);
+      box-shadow: 0 0 5px var(--dark-primary);
+    }
+    #contact-submit-btn {
+      background: var(--light-primary);
+      border: none;
+      transition: background 0.3s ease;
+    }
+    #contact-submit-btn:hover {
+      background: var(--light-primary-700);
+    }
+    body[data-bs-theme="dark"] #contact-submit-btn {
+      background: var(--dark-primary);
+    }
+    body[data-bs-theme="dark"] #contact-submit-btn:hover {
+      background: var(--dark-primary-700);
+    }
+  </style>
 </head>
 <body style="font-family:'Inter',sans-serif;">
 
@@ -1511,11 +1560,11 @@
               </div>
               <div class="col-md-4">
                 <h6>Abuja</h6>
-                <p>Wuse II, Abuja<br>Phone: +234 810 758 6167</p>
+                <p>Abuja<br>Phone: +234 810 758 6167</p>
               </div>
               <div class="col-md-4">
                 <h6>Port Harcourt</h6>
-                <p>GRA Phase 2, Port Harcourt<br>Phone: +234 810 758 6167</p>
+                <p>Port Harcourt<br>Phone: +234 810 758 6167</p>
               </div>
             </div>
           </div>
@@ -1536,25 +1585,36 @@
               </div>
             </div>
           </div>
-          <div class="col-md-6">
-            <div class="card">
-              <div class="card-body">
-                <h6>Send Message</h6>
-                <form>
-                  <div class="mb-3">
-                    <input type="text" class="form-control" placeholder="Your Name">
-                  </div>
-                  <div class="mb-3">
-                    <input type="email" class="form-control" placeholder="Your Email">
-                  </div>
-                  <div class="mb-3">
-                    <textarea class="form-control" rows="3" placeholder="Your Message"></textarea>
-                  </div>
-                  <button type="submit" class="btn btn-primary">Send</button>
-                </form>
+      <div class="col-md-6">
+        <div class="card">
+          <div class="card-body">
+            <h6>Send Message</h6>
+            <form id="contact-form" novalidate>
+              <div class="mb-3">
+                <label for="fullName" class="form-label">Full Name</label>
+                <input type="text" class="form-control" id="fullName" name="fullName" placeholder="Enter your full name" required>
+                <div class="invalid-feedback">Please enter your full name.</div>
               </div>
-            </div>
+              <div class="mb-3">
+                <label for="email" class="form-label">Email address</label>
+                <input type="email" class="form-control" id="email" name="email" placeholder="Enter your email" required>
+                <div class="invalid-feedback">Please enter a valid email address.</div>
+              </div>
+              <div class="mb-3">
+                <label for="phone" class="form-label">Phone Number</label>
+                <input type="tel" class="form-control" id="phone" name="phone" placeholder="Enter your phone number" required>
+                <div class="invalid-feedback">Please enter your phone number.</div>
+              </div>
+              <div class="mb-3">
+                <label for="message" class="form-label">Message</label>
+                <textarea class="form-control" id="message" name="message" rows="3" placeholder="Enter your message" required></textarea>
+                <div class="invalid-feedback">Please enter a message.</div>
+              </div>
+              <button type="submit" class="btn btn-primary" id="contact-submit-btn">Send</button>
+            </form>
           </div>
+        </div>
+      </div>
         </div>
       </div>
 
@@ -2075,6 +2135,55 @@ themeBtn.addEventListener("click",()=>{
 const savedTheme=localStorage.getItem("theme")||"light";
 document.body.setAttribute("data-bs-theme",savedTheme);
 themeBtn.innerHTML=savedTheme==="dark"?'<i class="fas fa-sun"></i>':'<i class="fas fa-moon"></i>';
+function initContactForm() {
+  const form = document.getElementById('contact-form');
+  const submitBtn = document.getElementById('contact-submit-btn');
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    // Simple validation
+    if (!form.checkValidity()) {
+      form.classList.add('was-validated');
+      return;
+    }
+
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Sending...';
+
+    const formData = {
+      fullName: form.fullName.value.trim(),
+      email: form.email.value.trim(),
+      phone: form.phone.value.trim(),
+      message: form.message.value.trim(),
+    };
+
+    try {
+      const response = await fetch(`${API_BASE}/api/contact`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData),
+      });
+
+      if (response.ok) {
+        showToast('Message sent successfully!', 'success');
+        form.reset();
+        form.classList.remove('was-validated');
+      } else {
+        showToast('Failed to send message. Please try again.', 'error');
+      }
+    } catch (error) {
+      showToast('An error occurred. Please try again.', 'error');
+    } finally {
+      submitBtn.disabled = false;
+      submitBtn.textContent = 'Send';
+    }
+  });
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  initContactForm();
+});
 </script>
 </body>
 </html>
