@@ -2,7 +2,8 @@
 (function () {
     'use strict';
 
-    const BOOKING_STORAGE_KEY = 'currentBooking';
+    const BOOKING_STORAGE_KEY = 'booking';
+    // Note: Using sessionStorage for booking data to match existing fallbacks
     const API_BASE = "https://techyjaunt-auth-go43.onrender.com";
 
     const BookingManager = {
@@ -54,7 +55,7 @@
                     isMultiCar: false,
                     status: 'pending'
                 };
-                localStorage.setItem(BOOKING_STORAGE_KEY, JSON.stringify(booking));
+                sessionStorage.setItem(BOOKING_STORAGE_KEY, JSON.stringify(booking));
                 return booking;
             } catch (error) {
                 console.error('Error setting booking:', error);
@@ -66,7 +67,7 @@
         // Get current booking data
         getBooking: function () {
             try {
-                return JSON.parse(localStorage.getItem(BOOKING_STORAGE_KEY));
+                return JSON.parse(sessionStorage.getItem(BOOKING_STORAGE_KEY));
             } catch (error) {
                 console.error('Error getting booking:', error);
                 return null;
@@ -75,7 +76,7 @@
 
         // Clear booking data
         clearBooking: function () {
-            localStorage.removeItem(BOOKING_STORAGE_KEY);
+            sessionStorage.removeItem(BOOKING_STORAGE_KEY);
         },
 
         // Get user ID from localStorage
