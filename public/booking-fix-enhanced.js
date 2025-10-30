@@ -199,6 +199,10 @@
                 this.showError(validation.errors[0]);
                 return { success: false, error: validation.errors[0] };
             }
+            if (!booking.car || !booking.car._id) {
+                this.showError('Car data is missing or invalid');
+                return { success: false, error: 'Car data is missing or invalid' };
+            }
             const token = localStorage.getItem('token') || localStorage.getItem('authToken') || localStorage.getItem('userToken');
             if (!token) {
                 this.showError('Please login first');
