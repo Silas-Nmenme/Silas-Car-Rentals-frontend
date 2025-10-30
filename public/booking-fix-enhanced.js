@@ -67,7 +67,12 @@
         // Get current booking data
         getBooking: function () {
             try {
-                return JSON.parse(sessionStorage.getItem(BOOKING_STORAGE_KEY));
+                const booking = JSON.parse(sessionStorage.getItem(BOOKING_STORAGE_KEY));
+                if (booking && booking.car && !booking.car._id) {
+                    booking.car = this.enhanceCarData(booking.car);
+                    sessionStorage.setItem(BOOKING_STORAGE_KEY, JSON.stringify(booking));
+                }
+                return booking;
             } catch (error) {
                 console.error('Error getting booking:', error);
                 return null;
