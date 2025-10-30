@@ -858,6 +858,12 @@ async function initiatePayment(){
   const booking = getBookingSafe();
   if (!booking) { showToast("No booking found.",3000,"#f44336"); return; }
 
+  // Validate car data
+  if (!booking.car || !booking.car._id) {
+    showToast("Car data is missing or invalid. Please re-book the car.", 3000, "#f44336");
+    return;
+  }
+
   // Validate minimal fields
   if (!booking.pickupDate || !booking.returnDate) {
     showToast("Please select pickup and return dates.", 3000, "#f44336");
