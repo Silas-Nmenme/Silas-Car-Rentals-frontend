@@ -23,7 +23,7 @@
                 }
 
                 // Single car booking
-                if (!bookingData.car || !bookingData.car._id) {
+                if (!bookingData.car || (!bookingData.car._id && !bookingData.car.id)) {
                     this.showError('Car data is required for booking');
                     return null;
                 }
@@ -96,7 +96,7 @@
         enhanceCarData: function (car) {
             if (!car) return null;
             return {
-                _id: car._id,
+                _id: car._id || car.id,
                 make: car.make || 'Unknown',
                 model: car.model || 'Unknown',
                 year: car.year || new Date().getFullYear(),
@@ -135,7 +135,7 @@
                     errors.push('Invalid car data in selection');
                 }
             } else {
-                if (!booking.car || !booking.car._id) {
+                if (!booking.car || (!booking.car._id && !booking.car.id)) {
                     errors.push('Car selection is required');
                 }
             }
@@ -199,7 +199,7 @@
                 this.showError(validation.errors[0]);
                 return { success: false, error: validation.errors[0] };
             }
-            if (!booking.car || !booking.car._id) {
+            if (!booking.car || (!booking.car._id && !booking.car.id)) {
                 this.showError('Car data is missing or invalid');
                 return { success: false, error: 'Car data is missing or invalid' };
             }
@@ -209,7 +209,7 @@
                 return { success: false, error: 'Authentication required' };
             }
             try {
-                const carId = booking.car._id;
+                const carId = booking.car._id || booking.car.id;
                 const paymentData = {
                     email: booking.email,
                     phone_number: booking.phoneNumber,
