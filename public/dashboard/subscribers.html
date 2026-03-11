@@ -259,7 +259,8 @@ document.addEventListener('DOMContentLoaded', () => {
     return;
   }
   const user = JSON.parse(userData);
-  if (!user.isAdmin && user.role !== 'admin') {
+  // Check for admin role - matches dashboard.js logic
+  if (user.role !== 'admin') {
     showToast('Access denied. Admin privileges required.', 'error');
     setTimeout(() => window.location.href = '../home.html', 2000);
     return;
