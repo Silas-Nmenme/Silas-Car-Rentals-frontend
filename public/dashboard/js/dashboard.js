@@ -103,8 +103,10 @@ if (cartBtn) cartBtn.addEventListener('click', () => openModal('Cart', JSON.pars
 
 // Render Previews
 function renderPreview(id, storageKey) {
+  const el = document.getElementById(id);
+  if (!el) return;
   const data = JSON.parse(localStorage.getItem(storageKey)) || [];
-  document.getElementById(id).innerHTML = data.length
+  el.innerHTML = data.length
     ? data.slice(0, 3).map(car => `<div class="card"><h3>${car.name}</h3><p>₦${car.price.toLocaleString()}</p></div>`).join('')
     : `<p class="meta">No ${storageKey} yet.</p>`;
 }
@@ -112,10 +114,10 @@ function renderCounts() {
   const wishlistLen = (JSON.parse(localStorage.getItem('wishlist')) || []).length;
   const savedLen = (JSON.parse(localStorage.getItem('savedCars')) || []).length;
   const cartLen = (JSON.parse(localStorage.getItem('cart')) || []).length;
-  wishlistCountEl.textContent = wishlistLen;
-  savedCountEl.textContent = savedLen;
-  cartCountEl.textContent = cartLen;
-  cartCountStatEl.textContent = cartLen;
+  if (wishlistCountEl) wishlistCountEl.textContent = wishlistLen;
+  if (savedCountEl) savedCountEl.textContent = savedLen;
+  if (cartCountEl) cartCountEl.textContent = cartLen;
+  if (cartCountStatEl) cartCountStatEl.textContent = cartLen;
 }
 function renderAllPreviews() { renderCounts(); renderPreview('wishlist-grid', 'wishlist'); renderPreview('saved-cars-grid', 'savedCars'); }
 
@@ -126,11 +128,11 @@ async function fetchUserProfile() {
   if (storedUser && storedUser.name) {
     let fullName = storedUser.name;
     let firstName = fullName.split(" ")[0];
-    userNameEl.textContent = firstName;
+    if (userNameEl) userNameEl.textContent = firstName;
     if (storedUser.role === 'admin') {
-      adminBookingsSection.classList.remove('hidden');
-      adminUsersSection.classList.remove('hidden');
-      adminCarManagementSection.classList.remove('hidden');
+      if (adminBookingsSection) adminBookingsSection.classList.remove('hidden');
+      if (adminUsersSection) adminUsersSection.classList.remove('hidden');
+      if (adminCarManagementSection) adminCarManagementSection.classList.remove('hidden');
       loadAdminData();
       loadUsers();
       loadCars();
@@ -146,11 +148,11 @@ async function fetchUserProfile() {
     // Set first name only for welcome message
     let fullName = user.name || user.email;
     let firstName = fullName.split(" ")[0];
-    userNameEl.textContent = firstName;
+    if (userNameEl) userNameEl.textContent = firstName;
     if (user.role === 'admin' || user.isAdmin) {
-      adminBookingsSection.classList.remove('hidden');
-      adminUsersSection.classList.remove('hidden');
-      adminCarManagementSection.classList.remove('hidden');
+      if (adminBookingsSection) adminBookingsSection.classList.remove('hidden');
+      if (adminUsersSection) adminUsersSection.classList.remove('hidden');
+      if (adminCarManagementSection) adminCarManagementSection.classList.remove('hidden');
       loadAdminData();
       loadUsers();
       loadCars();
@@ -159,11 +161,11 @@ async function fetchUserProfile() {
     // Fallback for demo
     const mockUser = { name: 'Admin User', email: 'admin@example.com', role: 'admin' };
     let firstName = mockUser.name.split(" ")[0];
-    userNameEl.textContent = firstName;
+    if (userNameEl) userNameEl.textContent = firstName;
     if (mockUser.role === 'admin') {
-      adminBookingsSection.classList.remove('hidden');
-      adminUsersSection.classList.remove('hidden');
-      adminCarManagementSection.classList.remove('hidden');
+      if (adminBookingsSection) adminBookingsSection.classList.remove('hidden');
+      if (adminUsersSection) adminUsersSection.classList.remove('hidden');
+      if (adminCarManagementSection) adminCarManagementSection.classList.remove('hidden');
       loadAdminData();
       loadUsers();
       loadCars();
@@ -174,6 +176,7 @@ async function fetchUserProfile() {
 
 // Fetch Stats
 async function fetchUserStats() {
+  if (!totalRentalsEl) return;
   try {
     const res = await fetch(BASE_URL + ENDPOINTS.userStats, { headers: { Authorization: 'Bearer ' + token } });
     if (res.ok) {
@@ -204,6 +207,7 @@ async function fetchUserStats() {
 
 // Rental History
 async function fetchRentalHistory() {
+  if (!rentalsTableBody) return;
   try {
     const res = await fetch(BASE_URL + ENDPOINTS.rentalHistory, { headers: { Authorization: 'Bearer ' + token } });
     const rentals = await res.json();
@@ -215,6 +219,12 @@ async function fetchRentalHistory() {
 
 // Admin Data
 async function loadAdminData() {
+  const adminTotalUsersEl = document.getElementById('admin-total-users');
+  const adminTotalCarsEl = document.getElementById('admin-total-cars');
+  const adminTotalRevenueEl = document.getElementById('admin-total-revenue');
+  
+  if (!adminTotalUsersEl && !adminTotalCarsEl && !adminTotalRevenueEl && !bookingsTableBody) return;
+  
   // Fetch users for total count
   try {
     const usersRes = await fetch(BASE_URL + ENDPOINTS.users, { headers: { Authorization: 'Bearer ' + token } });
@@ -222,10 +232,10 @@ async function loadAdminData() {
     const usersData = await usersRes.json();
     console.log('Users data:', usersData);
     const users = Array.isArray(usersData) ? usersData : usersData.users || [];
-    document.getElementById('admin-total-users').textContent = users.length || 0;
+    if (adminTotalUsersEl) adminTotalUsersEl.textContent = users.length || 0;
   } catch (error) {
     console.error('Error loading users:', error);
-    document.getElementById('admin-total-users').textContent = '0';
+    if (adminTotalUsersEl) adminTotalUsersEl.textContent = '0';
   }
 
   // Fetch cars for total count
@@ -235,10 +245,10 @@ async function loadAdminData() {
     const carsData = await carsRes.json();
     console.log('Cars data:', carsData);
     const cars = Array.isArray(carsData) ? carsData : carsData.cars || [];
-    document.getElementById('admin-total-cars').textContent = cars.length || 0;
+    if (adminTotalCarsEl) adminTotalCarsEl.textContent = cars.length || 0;
   } catch (error) {
     console.error('Error loading cars:', error);
-    document.getElementById('admin-total-cars').textContent = '0';
+    if (adminTotalCarsEl) adminTotalCarsEl.textContent = '0';
   }
 
   // Fetch analytics for revenue, fallback to calculate from bookings
@@ -247,7 +257,7 @@ async function loadAdminData() {
     if (analyticsRes.ok) {
       const analytics = await analyticsRes.json();
       console.log('Admin analytics data:', analytics);
-      document.getElementById('admin-total-revenue').textContent = `₦${(analytics.totalRevenue || 0).toLocaleString()}`;
+      if (adminTotalRevenueEl) adminTotalRevenueEl.textContent = `₦${(analytics.totalRevenue || 0).toLocaleString()}`;
     } else {
       throw new Error('Analytics endpoint failed');
     }
@@ -259,17 +269,18 @@ async function loadAdminData() {
       if (bookingsRes.ok) {
         const bookings = await bookingsRes.json();
         const totalRevenue = bookings.reduce((sum, b) => sum + (b.price || 0), 0);
-        document.getElementById('admin-total-revenue').textContent = `₦${totalRevenue.toLocaleString()}`;
+        if (adminTotalRevenueEl) adminTotalRevenueEl.textContent = `₦${totalRevenue.toLocaleString()}`;
       } else {
-        document.getElementById('admin-total-revenue').textContent = '₦0';
+        if (adminTotalRevenueEl) adminTotalRevenueEl.textContent = '₦0';
       }
     } catch (bookingsError) {
       console.error('Error calculating revenue from bookings:', bookingsError);
-      document.getElementById('admin-total-revenue').textContent = '₦0';
+      if (adminTotalRevenueEl) adminTotalRevenueEl.textContent = '₦0';
     }
   }
 
   // Bookings
+  if (!bookingsTableBody) return;
   try {
     const bookingsRes = await fetch(BASE_URL + '/api/bookings', { headers: { Authorization: 'Bearer ' + token } });
     if (!bookingsRes.ok) throw new Error('Failed to fetch bookings');
@@ -305,6 +316,7 @@ window.updateBookingStatus = async function(id, status) {
 
 // Load Users for Admin
 async function loadUsers() {
+  if (!usersTableBody) return;
   usersTableBody.innerHTML = `<tr><td colspan="10" class="text-center">Loading...</td></tr>`;
   try {
     const res = await fetch(BASE_URL + ENDPOINTS.users, { headers: { Authorization: 'Bearer ' + token } });
@@ -341,6 +353,7 @@ async function loadUsers() {
 
 // Load Cars for Admin
 async function loadCars() {
+  if (!carsTableBody) return;
   carsTableBody.innerHTML = `<tr><td colspan="8" class="text-center">Loading...</td></tr>`;
   try {
     const res = await fetch(BASE_URL + ENDPOINTS.getCars, { headers: { Authorization: 'Bearer ' + token } });
@@ -349,10 +362,10 @@ async function loadCars() {
     const cars = Array.isArray(data) ? data : data.cars || data.car || [];
     const carsListContainer = document.getElementById('cars-list-container');
     if (cars.length === 0) {
-      carsListContainer.style.display = '';
+      if (carsListContainer) carsListContainer.style.display = '';
       carsTableBody.innerHTML = `<tr><td colspan="8" class="text-center">No cars found</td></tr>`;
     } else {
-      carsListContainer.style.display = '';
+      if (carsListContainer) carsListContainer.style.display = '';
       carsTableBody.innerHTML = cars.map(car => `
         <tr>
           <td><input type="radio" name="car-select" value="${car._id}"></td>
@@ -406,7 +419,7 @@ window.deleteCar = async function(carId) {
 };
 
 // Search Cars
-if (carSearchInput) {
+if (carSearchInput && carsTableBody) {
 carSearchInput.addEventListener('input', debounce(async (e) => {
   const query = e.target.value.trim();
   if (!query) {
