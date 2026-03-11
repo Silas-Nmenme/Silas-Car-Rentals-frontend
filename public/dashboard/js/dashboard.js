@@ -87,7 +87,7 @@ function openModal(title, items, type) {
   modalOverlay.style.display = 'flex';
 }
 function closeModal() { modalOverlay.style.display = 'none'; }
-modalOverlay.addEventListener('click', e => { if (e.target === modalOverlay) closeModal(); });
+if (modalOverlay) modalOverlay.addEventListener('click', e => { if (e.target === modalOverlay) closeModal(); });
 document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
 
 // Wishlist/Saved/Carts click - Only add listeners if elements exist
@@ -406,6 +406,7 @@ window.deleteCar = async function(carId) {
 };
 
 // Search Cars
+if (carSearchInput) {
 carSearchInput.addEventListener('input', debounce(async (e) => {
   const query = e.target.value.trim();
   if (!query) {
@@ -447,8 +448,10 @@ carSearchInput.addEventListener('input', debounce(async (e) => {
     showToast('Failed to search cars', 'error');
   }
 }, 300));
+}
 
 // Handle form for add car
+if (addCarForm) {
 addCarForm.addEventListener('submit', async (e) => {
   e.preventDefault();
   console.log('Form submitted'); // Debug log
@@ -487,6 +490,7 @@ addCarForm.addEventListener('submit', async (e) => {
     showToast('Failed to save car', 'error');
   }
 });
+}
 
 // Global functions for modal buttons
 window.rentNow = function(car) {
