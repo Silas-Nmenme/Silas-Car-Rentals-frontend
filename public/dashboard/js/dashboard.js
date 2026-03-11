@@ -48,6 +48,9 @@ if (!token) {
   setTimeout(() => window.location.href = 'login.html', 1500);
 }
 
+// Global user state - tracks if current user is admin
+let currentUserIsAdmin = false;
+
 // Elements
 const userNameEl = document.getElementById('dash-username');
 const totalRentalsEl = document.getElementById('total-rentals');
@@ -130,6 +133,7 @@ async function fetchUserProfile() {
     let firstName = fullName.split(" ")[0];
     if (userNameEl) userNameEl.textContent = firstName;
     if (storedUser.role === 'admin') {
+      currentUserIsAdmin = true; // Set admin flag
       if (adminBookingsSection) adminBookingsSection.classList.remove('hidden');
       if (adminUsersSection) adminUsersSection.classList.remove('hidden');
       if (adminCarManagementSection) adminCarManagementSection.classList.remove('hidden');
@@ -150,6 +154,7 @@ async function fetchUserProfile() {
     let firstName = fullName.split(" ")[0];
     if (userNameEl) userNameEl.textContent = firstName;
     if (user.role === 'admin' || user.isAdmin) {
+      currentUserIsAdmin = true; // Set admin flag
       if (adminBookingsSection) adminBookingsSection.classList.remove('hidden');
       if (adminUsersSection) adminUsersSection.classList.remove('hidden');
       if (adminCarManagementSection) adminCarManagementSection.classList.remove('hidden');
@@ -163,6 +168,7 @@ async function fetchUserProfile() {
     let firstName = mockUser.name.split(" ")[0];
     if (userNameEl) userNameEl.textContent = firstName;
     if (mockUser.role === 'admin') {
+      currentUserIsAdmin = true; // Set admin flag
       if (adminBookingsSection) adminBookingsSection.classList.remove('hidden');
       if (adminUsersSection) adminUsersSection.classList.remove('hidden');
       if (adminCarManagementSection) adminCarManagementSection.classList.remove('hidden');
@@ -308,7 +314,15 @@ async function loadAdminData() {
   }
 
   // Load bookings table (separate as it requires full booking details for the table)
+  // Only load bookings for admins - non-admins shouldn't see or manage bookings
   if (!bookingsTableBody) return;
+  
+  // Only admins can view and manage bookings
+  if (!currentUserIsAdmin) {
+    bookingsTableBody.innerHTML = `<tr><td colspan="6" class="meta">You do not have permission to view bookings</td></tr>`;
+    return;
+  }
+  
   try {
     const bookingsRes = await fetch(BASE_URL + '/api/bookings', { headers: { Authorization: 'Bearer ' + token } });
     if (!bookingsRes.ok) throw new Error('Failed to fetch bookings');
@@ -325,6 +339,12 @@ async function loadAdminData() {
 }
 
 window.updateBookingStatus = async function(id, status) {
+  // Frontend security check - only allow admins to update booking status
+  if (!currentUserIsAdmin) {
+    showToast('You do not have permission to update bookings', 'error');
+    return;
+  }
+  
   if (!confirm(`Mark booking as ${status}?`)) return;
   try {
     const res = await fetch(BASE_URL + `/api/bookings/${id}`, {
