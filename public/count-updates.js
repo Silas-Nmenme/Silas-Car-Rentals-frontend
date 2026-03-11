@@ -1,5 +1,5 @@
 // Unified count updates for cart, wishlist, and saved across all pages with backend syncing
-const API_BASE = "https://techyjaunt-auth-go43.onrender.com";
+const API_BASE = "https://carrerntal.vercel.app";
 
 function getStorage(key) {
   return JSON.parse(localStorage.getItem(key)) || [];

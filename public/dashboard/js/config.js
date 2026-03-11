@@ -1,5 +1,5 @@
 // Dashboard Configuration
-export const BASE_URL = "https://techyjaunt-auth-go43.onrender.com";
+export const BASE_URL = "https://carrerntal.vercel.app";
 export const ENDPOINTS = {
   authMe: "/api/auth/me",
   userStats: "/api/users/stats",

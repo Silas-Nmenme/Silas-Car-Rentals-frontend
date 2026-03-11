@@ -1,5 +1,5 @@
 // app.js - Fixed version with theme toggle
-const API_BASE = "https://techyjaunt-auth-go43.onrender.com";
+const API_BASE = "https://carrerntal.vercel.app";
 
 // Shortcuts
 const qs = (s) => document.querySelector(s);

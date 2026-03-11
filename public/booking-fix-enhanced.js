@@ -4,7 +4,7 @@
 
     const BOOKING_STORAGE_KEY = 'booking';
     // Note: Using sessionStorage for booking data to match existing fallbacks
-    const API_BASE = "https://techyjaunt-auth-go43.onrender.com";
+    const API_BASE = "https://carrerntal.vercel.app";
 
     const BookingManager = {
         // Create or update booking data

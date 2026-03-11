@@ -1,5 +1,5 @@
 // Inlined config
-const BASE_URL = "https://techyjaunt-auth-go43.onrender.com";
+const BASE_URL = "https://carrerntal.vercel.app";
 const ENDPOINTS = {
   authMe: "/api/auth/me",
   userStats: "/api/users/stats",

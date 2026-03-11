@@ -2,7 +2,7 @@
 (function() {
     'use strict';
     
-    const API_BASE = "https://techyjaunt-auth-go43.onrender.com";
+    const API_BASE = "https://carrerntal.vercel.app";
     const PAYMENT_METHODS = {
         CARD: 'card',
         BANK_TRANSFER: 'bank_transfer',
