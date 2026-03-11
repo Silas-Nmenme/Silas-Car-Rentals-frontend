@@ -62,6 +62,9 @@ async function updateCounts() {
     saved: getStorage("savedCars").length
   };
 
+  // Default placeholder image
+  const placeholderImage = 'https://via.placeholder.com/300x200?text=No+Image';
+
   // If user is logged in, try to fetch counts from backend
   if (user && user.token) {
     const backendCounts = await fetchUserCounts();
@@ -73,10 +76,34 @@ async function updateCounts() {
         saved: backendCounts.saved || counts.saved
       };
 
-      // Update localStorage with backend data
-      if (backendCounts.cart !== undefined) setStorage("cart", backendCounts.cartItems || []);
-      if (backendCounts.wishlist !== undefined) setStorage("wishlist", backendCounts.wishlistItems || []);
-      if (backendCounts.saved !== undefined) setStorage("savedCars", backendCounts.savedItems || []);
+      // Update localStorage with backend data, ensuring images are present
+      if (backendCounts.cartItems) {
+        const enhancedCartItems = backendCounts.cartItems.map(item => ({
+          ...item,
+          image: (item.image && item.image.trim() !== '' && item.image !== 'null' && item.image !== 'undefined') 
+            ? item.image 
+            : placeholderImage
+        }));
+        setStorage("cart", enhancedCartItems);
+      }
+      if (backendCounts.wishlistItems) {
+        const enhancedWishlistItems = backendCounts.wishlistItems.map(item => ({
+          ...item,
+          image: (item.image && item.image.trim() !== '' && item.image !== 'null' && item.image !== 'undefined') 
+            ? item.image 
+            : placeholderImage
+        }));
+        setStorage("wishlist", enhancedWishlistItems);
+      }
+      if (backendCounts.savedItems) {
+        const enhancedSavedItems = backendCounts.savedItems.map(item => ({
+          ...item,
+          image: (item.image && item.image.trim() !== '' && item.image !== 'null' && item.image !== 'undefined') 
+            ? item.image 
+            : placeholderImage
+        }));
+        setStorage("savedCars", enhancedSavedItems);
+      }
     }
   }
 

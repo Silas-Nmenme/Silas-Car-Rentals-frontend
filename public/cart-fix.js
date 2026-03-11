@@ -158,8 +158,9 @@
                 if (element) element.textContent = count;
             });
             
-            // If we're on cart page, refresh the display
-            if (window.location.pathname.includes('cart.html')) {
+            // If we're on cart page (check for cart-items container), refresh the display
+            const cartItemsContainer = document.getElementById('cart-items');
+            if (cartItemsContainer) {
                 this.renderCartPage();
                 this.updateCartSummary();
             }
@@ -168,6 +169,9 @@
         renderCartPage: function() {
             const cart = this.getItems();
             const container = document.getElementById('cart-items');
+            
+            // Placeholder image as fallback
+            const placeholderImage = 'https://via.placeholder.com/300x200?text=No+Image';
 
             if (!container) return;
 
@@ -183,29 +187,36 @@
                 return;
             }
 
-            container.innerHTML = cart.map((car, index) => `
-                <div class="cart-item d-flex flex-column flex-md-row gap-4">
-                    <div class="cart-item-img-container" style="flex: 0 0 200px;">
-                        <img src="${car.image}" alt="${car.make} ${car.model}" class="cart-item-img">
-                    </div>
-                    <div class="cart-item-details flex-grow-1">
-                        <h3 class="cart-item-title">${car.make} ${car.model}</h3>
-                        <p class="text-muted">${car.year} • ${car.color}</p>
-                        <p class="cart-item-price">₦${car.price.toLocaleString()}/day</p>
-                        <p class="text-muted" style="margin: 0.5rem 0;">
-                            ${car.description}
-                        </p>
-                        <div class="d-flex gap-2 flex-wrap mt-3">
-                            <button class="btn btn-primary" onclick="window.handleBookNow('${car._id}')" title="Book this car">
-                                Book Now
-                            </button>
-                            <button class="btn btn-outline" onclick="CartManager.remove('${car._id}')" title="Remove this car from cart">
-                                Remove
-                            </button>
+            container.innerHTML = cart.map((car, index) => {
+                // Ensure image exists and is valid
+                const carImage = (car.image && car.image.trim() !== '' && car.image !== 'null' && car.image !== 'undefined') 
+                    ? car.image 
+                    : placeholderImage;
+                
+                return `
+                    <div class="cart-item d-flex flex-column flex-md-row gap-4">
+                        <div class="cart-item-img-container" style="flex: 0 0 200px;">
+                            <img src="${carImage}" alt="${car.make || 'Unknown'} ${car.model || 'Unknown'}" class="cart-item-img" onerror="this.src='${placeholderImage}'">
+                        </div>
+                        <div class="cart-item-details flex-grow-1">
+                            <h3 class="cart-item-title">${car.make || 'Unknown'} ${car.model || 'Unknown'}</h3>
+                            <p class="text-muted">${car.year || new Date().getFullYear()} • ${car.color || 'Black'}</p>
+                            <p class="cart-item-price">₦${(car.price || 0).toLocaleString()}/day</p>
+                            <p class="text-muted" style="margin: 0.5rem 0;">
+                                ${car.description || 'No description available'}
+                            </p>
+                            <div class="d-flex gap-2 flex-wrap mt-3">
+                                <button class="btn btn-primary" onclick="window.handleBookNow('${car._id}')" title="Book this car">
+                                    Book Now
+                                </button>
+                                <button class="btn btn-outline" onclick="CartManager.remove('${car._id}')" title="Remove this car from cart">
+                                    Remove
+                                </button>
+                            </div>
                         </div>
                     </div>
-                </div>
-            `).join('');
+                `;
+            }).join('');
         },
         
         updateCartSummary: function() {
