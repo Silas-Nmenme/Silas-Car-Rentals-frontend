@@ -829,7 +829,8 @@
         email: email,
         token: data.token,
         name: data.name || "",
-        role: data.role || "user"
+        role: data.role || "user",
+        isAdmin: data.isAdmin || false
       };
 
       localStorage.setItem("user", JSON.stringify(userObj));
@@ -858,7 +859,8 @@
         email: user.email,
         token: token,
         name: user.name || "",
-        role: user.role || "user"
+        role: user.role || "user",
+        isAdmin: user.isAdmin || false
       };
       localStorage.setItem("user", JSON.stringify(userObj));
       localStorage.setItem("token", token);
@@ -886,7 +888,8 @@
             email: data.user.email,
             token: data.token,
             name: data.user.name || "",
-            role: data.user.role || "user"
+            role: data.user.role || "user",
+            isAdmin: data.user.isAdmin || false
           };
           localStorage.setItem("user", JSON.stringify(userObj));
           localStorage.setItem("token", data.token);

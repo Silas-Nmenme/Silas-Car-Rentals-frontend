@@ -1,7 +1,7 @@
 // Google OAuth Configuration and Handler
 class GoogleAuthHandler {
   constructor() {
-    this.baseUrl = window.APP_CONFIG?.API_BASE_URL || 'https://techyjaunt-auth-go43.onrender.com';
+    this.baseUrl = window.APP_CONFIG?.API_BASE_URL || 'https://carrerntal.vercel.app';
     this.clientId = window.APP_CONFIG?.GOOGLE_CLIENT_ID || '293889215515-658eba7e610fm5hfoetknip83lf2re1s.apps.googleusercontent.com';
     this.redirectUri = window.APP_CONFIG?.getRedirectUri() || `${window.location.origin}/google-callback.html`;
     this.init();
@@ -172,6 +172,7 @@ class GoogleAuthHandler {
         email: data.user.email,
         name: data.user.name || '',
         role: data.user.role || 'user',
+        isAdmin: data.user.isAdmin || false,
         token: data.token
       };
 
