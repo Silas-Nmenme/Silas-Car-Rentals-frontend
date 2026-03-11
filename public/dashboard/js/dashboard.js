@@ -177,44 +177,70 @@ async function fetchUserProfile() {
 // Fetch Stats
 async function fetchUserStats() {
   if (!totalRentalsEl) return;
+  
+  // First try localStorage for rental count
+  const rentals = JSON.parse(localStorage.getItem('rentals')) || [];
+  const recentRentals = JSON.parse(localStorage.getItem('recentRentals')) || [];
+  const localRentalCount = rentals.length || recentRentals.length;
+  
+  if (localRentalCount > 0) {
+    totalRentalsEl.textContent = localRentalCount;
+    return;
+  }
+  
+  // Try API endpoint as fallback
   try {
     const res = await fetch(BASE_URL + ENDPOINTS.userStats, { headers: { Authorization: 'Bearer ' + token } });
     if (res.ok) {
       const stats = await res.json();
       totalRentalsEl.textContent = stats.totalRentals ?? 0;
     } else {
-      throw new Error('Stats endpoint failed');
+      // API not available, use local data
+      totalRentalsEl.textContent = '0';
     }
   } catch (error) {
-    console.error('Error loading user stats:', error);
-    // Fallback: count from rental history
-    try {
-      const res = await fetch(BASE_URL + ENDPOINTS.rentalHistory, { headers: { Authorization: 'Bearer ' + token } });
-      if (res.ok) {
-        const rentals = await res.json();
-        totalRentalsEl.textContent = rentals.length || 0;
-      } else {
-        totalRentalsEl.textContent = '0';
-        showToast('Failed to load stats', 'error');
-      }
-    } catch (fallbackError) {
-      console.error('Error loading rental history for count:', fallbackError);
-      totalRentalsEl.textContent = '0';
-      showToast('Failed to load stats', 'error');
-    }
+    console.log('Using local stats:', error.message);
+    totalRentalsEl.textContent = '0';
   }
 }
 
 // Rental History
 async function fetchRentalHistory() {
   if (!rentalsTableBody) return;
+  
+  // First try localStorage for rental history
+  const localRentals = JSON.parse(localStorage.getItem('rentals')) || [];
+  const recentRentals = JSON.parse(localStorage.getItem('recentRentals')) || [];
+  
+  if (localRentals.length > 0 || recentRentals.length > 0) {
+    const allRentals = [...localRentals, ...recentRentals].map(r => ({
+      carName: r.carName || r.name || 'Unknown Car',
+      startDate: r.startDate || r.date || new Date().toISOString(),
+      endDate: r.endDate || r.date || new Date().toISOString(),
+      price: r.price || 0,
+      status: r.status || 'Completed'
+    }));
+    rentalsTableBody.innerHTML = allRentals.length
+      ? allRentals.map(r => `<tr><td>${r.carName}</td><td>${new Date(r.startDate).toLocaleDateString()}</td><td>${new Date(r.endDate).toLocaleDateString()}</td><td>₦${r.price.toLocaleString()}</td><td>${r.status}</td></tr>`).join('')
+      : `<tr><td colspan="5" class="meta">No rentals found</td></tr>`;
+    return;
+  }
+  
+  // Try API endpoint as fallback
   try {
     const res = await fetch(BASE_URL + ENDPOINTS.rentalHistory, { headers: { Authorization: 'Bearer ' + token } });
-    const rentals = await res.json();
-    rentalsTableBody.innerHTML = rentals.length
-      ? rentals.map(r => `<tr><td>${r.carName}</td><td>${new Date(r.startDate).toLocaleDateString()}</td><td>${new Date(r.endDate).toLocaleDateString()}</td><td>₦${r.price.toLocaleString()}</td><td>${r.status}</td></tr>`).join('')
-      : `<tr><td colspan="5" class="meta">No rentals found</td></tr>`;
-  } catch { rentalsTableBody.innerHTML = `<tr><td colspan="5" class="meta">Error loading rentals</td></tr>`; }
+    if (res.ok) {
+      const rentals = await res.json();
+      rentalsTableBody.innerHTML = rentals.length
+        ? rentals.map(r => `<tr><td>${r.carName}</td><td>${new Date(r.startDate).toLocaleDateString()}</td><td>${new Date(r.endDate).toLocaleDateString()}</td><td>₦${r.price.toLocaleString()}</td><td>${r.status}</td></tr>`).join('')
+        : `<tr><td colspan="5" class="meta">No rentals found</td></tr>`;
+    } else {
+      rentalsTableBody.innerHTML = `<tr><td colspan="5" class="meta">No rentals found</td></tr>`;
+    }
+  } catch (error) {
+    console.log('Using local rental history:', error.message);
+    rentalsTableBody.innerHTML = `<tr><td colspan="5" class="meta">No rentals found</td></tr>`;
+  }
 }
 
 // Admin Data

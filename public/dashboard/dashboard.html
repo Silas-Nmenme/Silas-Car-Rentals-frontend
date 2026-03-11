@@ -312,17 +312,24 @@
       }
     }
 
-    // Sidebar toggle for mobile
+    // Sidebar toggle for mobile - using Bootstrap Offcanvas
     document.getElementById('sidebar-toggle').addEventListener('click', function() {
-      const sidebar = document.getElementById('sidebar');
-      sidebar.classList.toggle('show');
+      const sidebarMenu = document.getElementById('sidebarMenu');
+      if (sidebarMenu) {
+        const bsOffcanvas = new bootstrap.Offcanvas(sidebarMenu);
+        bsOffcanvas.toggle();
+      }
     });
     // Close sidebar when clicking outside on mobile
     document.addEventListener('click', function(event) {
-      const sidebar = document.getElementById('sidebar');
+      const sidebarMenu = document.getElementById('sidebarMenu');
+      const sidebarDesktop = document.querySelector('.sidebar');
       const toggle = document.getElementById('sidebar-toggle');
-      if (!sidebar.contains(event.target) && !toggle.contains(event.target) && window.innerWidth <= 768) {
-        sidebar.classList.remove('show');
+      if (window.innerWidth <= 768) {
+        if (sidebarMenu && !sidebarMenu.contains(event.target) && !toggle.contains(event.target)) {
+          const bsOffcanvas = bootstrap.Offcanvas.getInstance(sidebarMenu);
+          if (bsOffcanvas) bsOffcanvas.hide();
+        }
       }
     });
     // Initialize
