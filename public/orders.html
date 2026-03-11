@@ -1,0 +1,1103 @@
+<!doctype html>
+<html lang="en" data-bs-theme="light">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>My Orders - Silas Car Rentals</title>
+
+  <!-- Bootstrap 5.3.2 -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Font Awesome -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"/>
+  <!-- Animate.css -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" rel="stylesheet"/>
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="header.css">
+  <style>
+    :root {
+      /* Light Theme Variables */
+      --light-primary: #0d9488;
+      --light-primary-700: #0f766e;
+      --light-text: #374151;
+      --light-muted: #6b7280;
+      --light-border: #e5e7eb;
+      --light-shadow: 0 4px 20px rgba(0,0,0,0.08);
+      --light-bg: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+      --light-card-bg: #ffffff;
+      --light-accent: #f59e0b;
+
+      /* Dark Theme Variables */
+      --dark-primary: #14b8a6;
+      --dark-primary-700: #0d9488;
+      --dark-text: #e5e7eb;
+      --dark-muted: #9ca3af;
+      --dark-border: #374151;
+      --dark-shadow: 0 4px 20px rgba(0,0,0,0.3);
+      --dark-bg: linear-gradient(135deg, #111827 0%, #1f2937 100%);
+      --dark-card-bg: #1f2937;
+      --dark-accent: #fbbf24;
+
+      /* Common Variables */
+      --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    body[data-bs-theme="light"] {
+      background: var(--light-bg);
+      min-height: 100vh;
+      transition: var(--transition);
+      color: var(--light-text);
+    }
+
+    body[data-bs-theme="dark"] {
+      background: var(--dark-bg);
+      min-height: 100vh;
+      transition: var(--transition);
+      color: var(--dark-text);
+    }
+
+    /* Header Styles */
+    .main-header {
+      background: linear-gradient(135deg, var(--light-primary) 0%, var(--light-primary-700) 100%);
+      padding: 1rem 0;
+      box-shadow: var(--light-shadow);
+      border-bottom: 3px solid rgba(13, 148, 136, 0.2);
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 1000;
+      transition: var(--transition);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+    }
+
+    body[data-bs-theme="dark"] .main-header {
+      background: linear-gradient(135deg, var(--dark-primary) 0%, var(--dark-primary-700) 100%);
+      box-shadow: var(--dark-shadow);
+      border-bottom: 3px solid rgba(20, 184, 166, 0.3);
+    }
+
+    .brand {
+      color: white;
+      text-decoration: none;
+      font-weight: 700;
+      font-size: 1.5rem;
+    }
+
+    .nav-link {
+      color: rgba(255,255,255,0.9) !important;
+      font-weight: 600;
+      transition: var(--transition);
+      padding: 0.5rem 1rem !important;
+      border-radius: 6px;
+    }
+
+    .nav-link:hover,
+    .nav-link.active {
+      color: white !important;
+      background: rgba(255,255,255,0.1);
+    }
+
+    /* Theme Toggle */
+    .theme-toggle {
+      background: rgba(255,255,255,0.1);
+      border: 2px solid rgba(255,255,255,0.2);
+      color: white;
+      padding: 0.5rem;
+      border-radius: 50%;
+      cursor: pointer;
+      transition: var(--transition);
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .theme-toggle:hover {
+      transform: scale(1.1) rotate(180deg);
+    }
+
+    /* Cards */
+    .card {
+      background: var(--light-card-bg);
+      border: 1px solid var(--light-border);
+      box-shadow: var(--light-shadow);
+      transition: var(--transition);
+    }
+
+    body[data-bs-theme="dark"] .card {
+      background: var(--dark-card-bg);
+      border-color: var(--dark-border);
+      box-shadow: var(--dark-shadow);
+    }
+
+    .card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    }
+
+    body[data-bs-theme="dark"] .card:hover {
+      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    }
+
+    /* Stats Cards */
+    .stat-card {
+      background: linear-gradient(135deg, var(--light-primary) 0%, var(--light-primary-700) 100%);
+      color: white;
+      border-radius: 12px;
+      padding: 1.5rem;
+      text-align: center;
+      transition: var(--transition);
+    }
+
+    body[data-bs-theme="dark"] .stat-card {
+      background: linear-gradient(135deg, var(--dark-primary) 0%, var(--dark-primary-700) 100%);
+    }
+
+    .stat-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 25px rgba(13, 148, 136, 0.3);
+    }
+
+    body[data-bs-theme="dark"] .stat-card:hover {
+      box-shadow: 0 10px 25px rgba(20, 184, 166, 0.3);
+    }
+
+    .stat-card h3 {
+      font-size: 2.5rem;
+      font-weight: 700;
+      margin: 0;
+    }
+
+    .stat-card p {
+      margin: 0;
+      opacity: 0.9;
+      font-size: 0.9rem;
+    }
+
+    /* Buttons */
+    .btn-success {
+      background: linear-gradient(135deg, var(--light-primary) 0%, var(--light-primary-700) 100%);
+      border: none;
+    }
+
+    body[data-bs-theme="dark"] .btn-success {
+      background: linear-gradient(135deg, var(--dark-primary) 0%, var(--dark-primary-700) 100%);
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--light-primary) 0%, var(--light-primary-700) 100%);
+      border: none;
+    }
+
+    body[data-bs-theme="dark"] .btn-primary {
+      background: linear-gradient(135deg, var(--dark-primary) 0%, var(--dark-primary-700) 100%);
+    }
+
+    /* Status Badges */
+    .badge-pending {
+      background: #f59e0b;
+      color: white;
+    }
+
+    .badge-successful {
+      background: #10b981;
+      color: white;
+    }
+
+    .badge-failed {
+      background: #ef4444;
+      color: white;
+    }
+
+    .badge-active {
+      background: #3b82f6;
+      color: white;
+    }
+
+    /* Order Card */
+    .order-card {
+      background: var(--light-card-bg);
+      border: 1px solid var(--light-border);
+      border-radius: 12px;
+      padding: 1.25rem;
+      margin-bottom: 1rem;
+      transition: var(--transition);
+    }
+
+    body[data-bs-theme="dark"] .order-card {
+      background: var(--dark-card-bg);
+      border-color: var(--dark-border);
+    }
+
+    .order-card:hover {
+      box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+    }
+
+    body[data-bs-theme="dark"] .order-card:hover {
+      box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+    }
+
+    .order-car-image {
+      width: 120px;
+      height: 80px;
+      object-fit: cover;
+      border-radius: 8px;
+    }
+
+    /* Tabs */
+    .nav-tabs .nav-link {
+      color: var(--light-muted);
+      border: none;
+      border-bottom: 3px solid transparent;
+      padding: 1rem 1.5rem;
+      font-weight: 600;
+      transition: var(--transition);
+    }
+
+    body[data-bs-theme="dark"] .nav-tabs .nav-link {
+      color: var(--dark-muted);
+    }
+
+    .nav-tabs .nav-link:hover {
+      color: var(--light-primary);
+      border-color: transparent;
+    }
+
+    body[data-bs-theme="dark"] .nav-tabs .nav-link:hover {
+      color: var(--dark-primary);
+    }
+
+    .nav-tabs .nav-link.active {
+      color: var(--light-primary);
+      background: transparent;
+      border-bottom-color: var(--light-primary);
+    }
+
+    body[data-bs-theme="dark"] .nav-tabs .nav-link.active {
+      color: var(--dark-primary);
+      border-bottom-color: var(--dark-primary);
+    }
+
+    /* Empty State */
+    .empty-state {
+      text-align: center;
+      padding: 4rem 2rem;
+    }
+
+    .empty-state i {
+      font-size: 4rem;
+      color: var(--light-muted);
+      margin-bottom: 1rem;
+    }
+
+    body[data-bs-theme="dark"] .empty-state i {
+      color: var(--dark-muted);
+    }
+
+    /* Toast */
+    .toast-container {
+      position: fixed;
+      bottom: 1.5rem;
+      right: 1.5rem;
+      z-index: 9999;
+    }
+
+    /* Loading Spinner */
+    .spinner {
+      width: 40px;
+      height: 40px;
+      border: 4px solid var(--light-border);
+      border-top-color: var(--light-primary);
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+
+    body[data-bs-theme="dark"] .spinner {
+      border-color: var(--dark-border);
+      border-top-color: var(--dark-primary);
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    /* Footer */
+    footer {
+      background: var(--light-bg);
+      color: var(--light-text);
+      transition: var(--transition);
+      padding: 2rem 0;
+      margin-top: 3rem;
+    }
+
+    body[data-bs-theme="dark"] footer {
+      background: var(--dark-bg);
+      color: var(--dark-text);
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .order-car-image {
+        width: 80px;
+        height: 60px;
+      }
+      .stat-card h3 {
+        font-size: 1.75rem;
+      }
+    }
+  </style>
+</head>
+<body style="font-family:'Inter',sans-serif; min-height: 100vh; padding-top: 5rem;">
+
+<!-- Header -->
+<header class="main-header">
+  <nav class="navbar navbar-expand-lg">
+    <div class="container">
+      <a href="home.html" class="navbar-brand brand"><i class="fas fa-car me-2"></i>Silas Car Rentals</a>
+
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" title="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="home.html">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="perfect-cars.html">Cars</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="profile.html">Profile</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active" href="orders.html">Orders</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="contact.html">Contact</a>
+          </li>
+        </ul>
+
+        <div class="ms-auto d-flex align-items-center gap-3">
+          <a href="cart.html" class="btn btn-outline-light position-relative" aria-label="Cart">
+            <i class="fas fa-shopping-cart"></i>
+            <span id="cart-count" class="badge bg-success position-absolute top-0 start-100 translate-middle">0</span>
+          </a>
+          <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme">
+            <i class="fas fa-moon"></i>
+          </button>
+          <div class="dropdown">
+            <button class="btn btn-success dropdown-toggle d-flex align-items-center" data-bs-toggle="dropdown">
+              <div id="nav-avatar" class="rounded-circle me-2 d-flex align-items-center justify-content-center bg-white text-success fw-bold" style="width:32px; height:32px; font-size:0.9rem;"></div>
+              <span id="user-name">User</span>
+            </button>
+            <ul class="dropdown-menu dropdown-menu-end">
+              <li><a class="dropdown-item" href="profile.html"><i class="fas fa-user me-2"></i>Profile</a></li>
+              <li><a class="dropdown-item" href="orders.html"><i class="fas fa-box me-2"></i>My Orders</a></li>
+              <li><button class="dropdown-item text-danger" id="logout-button"><i class="fas fa-sign-out-alt me-2"></i>Logout</button></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </nav>
+</header>
+
+<div class="container py-4">
+  <!-- Page Header -->
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+      <h2 class="fw-bold mb-1"><i class="fas fa-shopping-bag me-2"></i>My Orders</h2>
+      <p class="text-muted mb-0">View and manage your rental orders</p>
+    </div>
+    <div>
+      <button class="btn btn-outline-success" id="refresh-btn">
+        <i class="fas fa-sync-alt me-2"></i>Refresh
+      </button>
+    </div>
+  </div>
+
+  <!-- Stats Cards -->
+  <div class="row g-3 mb-4" id="stats-section">
+    <div class="col-6 col-md-4 col-lg-2">
+      <div class="stat-card">
+        <h3 id="total-orders">0</h3>
+        <p>Total Orders</p>
+      </div>
+    </div>
+    <div class="col-6 col-md-4 col-lg-2">
+      <div class="stat-card" style="background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);">
+        <h3 id="pending-orders">0</h3>
+        <p>Pending</p>
+      </div>
+    </div>
+    <div class="col-6 col-md-4 col-lg-2">
+      <div class="stat-card" style="background: linear-gradient(135deg, #10b981 0%, #059669 100%);">
+        <h3 id="completed-orders">0</h3>
+        <p>Completed</p>
+      </div>
+    </div>
+    <div class="col-6 col-md-4 col-lg-2">
+      <div class="stat-card" style="background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);">
+        <h3 id="failed-orders">0</h3>
+        <p>Failed</p>
+      </div>
+    </div>
+    <div class="col-6 col-md-4 col-lg-2">
+      <div class="stat-card" style="background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);">
+        <h3 id="total-spent">₦0</h3>
+        <p>Total Spent</p>
+      </div>
+    </div>
+    <div class="col-6 col-md-4 col-lg-2">
+      <div class="stat-card" style="background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);">
+        <h3 id="active-rentals">0</h3>
+        <p>Active Rentals</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tabs -->
+  <ul class="nav nav-tabs mb-4" id="orderTabs" role="tablist">
+    <li class="nav-item" role="presentation">
+      <button class="nav-link active" id="all-orders-tab" data-bs-toggle="tab" data-bs-target="#all-orders" type="button" role="tab">
+        <i class="fas fa-list me-2"></i>All Orders
+      </button>
+    </li>
+    <li class="nav-item" role="presentation">
+      <button class="nav-link" id="active-rentals-tab" data-bs-toggle="tab" data-bs-target="#active-rentals" type="button" role="tab">
+        <i class="fas fa-car me-2"></i>Active Rentals
+      </button>
+    </li>
+    <li class="nav-item" role="presentation">
+      <button class="nav-link" id="order-history-tab" data-bs-toggle="tab" data-bs-target="#order-history" type="button" role="tab">
+        <i class="fas fa-history me-2"></i>Order History
+      </button>
+    </li>
+  </ul>
+
+  <!-- Tab Content -->
+  <div class="tab-content" id="orderTabsContent">
+    <!-- All Orders -->
+    <div class="tab-pane fade show active" id="all-orders" role="tabpanel">
+      <div id="all-orders-content">
+        <!-- Loading -->
+        <div class="text-center py-5" id="all-orders-loading">
+          <div class="spinner mx-auto mb-3"></div>
+          <p class="text-muted">Loading orders...</p>
+        </div>
+        <!-- Orders List -->
+        <div id="all-orders-list"></div>
+        <!-- Empty State -->
+        <div class="empty-state" id="all-orders-empty" style="display: none;">
+          <i class="fas fa-shopping-bag"></i>
+          <h4>No Orders Yet</h4>
+          <p class="text-muted">You haven't placed any orders yet.</p>
+          <a href="cars.html" class="btn btn-primary">Browse Cars</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Active Rentals -->
+    <div class="tab-pane fade" id="active-rentals" role="tabpanel">
+      <div id="active-rentals-content">
+        <!-- Loading -->
+        <div class="text-center py-5" id="active-rentals-loading">
+          <div class="spinner mx-auto mb-3"></div>
+          <p class="text-muted">Loading active rentals...</p>
+        </div>
+        <!-- Active Rentals List -->
+        <div id="active-rentals-list"></div>
+        <!-- Empty State -->
+        <div class="empty-state" id="active-rentals-empty" style="display: none;">
+          <i class="fas fa-car"></i>
+          <h4>No Active Rentals</h4>
+          <p class="text-muted">You don't have any active rentals at the moment.</p>
+          <a href="cars.html" class="btn btn-primary">Rent a Car</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Order History -->
+    <div class="tab-pane fade" id="order-history" role="tabpanel">
+      <div id="order-history-content">
+        <!-- Loading -->
+        <div class="text-center py-5" id="order-history-loading">
+          <div class="spinner mx-auto mb-3"></div>
+          <p class="text-muted">Loading order history...</p>
+        </div>
+        <!-- History List -->
+        <div id="order-history-list"></div>
+        <!-- Empty State -->
+        <div class="empty-state" id="order-history-empty" style="display: none;">
+          <i class="fas fa-history"></i>
+          <h4>No Order History</h4>
+          <p class="text-muted">Your completed orders will appear here.</p>
+          <a href="cars.html" class="btn btn-primary">Rent a Car</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Order Detail Modal -->
+<div class="modal fade" id="orderDetailModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="fas fa-shopping-bag me-2"></i>Order Details</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body" id="order-detail-content">
+        <!-- Order details will be populated here -->
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Toast Container -->
+<div class="toast-container">
+  <div class="toast" id="toast" role="alert" aria-live="assertive" aria-atomic="true">
+    <div class="toast-body"></div>
+  </div>
+</div>
+
+<!-- Footer -->
+<footer class="text-center">
+  <div class="container">
+    <p class="mb-0">&copy; 2026 Silas Car Rentals. All Rights Reserved.</p>
+  </div>
+</footer>
+
+<!-- JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+const API_BASE = "https://carrerntal.vercel.app";
+const token = localStorage.getItem("token");
+
+// Placeholder image
+const placeholderImage = "https://vehicle-images.dealerinspire.com/a1a7-11002896/W1KAF4GB4SR252999/00f2d6ad30e089cb5c02791d58c3af6a.jpg";
+
+// Toast function
+function showToast(message, type = "success") {
+  const toast = document.getElementById("toast");
+  toast.querySelector(".toast-body").textContent = message;
+  toast.className = `toast show bg-${type === "error" ? "danger" : "success"} text-white`;
+  new bootstrap.Toast(toast).show();
+  setTimeout(() => {
+    toast.classList.remove("show");
+  }, 3000);
+}
+
+// Get auth headers
+function getAuthHeaders() {
+  const token = localStorage.getItem("token");
+  return token ? { Authorization: `Bearer ${token}` } : {};
+}
+
+// Check authentication
+function checkAuth() {
+  if (!token) {
+    showToast("Please log in to view your orders", "error");
+    setTimeout(() => window.location.href = "login.html", 1500);
+    return false;
+  }
+  return true;
+}
+
+// Format date
+function formatDate(dateString) {
+  const date = new Date(dateString);
+  return date.toLocaleDateString("en-US", {
+    year: "numeric",
+    month: "short",
+    day: "numeric",
+    hour: "2-digit",
+    minute: "2-digit"
+  });
+}
+
+// Format currency
+function formatCurrency(amount) {
+  return "₦" + Number(amount).toLocaleString();
+}
+
+// Get status badge class
+function getStatusBadgeClass(status) {
+  switch (status) {
+    case "pending": return "badge-pending";
+    case "successful": return "badge-successful";
+    case "failed": return "badge-failed";
+    case "active": return "badge-active";
+    default: return "bg-secondary";
+  }
+}
+
+// Render user info in header
+function renderUserInfo() {
+  const user = JSON.parse(localStorage.getItem("user") || "{}");
+  if (user.name) {
+    document.getElementById("user-name").textContent = user.name;
+    const initials = user.name.split(" ").map(n => n[0]).join("").substring(0, 2).toUpperCase();
+    document.getElementById("nav-avatar").textContent = initials;
+  }
+}
+
+// Update counts
+function updateCounts() {
+  document.getElementById("cart-count").textContent = (JSON.parse(localStorage.getItem("cart")) || []).length;
+}
+
+// Theme toggle
+function initTheme() {
+  const themeBtn = document.getElementById("theme-toggle");
+  const savedTheme = localStorage.getItem("theme") || "light";
+  document.body.setAttribute("data-bs-theme", savedTheme);
+  document.documentElement.setAttribute("data-bs-theme", savedTheme);
+  themeBtn.innerHTML = savedTheme === "dark" ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
+
+  themeBtn.addEventListener("click", () => {
+    let body = document.body;
+    let html = document.documentElement;
+    let newTheme = body.getAttribute("data-bs-theme") === "dark" ? "light" : "dark";
+    body.setAttribute("data-bs-theme", newTheme);
+    html.setAttribute("data-bs-theme", newTheme);
+    themeBtn.innerHTML = newTheme === "dark" ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
+    localStorage.setItem("theme", newTheme);
+  });
+}
+
+// Fetch order statistics
+async function fetchOrderStats() {
+  try {
+    const res = await fetch(`${API_BASE}/api/orders/stats`, {
+      headers: getAuthHeaders()
+    });
+    if (!res.ok) throw new Error("Failed to fetch stats");
+    const data = await res.json();
+    
+    document.getElementById("total-orders").textContent = data.totalOrders || 0;
+    document.getElementById("pending-orders").textContent = data.pendingOrders || 0;
+    document.getElementById("completed-orders").textContent = data.completedOrders || 0;
+    document.getElementById("failed-orders").textContent = data.failedOrders || 0;
+    document.getElementById("total-spent").textContent = formatCurrency(data.totalSpent || 0);
+    document.getElementById("active-rentals").textContent = data.activeRentals || 0;
+  } catch (err) {
+    console.error("Error fetching stats:", err);
+  }
+}
+
+// Render order card
+function renderOrderCard(order) {
+  const car = order.car || {};
+  const statusClass = getStatusBadgeClass(order.status);
+  const statusText = order.status ? order.status.charAt(0).toUpperCase() + order.status.slice(1) : "Unknown";
+  
+  return `
+    <div class="order-card">
+      <div class="d-flex flex-wrap gap-3">
+        <img src="${car.image || placeholderImage}" alt="${car.make || 'Car'} ${car.model || ''}" class="order-car-image">
+        <div class="flex-grow-1">
+          <div class="d-flex justify-content-between align-items-start flex-wrap gap-2">
+            <div>
+              <h5 class="mb-1">${car.make || 'Unknown'} ${car.model || 'Car'} (${car.year || 'N/A'})</h5>
+              <p class="text-muted mb-1">
+                <i class="fas fa-palette me-1"></i>${car.color || 'N/A'}
+                ${car.description ? '<span class="ms-2">' + car.description.substring(0, 50) + '...</span>' : ''}
+              </p>
+            </div>
+            <span class="badge ${statusClass}">${statusText}</span>
+          </div>
+          <div class="d-flex flex-wrap gap-3 mt-2">
+            <div>
+              <small class="text-muted">Order ID</small>
+              <p class="mb-0 fw-bold">${order._id ? order._id.substring(0, 8) + '...' : 'N/A'}</p>
+            </div>
+            <div>
+              <small class="text-muted">Amount</small>
+              <p class="mb-0 fw-bold text-success">${formatCurrency(order.amount || 0)}</p>
+            </div>
+            <div>
+              <small class="text-muted">Date</small>
+              <p class="mb-0">${formatDate(order.createdAt)}</p>
+            </div>
+            ${order.bookingDetails ? `
+            <div>
+              <small class="text-muted">Booking Status</small>
+              <p class="mb-0">
+                <span class="badge ${getStatusBadgeClass(order.bookingDetails.bookingStatus)}">
+                  ${order.bookingDetails.bookingStatus || 'N/A'}
+                </span>
+              </p>
+            </div>
+            ` : ''}
+          </div>
+          <div class="mt-3">
+            <button class="btn btn-sm btn-outline-primary" onclick="viewOrderDetails('${order._id}')">
+              <i class="fas fa-eye me-1"></i>View Details
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+// Render active rental card
+function renderActiveRentalCard(rental, isPayment = false) {
+  const car = rental.car || rental;
+  
+  if (isPayment) {
+    return `
+      <div class="order-card" style="border-left: 4px solid #f59e0b;">
+        <div class="d-flex flex-wrap gap-3">
+          <img src="${car.image || placeholderImage}" alt="${car.make || 'Car'} ${car.model || ''}" class="order-car-image">
+          <div class="flex-grow-1">
+            <div class="d-flex justify-content-between align-items-start flex-wrap gap-2">
+              <div>
+                <h5 class="mb-1">${car.make || 'Unknown'} ${car.model || 'Car'} (${car.year || 'N/A'})</h5>
+                <p class="text-muted mb-0"><i class="fas fa-clock me-1"></i>Pending Approval</p>
+              </div>
+              <span class="badge badge-pending">Pending</span>
+            </div>
+            <div class="d-flex flex-wrap gap-3 mt-2">
+              <div>
+                <small class="text-muted">Payment ID</small>
+                <p class="mb-0 fw-bold">${rental._id ? rental._id.substring(0, 8) + '...' : 'N/A'}</p>
+              </div>
+              <div>
+                <small class="text-muted">Amount</small>
+                <p class="mb-0 fw-bold text-success">${formatCurrency(rental.amount || 0)}</p>
+              </div>
+              <div>
+                <small class="text-muted">Date</small>
+                <p class="mb-0">${formatDate(rental.createdAt)}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    `;
+  }
+  
+  const user = rental.rentedBy || {};
+  return `
+    <div class="order-card" style="border-left: 4px solid #10b981;">
+      <div class="d-flex flex-wrap gap-3">
+        <img src="${car.image || placeholderImage}" alt="${car.make || 'Car'} ${car.model || ''}" class="order-car-image">
+        <div class="flex-grow-1">
+          <div class="d-flex justify-content-between align-items-start flex-wrap gap-2">
+            <div>
+              <h5 class="mb-1">${car.make || 'Unknown'} ${car.model || 'Car'} (${car.year || 'N/A'})</h5>
+              <p class="text-muted mb-0"><i class="fas fa-check-circle me-1 text-success"></i>Currently Rented</p>
+            </div>
+            <span class="badge badge-active">Active</span>
+          </div>
+          <div class="d-flex flex-wrap gap-3 mt-2">
+            <div>
+              <small class="text-muted">Car ID</small>
+              <p class="mb-0 fw-bold">${car._id ? car._id.substring(0, 8) + '...' : 'N/A'}</p>
+            </div>
+            ${user.name ? `
+            <div>
+              <small class="text-muted">Renter</small>
+              <p class="mb-0">${user.name}</p>
+            </div>
+            ` : ''}
+          </div>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+// Fetch and render all orders
+async function fetchAllOrders() {
+  const loading = document.getElementById("all-orders-loading");
+  const list = document.getElementById("all-orders-list");
+  const empty = document.getElementById("all-orders-empty");
+  
+  loading.style.display = "block";
+  list.innerHTML = "";
+  empty.style.display = "none";
+
+  try {
+    const res = await fetch(`${API_BASE}/api/orders`, {
+      headers: getAuthHeaders()
+    });
+    
+    if (!res.ok) {
+      if (res.status === 401) {
+        localStorage.clear();
+        showToast("Session expired. Please log in again.", "error");
+        setTimeout(() => window.location.href = "login.html", 1500);
+        return;
+      }
+      throw new Error("Failed to fetch orders");
+    }
+    
+    const data = await res.json();
+    const orders = data.orders || [];
+    
+    loading.style.display = "none";
+    
+    if (orders.length === 0) {
+      empty.style.display = "block";
+      return;
+    }
+    
+    list.innerHTML = orders.map(order => renderOrderCard(order)).join("");
+  } catch (err) {
+    console.error("Error fetching orders:", err);
+    loading.style.display = "none";
+    list.innerHTML = `
+      <div class="alert alert-danger">
+        <i class="fas fa-exclamation-circle me-2"></i>
+        Failed to load orders. Please try again.
+      </div>
+    `;
+  }
+}
+
+// Fetch and render active rentals
+async function fetchActiveRentals() {
+  const loading = document.getElementById("active-rentals-loading");
+  const list = document.getElementById("active-rentals-list");
+  const empty = document.getElementById("active-rentals-empty");
+  
+  loading.style.display = "block";
+  list.innerHTML = "";
+  empty.style.display = "none";
+
+  try {
+    const res = await fetch(`${API_BASE}/api/orders/active`, {
+      headers: getAuthHeaders()
+    });
+    
+    if (!res.ok) throw new Error("Failed to fetch active rentals");
+    
+    const data = await res.json();
+    const activeRentals = data.activeRentals || [];
+    const pendingPayments = data.pendingPayments || [];
+    
+    loading.style.display = "none";
+    
+    if (activeRentals.length === 0 && pendingPayments.length === 0) {
+      empty.style.display = "block";
+      return;
+    }
+    
+    let html = "";
+    
+    if (activeRentals.length > 0) {
+      html += activeRentals.map(rental => renderActiveRentalCard(rental, false)).join("");
+    }
+    
+    if (pendingPayments.length > 0) {
+      html += pendingPayments.map(payment => renderActiveRentalCard(payment, true)).join("");
+    }
+    
+    list.innerHTML = html;
+  } catch (err) {
+    console.error("Error fetching active rentals:", err);
+    loading.style.display = "none";
+    list.innerHTML = `
+      <div class="alert alert-danger">
+        <i class="fas fa-exclamation-circle me-2"></i>
+        Failed to load active rentals. Please try again.
+      </div>
+    `;
+  }
+}
+
+// Fetch and render order history
+async function fetchOrderHistory() {
+  const loading = document.getElementById("order-history-loading");
+  const list = document.getElementById("order-history-list");
+  const empty = document.getElementById("order-history-empty");
+  
+  loading.style.display = "block";
+  list.innerHTML = "";
+  empty.style.display = "none";
+
+  try {
+    const res = await fetch(`${API_BASE}/api/orders/history`, {
+      headers: getAuthHeaders()
+    });
+    
+    if (!res.ok) throw new Error("Failed to fetch order history");
+    
+    const data = await res.json();
+    const orders = data.orders || [];
+    
+    loading.style.display = "none";
+    
+    if (orders.length === 0) {
+      empty.style.display = "block";
+      return;
+    }
+    
+    list.innerHTML = orders.map(order => renderOrderCard(order)).join("");
+  } catch (err) {
+    console.error("Error fetching order history:", err);
+    loading.style.display = "none";
+    list.innerHTML = `
+      <div class="alert alert-danger">
+        <i class="fas fa-exclamation-circle me-2"></i>
+        Failed to load order history. Please try again.
+      </div>
+    `;
+  }
+}
+
+// View order details
+async function viewOrderDetails(orderId) {
+  try {
+    const res = await fetch(`${API_BASE}/api/orders/${orderId}`, {
+      headers: getAuthHeaders()
+    });
+    
+    if (!res.ok) throw new Error("Failed to fetch order details");
+    
+    const data = await res.json();
+    const order = data.order;
+    const car = order.car || {};
+    const booking = order.bookingDetails;
+    
+    const modalContent = document.getElementById("order-detail-content");
+    modalContent.innerHTML = `
+      <div class="row">
+        <div class="col-md-6 mb-3">
+          <img src="${car.image || placeholderImage}" alt="${car.make || 'Car'} ${car.model || ''}" class="img-fluid rounded" style="width:100%; max-height:200px; object-fit:cover;">
+        </div>
+        <div class="col-md-6 mb-3">
+          <h5>${car.make || 'Unknown'} ${car.model || 'Car'}</h5>
+          <p class="text-muted mb-1">Year: ${car.year || 'N/A'}</p>
+          <p class="text-muted mb-1">Color: ${car.color || 'N/A'}</p>
+          <p class="text-muted mb-0">Daily Rate: <span class="text-success fw-bold">${formatCurrency(car.price || 0)}</span></p>
+        </div>
+      </div>
+      <hr>
+      <div class="row">
+        <div class="col-6 mb-3">
+          <small class="text-muted">Order ID</small>
+          <p class="mb-0 fw-bold">${order._id || 'N/A'}</p>
+        </div>
+        <div class="col-6 mb-3">
+          <small class="text-muted">Payment Status</small>
+          <p class="mb-0"><span class="badge ${getStatusBadgeClass(order.status)}">${order.status || 'N/A'}</span></p>
+        </div>
+        <div class="col-6 mb-3">
+          <small class="text-muted">Amount Paid</small>
+          <p class="mb-0 fw-bold text-success">${formatCurrency(order.amount || 0)}</p>
+        </div>
+        <div class="col-6 mb-3">
+          <small class="text-muted">Payment Method</small>
+          <p class="mb-0">${order.paymentMethod || 'N/A'}</p>
+        </div>
+        <div class="col-6 mb-3">
+          <small class="text-muted">Transaction ID</small>
+          <p class="mb-0">${order.transactionId || 'N/A'}</p>
+        </div>
+        <div class="col-6 mb-3">
+          <small class="text-muted">Order Date</small>
+          <p class="mb-0">${formatDate(order.createdAt)}</p>
+        </div>
+      </div>
+      ${booking ? `
+      <hr>
+      <h6 class="fw-bold mb-3">Booking Details</h6>
+      <div class="row">
+        <div class="col-6 mb-3">
+          <small class="text-muted">Booking ID</small>
+          <p class="mb-0 fw-bold">${booking.bookingId || 'N/A'}</p>
+        </div>
+        <div class="col-6 mb-3">
+          <small class="text-muted">Booking Status</small>
+          <p class="mb-0"><span class="badge ${getStatusBadgeClass(booking.bookingStatus)}">${booking.bookingStatus || 'N/A'}</span></p>
+        </div>
+        <div class="col-12 mb-3">
+          <small class="text-muted">User Notes</small>
+          <p class="mb-0">${booking.notes || 'No notes'}</p>
+        </div>
+        <div class="col-12 mb-3">
+          <small class="text-muted">Admin Notes</small>
+          <p class="mb-0">${booking.adminNotes || 'No admin notes'}</p>
+        </div>
+        ${booking.approvedBy ? `
+        <div class="col-6 mb-3">
+          <small class="text-muted">Approved By</small>
+          <p class="mb-0">${booking.approvedBy}</p>
+        </div>
+        <div class="col-6 mb-3">
+          <small class="text-muted">Approved At</small>
+          <p class="mb-0">${formatDate(booking.approvedAt)}</p>
+        </div>
+        ` : ''}
+        ${booking.rejectedBy ? `
+        <div class="col-6 mb-3">
+          <small class="text-muted">Rejected By</small>
+          <p class="mb-0">${booking.rejectedBy}</p>
+        </div>
+        <div class="col-6 mb-3">
+          <small class="text-muted">Rejected At</small>
+          <p class="mb-0">${formatDate(booking.rejectedAt)}</p>
+        </div>
+        ` : ''}
+      </div>
+      ` : ''}
+    `;
+    
+    const modal = new bootstrap.Modal(document.getElementById("orderDetailModal"));
+    modal.show();
+  } catch (err) {
+    console.error("Error fetching order details:", err);
+    showToast("Failed to load order details", "error");
+  }
+}
+
+// Refresh all data
+async function refreshAll() {
+  showToast("Refreshing...", "success");
+  await Promise.all([
+    fetchOrderStats(),
+    fetchAllOrders(),
+    fetchActiveRentals(),
+    fetchOrderHistory()
+  ]);
+  showToast("Data refreshed!", "success");
+}
+
+// Logout
+document.getElementById("logout-button").addEventListener("click", () => {
+  localStorage.clear();
+  window.location = "login.html";
+});
+
+// Refresh button
+document.getElementById("refresh-btn").addEventListener("click", refreshAll);
+
+// Initialize
+document.addEventListener("DOMContentLoaded", () => {
+  if (!checkAuth()) return;
+  
+  initTheme();
+  renderUserInfo();
+  updateCounts();
+  
+  // Load data
+  fetchOrderStats();
+  fetchAllOrders();
+  fetchActiveRentals();
+  fetchOrderHistory();
+});
+</script>
+</body>
+</html>
+
