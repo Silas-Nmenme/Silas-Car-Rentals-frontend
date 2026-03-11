@@ -2080,12 +2080,44 @@
   <script src="count-updates.js"></script>
 
   <script>
-    // Initialize AOS
-    AOS.init({
-      duration: 800,
-      easing: 'ease-in-out',
-      once: true,
-      offset: 100
+    // Safe AOS initialization with error handling
+    function initAOS() {
+      // Check if AOS library is loaded
+      if (typeof AOS === 'undefined') {
+        console.warn('AOS library not loaded. Animations will be disabled.');
+        return;
+      }
+      
+      try {
+        // Initialize AOS with a slight delay to ensure DOM is ready
+        AOS.init({
+          duration: 800,
+          easing: 'ease-in-out',
+          once: true,
+          offset: 100,
+          disable: function() {
+            // Disable on mobile for better performance
+            return window.innerWidth < 768;
+          }
+        });
+      } catch (error) {
+        console.warn('AOS initialization failed:', error);
+      }
+    }
+
+    // Initialize AOS when DOM is fully loaded
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initAOS);
+    } else {
+      // DOM already loaded, initialize immediately
+      initAOS();
+    }
+
+    // Also try to initialize on window load as a fallback
+    window.addEventListener('load', function() {
+      if (typeof AOS !== 'undefined' && AOS) {
+        AOS.refresh();
+      }
     });
 
     // Theme toggle functionality
