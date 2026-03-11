@@ -1,7 +1,7 @@
 // Configuration for Google OAuth
 const CONFIG = {
   // Backend API base URL
-  API_BASE_URL: 'https://techyjaunt-auth-go43.onrender.com',
+  API_BASE_URL: 'https://carrerntal.vercel.app',
   
   // Google OAuth Client ID - Update this with your actual client ID
   GOOGLE_CLIENT_ID: '293889215515-658eba7e610fm5hfoetknip83lf2re1s.apps.googleusercontent.com',
