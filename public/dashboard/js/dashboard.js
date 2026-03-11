@@ -174,8 +174,13 @@ async function fetchUserProfile() {
   }
 }
 
-// Fetch Stats
+// Fetch Stats - used for regular users (non-admin)
+// For admins, loadAdminData() handles stats fetching via the unified endpoint
 async function fetchUserStats() {
+  // Skip if we're on the admin dashboard page (loadAdminData handles it)
+  const isAdminDashboard = document.getElementById('admin-total-users');
+  if (isAdminDashboard) return;
+  
   if (!totalRentalsEl) return;
   
   // First try localStorage for rental count
@@ -243,69 +248,66 @@ async function fetchRentalHistory() {
   }
 }
 
-// Admin Data
+// Admin Data - Using unified stats endpoint from backend
 async function loadAdminData() {
   const adminTotalUsersEl = document.getElementById('admin-total-users');
   const adminTotalCarsEl = document.getElementById('admin-total-cars');
   const adminTotalRevenueEl = document.getElementById('admin-total-revenue');
+  const totalRentalsEl = document.getElementById('total-rentals');
   
-  if (!adminTotalUsersEl && !adminTotalCarsEl && !adminTotalRevenueEl && !bookingsTableBody) return;
+  if (!adminTotalUsersEl && !adminTotalCarsEl && !adminTotalRevenueEl && !totalRentalsEl && !bookingsTableBody) return;
   
-  // Fetch users for total count
+  // Fetch unified stats from backend - single API call
   try {
-    const usersRes = await fetch(BASE_URL + ENDPOINTS.users, { headers: { Authorization: 'Bearer ' + token } });
-    if (!usersRes.ok) throw new Error('Failed to fetch users');
-    const usersData = await usersRes.json();
-    console.log('Users data:', usersData);
-    const users = Array.isArray(usersData) ? usersData : usersData.users || [];
-    if (adminTotalUsersEl) adminTotalUsersEl.textContent = users.length || 0;
+    const statsRes = await fetch(BASE_URL + ENDPOINTS.userStats, { 
+      headers: { Authorization: 'Bearer ' + token } 
+    });
+    
+    if (!statsRes.ok) throw new Error('Failed to fetch stats');
+    
+    const stats = await statsRes.json();
+    console.log('Stats data from backend:', stats);
+    
+    // Update dashboard stats
+    if (adminTotalUsersEl) adminTotalUsersEl.textContent = stats.totalUsers ?? 0;
+    if (adminTotalCarsEl) adminTotalCarsEl.textContent = stats.totalCarsListed ?? 0;
+    if (adminTotalRevenueEl) adminTotalRevenueEl.textContent = `₦${(stats.totalRevenue ?? 0).toLocaleString()}`;
+    if (totalRentalsEl) totalRentalsEl.textContent = stats.totalRentals ?? 0;
+    
   } catch (error) {
-    console.error('Error loading users:', error);
-    if (adminTotalUsersEl) adminTotalUsersEl.textContent = '0';
-  }
-
-  // Fetch cars for total count
-  try {
-    const carsRes = await fetch(BASE_URL + ENDPOINTS.getCars, { headers: { Authorization: 'Bearer ' + token } });
-    if (!carsRes.ok) throw new Error('Failed to fetch cars');
-    const carsData = await carsRes.json();
-    console.log('Cars data:', carsData);
-    const cars = Array.isArray(carsData) ? carsData : carsData.cars || [];
-    if (adminTotalCarsEl) adminTotalCarsEl.textContent = cars.length || 0;
-  } catch (error) {
-    console.error('Error loading cars:', error);
-    if (adminTotalCarsEl) adminTotalCarsEl.textContent = '0';
-  }
-
-  // Fetch analytics for revenue, fallback to calculate from bookings
-  try {
-    const analyticsRes = await fetch(BASE_URL + ENDPOINTS.adminAnalytics, { headers: { Authorization: 'Bearer ' + token } });
-    if (analyticsRes.ok) {
-      const analytics = await analyticsRes.json();
-      console.log('Admin analytics data:', analytics);
-      if (adminTotalRevenueEl) adminTotalRevenueEl.textContent = `₦${(analytics.totalRevenue || 0).toLocaleString()}`;
-    } else {
-      throw new Error('Analytics endpoint failed');
-    }
-  } catch (analyticsError) {
-    console.error('Error loading analytics:', analyticsError);
-    // Fallback: calculate revenue from bookings
+    console.error('Error loading stats:', error);
+    // Fallback: try to fetch individual data if stats endpoint fails
     try {
-      const bookingsRes = await fetch(BASE_URL + '/api/bookings', { headers: { Authorization: 'Bearer ' + token } });
-      if (bookingsRes.ok) {
-        const bookings = await bookingsRes.json();
-        const totalRevenue = bookings.reduce((sum, b) => sum + (b.price || 0), 0);
-        if (adminTotalRevenueEl) adminTotalRevenueEl.textContent = `₦${totalRevenue.toLocaleString()}`;
-      } else {
-        if (adminTotalRevenueEl) adminTotalRevenueEl.textContent = '₦0';
+      // Fetch users for total count
+      const usersRes = await fetch(BASE_URL + ENDPOINTS.users, { headers: { Authorization: 'Bearer ' + token } });
+      if (usersRes.ok) {
+        const usersData = await usersRes.json();
+        const users = Array.isArray(usersData) ? usersData : usersData.users || [];
+        if (adminTotalUsersEl) adminTotalUsersEl.textContent = users.length || 0;
       }
-    } catch (bookingsError) {
-      console.error('Error calculating revenue from bookings:', bookingsError);
-      if (adminTotalRevenueEl) adminTotalRevenueEl.textContent = '₦0';
+    } catch (usersError) {
+      console.error('Error loading users:', usersError);
+      if (adminTotalUsersEl) adminTotalUsersEl.textContent = '0';
     }
+
+    try {
+      // Fetch cars for total count
+      const carsRes = await fetch(BASE_URL + ENDPOINTS.getCars, { headers: { Authorization: 'Bearer ' + token } });
+      if (carsRes.ok) {
+        const carsData = await carsRes.json();
+        const cars = Array.isArray(carsData) ? carsData : carsData.cars || [];
+        if (adminTotalCarsEl) adminTotalCarsEl.textContent = cars.length || 0;
+      }
+    } catch (carsError) {
+      console.error('Error loading cars:', carsError);
+      if (adminTotalCarsEl) adminTotalCarsEl.textContent = '0';
+    }
+
+    if (adminTotalRevenueEl) adminTotalRevenueEl.textContent = '₦0';
+    if (totalRentalsEl) totalRentalsEl.textContent = '0';
   }
 
-  // Bookings
+  // Load bookings table (separate as it requires full booking details for the table)
   if (!bookingsTableBody) return;
   try {
     const bookingsRes = await fetch(BASE_URL + '/api/bookings', { headers: { Authorization: 'Bearer ' + token } });
