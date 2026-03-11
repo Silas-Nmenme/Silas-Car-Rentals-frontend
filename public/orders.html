@@ -959,7 +959,7 @@ async function fetchOrderHistory() {
 // View order details
 async function viewOrderDetails(orderId) {
   try {
-    const res = await fetch(`${API_BASE}/api/users/orders/:orderId/${orderId}`, {
+    const res = await fetch(`${API_BASE}/api/users/orders/${orderId}`, {
       headers: getAuthHeaders()
     });
     
