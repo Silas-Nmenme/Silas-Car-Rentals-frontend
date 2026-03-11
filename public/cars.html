@@ -597,6 +597,8 @@ const scrollToTopBtn = document.getElementById('scroll-to-top');
 
 // Show/hide scroll button based on scroll position
 window.addEventListener('scroll', () => {
+  if (!scrollToTopBtn) return; // Guard: element doesn't exist
+  
   const scrollHeight = document.documentElement.scrollHeight;
   const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
   const clientHeight = document.documentElement.clientHeight;
@@ -612,12 +614,14 @@ window.addEventListener('scroll', () => {
 });
 
 // Scroll to top when button is clicked
-scrollToTopBtn.addEventListener('click', () => {
-  window.scrollTo({
-    top: 0,
-    behavior: 'smooth'
+if (scrollToTopBtn) {
+  scrollToTopBtn.addEventListener('click', () => {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    });
   });
-});
+}
 
 // Add event listeners for filter functionality
 document.addEventListener('DOMContentLoaded', function() {
